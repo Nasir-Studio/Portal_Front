@@ -1,0 +1,45 @@
+---
+interface Props {
+  size?: number;
+  class?: string;
+}
+
+const { size = 40, class: className = '' } = Astro.props;
+---
+
+<svg
+  class={className}
+  width={size}
+  height={size}
+  viewBox="0 0 64 64"
+  fill="none"
+  role="img"
+  aria-label="可愛小羊"
+>
+  <!-- 四隻小腳 -->
+  <rect x="17" y="49" width="4.5" height="9" rx="2.25" fill="#26262a" />
+  <rect x="25.5" y="50" width="4.5" height="9" rx="2.25" fill="#26262a" />
+  <rect x="34" y="50" width="4.5" height="9" rx="2.25" fill="#26262a" />
+  <rect x="42.5" y="49" width="4.5" height="9" rx="2.25" fill="#26262a" />
+  <!-- 身體絨毛 -->
+  <circle cx="21" cy="45" r="7.5" fill="#f4f3f0" stroke="#dcdbd6" stroke-width="1.6" />
+  <circle cx="43" cy="45" r="7.5" fill="#f4f3f0" stroke="#dcdbd6" stroke-width="1.6" />
+  <circle cx="32" cy="47" r="9.5" fill="#f4f3f0" stroke="#dcdbd6" stroke-width="1.6" />
+  <!-- 垂垂耳朵 -->
+  <ellipse cx="13.5" cy="31" rx="5" ry="7.5" fill="#26262a" transform="rotate(24 13.5 31)" />
+  <ellipse cx="50.5" cy="31" rx="5" ry="7.5" fill="#26262a" transform="rotate(-24 50.5 31)" />
+  <!-- 臉 -->
+  <rect x="17.5" y="21" width="29" height="27" rx="13" fill="#26262a" />
+  <!-- 頭頂絨毛 -->
+  <circle cx="15.5" cy="19" r="7" fill="#f4f3f0" stroke="#dcdbd6" stroke-width="1.6" />
+  <circle cx="26.5" cy="13.5" r="8" fill="#f4f3f0" stroke="#dcdbd6" stroke-width="1.6" />
+  <circle cx="37.5" cy="13.5" r="8" fill="#f4f3f0" stroke="#dcdbd6" stroke-width="1.6" />
+  <circle cx="48.5" cy="19" r="7" fill="#f4f3f0" stroke="#dcdbd6" stroke-width="1.6" />
+  <circle cx="32" cy="11" r="7" fill="#f4f3f0" stroke="#dcdbd6" stroke-width="1.6" />
+  <!-- 眼睛 -->
+  <circle cx="26" cy="30.5" r="2.4" fill="#f4f3f0" />
+  <circle cx="38" cy="30.5" r="2.4" fill="#f4f3f0" />
+  <!-- 鼻口 -->
+  <ellipse cx="32" cy="39.5" rx="6.5" ry="4.8" fill="#4a4a50" />
+  <path d="M29.8 37.6h4.4L32 40.6z" fill="#f4f3f0" />
+</svg>

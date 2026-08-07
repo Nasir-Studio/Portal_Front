@@ -1,0 +1,90 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import ShortUrlBanner from '../components/ShortUrlBanner.astro';
+
+const services = [
+  {
+    number: '01',
+    icon: 'camera',
+    title: '羊監視你',
+    desc: '二十四小時的小羊盯盯，溫柔守護每一刻。',
+    href: 'https://cctv.nsir.uk',
+  },
+  {
+    number: '02',
+    icon: 'badge',
+    title: '羊集章',
+    desc: '集滿羊章，收集生活裡的每一份小成就。',
+    href: 'https://badges.nsir.uk',
+  },
+  {
+    number: '03',
+    icon: 'exam',
+    title: '羊愛考試',
+    desc: '考前衝刺的羊朋友，陪你一起考試。',
+    href: 'https://1ztests.nsir.uk',
+  },
+] as const;
+---
+
+<BaseLayout>
+  <Hero />
+
+  <section class="services container" id="services">
+    <p class="section-label">羊家服務</p>
+    <h2 class="services-title">三隻小羊，各司其職</h2>
+
+    <div class="services-grid">
+      {
+        services.map((service) => (
+          <ServiceCard
+            number={service.number}
+            icon={service.icon}
+            title={service.title}
+            desc={service.desc}
+            href={service.href}
+          />
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="banner-section container">
+    <ShortUrlBanner />
+  </section>
+</BaseLayout>
+
+<style>
+  .services {
+    padding: 5.5rem 0 1rem;
+  }
+
+  .services-title {
+    font-family: var(--font-serif);
+    font-size: clamp(1.7rem, 4vw, 2.3rem);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-align: center;
+    margin: 1.4rem 0 2.8rem;
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.6rem;
+  }
+
+  .banner-section {
+    padding-top: 4.5rem;
+  }
+
+  @media (max-width: 960px) {
+    .services-grid {
+      grid-template-columns: 1fr;
+      max-width: 520px;
+      margin-inline: auto;
+    }
+  }
+</style>

@@ -1,0 +1,232 @@
+---
+import SheepLogo from './SheepLogo.astro';
+
+const links = [
+  { label: '羊監視你', href: 'https://cctv.nsir.uk' },
+  { label: '羊集章', href: 'https://badges.nsir.uk' },
+  { label: '羊愛考試', href: 'https://1ztests.nsir.uk' },
+];
+---
+
+<header class="site-header">
+  <nav class="nav container" aria-label="主導覽">
+    <a class="brand" href="/Portal_Front/">
+      <SheepLogo size={34} />
+      <span class="brand-name">羊家的入口</span>
+    </a>
+
+    <button
+      class="nav-toggle"
+      type="button"
+      aria-expanded="false"
+      aria-controls="nav-menu"
+      aria-label="開啟選單"
+    >
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <div class="nav-menu" id="nav-menu">
+      {
+        links.map((link) => (
+          <a class="nav-link" href={link.href} target="_blank" rel="noopener noreferrer">
+            {link.label}
+          </a>
+        ))
+      }
+      <a
+        class="nav-cta"
+        href="https://nsir.uk"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        羊-短網址(nsir.uk)
+        <span class="nav-cta-arrow" aria-hidden="true">↗</span>
+      </a>
+    </div>
+  </nav>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(250, 250, 248, 0.82);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: 68px;
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    font-family: var(--font-serif);
+    font-size: 1.12rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--ink);
+    transition: opacity var(--t);
+  }
+
+  .brand:hover {
+    opacity: 0.72;
+  }
+
+  .brand svg {
+    filter: drop-shadow(0 3px 6px rgba(28, 28, 28, 0.18));
+  }
+
+  .nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .nav-link {
+    padding: 0.5rem 0.9rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--ink-2);
+    border-radius: 999px;
+    transition: color var(--t), background var(--t);
+  }
+
+  .nav-link:hover {
+    color: var(--ink);
+    background: var(--surface-2);
+  }
+
+  .nav-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin-left: 0.6rem;
+    padding: 0.55rem 1.15rem;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--white);
+    background: var(--ink);
+    border-radius: 999px;
+    transition: transform var(--t), box-shadow var(--t), opacity var(--t);
+  }
+
+  .nav-cta:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-soft);
+    opacity: 0.92;
+  }
+
+  .nav-cta-arrow {
+    font-size: 0.85rem;
+  }
+
+  /* 漢堡按鈕 */
+  .nav-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 44px;
+    height: 44px;
+    padding: 10px;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    cursor: pointer;
+  }
+
+  .nav-toggle span {
+    display: block;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--ink);
+    transition: transform var(--t), opacity var(--t);
+  }
+
+  .nav-toggle[aria-expanded='true'] span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  .nav-toggle[aria-expanded='true'] span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .nav-toggle[aria-expanded='true'] span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  /* 響應式 */
+  @media (max-width: 860px) {
+    .nav-toggle {
+      display: flex;
+    }
+
+    .nav-menu {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.25rem;
+      padding: 0.75rem 1.5rem 1.25rem;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      box-shadow: var(--shadow-soft);
+      transform-origin: top;
+      transform: scaleY(0);
+      opacity: 0;
+      visibility: hidden;
+      transition: transform 260ms var(--ease), opacity 260ms var(--ease), visibility 260ms;
+    }
+
+    .nav-menu.open {
+      transform: scaleY(1);
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .nav-link {
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius-sm);
+    }
+
+    .nav-cta {
+      margin-left: 0;
+      margin-top: 0.5rem;
+      justify-content: center;
+      padding: 0.8rem 1.2rem;
+    }
+  }
+</style>
+
+<script>
+  const toggle = document.querySelector('.nav-toggle');
+  const menu = document.querySelector('.nav-menu');
+
+  toggle?.addEventListener('click', () => {
+    const open = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!open));
+    menu?.classList.toggle('open', !open);
+  });
+
+  // 點選連結後自動收起選單
+  menu?.querySelectorAll('a').forEach((a) => {
+    a.addEventListener('click', () => {
+      toggle?.setAttribute('aria-expanded', 'false');
+      menu.classList.remove('open');
+    });
+  });
+</script>

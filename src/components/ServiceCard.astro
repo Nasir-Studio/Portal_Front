@@ -1,0 +1,142 @@
+---
+interface Props {
+  number: string;
+  title: string;
+  desc: string;
+  href: string;
+  icon: 'camera' | 'badge' | 'exam';
+}
+
+const { number, title, desc, href, icon } = Astro.props;
+---
+
+<a class="card" href={href} target="_blank" rel="noopener noreferrer">
+  <div class="card-top">
+    <span class="card-icon" aria-hidden="true">
+      {
+        icon === 'camera' && (
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2.5" y="6.5" width="19" height="13" rx="3.5" />
+            <circle cx="12" cy="13" r="4" />
+            <path d="M6 6.5l2-3h8l2 3" />
+          </svg>
+        )
+      }
+      {
+        icon === 'badge' && (
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="9" r="6" />
+            <path d="M8.6 13.6L7 21l5-2.6L17 21l-1.6-7.4" />
+            <path d="M12 6.5l.9 1.9 2 .3-1.5 1.4.4 2-1.8-1-1.8 1 .4-2L9.1 8.7l2-.3z" />
+          </svg>
+        )
+      }
+      {
+        icon === 'exam' && (
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="4" y="3" width="16" height="18" rx="2.5" />
+            <path d="M8.5 8h7M8.5 12h7M8.5 16h4.5" />
+            <path d="M14 16.8l1.6 1.6 3-3.2" />
+          </svg>
+        )
+      }
+    </span>
+    <span class="card-number">{number}</span>
+  </div>
+
+  <h3 class="card-title">{title}</h3>
+  <p class="card-desc">{desc}</p>
+
+  <span class="card-link">
+    前往
+    <span class="card-arrow" aria-hidden="true">→</span>
+  </span>
+</a>
+
+<style>
+  .card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.9rem 1.9rem 1.7rem;
+    box-shadow: var(--shadow-soft);
+    transition: transform var(--t), box-shadow var(--t), border-color var(--t);
+  }
+
+  .card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lift);
+    border-color: var(--border-strong);
+  }
+
+  .card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 1.6rem;
+  }
+
+  .card-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 54px;
+    height: 54px;
+    border-radius: 16px;
+    background: var(--surface-2);
+    color: var(--ink);
+    border: 1px solid var(--border);
+    transition: background var(--t), color var(--t);
+  }
+
+  .card:hover .card-icon {
+    background: var(--ink);
+    color: var(--white);
+    border-color: var(--ink);
+  }
+
+  .card-number {
+    font-family: var(--font-serif);
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    color: var(--ink-3);
+  }
+
+  .card-title {
+    font-family: var(--font-serif);
+    font-size: 1.35rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.6rem;
+  }
+
+  .card-desc {
+    font-size: 0.92rem;
+    letter-spacing: 0.04em;
+    color: var(--ink-2);
+    margin-bottom: 1.6rem;
+    flex: 1;
+  }
+
+  .card-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--ink);
+  }
+
+  .card-arrow {
+    transition: transform var(--t);
+  }
+
+  .card:hover .card-arrow {
+    transform: translateX(5px);
+  }
+</style>
