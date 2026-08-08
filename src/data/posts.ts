@@ -10,7 +10,7 @@ const posts: Post[] = [
   {
     slug: 'windows-experience-freestyle',
     date: '2026.07.26',
-    title: '新找到的玩意兒：利用 Win10 重新復刻 WinXP',
+    title: '【文章】新找到的玩意兒：利用 Win10 重新復刻 WinXP',
     excerpt: '我相信很多人是從 XP 時代過來的，我自己也是，我真的很常懷念 XP 的時代…',
     content: `
       <p>
@@ -25,7 +25,7 @@ const posts: Post[] = [
   {
     slug: 'a-new-beginning',
     date: '2026.07.01',
-    title: '新的開始',
+    title: '【文章】新的開始',
     excerpt: '決定用這個 Repo 來記錄自己的每一天，像是一本專屬的日記本。',
     content: `
       <p class="post-intro">
@@ -42,7 +42,7 @@ const posts: Post[] = [
   {
     slug: 'github-open-source-tools',
     date: '2026.06.30',
-    title: '學期結束後，收獲的 github 開源工具',
+    title: '【文章】學期結束後，收獲的 github 開源工具',
     excerpt: '暑假即將開始了，同時這兩個學期也收獲很多，總結了一些有趣的工具，打算暑假來好好的研究一下！',
     content: `
       <p class="post-intro">
@@ -104,7 +104,7 @@ const posts: Post[] = [
   {
     slug: 'ntub-audit',
     date: '2026.06.14',
-    title: 'NTUB 2026 通識資安稽核一條龍',
+    title: '【文章】NTUB 2026 通識資安稽核一條龍',
     excerpt: '為了符合國家資安稽核的指標，並加速檢測流程的進度，特別做這個一鍵式全自動資安檢測工具！',
     content: `
       <p class="post-intro">

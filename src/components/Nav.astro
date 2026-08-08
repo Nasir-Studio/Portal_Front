@@ -15,8 +15,6 @@ const links = [
       <span class="topbar-left">羊家入口網</span>
       <span class="topbar-right">
         <a href="/">首頁</a>
-        <span class="topbar-sep" aria-hidden="true">｜</span>
-        <a href="#news">最新消息</a>
       </span>
     </div>
   </div>
@@ -47,7 +45,6 @@ const links = [
   <div class="menubar-wrap" id="nav-menu">
     <nav class="menubar container" aria-label="主導覽">
       <a class="menu-link is-home" href="/">首頁</a>
-      <a class="menu-link" href="#news">最新消息</a>
       {
         links.map((link) => (
           <a class="menu-link" href={link.href} target="_blank" rel="noopener noreferrer">

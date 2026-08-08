@@ -1,6 +1,7 @@
 ---
 import announcements from '../data/announcements';
 import posts from '../data/posts';
+import projects from '../data/projects';
 ---
 
 <section class="module" id="news" aria-label="最新消息">
@@ -32,6 +33,16 @@ import posts from '../data/posts';
     >
       其他文章
     </button>
+    <button
+      class="news-tab"
+      id="tab-projects"
+      role="tab"
+      aria-selected="false"
+      aria-controls="panel-projects"
+      type="button"
+    >
+      小專案
+    </button>
   </div>
 
   <div class="news-panel is-active" id="panel-announce" role="tabpanel" aria-labelledby="tab-announce">
@@ -57,6 +68,22 @@ import posts from '../data/posts';
               <span class="news-item-excerpt">{item.excerpt}</span>
             </span>
             <span class="news-date">{item.date}</span>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+
+  <div class="news-panel" id="panel-projects" role="tabpanel" aria-labelledby="tab-projects" hidden>
+    <div class="news-list">
+      {
+        projects.map((item) => (
+          <a class="news-item" href={item.href}>
+            <span class="news-item-title">
+              {item.name}
+              <span class="news-item-excerpt">{item.desc}</span>
+            </span>
+            <span class="news-date" aria-hidden="true">↗</span>
           </a>
         ))
       }

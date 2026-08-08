@@ -2,32 +2,64 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<BaseLayout title="聊天客服 — 羊家的入口">
+<BaseLayout title="AI 電腦助手 — 羊家的入口">
   <div class="container">
-    <h1 class="page-title">聊天客服</h1>
-    <p class="page-sub">即時與管理員對話</p>
+    <h1 class="page-title">AI 電腦助手</h1>
+    <p class="page-sub">文字問答、圖片辨識 — 服務準備中，敬請期待</p>
 
-    <div class="chat-wrap">
-      <div class="chat-status" id="chat-status">
-        <span class="status-dot" id="status-dot"></span>
-        <span id="status-text">連線中…</span>
+    <div class="ai-wrap">
+      <div class="ai-status">
+        <span class="status-dot"></span>
+        <span>準備中</span>
+        <span class="status-badge">即將上線</span>
       </div>
 
-      <div class="chat-members" id="chat-members" hidden>
-        <span class="members-title">在線會員</span>
-        <span id="members-list"></span>
+      <div class="ai-features">
+        <div class="feature">
+          <span class="feature-icon" aria-hidden="true">⌨</span>
+          <div class="feature-body">
+            <span class="feature-name">文字問答</span>
+            <span class="feature-desc">詢問電腦相關問題，獲得即時解答</span>
+          </div>
+        </div>
+        <div class="feature">
+          <span class="feature-icon" aria-hidden="true">▣</span>
+          <div class="feature-body">
+            <span class="feature-name">圖片辨識</span>
+            <span class="feature-desc">上傳截圖或照片，AI 幫你分析內容</span>
+          </div>
+        </div>
       </div>
 
-      <div class="chat-log" id="chat-log" aria-live="polite">
-        <p class="chat-hint" id="chat-hint">連線後即可開始對話…</p>
+      <div class="ai-input">
+        <label class="field">
+          <span class="field-label">輸入你的問題</span>
+          <textarea id="ai-text" rows="3" maxlength="2000" placeholder="例如：我的電腦開不了機，該怎麼排除？"></textarea>
+        </label>
+
+        <div class="upload-zone" id="upload-zone">
+          <input type="file" id="upload-input" accept="image/*" hidden />
+          <button class="upload-btn" id="upload-btn" type="button" aria-label="上傳圖片">
+            <span aria-hidden="true">▣</span> 上傳圖片
+          </button>
+          <span class="upload-hint" id="upload-hint">支援圖片辨識（準備中）</span>
+        </div>
+
+        <div class="preview" id="preview" hidden>
+          <img id="preview-img" alt="已選擇的圖片" />
+          <button class="preview-remove" id="preview-remove" type="button" aria-label="移除圖片">✕</button>
+        </div>
+
+        <p class="form-msg" id="form-msg" role="status" hidden></p>
+
+        <button class="btn btn--block" id="submit-btn" type="button" disabled>送出問題</button>
+        <p class="ai-note">AI 服務正在建置中，上線後即可使用。有任何問題歡迎先使用工單系統聯絡我們。</p>
       </div>
 
-      <form class="chat-input" id="chat-form">
-        <textarea id="chat-text" rows="2" placeholder="輸入訊息…（Enter 送出，Shift+Enter 換行）" maxlength="2000"></textarea>
-        <button class="btn" id="chat-send" type="submit" disabled>送出</button>
-      </form>
-
-      <button class="btn btn--ghost reconnect" id="reconnect-btn" type="button" hidden>重新連線</button>
+      <a class="ai-fallback" href="/tickets/">
+        前往工單系統
+        <span aria-hidden="true">→</span>
+      </a>
     </div>
   </div>
 </BaseLayout>
@@ -48,7 +80,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     letter-spacing: 0.08em;
   }
 
-  .chat-wrap {
+  .ai-wrap {
     max-width: 720px;
     margin-inline: auto;
     background: var(--surface);
@@ -56,11 +88,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     border-top: 2px solid var(--ink);
     display: flex;
     flex-direction: column;
-    min-height: 480px;
     margin-bottom: 3rem;
   }
 
-  .chat-status {
+  .ai-status {
     display: flex;
     align-items: center;
     gap: 0.6rem;
@@ -80,379 +111,240 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     flex-shrink: 0;
   }
 
-  .status-dot.online {
-    background: #3f6e4f;
-  }
-
-  .status-dot.offline {
-    background: #8b8983;
-  }
-
-  .chat-members {
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-    padding: 0.55rem 1.1rem;
-    border-bottom: 1px solid var(--border);
-    font-size: 0.82rem;
-    color: var(--ink-2);
-    background: var(--surface);
-  }
-
-  .members-title {
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    color: var(--ink);
+  .status-badge {
+    margin-left: auto;
+    font-size: 0.72rem;
+    padding: 0.15rem 0.5rem;
+    border: 1px solid var(--border-strong);
+    color: var(--ink-3);
+    letter-spacing: 0.12em;
     white-space: nowrap;
   }
 
-  .member-chip {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    padding: 0.15rem 0.6rem;
-    border: 1px solid var(--border-strong);
-    font-size: 0.78rem;
-    cursor: pointer;
-    transition: border-color var(--t), color var(--t);
-  }
-
-  .member-chip.selected {
-    border-color: var(--ink);
-    background: var(--ink);
-    color: var(--white);
-  }
-
-  .chat-log {
-    flex: 1;
-    overflow-y: auto;
-    padding: 1.2rem 1.1rem;
+  .ai-features {
     display: flex;
     flex-direction: column;
+    padding: 1.1rem;
     gap: 0.7rem;
-    max-height: 420px;
-    min-height: 300px;
-    scroll-behavior: smooth;
+    border-bottom: 1px solid var(--border);
   }
 
-  .chat-hint {
-    text-align: center;
-    color: var(--ink-3);
-    font-size: 0.85rem;
-    letter-spacing: 0.06em;
-    padding: 1.6rem 0;
+  .feature {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
   }
 
-  .msg {
-    max-width: 82%;
-    padding: 0.6rem 0.9rem;
-    border: 1px solid var(--border);
-    font-size: 0.92rem;
-    line-height: 1.7;
-    white-space: pre-wrap;
-    word-break: break-word;
+  .feature-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--border-strong);
+    font-size: 1.05rem;
+    flex-shrink: 0;
   }
 
-  .msg--self {
-    align-self: flex-end;
-    background: var(--ink);
-    color: var(--white);
-    border-color: var(--ink);
+  .feature-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
   }
 
-  .msg--other {
-    align-self: flex-start;
-    background: var(--surface);
-    color: var(--ink);
+  .feature-name {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    letter-spacing: 0.08em;
   }
 
-  .msg--system {
-    align-self: center;
-    background: var(--bg-soft);
-    color: var(--ink-3);
-    border: none;
-    font-size: 0.8rem;
-    letter-spacing: 0.05em;
-  }
-
-  .msg--error {
-    align-self: center;
-    background: #f8ecea;
-    color: #a33;
-    border: 1px solid #d8a8a2;
+  .feature-desc {
     font-size: 0.82rem;
+    color: var(--ink-3);
+    letter-spacing: 0.04em;
   }
 
-  .msg-head {
+  .ai-input {
+    padding: 1.1rem;
     display: flex;
-    gap: 0.5rem;
-    font-size: 0.72rem;
-    letter-spacing: 0.06em;
-    margin-bottom: 0.2rem;
-    opacity: 0.72;
+    flex-direction: column;
+    gap: 0.9rem;
   }
 
-  .msg--self .msg-head {
-    justify-content: flex-end;
-  }
-
-  .chat-input {
+  .field {
     display: flex;
-    gap: 0.7rem;
-    padding: 0.9rem 1.1rem 1rem;
-    border-top: 1px solid var(--border);
-    background: var(--bg-soft);
+    flex-direction: column;
+    gap: 0.35rem;
   }
 
-  .chat-input textarea {
-    flex: 1;
+  .field-label {
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    color: var(--ink-2);
+  }
+
+  .ai-input textarea {
     font-family: var(--font-sans);
     font-size: 0.95rem;
-    padding: 0.55rem 0.75rem;
+    padding: 0.6rem 0.75rem;
     background: var(--surface);
     border: 1px solid var(--border-strong);
     border-radius: 0;
     color: var(--ink);
     resize: vertical;
-    min-height: 44px;
-    max-height: 140px;
+    min-height: 72px;
   }
 
-  .chat-input textarea:focus {
+  .ai-input textarea:focus {
     outline: 2px solid var(--ink);
     outline-offset: 0;
     border-color: var(--ink);
   }
 
-  .reconnect {
-    margin: 0 auto 1.2rem;
+  .upload-zone {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.7rem;
+    border: 1px dashed var(--border-strong);
+    background: var(--bg-soft);
+  }
+
+  .upload-btn {
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    padding: 0.45rem 0.8rem;
+    cursor: pointer;
+    letter-spacing: 0.08em;
+    transition: border-color var(--t), color var(--t);
+  }
+
+  .upload-btn:hover {
+    border-color: var(--ink);
+  }
+
+  .upload-hint {
+    font-size: 0.78rem;
+    color: var(--ink-3);
+    letter-spacing: 0.05em;
+  }
+
+  .preview {
+    position: relative;
+    display: inline-block;
+    max-width: 100%;
+  }
+
+  .preview img {
+    display: block;
+    max-width: 100%;
+    max-height: 220px;
+    border: 1px solid var(--border-strong);
+  }
+
+  .preview-remove {
+    position: absolute;
+    top: 0.3rem;
+    right: 0.3rem;
+    width: 26px;
+    height: 26px;
+    background: var(--ink);
+    color: var(--white);
+    border: none;
+    cursor: pointer;
+    font-size: 0.8rem;
+    line-height: 1;
+  }
+
+  .form-msg {
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+    color: var(--ink-3);
+  }
+
+  .btn--block {
+    width: 100%;
+  }
+
+  .ai-note {
+    font-size: 0.78rem;
+    color: var(--ink-3);
+    letter-spacing: 0.04em;
+    line-height: 1.7;
+    text-align: center;
+  }
+
+  .ai-fallback {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    margin: 0 auto 1.4rem;
+    font-size: 0.88rem;
+    color: var(--ink);
+    letter-spacing: 0.08em;
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+  }
+
+  .ai-fallback:hover {
+    color: var(--ink-2);
   }
 </style>
 
 <script>
-  import { api, ApiError } from '../scripts/api';
-  import { currentUser, isAdmin } from '../scripts/auth';
+  const textInput = document.querySelector('#ai-text') as HTMLTextAreaElement;
+  const submitBtn = document.querySelector('#submit-btn') as HTMLButtonElement;
+  const msg = document.querySelector('#form-msg') as HTMLParagraphElement;
+  const uploadBtn = document.querySelector('#upload-btn') as HTMLButtonElement;
+  const uploadInput = document.querySelector('#upload-input') as HTMLInputElement;
+  const uploadHint = document.querySelector('#upload-hint') as HTMLSpanElement;
+  const preview = document.querySelector('#preview') as HTMLDivElement;
+  const previewImg = document.querySelector('#preview-img') as HTMLImageElement;
+  const previewRemove = document.querySelector('#preview-remove') as HTMLButtonElement;
 
-  type SelfUser = {
-    id: number;
-    email: string;
-    role: 'admin' | 'member';
-    displayName: string;
-  };
+  let hasImage = false;
 
-  const TZ = 'Asia/Taipei';
-  const user = currentUser();
-  const chatLog = document.querySelector('#chat-log');
-  const chatText = document.querySelector('#chat-text') as HTMLTextAreaElement;
-  const chatForm = document.querySelector('#chat-form') as HTMLFormElement;
-  const chatSend = document.querySelector('#chat-send') as HTMLButtonElement;
-  const statusDot = document.querySelector('#status-dot');
-  const statusText = document.querySelector('#status-text');
-  const reconnectBtn = document.querySelector('#reconnect-btn') as HTMLButtonElement;
-  const membersBox = document.querySelector('#chat-members') as HTMLDivElement;
-  const membersList = document.querySelector('#members-list');
-
-  let ws: WebSocket | null = null;
-  let self: SelfUser | null = null;
-  let selectedMemberId: number | null = null;
-  let memberChips: Map<number, HTMLSpanElement> = new Map();
-  let reconnectTimer: number | undefined;
-
-  function setStatus(state: 'connecting' | 'online' | 'offline', text: string): void {
-    if (statusDot === null || statusText === null) return;
-    statusDot.className = `status-dot ${state === 'online' ? 'online' : state === 'connecting' ? '' : 'offline'}`;
-    statusText.textContent = text;
-  }
-
-  function addMessage(html: string, className: string): void {
-    if (chatLog === null) return;
-    const el = document.createElement('div');
-    el.className = `msg ${className}`;
-    el.innerHTML = html;
-    chatLog.append(el);
-    chatLog.scrollTop = chatLog.scrollHeight;
-  }
-
-  function addTextMessage(
-    from: { role: 'admin' | 'member'; displayName: string },
-    text: string,
-    at: number,
-  ): void {
-    const isSelf = self !== null && from.role === self.role;
-    const author =
-      from.role === 'admin' ? '管理員' : isSelf ? '我' : from.displayName || '會員';
-    const time = new Intl.DateTimeFormat('zh-TW', {
-      timeZone: TZ,
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: false,
-    }).format(at);
-    addMessage(
-      `<div class="msg-head"><span>${escapeHtml(author)}</span><span>${time}</span></div><span>${escapeHtml(text)}</span>`,
-      isSelf ? 'msg--self' : 'msg--other',
-    );
-  }
-
-  function escapeHtml(s: string): string {
-    return s
-      .replaceAll('&', '&amp;')
-      .replaceAll('<', '&lt;')
-      .replaceAll('>', '&gt;')
-      .replaceAll('"', '&quot;')
-      .replaceAll("'", '&#39;');
-  }
-
-  function showMembers(members: { id: number; displayName: string; online: boolean }[]): void {
-    if (membersBox === null || membersList === null) return;
-    membersBox.hidden = false;
-    membersList.replaceChildren();
-    memberChips.clear();
-    if (members.length === 0) {
-      membersList.textContent = '無在線會員';
-      return;
-    }
-    for (const m of members) {
-      const chip = document.createElement('span');
-      chip.className = 'member-chip';
-      chip.textContent = `${m.displayName || '會員'} (#${m.id})`;
-      chip.addEventListener('click', () => {
-        selectedMemberId = selectedMemberId === m.id ? null : m.id;
-        for (const c of memberChips.values()) c.classList.remove('selected');
-        if (selectedMemberId !== null) {
-          chip.classList.add('selected');
-          addMessage(`已指定回覆：${escapeHtml(m.displayName || '會員')} (#${m.id})`, 'msg--system');
-        } else {
-          addMessage('已切換為廣播給所有在線會員', 'msg--system');
-        }
-      });
-      memberChips.set(m.id, chip);
-      membersList.append(chip);
-    }
-  }
-
-  async function connect(): Promise<void> {
-    if (user === null) {
-      if (chatLog !== null) {
-        chatLog.innerHTML =
-          '<p class="chat-hint">請先登入後使用聊天客服 — <a class="back-link" href="/login/">前往登入</a></p>';
-      }
-      return;
-    }
-
-    setStatus('connecting', '連線中…');
-    if (chatSend !== null) chatSend.disabled = true;
-    if (reconnectBtn !== null) reconnectBtn.hidden = true;
-
-    try {
-      const data = await api<{ token: string; expiresIn: number }>('/chat/ticket', {
-        method: 'POST',
-        auth: true,
-      });
-      const url = `wss://api.nsir.uk/chat?ticket=${encodeURIComponent(data.token)}`;
-      const socket = new WebSocket(url);
-      ws = socket;
-
-      socket.addEventListener('open', () => {
-        setStatus('online', '已連線');
-        if (chatSend !== null) chatSend.disabled = false;
-        if (chatText !== null) chatText.focus();
-        // 保活 ping
-        if (reconnectTimer !== undefined) window.clearInterval(reconnectTimer);
-        reconnectTimer = window.setInterval(() => {
-          if (socket.readyState === WebSocket.OPEN) socket.send(JSON.stringify({ type: 'ping' }));
-        }, 30000);
-      });
-
-      socket.addEventListener('message', (event) => {
-        let raw: unknown;
-        try {
-          raw = JSON.parse(String(event.data));
-        } catch {
-          return;
-        }
-        if (typeof raw !== 'object' || raw === null) return;
-        const msg = raw as Record<string, unknown>;
-
-        if (msg['type'] === 'hello') {
-          const hello = msg as { type: 'hello'; self: SelfUser; onlineAdmins: number };
-          self = hello.self;
-          if (isAdmin()) {
-            addMessage(
-              `已連線，${hello.onlineAdmins} 位管理員在線。可在上方選取會員後指定回覆。`,
-              'msg--system',
-            );
-          } else {
-            addMessage('已連線，可直接開始對話。', 'msg--system');
-          }
-        } else if (msg['type'] === 'presence' && isAdmin()) {
-          const presence = msg as {
-            type: 'presence';
-            onlineAdmins: number;
-            members: { id: number; displayName: string; online: boolean }[];
-          };
-          showMembers(presence.members);
-        } else if (msg['type'] === 'message') {
-          const m = msg as {
-            type: 'message';
-            from: { role: 'admin' | 'member'; displayName: string };
-            text: string;
-            at: number;
-          };
-          addTextMessage(m.from, m.text, typeof m.at === 'number' ? m.at : Date.now());
-        } else if (msg['type'] === 'error') {
-          const e = msg as { type: 'error'; error: string };
-          if (e.error === 'user_offline') addMessage('該會員已離線，無法送達', 'msg--error');
-          else addMessage(`錯誤：${escapeHtml(e.error)}`, 'msg--error');
-        }
-        // pong 忽略
-      });
-
-      socket.addEventListener('close', () => {
-        setStatus('offline', '連線已中斷');
-        if (chatSend !== null) chatSend.disabled = true;
-        if (reconnectBtn !== null) reconnectBtn.hidden = false;
-        if (reconnectTimer !== undefined) window.clearInterval(reconnectTimer);
-        ws = null;
-      });
-
-      socket.addEventListener('error', () => {
-        setStatus('offline', '連線失敗');
-        if (chatSend !== null) chatSend.disabled = true;
-        if (reconnectBtn !== null) reconnectBtn.hidden = false;
-      });
-    } catch (err) {
-      setStatus('offline', '連線失敗');
-      if (chatSend !== null) chatSend.disabled = true;
-      if (reconnectBtn !== null) reconnectBtn.hidden = false;
-      if (err instanceof ApiError && err.status === 401) {
-        window.location.href = '/login/';
-      }
-    }
-  }
-
-  chatForm?.addEventListener('submit', (event) => {
-    event.preventDefault();
-    if (ws === null || ws.readyState !== WebSocket.OPEN) return;
-    const text = chatText.value.trim();
-    if (text.length === 0) return;
-
-    const payload: Record<string, unknown> = { type: 'message', text };
-    if (isAdmin() && selectedMemberId !== null) {
-      payload['toUserId'] = selectedMemberId;
-    }
-    ws.send(JSON.stringify(payload));
-    chatText.value = '';
-    chatText.focus();
+  textInput?.addEventListener('input', () => {
+    updateState();
   });
 
-  chatText?.addEventListener('keydown', (event) => {
-    if (event.key === 'Enter' && !event.shiftKey) {
-      event.preventDefault();
-      chatForm?.requestSubmit();
-    }
+  uploadBtn?.addEventListener('click', () => {
+    uploadInput?.click();
   });
 
-  reconnectBtn?.addEventListener('click', () => void connect());
+  uploadInput?.addEventListener('change', () => {
+    const file = uploadInput.files?.[0];
+    if (file === undefined) return;
+    const url = URL.createObjectURL(file);
+    if (previewImg !== null) previewImg.src = url;
+    if (preview !== null) preview.hidden = false;
+    if (uploadHint !== null) uploadHint.textContent = `${file.name}`;
+    hasImage = true;
+    updateState();
+  });
 
-  void connect();
+  previewRemove?.addEventListener('click', () => {
+    if (preview !== null) preview.hidden = true;
+    if (previewImg !== null) previewImg.src = '';
+    if (uploadInput !== null) uploadInput.value = '';
+    if (uploadHint !== null) uploadHint.textContent = '支援圖片辨識（準備中）';
+    hasImage = false;
+    updateState();
+  });
+
+  function updateState(): void {
+    const hasText = (textInput?.value ?? '').trim().length > 0;
+    if (submitBtn === null) return;
+    submitBtn.disabled = !(hasText || hasImage);
+  }
+
+  submitBtn?.addEventListener('click', () => {
+    if (msg === null) return;
+    msg.hidden = false;
+    msg.textContent = 'AI 服務準備中，即將上線。請稍後再試，或先使用工單系統聯絡我們。';
+  });
 </script>

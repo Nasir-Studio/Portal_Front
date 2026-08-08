@@ -1,0 +1,66 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="頁面不存在 — 羊家的入口">
+  <div class="container">
+    <div class="nf-wrap">
+      <p class="nf-code">404</p>
+      <h1 class="nf-title">找不到這個頁面</h1>
+      <p class="nf-desc">你輸入的網址可能已變更或不存在，回到首頁繼續逛逛吧。</p>
+      <a class="btn" href="/">
+        回到首頁
+        <span aria-hidden="true">→</span>
+      </a>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .nf-wrap {
+    max-width: 520px;
+    margin-inline: auto;
+    padding: 5rem 0 6rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.1rem;
+  }
+
+  .nf-code {
+    font-family: var(--font-serif);
+    font-size: 5.5rem;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.1em;
+    color: var(--ink);
+  }
+
+  .nf-code::after {
+    content: '';
+    display: block;
+    width: 56px;
+    height: 3px;
+    background: var(--ink);
+    margin: 1rem auto 0;
+  }
+
+  .nf-title {
+    font-family: var(--font-serif);
+    font-size: 1.4rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+  }
+
+  .nf-desc {
+    font-size: 0.92rem;
+    color: var(--ink-3);
+    letter-spacing: 0.06em;
+    line-height: 1.8;
+  }
+
+  .nf-wrap .btn {
+    margin-top: 0.6rem;
+  }
+</style>
