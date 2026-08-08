@@ -25,6 +25,13 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
             <span class="field-label">內容</span>
             <textarea id="nt-body" name="body" rows="5" maxlength="4000" required></textarea>
           </label>
+          <div class="upload-row">
+            <label class="upload-label" for="nt-files">
+              選擇圖片（最多 10 張）
+              <input id="nt-files" type="file" accept="image/jpeg,image/png,image/webp,image/gif" multiple />
+            </label>
+            <span class="upload-msg" id="nt-files-msg"></span>
+          </div>
           <p class="form-msg err" id="nt-msg" hidden></p>
           <div class="book-actions">
             <button class="btn" type="submit">送出</button>
@@ -773,12 +780,49 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     }
     submitBtn.disabled = true;
     msg.hidden = true;
+    const filesInput = document.querySelector('#nt-files') as HTMLInputElement | null;
+    const filesMsg = document.querySelector('#nt-files-msg') as HTMLSpanElement | null;
+    const files = filesInput !== null ? Array.from(filesInput.files ?? []) : [];
+    if (files.length > 10) {
+      msg.textContent = '一次最多上傳 10 張圖片';
+      msg.hidden = false;
+      submitBtn.disabled = false;
+      return;
+    }
+    for (const f of files) {
+      if (f.size > 10 * 1024 * 1024) {
+        msg.textContent = '每張圖片需小於 10MB';
+        msg.hidden = false;
+        submitBtn.disabled = false;
+        return;
+      }
+    }
     try {
       const data = await api<{ ticket: { id: number } }>('/tickets', {
         method: 'POST',
         body: { subject, body },
         auth: true,
       });
+      if (files.length > 0) {
+        if (filesMsg !== null) filesMsg.textContent = `上傳圖片（${files.length} 張）…`;
+        const formData = new FormData();
+        for (const f of files) formData.append('file', f);
+        try {
+          await api<{ images: { id: number; url: string }[] }>(`/tickets/${data.ticket.id}/images`, {
+            method: 'POST',
+            formData,
+            auth: true,
+          });
+        } catch (uploadErr) {
+          if (filesMsg !== null) {
+            filesMsg.textContent =
+              uploadErr instanceof ApiError && uploadErr.code === 'unsupported_image_type'
+                ? '僅支援 JPEG / PNG / WebP / GIF'
+                : '圖片上傳失敗，工單已建立';
+            filesMsg.className = 'upload-msg err';
+          }
+        }
+      }
       if (newTicketWrap !== null) newTicketWrap.hidden = true;
       await openDetail(data.ticket.id);
     } catch (err) {

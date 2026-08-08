@@ -17,6 +17,11 @@ const links = [
         <a href="/">首頁</a>
         <span class="topbar-sep" aria-hidden="true">｜</span>
         <a href="#news">最新消息</a>
+        <span class="topbar-sep" aria-hidden="true">｜</span>
+        <span class="topbar-user" id="topbar-user" hidden>
+          <span id="topbar-username"></span>
+          <button class="topbar-logout" id="topbar-logout" type="button">登出</button>
+        </span>
       </span>
     </div>
   </div>
@@ -54,9 +59,6 @@ const links = [
           </a>
         ))
       }
-      <a class="menu-link" href="/tickets/">
-        問題專區
-      </a>
       <a class="menu-link menu-cta" href="/reserve/">
         預約系統
       </a>
@@ -97,6 +99,31 @@ const links = [
   .topbar-sep {
     margin: 0 0.5rem;
     color: rgba(255, 255, 255, 0.3);
+  }
+
+  .topbar-user {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .topbar-user[hidden] {
+    display: none;
+  }
+
+  .topbar-logout {
+    background: none;
+    border: none;
+    padding: 0;
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    color: var(--white);
+    cursor: pointer;
+  }
+
+  .topbar-logout:hover {
+    text-decoration: underline;
   }
 
   .header-main {
@@ -280,6 +307,8 @@ const links = [
 </style>
 
 <script>
+  import { currentUser, logout } from '../scripts/auth';
+
   const toggle = document.querySelector('.nav-toggle');
   const wrap = document.querySelector('.menubar-wrap');
 
@@ -295,4 +324,22 @@ const links = [
       wrap?.classList.remove('open');
     });
   });
+
+  const userBox = document.getElementById('topbar-user');
+  const userName = document.getElementById('topbar-username');
+  const logoutBtn = document.getElementById('topbar-logout');
+
+  function renderTopbarUser() {
+    const user = currentUser();
+    if (!user || !userBox || !userName) return;
+    userName.textContent = user.displayName;
+    userBox.hidden = false;
+  }
+
+  logoutBtn?.addEventListener('click', async () => {
+    await logout();
+    window.location.href = '/';
+  });
+
+  renderTopbarUser();
 </script>

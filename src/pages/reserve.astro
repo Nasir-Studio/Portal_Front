@@ -280,44 +280,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     flex-wrap: wrap;
   }
 
-  .vip-user-name {
-    font-family: var(--font-serif);
-    font-size: 1.1rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-  }
-
-  .vip-user-meta {
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-  }
-
-  .vip-role {
-    font-size: 0.7rem;
-    padding: 0.1rem 0.45rem;
-    border: 1px solid var(--border-strong);
-    color: var(--ink-3);
-    letter-spacing: 0.12em;
-  }
-
-  .vip-logout {
-    background: none;
-    border: none;
-    padding: 0;
-    font-family: var(--font-sans);
-    font-size: 0.88rem;
-    color: var(--ink-2);
-    cursor: pointer;
-    letter-spacing: 0.08em;
-    transition: color var(--t);
-  }
-
-  .vip-logout:hover {
-    color: var(--ink);
-    text-decoration: underline;
-  }
-
   .vip-actions {
     width: 100%;
     display: flex;
@@ -372,7 +334,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 <script>
   import { api, ApiError } from '../scripts/api';
-  import { currentUser, logout } from '../scripts/auth';
+  import { currentUser } from '../scripts/auth';
 
   const TZ = 'Asia/Taipei';
 
@@ -441,23 +403,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     vipBody.replaceChildren();
     const wrap = document.createElement('div');
     wrap.className = 'vip-user';
-    const name = document.createElement('span');
-    name.className = 'vip-user-name';
-    name.textContent = u.displayName || u.email;
-    const meta = document.createElement('span');
-    meta.className = 'vip-user-meta';
-    const role = document.createElement('span');
-    role.className = 'vip-role';
-    role.textContent = u.role === 'admin' ? '管理員' : 'VIP會員';
-    const logoutBtn = document.createElement('button');
-    logoutBtn.type = 'button';
-    logoutBtn.className = 'vip-logout';
-    logoutBtn.textContent = '登出';
-    logoutBtn.addEventListener('click', async () => {
-      await logout();
-      window.location.href = '/reserve/';
-    });
-    meta.append(role, logoutBtn);
     const actions = document.createElement('div');
     actions.className = 'vip-actions';
     const ticketsLink = document.createElement('a');
@@ -465,7 +410,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     ticketsLink.href = '/tickets/';
     ticketsLink.textContent = '問題專區（開新工單）';
     actions.append(ticketsLink);
-    wrap.append(name, meta, actions);
+    wrap.append(actions);
     vipBody.append(wrap);
   }
 
