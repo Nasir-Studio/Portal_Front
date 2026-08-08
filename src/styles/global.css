@@ -79,6 +79,26 @@ svg {
   margin-inline: auto;
 }
 
+/* 模組區塊 — 校園網站 CMS 三欄版型 */
+.module {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  margin-bottom: 1.4rem;
+}
+
+.module-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.65rem 1rem;
+  background: var(--bg-soft);
+  border-bottom: 1px solid var(--border);
+  font-size: 0.92rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: var(--ink);
+}
+
 /* 通用按鈕 — 方形、扁平、機關網站感 */
 .btn {
   display: inline-flex;

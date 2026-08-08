@@ -2,14 +2,14 @@
 import announcements from '../data/announcements';
 ---
 
-<section class="news container" id="news" aria-label="最新消息">
-  <div class="news-head">
+<section class="module" id="news" aria-label="最新消息">
+  <h2 class="module-title">
     <span class="news-head-left">
       <span class="news-square" aria-hidden="true"></span>
-      <span class="news-title">最新消息</span>
+      最新消息
     </span>
     <span class="news-count">{announcements.length} 則公告</span>
-  </div>
+  </h2>
 
   <div class="news-list">
     {
@@ -24,56 +24,31 @@ import announcements from '../data/announcements';
 </section>
 
 <style>
-  .news {
-    background: var(--surface);
-    border: 1px solid var(--border);
-  }
-
-  .news-head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0.9rem 1.3rem;
-    background: var(--ink);
-    color: var(--white);
-  }
-
   .news-head-left {
     display: flex;
     align-items: center;
-    gap: 0.7rem;
+    gap: 0.6rem;
   }
 
   .news-square {
     width: 8px;
     height: 8px;
-    background: var(--white);
-  }
-
-  .news-title {
-    font-family: var(--font-serif);
-    font-size: 1.08rem;
-    font-weight: 700;
-    letter-spacing: 0.22em;
+    background: var(--ink);
   }
 
   .news-count {
-    font-size: 0.76rem;
+    font-size: 0.75rem;
     letter-spacing: 0.1em;
-    color: rgba(255, 255, 255, 0.75);
-    border: 1px solid rgba(255, 255, 255, 0.35);
-    padding: 0.12rem 0.6rem;
-  }
-
-  .news-list {
-    border-top: 1px solid var(--border);
+    color: var(--ink-3);
+    border: 1px solid var(--border-strong);
+    padding: 0.1rem 0.55rem;
   }
 
   .news-item {
     display: flex;
     align-items: center;
     gap: 1.1rem;
-    padding: 0.85rem 1.3rem;
+    padding: 0.85rem 1.1rem;
     color: var(--ink);
     border-bottom: 1px solid var(--border);
     transition: background var(--t);
