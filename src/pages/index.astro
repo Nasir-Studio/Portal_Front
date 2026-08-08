@@ -93,6 +93,24 @@ const badges = [
       </section>
     </aside>
   </div>
+
+  <section class="module calendar-module container" aria-label="行事曆">
+    <h2 class="module-title">
+      <span class="cal-head-left">
+        <span class="cal-square" aria-hidden="true"></span>
+        行事曆
+      </span>
+    </h2>
+    <div class="cal-frame">
+      <iframe
+        src="https://calendar.google.com/calendar/embed?src=bb049ab126a644ff77ce9a3dd0ad5c2aa0b1bd0272dd636a38dcfbabdd5aa7aa%40group.calendar.google.com&ctz=Asia%2FTaipei"
+        title="Google 行事曆"
+        loading="lazy"
+        frameborder="0"
+        scrolling="no"
+      ></iframe>
+    </div>
+  </section>
 </BaseLayout>
 
 <style>
@@ -198,6 +216,39 @@ const badges = [
   .badge-more:hover {
     color: var(--ink);
     background: var(--surface-2);
+  }
+
+  .cal-head-left {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .cal-square {
+    width: 8px;
+    height: 8px;
+    background: var(--ink);
+  }
+
+  .cal-frame {
+    padding: 1rem;
+  }
+
+  .cal-frame iframe {
+    width: 100%;
+    height: 600px;
+    border: 0;
+    display: block;
+  }
+
+  @media (max-width: 700px) {
+    .cal-frame {
+      padding: 0.5rem;
+    }
+
+    .cal-frame iframe {
+      height: 420px;
+    }
   }
 
   @media (max-width: 900px) {
