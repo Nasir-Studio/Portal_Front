@@ -1,36 +1,41 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import SheepLogo from '../components/SheepLogo.astro';
 import Announcements from '../components/Announcements.astro';
+
+const services = [
+  { name: '羊監視你', desc: '即時監視影像', href: 'https://cctv.nsir.uk' },
+  { name: '羊集章', desc: '集章活動紀錄', href: 'https://badges.nsir.uk' },
+  { name: '羊愛考試', desc: '線上測驗系統', href: 'https://1ztests.nsir.uk' },
+  { name: '羊-短網址(nsir.uk)', desc: '網址縮短服務', href: 'https://nsir.uk' },
+];
 ---
 
 <BaseLayout>
   <div class="main container">
-    <aside class="side" aria-label="網站資訊">
-      <div class="side-card">
-        <figure class="side-crest">
-          <SheepLogo size={110} />
-        </figure>
-        <p class="side-greeting">你好！很高興為您服務！</p>
-        <p class="side-note">歡迎來到羊家入口，在這邊你可以選擇想要去瀏覽哪個服務</p>
-        <a class="btn btn--block" href="https://nsir.uk" target="_blank" rel="noopener noreferrer">
-          羊-短網址(nsir.uk)
-          <span aria-hidden="true">↗</span>
-        </a>
-      </div>
-
-      <section class="side-card side-info" aria-label="網站資訊">
-        <p class="side-info-title">網站資訊</p>
-        <dl class="side-info-list">
-          <div class="side-info-row"><dt>網站名稱</dt><dd>羊家的入口</dd></div>
-          <div class="side-info-row"><dt>服務項目</dt><dd>監視・集章・考試・短網址</dd></div>
-          <div class="side-info-row"><dt>啟用日期</dt><dd>2026.08.08</dd></div>
-          <div class="side-info-row"><dt>維護單位</dt><dd>Nasir 羊家</dd></div>
-        </dl>
+    <aside class="side" aria-label="服務連結">
+      <section class="side-card side-links">
+        <p class="side-title">服務連結</p>
+        <nav class="side-links-list" aria-label="服務連結列表">
+          {
+            services.map((s) => (
+              <a class="side-link" href={s.href} target="_blank" rel="noopener noreferrer">
+                <span class="side-link-name">
+                  {s.name}
+                  <span class="side-link-arrow" aria-hidden="true">↗</span>
+                </span>
+                <span class="side-link-desc">{s.desc}</span>
+              </a>
+            ))
+          }
+        </nav>
       </section>
     </aside>
 
     <main class="main-col">
+      <div class="welcome">
+        <span class="welcome-mark" aria-hidden="true">■</span>
+        你好！很高興為您服務！歡迎來到羊家入口，在這邊你可以選擇想要去瀏覽哪個服務
+      </div>
       <Announcements />
     </main>
   </div>
@@ -45,48 +50,16 @@ import Announcements from '../components/Announcements.astro';
     padding: 2.4rem 0 3.5rem;
   }
 
-  .side {
-    display: flex;
-    flex-direction: column;
-    gap: 1.4rem;
-  }
-
   .side-card {
     background: var(--surface);
     border: 1px solid var(--border);
-    padding: 1.5rem 1.4rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 1rem;
   }
 
-  .side-crest {
-    border: 1px solid var(--border);
-    background: var(--bg-soft);
-    padding: 0.7rem 1rem;
-  }
-
-  .side-greeting {
-    font-family: var(--font-serif);
-    font-weight: 700;
-    font-size: 1.05rem;
-    letter-spacing: 0.12em;
-  }
-
-  .side-note {
-    font-size: 0.83rem;
-    line-height: 1.9;
-    color: var(--ink-2);
-    letter-spacing: 0.05em;
-  }
-
-  .side-info {
+  .side-links {
     padding: 0;
   }
 
-  .side-info-title {
+  .side-title {
     background: var(--bg-soft);
     border-bottom: 1px solid var(--border);
     padding: 0.6rem 0.9rem;
@@ -96,35 +69,64 @@ import Announcements from '../components/Announcements.astro';
     color: var(--ink-2);
   }
 
-  .side-info-list {
-    padding: 0.4rem 0;
+  .side-link {
+    display: block;
+    padding: 0.8rem 0.9rem;
+    border-bottom: 1px solid var(--border);
+    transition: background var(--t);
   }
 
-  .side-info-row {
-    display: flex;
-    border-bottom: 1px dashed var(--border);
-  }
-
-  .side-info-row:last-child {
+  .side-link:last-child {
     border-bottom: none;
   }
 
-  .side-info-row dt {
-    flex-shrink: 0;
-    width: 84px;
-    padding: 0.5rem 0.8rem;
-    font-size: 0.8rem;
-    letter-spacing: 0.08em;
-    color: var(--ink-3);
-    border-right: 1px solid var(--border);
+  .side-link:hover {
     background: var(--bg-soft);
   }
 
-  .side-info-row dd {
-    flex: 1;
-    padding: 0.5rem 0.8rem;
-    font-size: 0.83rem;
+  .side-link-name {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.92rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    color: var(--ink);
+  }
+
+  .side-link-arrow {
+    font-size: 0.8rem;
+    color: var(--ink-3);
+  }
+
+  .side-link-desc {
+    display: block;
+    margin-top: 0.1rem;
+    font-size: 0.78rem;
+    color: var(--ink-3);
     letter-spacing: 0.04em;
+  }
+
+  .main-col {
+    min-width: 0;
+  }
+
+  .welcome {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--ink);
+    padding: 0.8rem 1.2rem;
+    margin-bottom: 1.4rem;
+    font-size: 0.9rem;
+    letter-spacing: 0.06em;
+    color: var(--ink-2);
+  }
+
+  .welcome-mark {
+    font-size: 0.7rem;
     color: var(--ink);
   }
 
