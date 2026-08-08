@@ -16,10 +16,10 @@
   --ink-3: #8b8983;
   --white: #ffffff;
 
-  /* 圓角與陰影 — 接近直角，機關網站感 */
-  --radius-sm: 6px;
-  --radius-md: 8px;
-  --radius-lg: 10px;
+  /* 圓角 — 完全直角，公家機關網站感 */
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
   --shadow-soft: 0 4px 14px -8px rgba(28, 28, 28, 0.18);
   --shadow-lift: 0 12px 28px -14px rgba(28, 28, 28, 0.25);
 
@@ -90,36 +90,22 @@ svg {
   font-weight: 700;
   letter-spacing: 0.08em;
   padding: 0.8rem 1.7rem;
-  border-radius: var(--radius-sm);
+  border-radius: 0;
   border: 1px solid var(--ink);
   background: var(--ink);
   color: var(--white);
   cursor: pointer;
-  transition: background var(--t), color var(--t), border-color var(--t), box-shadow var(--t);
+  transition: background var(--t), color var(--t), border-color var(--t);
 }
 
 .btn:hover {
   background: #000;
   border-color: #000;
-  box-shadow: var(--shadow-soft);
 }
 
-.btn .arrow {
-  transition: transform var(--t);
-}
-
-.btn:hover .arrow {
-  transform: translate(3px, 0);
-}
-
-.btn--ghost {
-  background: var(--surface);
-  color: var(--ink);
-}
-
-.btn--ghost:hover {
-  background: var(--ink);
-  color: var(--white);
+.btn--block {
+  display: flex;
+  width: 100%;
 }
 
 @media (prefers-reduced-motion: reduce) {

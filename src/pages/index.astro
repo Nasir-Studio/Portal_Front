@@ -1,11 +1,136 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Hero from '../components/Hero.astro';
+import SheepLogo from '../components/SheepLogo.astro';
 import Announcements from '../components/Announcements.astro';
 ---
 
 <BaseLayout>
-  <Hero />
+  <div class="main container">
+    <aside class="side" aria-label="網站資訊">
+      <div class="side-card">
+        <figure class="side-crest">
+          <SheepLogo size={110} />
+        </figure>
+        <p class="side-greeting">你好！很高興為您服務！</p>
+        <p class="side-note">歡迎來到羊家入口，在這邊你可以選擇想要去瀏覽哪個服務</p>
+        <a class="btn btn--block" href="https://nsir.uk" target="_blank" rel="noopener noreferrer">
+          羊-短網址(nsir.uk)
+          <span aria-hidden="true">↗</span>
+        </a>
+      </div>
 
-  <Announcements />
+      <section class="side-card side-info" aria-label="網站資訊">
+        <p class="side-info-title">網站資訊</p>
+        <dl class="side-info-list">
+          <div class="side-info-row"><dt>網站名稱</dt><dd>羊家的入口</dd></div>
+          <div class="side-info-row"><dt>服務項目</dt><dd>監視・集章・考試・短網址</dd></div>
+          <div class="side-info-row"><dt>啟用日期</dt><dd>2026.08.08</dd></div>
+          <div class="side-info-row"><dt>維護單位</dt><dd>Nasir 羊家</dd></div>
+        </dl>
+      </section>
+    </aside>
+
+    <main class="main-col">
+      <Announcements />
+    </main>
+  </div>
 </BaseLayout>
+
+<style>
+  .main {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 1.4rem;
+    align-items: start;
+    padding: 2.4rem 0 3.5rem;
+  }
+
+  .side {
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
+  }
+
+  .side-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 1.5rem 1.4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1rem;
+  }
+
+  .side-crest {
+    border: 1px solid var(--border);
+    background: var(--bg-soft);
+    padding: 0.7rem 1rem;
+  }
+
+  .side-greeting {
+    font-family: var(--font-serif);
+    font-weight: 700;
+    font-size: 1.05rem;
+    letter-spacing: 0.12em;
+  }
+
+  .side-note {
+    font-size: 0.83rem;
+    line-height: 1.9;
+    color: var(--ink-2);
+    letter-spacing: 0.05em;
+  }
+
+  .side-info {
+    padding: 0;
+  }
+
+  .side-info-title {
+    background: var(--bg-soft);
+    border-bottom: 1px solid var(--border);
+    padding: 0.6rem 0.9rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    color: var(--ink-2);
+  }
+
+  .side-info-list {
+    padding: 0.4rem 0;
+  }
+
+  .side-info-row {
+    display: flex;
+    border-bottom: 1px dashed var(--border);
+  }
+
+  .side-info-row:last-child {
+    border-bottom: none;
+  }
+
+  .side-info-row dt {
+    flex-shrink: 0;
+    width: 84px;
+    padding: 0.5rem 0.8rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    color: var(--ink-3);
+    border-right: 1px solid var(--border);
+    background: var(--bg-soft);
+  }
+
+  .side-info-row dd {
+    flex: 1;
+    padding: 0.5rem 0.8rem;
+    font-size: 0.83rem;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+  }
+
+  @media (max-width: 900px) {
+    .main {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

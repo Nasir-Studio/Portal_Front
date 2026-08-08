@@ -3,24 +3,20 @@ import announcements from '../data/announcements';
 ---
 
 <section class="news container" id="news" aria-label="最新消息">
-  <button class="news-head" type="button" aria-expanded="true" aria-controls="news-list">
+  <div class="news-head">
     <span class="news-head-left">
       <span class="news-square" aria-hidden="true"></span>
       <span class="news-title">最新消息</span>
     </span>
-    <span class="news-head-right">
-      <span class="news-count">{announcements.length} 則公告</span>
-      <span class="news-arrow" aria-hidden="true">▾</span>
-    </span>
-  </button>
+    <span class="news-count">{announcements.length} 則公告</span>
+  </div>
 
-  <div class="news-list" id="news-list">
+  <div class="news-list">
     {
       announcements.map((item) => (
         <a class="news-item" href={`/Portal_Front/news/${item.slug}/`}>
-          <span class="news-date">{item.date}</span>
           <span class="news-item-title">{item.title}</span>
-          <span class="news-item-arrow" aria-hidden="true">→</span>
+          <span class="news-date">{item.date}</span>
         </a>
       ))
     }
@@ -31,26 +27,15 @@ import announcements from '../data/announcements';
   .news {
     background: var(--surface);
     border: 1px solid var(--border);
-    margin-top: 2.4rem;
-    box-shadow: var(--shadow-soft);
   }
 
-  /* 黑色標題列 — 公家機關公告區塊樣式 */
   .news-head {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 100%;
     padding: 0.9rem 1.3rem;
     background: var(--ink);
     color: var(--white);
-    border: none;
-    cursor: pointer;
-    font-family: var(--font-sans);
-  }
-
-  .news-head:hover {
-    background: #000;
   }
 
   .news-head-left {
@@ -72,12 +57,6 @@ import announcements from '../data/announcements';
     letter-spacing: 0.22em;
   }
 
-  .news-head-right {
-    display: flex;
-    align-items: center;
-    gap: 0.9rem;
-  }
-
   .news-count {
     font-size: 0.76rem;
     letter-spacing: 0.1em;
@@ -86,20 +65,10 @@ import announcements from '../data/announcements';
     padding: 0.12rem 0.6rem;
   }
 
-  .news-arrow {
-    font-size: 0.85rem;
-    transition: transform var(--t);
-  }
-
-  .news-head[aria-expanded='true'] .news-arrow {
-    transform: rotate(180deg);
-  }
-
   .news-list {
     border-top: 1px solid var(--border);
   }
 
-  /* 公告列：點擊進入文章頁 */
   .news-item {
     display: flex;
     align-items: center;
@@ -118,14 +87,6 @@ import announcements from '../data/announcements';
     background: var(--bg-soft);
   }
 
-  .news-date {
-    flex-shrink: 0;
-    font-size: 0.82rem;
-    letter-spacing: 0.12em;
-    color: var(--ink-3);
-    font-variant-numeric: tabular-nums;
-  }
-
   .news-item-title {
     flex: 1;
     font-size: 0.95rem;
@@ -133,25 +94,11 @@ import announcements from '../data/announcements';
     letter-spacing: 0.06em;
   }
 
-  .news-item-arrow {
+  .news-date {
     flex-shrink: 0;
-    font-size: 0.9rem;
+    font-size: 0.82rem;
+    letter-spacing: 0.12em;
     color: var(--ink-3);
-    transition: transform var(--t);
-  }
-
-  .news-item:hover .news-item-arrow {
-    transform: translateX(3px);
+    font-variant-numeric: tabular-nums;
   }
 </style>
-
-<script>
-  const newsHead = document.querySelector('.news-head');
-  const newsList = document.querySelector('#news-list');
-
-  newsHead?.addEventListener('click', () => {
-    const open = newsHead.getAttribute('aria-expanded') === 'true';
-    newsHead.setAttribute('aria-expanded', String(!open));
-    if (newsList) newsList.hidden = open;
-  });
-</script>

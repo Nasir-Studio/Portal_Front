@@ -32,7 +32,7 @@ const backLink = '/Portal_Front/#news';
     </div>
 
     <div class="article-foot">
-      <a class="btn" href={backLink}>回最新消息</a>
+      <a class="article-back" href={backLink}>← 回最新消息</a>
     </div>
   </article>
 </BaseLayout>
@@ -98,6 +98,21 @@ const backLink = '/Portal_Front/#news';
   }
 
   .article-foot {
-    padding: 0 1.6rem;
+    padding: 1.6rem 1.6rem 0;
+  }
+
+  .article-back {
+    display: inline-block;
+    font-size: 0.85rem;
+    letter-spacing: 0.15em;
+    color: var(--ink-3);
+    padding: 0.3rem 0;
+    border-bottom: 1px solid var(--border-strong);
+    transition: color var(--t), border-color var(--t);
+  }
+
+  .article-back:hover {
+    color: var(--ink);
+    border-color: var(--ink);
   }
 </style>
