@@ -1,0 +1,210 @@
+---
+import announcements from '../data/announcements';
+---
+
+<section class="news container" id="news" aria-label="最新消息">
+  <button class="news-head" type="button" aria-expanded="true" aria-controls="news-list">
+    <span class="news-head-left">
+      <span class="news-square" aria-hidden="true"></span>
+      <span class="news-title">最新消息</span>
+      <span class="news-en">ANNOUNCEMENTS</span>
+    </span>
+    <span class="news-head-right">
+      <span class="news-count">{announcements.length} 則公告</span>
+      <span class="news-arrow" aria-hidden="true">▾</span>
+    </span>
+  </button>
+
+  <div class="news-list" id="news-list">
+    {
+      announcements.map((item) => (
+        <article class="news-item">
+          <button class="news-item-head" type="button" aria-expanded="false">
+            <span class="news-date">{item.date}</span>
+            <span class="news-item-title">{item.title}</span>
+            <span class="news-item-arrow" aria-hidden="true">＋</span>
+          </button>
+          <div class="news-item-body" hidden>
+            <p>{item.content}</p>
+          </div>
+        </article>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .news {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    margin-top: 2.4rem;
+    box-shadow: var(--shadow-soft);
+  }
+
+  /* 黑色標題列 — 公家機關公告區塊樣式 */
+  .news-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0.9rem 1.3rem;
+    background: var(--ink);
+    color: var(--white);
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-sans);
+  }
+
+  .news-head:hover {
+    background: #000;
+  }
+
+  .news-head-left {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+  }
+
+  .news-square {
+    width: 8px;
+    height: 8px;
+    background: var(--white);
+  }
+
+  .news-title {
+    font-family: var(--font-serif);
+    font-size: 1.08rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+  }
+
+  .news-en {
+    font-size: 0.66rem;
+    font-weight: 500;
+    letter-spacing: 0.3em;
+    color: rgba(255, 255, 255, 0.55);
+  }
+
+  .news-head-right {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+  }
+
+  .news-count {
+    font-size: 0.76rem;
+    letter-spacing: 0.1em;
+    color: rgba(255, 255, 255, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: var(--radius-sm);
+    padding: 0.12rem 0.6rem;
+  }
+
+  .news-arrow {
+    font-size: 0.85rem;
+    transition: transform var(--t);
+  }
+
+  .news-head[aria-expanded='true'] .news-arrow {
+    transform: rotate(180deg);
+  }
+
+  .news-list {
+    border-top: 1px solid var(--border);
+  }
+
+  /* 公告列 */
+  .news-item {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .news-item:last-child {
+    border-bottom: none;
+  }
+
+  .news-item-head {
+    display: flex;
+    align-items: center;
+    gap: 1.1rem;
+    width: 100%;
+    padding: 0.85rem 1.3rem;
+    background: var(--surface);
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-sans);
+    text-align: left;
+    transition: background var(--t);
+  }
+
+  .news-item-head:hover {
+    background: var(--bg-soft);
+  }
+
+  .news-date {
+    flex-shrink: 0;
+    font-size: 0.82rem;
+    letter-spacing: 0.12em;
+    color: var(--ink-3);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .news-item-title {
+    flex: 1;
+    font-size: 0.95rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    color: var(--ink);
+  }
+
+  .news-item-arrow {
+    flex-shrink: 0;
+    font-size: 0.9rem;
+    color: var(--ink-3);
+    transition: transform var(--t);
+  }
+
+  .news-item-head[aria-expanded='true'] .news-item-arrow {
+    transform: rotate(45deg);
+  }
+
+  /* 公告內文 */
+  .news-item-body {
+    background: var(--bg-soft);
+    padding: 0.4rem 1.3rem 1rem;
+  }
+
+  .news-item-body p {
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
+    line-height: 2;
+    color: var(--ink-2);
+  }
+
+  @media (max-width: 640px) {
+    .news-en {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  const newsHead = document.querySelector('.news-head');
+  const newsList = document.querySelector('#news-list');
+
+  newsHead?.addEventListener('click', () => {
+    const open = newsHead.getAttribute('aria-expanded') === 'true';
+    newsHead.setAttribute('aria-expanded', String(!open));
+    if (newsList) newsList.hidden = open;
+  });
+
+  document.querySelectorAll('.news-item-head').forEach((head) => {
+    head.addEventListener('click', () => {
+      const open = head.getAttribute('aria-expanded') === 'true';
+      head.setAttribute('aria-expanded', String(!open));
+      const body = head.nextElementSibling;
+      if (body) body.hidden = open;
+    });
+  });
+</script>

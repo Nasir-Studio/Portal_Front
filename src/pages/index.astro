@@ -1,83 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
-import ServiceCard from '../components/ServiceCard.astro';
-
-const services = [
-  {
-    number: '01',
-    seal: '監',
-    title: '羊監視你',
-    desc: '二十四小時的小羊盯盯，溫柔守護每一刻。',
-    href: 'https://cctv.nsir.uk',
-  },
-  {
-    number: '02',
-    seal: '章',
-    title: '羊集章',
-    desc: '集滿羊章，收集生活裡的每一份小成就。',
-    href: 'https://badges.nsir.uk',
-  },
-  {
-    number: '03',
-    seal: '試',
-    title: '羊愛考試',
-    desc: '考前衝刺的羊朋友，陪你一起考試。',
-    href: 'https://1ztests.nsir.uk',
-  },
-] as const;
+import Announcements from '../components/Announcements.astro';
 ---
 
 <BaseLayout>
   <Hero />
 
-  <div class="announce container" role="note">
-    <span class="announce-label">最新消息</span>
-    <span class="announce-text">羊家的入口網已正式啟用，歡迎蒞臨。</span>
-    <span class="announce-date">2026.08.08</span>
-  </div>
-
-  <section class="services container" id="services">
-    <div class="section-head">
-      <span class="section-bar" aria-hidden="true"></span>
-      <div>
-        <h2 class="section-title">羊家服務</h2>
-        <p class="section-sub">Sheep Family Services</p>
-      </div>
-    </div>
-
-    <div class="services-grid">
-      {
-        services.map((service) => (
-          <ServiceCard
-            number={service.number}
-            seal={service.seal}
-            title={service.title}
-            desc={service.desc}
-            href={service.href}
-          />
-        ))
-      }
-    </div>
-  </section>
+  <Announcements />
 </BaseLayout>
-
-<style>
-  .services {
-    padding: 3.6rem 0 4.5rem;
-  }
-
-  .services-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.4rem;
-  }
-
-  @media (max-width: 960px) {
-    .services-grid {
-      grid-template-columns: 1fr;
-      max-width: 520px;
-      margin-inline: auto;
-    }
-  }
-</style>
