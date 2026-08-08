@@ -165,27 +165,36 @@ svg {
   box-shadow: 0 8px 20px -10px rgba(0, 0, 0, 0.5);
 }
 
-/* 公告條 — 學校網站「最新消息」樣式 */
+/* 公告條 — 學校網站「最新消息」樣式（純文字、官方感） */
 .announce {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 1.1rem;
   background: var(--surface);
   border: 1px solid var(--border);
   border-left: 4px solid var(--ink);
-  padding: 0.7rem 1.2rem;
+  padding: 0.72rem 1.2rem;
   margin-top: 2.2rem;
 }
 
 .announce-label {
   flex-shrink: 0;
-  background: var(--ink);
-  color: var(--white);
-  font-size: 0.78rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-family: var(--font-serif);
+  font-size: 0.95rem;
   font-weight: 700;
-  letter-spacing: 0.18em;
-  padding: 0.22rem 0.7rem;
-  border-radius: 3px;
+  letter-spacing: 0.22em;
+  color: var(--ink);
+}
+
+.announce-label::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  background: var(--ink);
+  flex-shrink: 0;
 }
 
 .announce-text {
