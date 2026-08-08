@@ -564,6 +564,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
         remoteVideo.srcObject = null;
         videoOverlay.classList.remove('hidden');
         videoOverlay.textContent = '投影已結束';
+        setStatus(false, '投影已結束');
       });
     });
 
