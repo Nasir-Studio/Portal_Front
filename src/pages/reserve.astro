@@ -318,6 +318,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     text-decoration: underline;
   }
 
+  .vip-actions {
+    width: 100%;
+    display: flex;
+    gap: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border);
+  }
+
   .mine-row {
     display: flex;
     align-items: baseline;
@@ -450,7 +458,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       window.location.href = '/reserve/';
     });
     meta.append(role, logoutBtn);
-    wrap.append(name, meta);
+    const actions = document.createElement('div');
+    actions.className = 'vip-actions';
+    const ticketsLink = document.createElement('a');
+    ticketsLink.className = 'btn';
+    ticketsLink.href = '/tickets/';
+    ticketsLink.textContent = '問題專區（開新工單）';
+    actions.append(ticketsLink);
+    wrap.append(name, meta, actions);
     vipBody.append(wrap);
   }
 
