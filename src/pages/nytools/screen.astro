@@ -483,6 +483,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 (function() {
   var peer = null;
   var conn = null;
+  var mediaConn = null;
   var role = null;
   var roomCode = '';
   var localStream = null;
@@ -550,18 +551,28 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       receiverSetup.style.display = 'none';
       receiverView.style.display = 'none';
       videoContainer.classList.add('visible');
+    });
 
-      conn.on('data', function(data) {
-        if (data.type === 'signal') {
-          handleSignal(data);
-        }
+    peer.on('call', function(call) {
+      call.answer();
+      call.on('stream', function(stream) {
+        remoteVideo.srcObject = stream;
+        videoOverlay.classList.add('hidden');
+        setStatus(true, '接收中');
       });
-
-      conn.on('close', function() {
-        setStatus(false, '發送端已斷線');
+      call.on('close', function() {
+        remoteVideo.srcObject = null;
         videoOverlay.classList.remove('hidden');
-        videoOverlay.textContent = '發送端已離開';
+        videoOverlay.textContent = '投影已結束';
       });
+    });
+
+    peer.on('error', function(err) {
+      if (err && err.type === 'unavailable-id') {
+        setStatus(false, '此房間代碼已被占用，請重新整理換一組');
+      } else {
+        console.error('Peer error:', err);
+      }
     });
   }
 
@@ -581,11 +592,19 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       conn.on('close', function() {
         setStatus(false, '接收端已斷線');
       });
+
+      conn.on('error', function(err) {
+        setStatus(false, '找不到接收端，請確認對方已開啟接收房間');
+      });
     });
   }
 
   document.getElementById('startShare').addEventListener('click', async function() {
     try {
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getDisplayMedia) {
+        setStatus(false, '此瀏覽器不支援螢幕分享，請改用 Chrome / Edge');
+        return;
+      }
       localStream = await navigator.mediaDevices.getDisplayMedia({ video: true });
       document.getElementById('startShare').style.display = 'none';
       document.getElementById('stopShare').style.display = 'inline-flex';
@@ -595,30 +614,40 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
         stopSharing();
       };
 
-      if (conn && conn.peerConnection) {
-        var senders = conn.peerConnection.getSenders();
-        localStream.getTracks().forEach(function(track) {
-          var sender = senders.find(function(s) { return s.track && s.track.kind === track.kind; });
-          if (sender) {
-            sender.replaceTrack(track);
+      if (conn && conn.open) {
+        mediaConn = peer.call('nyscreen_recv_' + roomCode, localStream);
+        mediaConn.on('error', function(err) {
+          if (err && err.type === 'peer-unavailable') {
+            setStatus(false, '接收端已離線，請確認對方頁面仍開著');
           } else {
-            conn.peerConnection.addTrack(track, localStream);
+            setStatus(false, '投影連線失敗，請重試');
           }
+          stopSharing();
         });
+        mediaConn.on('close', function() {
+          stopSharing();
+        });
+      } else {
+        setStatus(false, '尚未連線至接收端，請先連線房間');
       }
-
-      var pc = conn.peerConnection;
-      var offer = await pc.createOffer();
-      await pc.setLocalDescription(offer);
-      conn.send({ type: 'signal', sdp: pc.localDescription });
-    } catch(e) {
-      setStatus(false, '螢幕分享被拒絕');
+    } catch (e) {
+      if (e && e.name === 'NotAllowedError') {
+        setStatus(false, '你拒絕了螢幕分享權限，請按「開始投影」重新允許');
+      } else if (e && e.name === 'NotFoundError') {
+        setStatus(false, '找不到可分享的畫面');
+      } else {
+        setStatus(false, '螢幕分享啟動失敗，請重試');
+      }
     }
   });
 
   document.getElementById('stopShare').addEventListener('click', stopSharing);
 
   function stopSharing() {
+    if (mediaConn) {
+      mediaConn.close();
+      mediaConn = null;
+    }
     if (localStream) {
       localStream.getTracks().forEach(function(t) { t.stop(); });
       localStream = null;
@@ -634,20 +663,6 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       remoteVideo.requestFullscreen();
     }
   });
-
-  async function handleSignal(data) {
-    if (!data.sdp) return;
-    var pc = conn.peerConnection;
-
-    if (data.sdp.type === 'offer') {
-      await pc.setRemoteDescription(new RTCSessionDescription(data.sdp));
-      var answer = await pc.createAnswer();
-      await pc.setLocalDescription(answer);
-      conn.send({ type: 'signal', sdp: pc.localDescription });
-    } else if (data.sdp.type === 'answer') {
-      await pc.setRemoteDescription(new RTCSessionDescription(data.sdp));
-    }
-  }
 
   var params = new URLSearchParams(window.location.search);
   var joinRoom = params.get('room');
