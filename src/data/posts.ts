@@ -9,7 +9,7 @@ export interface Post {
 const posts: Post[] = [
   {
     slug: 'ntub-audit',
-    date: '2026.08.08',
+    date: '2026.06.14',
     title: 'NTUB 2026 通識資安稽核一條龍',
     excerpt: '為了符合國家資安稽核的指標，並加速檢測流程的進度，特別做這個一鍵式全自動資安檢測工具！',
     content: `
