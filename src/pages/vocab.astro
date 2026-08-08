@@ -8,20 +8,30 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     to { opacity: 1; }
   }
 
-  .back-link {
-    display: inline-flex;
+  .voc-nav {
+    display: flex;
     align-items: center;
-    gap: 0.4rem;
+    gap: 0.5rem;
+    padding: 1rem 1.6rem;
+    background: var(--bg-soft);
+    border-bottom: 1px solid var(--border);
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
     color: var(--ink-3);
-    text-decoration: none;
-    font-size: 0.9rem;
-    margin-bottom: 2rem;
-    transition: color 0.2s;
+    margin-bottom: 2.4rem;
+    animation: fadeIn 0.5s ease-out;
   }
 
-  .back-link:hover {
+  .voc-nav a {
+    transition: color var(--t);
+  }
+
+  .voc-nav a:hover {
     color: var(--ink);
-    text-decoration: none;
+  }
+
+  .voc-nav-current {
+    color: var(--ink);
   }
 
   .page-header {
@@ -405,10 +415,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 <BaseLayout title="VOC 單字測驗 ｜ 羊家的入口">
   <div class="container">
-    <a href="/" class="back-link">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6" /></svg>
-      返回羊家的入口
-    </a>
+    <nav class="voc-nav" aria-label="麵包屑">
+      <a href="/">首頁</a>
+      <span aria-hidden="true">／</span>
+      <span class="voc-nav-current">VOC 單字</span>
+    </nav>
 
     <div class="page-header">
       <h1>VOC 單字測驗</h1>
