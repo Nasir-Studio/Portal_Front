@@ -9,7 +9,6 @@ import posts from '../data/posts';
       <span class="news-square" aria-hidden="true"></span>
       最新消息
     </span>
-    <span class="news-count">{announcements.length} 則公告</span>
   </h2>
 
   <div class="news-tabs" role="tablist" aria-label="最新消息分類">
@@ -81,14 +80,6 @@ import posts from '../data/posts';
     height: 8px;
     background: var(--ink);
     transform: rotate(45deg);
-  }
-
-  .news-count {
-    font-size: 0.75rem;
-    letter-spacing: 0.1em;
-    color: var(--ink-3);
-    border: 1px solid var(--border-strong);
-    padding: 0.1rem 0.55rem;
   }
 
   .news-tabs {
