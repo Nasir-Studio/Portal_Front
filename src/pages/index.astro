@@ -14,7 +14,7 @@ const projects = [
   {
     name: 'NYTools',
     desc: 'P2P 即時工具集 — 客服排隊、檔案傳輸、點播、投影',
-    href: '#',
+    href: '/nytools/',
   },
   {
     name: 'FocusClock',
@@ -24,7 +24,7 @@ const projects = [
   {
     name: 'NTUB 資安稽核一條龍',
     desc: '一鍵式全自動資安檢測工具',
-    href: '#',
+    href: '/nub-audit/',
   },
   {
     name: '羊家門前有相機',
@@ -188,6 +188,7 @@ const badges = [
   .col-left,
   .col-center,
   .col-right {
+    min-width: 0;
     animation: col-in 0.5s var(--ease) both;
   }
 
@@ -371,7 +372,7 @@ const badges = [
     }
 
     .col-left {
-      display: none;
+      order: 2;
     }
 
     .col-center {
@@ -379,7 +380,7 @@ const badges = [
     }
 
     .col-right {
-      order: 2;
+      order: 3;
     }
 
     .main .module {
