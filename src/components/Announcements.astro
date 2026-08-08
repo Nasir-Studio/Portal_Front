@@ -24,6 +24,10 @@ import announcements from '../data/announcements';
 </section>
 
 <style>
+  #news {
+    scroll-margin-top: 175px;
+  }
+
   .news-head-left {
     display: flex;
     align-items: center;
@@ -75,5 +79,16 @@ import announcements from '../data/announcements';
     letter-spacing: 0.12em;
     color: var(--ink-3);
     font-variant-numeric: tabular-nums;
+  }
+
+  @media (max-width: 900px) {
+    #news {
+      scroll-margin-top: 0;
+    }
+
+    .news-item {
+      gap: 0.7rem;
+      padding: 0.8rem;
+    }
   }
 </style>

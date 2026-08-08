@@ -17,11 +17,6 @@ const links = [
         <a href="/Portal_Front/">首頁</a>
         <span class="topbar-sep" aria-hidden="true">｜</span>
         <a href="#news">最新消息</a>
-        <span class="topbar-sep" aria-hidden="true">｜</span>
-        <a class="topbar-cta" href="https://nsir.uk" target="_blank" rel="noopener noreferrer">
-          羊-短網址(nsir.uk)
-          <span aria-hidden="true">↗</span>
-        </a>
       </span>
     </div>
   </div>
@@ -35,10 +30,21 @@ const links = [
         <span class="brand-en">SHEEP PORTAL</span>
       </span>
     </a>
+    <button
+      class="nav-toggle"
+      type="button"
+      aria-expanded="false"
+      aria-controls="nav-menu"
+      aria-label="開啟選單"
+    >
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
   </div>
 
   <!-- 選單列 — 底部有明顯黑線 -->
-  <div class="menubar-wrap">
+  <div class="menubar-wrap" id="nav-menu">
     <nav class="menubar container" aria-label="主導覽">
       <a class="menu-link is-home" href="/Portal_Front/">首頁</a>
       <a class="menu-link" href="#news">最新消息</a>
@@ -53,18 +59,6 @@ const links = [
         羊-短網址(nsir.uk)
         <span aria-hidden="true">↗</span>
       </a>
-
-      <button
-        class="nav-toggle"
-        type="button"
-        aria-expanded="false"
-        aria-controls="nav-menu"
-        aria-label="開啟選單"
-      >
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
     </nav>
   </div>
 </header>
@@ -103,12 +97,6 @@ const links = [
   .topbar-sep {
     margin: 0 0.5rem;
     color: rgba(255, 255, 255, 0.3);
-  }
-
-  .topbar-cta {
-    color: var(--white) !important;
-    font-weight: 700;
-    letter-spacing: 0.06em;
   }
 
   /* --- 校名區 --- */
@@ -244,38 +232,60 @@ const links = [
 
   /* --- 響應式 --- */
   @media (max-width: 900px) {
+    /* 手機版：頁首不固定，漢堡鈕收進校名列，選單改下拉面板 */
+    .site-header {
+      position: static;
+    }
+
+    .header-main {
+      border-bottom: 2px solid var(--ink);
+      padding: 0.9rem 0;
+    }
+
     .nav-toggle {
       display: flex;
+    }
+
+    .brand-name {
+      font-size: 1.25rem;
+    }
+
+    .brand svg {
+      width: 46px;
+      height: 46px;
     }
 
     .menu-link {
       display: none;
     }
 
-    /* 展開後以垂直面板顯示 */
-    .menubar {
-      flex-wrap: wrap;
-      position: relative;
-      padding: 0.5rem 0 0.6rem;
+    .menubar-wrap {
+      display: none;
     }
 
-    .menubar.open .menu-link {
+    .menubar-wrap.open {
+      display: block;
+    }
+
+    .menubar {
+      flex-wrap: wrap;
+      padding: 0.5rem 0;
+      min-height: 0;
+    }
+
+    .menubar-wrap.open .menu-link {
       display: flex;
       width: 100%;
       height: auto;
-      padding: 0.8rem 0.5rem;
+      padding: 0.85rem 0.75rem;
       border-right: none;
       border-bottom: 1px solid var(--border);
     }
 
-    .menubar.open .menu-cta {
+    .menubar-wrap.open .menu-cta {
       margin-left: 0;
-      margin-top: 0.6rem;
+      margin-top: 0.5rem;
       justify-content: center;
-    }
-
-    .brand-name {
-      font-size: 1.3rem;
     }
   }
 
@@ -292,19 +302,19 @@ const links = [
 
 <script>
   const toggle = document.querySelector('.nav-toggle');
-  const menubar = document.querySelector('.menubar');
+  const wrap = document.querySelector('.menubar-wrap');
 
   toggle?.addEventListener('click', () => {
     const open = toggle.getAttribute('aria-expanded') === 'true';
     toggle.setAttribute('aria-expanded', String(!open));
-    menubar?.classList.toggle('open', !open);
+    wrap?.classList.toggle('open', !open);
   });
 
   // 點選連結後自動收起選單
-  menubar?.querySelectorAll('a').forEach((a) => {
+  wrap?.querySelectorAll('a').forEach((a) => {
     a.addEventListener('click', () => {
       toggle?.setAttribute('aria-expanded', 'false');
-      menubar.classList.remove('open');
+      wrap?.classList.remove('open');
     });
   });
 </script>

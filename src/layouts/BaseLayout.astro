@@ -10,7 +10,7 @@ interface Props {
 
 const {
   title = '羊家的入口',
-  description = '羊家的入口 — 你好！很高興為您服務！連結監視、集章、考試與短網址服務。',
+  description = '羊家的入口 — 個人入口網站：羊監視你、羊集章、羊愛考試與羊-短網址服務。',
 } = Astro.props;
 ---
 
@@ -21,6 +21,7 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <meta name="theme-color" content="#fafaf8" />
+    <link rel="manifest" href="/Portal_Front/manifest.webmanifest" />
     <link rel="icon" type="image/svg+xml" href="/Portal_Front/favicon.svg" />
     <title>{title}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
