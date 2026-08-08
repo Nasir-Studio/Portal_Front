@@ -1,0 +1,1101 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="管理後台 — 羊家的入口">
+  <div class="container">
+    <h1 class="page-title">管理後台</h1>
+    <p class="page-sub">VIP 問題專區管理</p>
+
+    <div id="admin-app">
+      <p class="slot-empty">檢查權限中…</p>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .page-title {
+    font-family: var(--font-serif);
+    font-size: 2rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    padding: 3rem 0 0.4rem;
+  }
+
+  .page-sub {
+    margin-bottom: 1.6rem;
+    font-size: 0.9rem;
+    color: var(--ink-3);
+    letter-spacing: 0.08em;
+  }
+
+  .forbidden {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 2px solid #a33;
+    padding: 3.5rem 1.5rem;
+    text-align: center;
+  }
+
+  .forbidden-code {
+    font-family: var(--font-serif);
+    font-size: 3.4rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: #a33;
+    line-height: 1.1;
+  }
+
+  .forbidden-msg {
+    margin: 0.9rem 0 1.6rem;
+    color: var(--ink-2);
+    letter-spacing: 0.06em;
+  }
+
+  .view-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .view-head-title {
+    font-family: var(--font-serif);
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+  }
+
+  .view-head-actions {
+    display: flex;
+    gap: 0.6rem;
+    align-items: center;
+  }
+
+  .btn--sm {
+    padding: 0.55rem 1.1rem;
+    font-size: 0.88rem;
+  }
+
+  .btn--ghost {
+    background: var(--surface);
+    color: var(--ink);
+  }
+
+  .btn--ghost:hover {
+    background: var(--bg-soft);
+    color: var(--ink);
+    border-color: var(--ink);
+  }
+
+  .btn--danger {
+    background: var(--surface);
+    color: #a33;
+    border-color: #c99;
+  }
+
+  .btn--danger:hover {
+    background: #f8ecea;
+    color: #a33;
+    border-color: #a33;
+  }
+
+  .ticket-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .slot-empty {
+    color: var(--ink-3);
+    font-size: 0.92rem;
+    letter-spacing: 0.06em;
+    text-align: center;
+    padding: 1.6rem 0;
+  }
+
+  .ticket-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.95rem 1.1rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: border-color var(--t), box-shadow var(--t);
+  }
+
+  .ticket-row:hover {
+    border-color: var(--border-strong);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .ticket-row-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    min-width: 0;
+  }
+
+  .ticket-row-subject {
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ticket-row-meta {
+    font-size: 0.78rem;
+    color: var(--ink-3);
+    letter-spacing: 0.06em;
+  }
+
+  .status-badge {
+    font-size: 0.75rem;
+    padding: 0.15rem 0.55rem;
+    border: 1px solid;
+    white-space: nowrap;
+    letter-spacing: 0.1em;
+  }
+
+  .status-open {
+    color: #4a6d8c;
+    border-color: #b8c9d8;
+    background: #eef3f7;
+  }
+
+  .status-replied {
+    color: #3f6e4f;
+    border-color: #bfd3c5;
+    background: #eef5f0;
+  }
+
+  .status-closed {
+    color: #8b8983;
+    border-color: #d8d7d2;
+    background: #f1f0ee;
+  }
+
+  .status-inactive {
+    color: #a33;
+    border-color: #d8b8b8;
+    background: #f8eeee;
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    color: var(--ink-2);
+    letter-spacing: 0.06em;
+    transition: color var(--t);
+  }
+
+  .back-link:hover {
+    color: var(--ink);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .detail-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--ink);
+    margin-bottom: 1.4rem;
+  }
+
+  .detail-head {
+    padding: 1.2rem 1.3rem 1rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .detail-subject {
+    font-family: var(--font-serif);
+    font-size: 1.3rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+  }
+
+  .detail-meta {
+    font-size: 0.8rem;
+    color: var(--ink-3);
+    letter-spacing: 0.06em;
+  }
+
+  .detail-body {
+    padding: 1.1rem 1.3rem;
+    font-size: 0.95rem;
+    color: var(--ink);
+    white-space: pre-wrap;
+    line-height: 1.9;
+  }
+
+  .detail-images {
+    padding: 0 1.3rem 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+  }
+
+  .detail-images img {
+    max-width: 300px;
+    max-height: 220px;
+    object-fit: cover;
+    border: 1px solid var(--border);
+    cursor: zoom-in;
+  }
+
+  .reply-list {
+    border-top: 1px solid var(--border);
+    background: var(--bg-soft);
+    padding: 0.6rem 0;
+  }
+
+  .reply-item {
+    padding: 0.9rem 1.3rem;
+  }
+
+  .reply-item + .reply-item {
+    border-top: 1px solid var(--border);
+  }
+
+  .reply-head {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    margin-bottom: 0.35rem;
+  }
+
+  .reply-author {
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+  }
+
+  .reply-author.admin {
+    color: #4a6d8c;
+  }
+
+  .reply-time {
+    font-size: 0.75rem;
+    color: var(--ink-3);
+  }
+
+  .reply-body {
+    font-size: 0.93rem;
+    white-space: pre-wrap;
+    line-height: 1.85;
+  }
+
+  .detail-actions {
+    padding: 1.1rem 1.3rem 1.3rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .reply-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+
+  .reply-form textarea {
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    padding: 0.6rem 0.75rem;
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    border-radius: 0;
+    color: var(--ink);
+    resize: vertical;
+    min-height: 72px;
+  }
+
+  .reply-form textarea:focus {
+    outline: 2px solid var(--ink);
+    outline-offset: 0;
+    border-color: var(--ink);
+  }
+
+  .book-actions {
+    display: flex;
+    gap: 0.7rem;
+    align-items: center;
+  }
+
+  .form-msg {
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+  }
+
+  .form-msg.err {
+    color: #a33;
+  }
+
+  .admin-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    border-top: 1px solid var(--border);
+    padding-top: 1rem;
+  }
+
+  .admin-owner {
+    font-size: 0.82rem;
+    color: var(--ink-3);
+    letter-spacing: 0.06em;
+  }
+
+  .admin-btns {
+    display: flex;
+    gap: 0.6rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--ink);
+    margin-bottom: 1.4rem;
+    animation: module-in 0.3s var(--ease) both;
+  }
+
+  .card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 1.3rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .card-title {
+    font-family: var(--font-serif);
+    font-size: 1.15rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+  }
+
+  .card-sub {
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: var(--ink-2);
+  }
+
+  .user-create-form {
+    padding: 1rem 1.3rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .user-create-form input {
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    padding: 0.55rem 0.75rem;
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    border-radius: 0;
+    color: var(--ink);
+  }
+
+  .user-create-form input:focus {
+    outline: 2px solid var(--ink);
+    outline-offset: 0;
+    border-color: var(--ink);
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .field-label {
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    color: var(--ink-2);
+  }
+
+  .user-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .user-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.8rem 1.3rem;
+    flex-wrap: wrap;
+  }
+
+  .user-row + .user-row {
+    border-top: 1px solid var(--border);
+  }
+
+  .user-row-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    min-width: 0;
+  }
+
+  .user-row-email {
+    font-size: 0.95rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+  }
+
+  .user-row-meta {
+    font-size: 0.78rem;
+    color: var(--ink-3);
+    letter-spacing: 0.06em;
+  }
+
+  .user-actions {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+</style>
+
+<script>
+  import { api, ApiError } from '../../scripts/api';
+  import { currentUser, isAdmin, logout } from '../../scripts/auth';
+
+  type TicketSummary = {
+    id: number;
+    subject: string;
+    status: 'open' | 'replied' | 'closed';
+    createdAt: number;
+    userId?: number;
+  };
+
+  type Reply = {
+    id: number;
+    authorRole: 'admin' | 'member';
+    authorId: number | null;
+    body: string;
+    createdAt: number;
+  };
+
+  type TicketImage = {
+    id: number;
+    url: string;
+    createdAt: number;
+  };
+
+  type TicketDetail = {
+    id: number;
+    subject: string;
+    body: string;
+    status: 'open' | 'replied' | 'closed';
+    createdAt: number;
+    replies: Reply[];
+    images: TicketImage[];
+  };
+
+  type AdminUser = {
+    id: number;
+    email: string;
+    role: 'admin' | 'member';
+    displayName: string;
+    active: boolean;
+    createdAt: number;
+  };
+
+  const TZ = 'Asia/Taipei';
+  const app = document.querySelector('#admin-app');
+  if (app === null) throw new Error('admin-app not found');
+
+  const STATUS_LABEL: Record<TicketSummary['status'], string> = {
+    open: '待處理',
+    replied: '已回覆',
+    closed: '已關閉',
+  };
+
+  function fmtDate(ts: number): string {
+    return new Intl.DateTimeFormat('zh-TW', {
+      timeZone: TZ,
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    }).format(ts * 1000);
+  }
+
+  function badge(status: TicketSummary['status']): HTMLSpanElement {
+    const el = document.createElement('span');
+    el.className = `status-badge status-${status}`;
+    el.textContent = STATUS_LABEL[status];
+    return el;
+  }
+
+  function renderForbidden(): void {
+    const user = currentUser();
+    const wrap = document.createElement('div');
+    wrap.className = 'forbidden';
+    const code = document.createElement('div');
+    code.className = 'forbidden-code';
+    code.textContent = '403';
+    const msg = document.createElement('p');
+    msg.className = 'forbidden-msg';
+    msg.textContent = user === null ? '請先登入管理員帳號' : '此頁面僅限管理員存取';
+    const btn = document.createElement('a');
+    btn.className = 'btn';
+    btn.textContent = '前往登入';
+    btn.href = '/login/';
+    wrap.append(code, msg, btn);
+    app.replaceChildren(wrap);
+  }
+
+  if (!isAdmin()) {
+    renderForbidden();
+  } else {
+    const user = currentUser();
+    const wrap = document.createElement('div');
+    wrap.className = 'view-list';
+
+    const head = document.createElement('div');
+    head.className = 'view-head';
+    const title = document.createElement('span');
+    title.className = 'view-head-title';
+    title.textContent = '全部工單';
+    const actions = document.createElement('div');
+    actions.className = 'view-head-actions';
+    const usersBtn = document.createElement('button');
+    usersBtn.className = 'btn btn--sm btn--ghost';
+    usersBtn.type = 'button';
+    usersBtn.textContent = '會員管理';
+    const logoutBtn = document.createElement('button');
+    logoutBtn.className = 'btn btn--sm btn--ghost';
+    logoutBtn.type = 'button';
+    logoutBtn.textContent = `登出${user !== null ? `（${user.email}）` : ''}`;
+    logoutBtn.addEventListener('click', async () => {
+      await logout();
+      window.location.href = '/login/';
+    });
+    actions.append(usersBtn, logoutBtn);
+    head.append(title, actions);
+
+    const listEl = document.createElement('div');
+    listEl.className = 'ticket-list';
+    listEl.innerHTML = '<p class="slot-empty">載入中…</p>';
+
+    wrap.append(head, listEl);
+
+    const usersCard = document.createElement('div');
+    usersCard.className = 'card';
+    usersCard.hidden = true;
+
+    const usersHead = document.createElement('div');
+    usersHead.className = 'card-head';
+    const usersTitle = document.createElement('h2');
+    usersTitle.className = 'card-title';
+    usersTitle.textContent = '會員管理';
+    const usersBack = document.createElement('button');
+    usersBack.className = 'btn btn--sm btn--ghost';
+    usersBack.type = 'button';
+    usersBack.textContent = '← 返回工單';
+    usersHead.append(usersTitle, usersBack);
+    usersCard.append(usersHead);
+
+    const createForm = document.createElement('form');
+    createForm.className = 'user-create-form';
+    const createSub = document.createElement('p');
+    createSub.className = 'card-sub';
+    createSub.textContent = '新增 VIP 會員帳號';
+    const emailField = document.createElement('label');
+    emailField.className = 'field';
+    const emailLabel = document.createElement('span');
+    emailLabel.className = 'field-label';
+    emailLabel.textContent = 'Email';
+    const emailInput = document.createElement('input');
+    emailInput.type = 'email';
+    emailInput.maxLength = 254;
+    emailInput.autocomplete = 'off';
+    emailInput.required = true;
+    emailField.append(emailLabel, emailInput);
+    const pwField = document.createElement('label');
+    pwField.className = 'field';
+    const pwLabel = document.createElement('span');
+    pwLabel.className = 'field-label';
+    pwLabel.textContent = '密碼（至少 6 碼）';
+    const pwInput = document.createElement('input');
+    pwInput.type = 'text';
+    pwInput.minLength = 6;
+    pwInput.maxLength = 200;
+    pwInput.autocomplete = 'off';
+    pwInput.required = true;
+    pwField.append(pwLabel, pwInput);
+    const nameField = document.createElement('label');
+    nameField.className = 'field';
+    const nameLabel = document.createElement('span');
+    nameLabel.className = 'field-label';
+    nameLabel.textContent = '顯示名稱（選填）';
+    const nameInput = document.createElement('input');
+    nameInput.type = 'text';
+    nameInput.maxLength = 50;
+    nameInput.autocomplete = 'off';
+    nameField.append(nameLabel, nameInput);
+    const createMsg = document.createElement('p');
+    createMsg.className = 'form-msg';
+    createMsg.hidden = true;
+    const createActions = document.createElement('div');
+    createActions.className = 'book-actions';
+    const createBtn = document.createElement('button');
+    createBtn.className = 'btn';
+    createBtn.type = 'submit';
+    createBtn.textContent = '建立帳號';
+    createActions.append(createBtn);
+    createForm.append(createSub, emailField, pwField, nameField, createMsg, createActions);
+    usersCard.append(createForm);
+
+    const userList = document.createElement('div');
+    userList.className = 'user-list';
+    userList.innerHTML = '<p class="slot-empty">載入中…</p>';
+    usersCard.append(userList);
+
+    wrap.append(usersCard);
+    app.replaceChildren(wrap);
+
+    const detailCard = document.createElement('div');
+    detailCard.className = 'detail-card';
+    detailCard.hidden = true;
+
+    function showList(): void {
+      listEl.hidden = false;
+      usersCard.hidden = true;
+      detailCard.hidden = true;
+      head.hidden = false;
+      title.textContent = '全部工單';
+      void loadTickets();
+    }
+
+    function showUsers(): void {
+      listEl.hidden = true;
+      usersCard.hidden = false;
+      detailCard.hidden = true;
+      head.hidden = true;
+      void loadUsers();
+    }
+
+    function showDetail(id: number): void {
+      listEl.hidden = true;
+      usersCard.hidden = true;
+      head.hidden = true;
+      detailCard.hidden = false;
+      void openDetail(id);
+    }
+
+    async function loadTickets(): Promise<void> {
+      listEl.innerHTML = '<p class="slot-empty">載入中…</p>';
+      try {
+        const data = await api<{ tickets: TicketSummary[] }>('/admin/tickets', { auth: true });
+        renderList(data.tickets);
+      } catch (err) {
+        if (err instanceof ApiError && err.status === 401) {
+          window.location.href = '/login/';
+          return;
+        }
+        listEl.innerHTML = '<p class="slot-empty">無法載入工單，請稍後再試</p>';
+      }
+    }
+
+    function renderList(tickets: TicketSummary[]): void {
+      if (tickets.length === 0) {
+        listEl.innerHTML = '<p class="slot-empty">尚無工單</p>';
+        return;
+      }
+      listEl.replaceChildren(
+        ...tickets.map((t) => {
+          const row = document.createElement('article');
+          row.className = 'ticket-row';
+          row.tabIndex = 0;
+          row.setAttribute('role', 'button');
+          row.addEventListener('click', () => showDetail(t.id));
+          row.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') showDetail(t.id);
+          });
+
+          const info = document.createElement('div');
+          info.className = 'ticket-row-info';
+          const subject = document.createElement('span');
+          subject.className = 'ticket-row-subject';
+          subject.textContent = t.subject;
+          const meta = document.createElement('span');
+          meta.className = 'ticket-row-meta';
+          meta.textContent = `#${t.id} · ${fmtDate(t.createdAt)}`;
+          if (t.userId !== undefined) meta.textContent += ` · 會員 #${t.userId}`;
+          info.append(subject, meta);
+
+          row.append(info, badge(t.status));
+          return row;
+        }),
+      );
+    }
+
+    async function openDetail(id: number): Promise<void> {
+      detailCard.innerHTML = '<p class="slot-empty">載入中…</p>';
+      const back = document.createElement('a');
+      back.className = 'back-link';
+      back.href = '/admin/';
+      back.textContent = '← 返回工單列表';
+      back.addEventListener('click', (e) => {
+        e.preventDefault();
+        showList();
+      });
+      detailCard.replaceChildren(back);
+      try {
+        const data = await api<{ ticket: TicketDetail; userId?: number }>(`/admin/tickets/${id}`, {
+          auth: true,
+        });
+        renderDetail(data.ticket, data.userId);
+      } catch (err) {
+        if (err instanceof ApiError && err.status === 401) {
+          window.location.href = '/login/';
+          return;
+        }
+        const msg = document.createElement('p');
+        msg.className = 'slot-empty';
+        msg.textContent = '無法載入工單';
+        detailCard.append(msg);
+      }
+    }
+
+    function renderDetail(ticket: TicketDetail, ownerId?: number): void {
+      const card = document.createElement('div');
+
+      const headEl = document.createElement('div');
+      headEl.className = 'detail-head';
+      const subject = document.createElement('h2');
+      subject.className = 'detail-subject';
+      subject.textContent = ticket.subject;
+      const meta = document.createElement('span');
+      meta.className = 'detail-meta';
+      meta.textContent = `#${ticket.id} · ${fmtDate(ticket.createdAt)}`;
+      headEl.append(subject, badge(ticket.status), meta);
+
+      const body = document.createElement('p');
+      body.className = 'detail-body';
+      body.textContent = ticket.body;
+
+      const images = document.createElement('div');
+      images.className = 'detail-images';
+      for (const img of ticket.images) {
+        const el = document.createElement('img');
+        el.alt = `附件 ${img.id}`;
+        void attachAuthedImage(el, img.url);
+        el.addEventListener('click', () => window.open(`/tickets/${ticket.id}/images/${img.id}`, '_blank'));
+        images.append(el);
+      }
+
+      const replies = document.createElement('div');
+      replies.className = 'reply-list';
+      if (ticket.replies.length === 0) {
+        const empty = document.createElement('p');
+        empty.className = 'slot-empty';
+        empty.textContent = '尚無回覆';
+        replies.append(empty);
+      } else {
+        for (const r of ticket.replies) {
+          const item = document.createElement('div');
+          item.className = 'reply-item';
+          const rHead = document.createElement('div');
+          rHead.className = 'reply-head';
+          const author = document.createElement('span');
+          author.className = `reply-author${r.authorRole === 'admin' ? ' admin' : ''}`;
+          author.textContent = r.authorRole === 'admin' ? '管理員' : '會員';
+          const time = document.createElement('span');
+          time.className = 'reply-time';
+          time.textContent = fmtDate(r.createdAt);
+          rHead.append(author, time);
+          const rBody = document.createElement('p');
+          rBody.className = 'reply-body';
+          rBody.textContent = r.body;
+          item.append(rHead, rBody);
+          replies.append(item);
+        }
+      }
+
+      const actions = document.createElement('div');
+      actions.className = 'detail-actions';
+
+      const replyForm = document.createElement('form');
+      replyForm.className = 'reply-form';
+      const replyTextarea = document.createElement('textarea');
+      replyTextarea.placeholder = '輸入回覆內容…';
+      replyTextarea.rows = 3;
+      const replyActions = document.createElement('div');
+      replyActions.className = 'book-actions';
+      const replySubmit = document.createElement('button');
+      replySubmit.type = 'submit';
+      replySubmit.className = 'btn';
+      replySubmit.textContent = '送出回覆';
+      const replyMsg = document.createElement('span');
+      replyMsg.className = 'form-msg';
+      replyActions.append(replySubmit, replyMsg);
+      replyForm.append(replyTextarea, replyActions);
+      replyForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const text = replyTextarea.value.trim();
+        if (text.length === 0) return;
+        replySubmit.disabled = true;
+        replyMsg.textContent = '';
+        try {
+          await api<{ reply: { id: number } }>(`/admin/tickets/${ticket.id}/replies`, {
+            method: 'POST',
+            body: { body: text },
+            auth: true,
+          });
+          await openDetail(ticket.id);
+        } catch {
+          replyMsg.textContent = '送出失敗，請稍後再試';
+          replyMsg.className = 'form-msg err';
+          replySubmit.disabled = false;
+        }
+      });
+      actions.append(replyForm);
+
+      const adminRow = document.createElement('div');
+      adminRow.className = 'admin-row';
+      const owner = document.createElement('span');
+      owner.className = 'admin-owner';
+      owner.textContent = ownerId !== undefined ? `會員編號 #${ownerId}` : '';
+      const btnGroup = document.createElement('div');
+      btnGroup.className = 'admin-btns';
+      if (ticket.status !== 'closed') {
+        const closeBtn = document.createElement('button');
+        closeBtn.type = 'button';
+        closeBtn.className = 'btn btn--sm btn--danger';
+        closeBtn.textContent = '關閉工單';
+        closeBtn.addEventListener('click', async () => {
+          closeBtn.disabled = true;
+          try {
+            await api<void>(`/admin/tickets/${ticket.id}/status`, {
+              method: 'PATCH',
+              body: { status: 'closed' },
+              auth: true,
+            });
+            await openDetail(ticket.id);
+          } catch {
+            closeBtn.disabled = false;
+          }
+        });
+        btnGroup.append(closeBtn);
+      }
+      const deleteBtn = document.createElement('button');
+      deleteBtn.type = 'button';
+      deleteBtn.className = 'btn btn--sm btn--danger';
+      deleteBtn.textContent = '刪除工單';
+      deleteBtn.addEventListener('click', async () => {
+        if (!window.confirm(`確定要刪除工單 #${ticket.id} 嗎？此操作無法復原。`)) return;
+        deleteBtn.disabled = true;
+        try {
+          await api<void>(`/admin/tickets/${ticket.id}`, { method: 'DELETE', auth: true });
+          showList();
+        } catch {
+          deleteBtn.disabled = false;
+          window.alert('刪除失敗，請稍後再試');
+        }
+      });
+      btnGroup.append(deleteBtn);
+      adminRow.append(owner, btnGroup);
+      actions.append(adminRow);
+
+      card.append(headEl, body, images, replies, actions);
+
+      const backLink = detailCard.querySelector('.back-link');
+      const loading = detailCard.querySelector('.slot-empty');
+      if (backLink !== null && loading !== null) {
+        detailCard.replaceChildren(backLink, card);
+      } else {
+        detailCard.append(card);
+      }
+    }
+
+    async function attachAuthedImage(img: HTMLImageElement, url: string): Promise<void> {
+      try {
+        const token = localStorage.getItem('sheep_portal_token');
+        const response = await fetch(`https://api.nsir.uk${url}`, {
+          headers: token !== null ? { Authorization: `Bearer ${token}` } : {},
+        });
+        if (!response.ok) return;
+        const blob = await response.blob();
+        img.src = URL.createObjectURL(blob);
+      } catch {
+        // 圖片載入失敗時留空
+      }
+    }
+
+    function userStatusBadge(active: boolean): HTMLSpanElement {
+      const el = document.createElement('span');
+      el.className = `status-badge ${active ? 'status-replied' : 'status-inactive'}`;
+      el.textContent = active ? '啟用中' : '已停用';
+      return el;
+    }
+
+    async function loadUsers(): Promise<void> {
+      userList.innerHTML = '<p class="slot-empty">載入中…</p>';
+      try {
+        const data = await api<{ users: AdminUser[] }>('/admin/users', { auth: true });
+        renderUsers(data.users);
+      } catch (err) {
+        if (err instanceof ApiError && err.status === 401) {
+          window.location.href = '/login/';
+          return;
+        }
+        userList.innerHTML = '<p class="slot-empty">無法載入會員列表</p>';
+      }
+    }
+
+    function renderUsers(users: AdminUser[]): void {
+      if (users.length === 0) {
+        userList.innerHTML = '<p class="slot-empty">尚無會員</p>';
+        return;
+      }
+      userList.replaceChildren(
+        ...users.map((u) => {
+          const row = document.createElement('div');
+          row.className = 'user-row';
+
+          const info = document.createElement('div');
+          info.className = 'user-row-info';
+          const email = document.createElement('span');
+          email.className = 'user-row-email';
+          email.textContent = u.email;
+          const meta = document.createElement('span');
+          meta.className = 'user-row-meta';
+          meta.textContent = `#${u.id} · ${u.role === 'admin' ? '管理員' : 'VIP 會員'} · ${fmtDate(u.createdAt)}`;
+          if (u.displayName.length > 0) meta.textContent += ` · ${u.displayName}`;
+          info.append(email, meta);
+
+          const right = document.createElement('div');
+          right.className = 'user-actions';
+          right.append(userStatusBadge(u.active));
+
+          if (u.role === 'member') {
+            const toggleBtn = document.createElement('button');
+            toggleBtn.type = 'button';
+            toggleBtn.className = 'btn btn--sm btn--ghost';
+            toggleBtn.textContent = u.active ? '停用' : '啟用';
+            toggleBtn.addEventListener('click', async () => {
+              if (!window.confirm(`確定要${u.active ? '停用' : '啟用'} ${u.email} 嗎？`)) return;
+              toggleBtn.disabled = true;
+              try {
+                await api<void>(`/admin/users/${u.id}/active`, {
+                  method: 'PATCH',
+                  body: { active: !u.active },
+                  auth: true,
+                });
+                await loadUsers();
+              } catch {
+                toggleBtn.disabled = false;
+              }
+            });
+            right.append(toggleBtn);
+
+            const pwBtn = document.createElement('button');
+            pwBtn.type = 'button';
+            pwBtn.className = 'btn btn--sm btn--ghost';
+            pwBtn.textContent = '重置密碼';
+            pwBtn.addEventListener('click', async () => {
+              const next = window.prompt(`為 ${u.email} 設定新密碼（至少 6 碼）：`);
+              if (next === null) return;
+              if (next.length < 6) {
+                window.alert('密碼至少 6 碼');
+                return;
+              }
+              pwBtn.disabled = true;
+              try {
+                await api<void>(`/admin/users/${u.id}/password`, {
+                  method: 'PATCH',
+                  body: { password: next },
+                  auth: true,
+                });
+                window.alert('密碼已更新');
+              } catch {
+                window.alert('更新失敗，請稍後再試');
+              } finally {
+                pwBtn.disabled = false;
+              }
+            });
+            right.append(pwBtn);
+          }
+
+          row.append(info, right);
+          return row;
+        }),
+      );
+    }
+
+    usersBtn.addEventListener('click', showUsers);
+    usersBack.addEventListener('click', showList);
+
+    createForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const email = emailInput.value.trim().toLowerCase();
+      const password = pwInput.value;
+      if (email.length === 0 || password.length === 0) {
+        createMsg.textContent = '請填寫 Email 與密碼';
+        createMsg.className = 'form-msg err';
+        createMsg.hidden = false;
+        return;
+      }
+      createBtn.disabled = true;
+      createMsg.hidden = true;
+      try {
+        await api<{ user: { id: number; email: string } }>('/admin/users', {
+          method: 'POST',
+          body: {
+            email,
+            password,
+            displayName: nameInput.value.trim(),
+          },
+          auth: true,
+        });
+        emailInput.value = '';
+        pwInput.value = '';
+        nameInput.value = '';
+        createMsg.textContent = '帳號已建立';
+        createMsg.className = 'form-msg';
+        createMsg.hidden = false;
+        void loadUsers();
+      } catch (err) {
+        if (err instanceof ApiError) {
+          if (err.code === 'email_taken') createMsg.textContent = '此 Email 已被使用';
+          else if (err.code === 'validation_failed') createMsg.textContent = '請檢查輸入內容（密碼至少 6 碼）';
+          else createMsg.textContent = '建立失敗，請稍後再試';
+        } else {
+          createMsg.textContent = '建立失敗';
+        }
+        createMsg.className = 'form-msg err';
+        createMsg.hidden = false;
+        createBtn.disabled = false;
+      }
+    });
+
+    void loadTickets();
+  }
+</script>

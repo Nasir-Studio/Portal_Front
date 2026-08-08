@@ -48,7 +48,7 @@ export class ApiError extends Error {
 }
 
 type ApiOptions = {
-  method?: 'GET' | 'POST' | 'PATCH';
+  method?: 'GET' | 'POST' | 'PATCH' | 'DELETE';
   body?: unknown;
   auth?: boolean;
   formData?: FormData;

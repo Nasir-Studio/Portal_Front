@@ -154,7 +154,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
         submitBtn.textContent = '登入後台';
         return;
       }
-      window.location.href = '/tickets/?admin=1';
+      window.location.href = '/admin/';
     } catch (err) {
       if (err instanceof ApiError) {
         if (err.code === 'invalid_credentials') showError('Email 或密碼錯誤');
@@ -170,6 +170,6 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
   // 已登入管理員 → 直接進後台
   if (isAdmin()) {
-    window.location.href = '/tickets/?admin=1';
+    window.location.href = '/admin/';
   }
 </script>
