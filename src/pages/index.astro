@@ -32,9 +32,21 @@ const services = [
 <BaseLayout>
   <Hero />
 
+  <!-- 公告條 — 學校網站「最新消息」 -->
+  <div class="announce container" role="note">
+    <span class="announce-label">最新消息</span>
+    <span class="announce-text">羊家的入口網已正式啟用，歡迎蒞臨。</span>
+    <span class="announce-date">2026.08.08</span>
+  </div>
+
   <section class="services container" id="services">
-    <p class="section-label">羊家服務</p>
-    <h2 class="services-title">三隻小羊，各司其職</h2>
+    <div class="section-head">
+      <span class="section-bar" aria-hidden="true"></span>
+      <div>
+        <h2 class="section-title">羊家服務</h2>
+        <p class="section-sub">Sheep Family Services</p>
+      </div>
+    </div>
 
     <div class="services-grid">
       {
@@ -58,26 +70,17 @@ const services = [
 
 <style>
   .services {
-    padding: 5.5rem 0 1rem;
-  }
-
-  .services-title {
-    font-family: var(--font-serif);
-    font-size: clamp(1.7rem, 4vw, 2.3rem);
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-align: center;
-    margin: 1.4rem 0 2.8rem;
+    padding: 3.6rem 0 1rem;
   }
 
   .services-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 1.6rem;
+    gap: 1.4rem;
   }
 
   .banner-section {
-    padding-top: 4.5rem;
+    padding-top: 3.8rem;
   }
 
   @media (max-width: 960px) {
