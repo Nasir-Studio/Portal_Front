@@ -1,9 +1,52 @@
 ---
 const banners = [
-  { src: '/banners/banner-1.svg', alt: '羊家的入口 SHEEP PORTAL' },
-  { src: '/banners/banner-2.svg', alt: '羊監視你 即時監視影像' },
-  { src: '/banners/banner-3.svg', alt: '羊集章 集章活動紀錄' },
-  { src: '/banners/banner-4.svg', alt: '羊愛考試 線上測驗系統' },
+  {
+    alt: '羊家的入口 SHEEP PORTAL',
+    body: `<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="360" viewBox="0 0 1080 360" role="img" aria-label="羊家的入口 SHEEP PORTAL">
+      <rect width="1080" height="360" fill="#f5f4f1" />
+      <rect x="18" y="18" width="1044" height="324" fill="none" stroke="#1c1c1c" stroke-width="2" />
+      <rect x="495" y="96" width="12" height="12" fill="#1c1c1c" />
+      <rect x="573" y="96" width="12" height="12" fill="#1c1c1c" />
+      <text x="540" y="205" text-anchor="middle" font-family="'Noto Serif TC', 'Songti TC', serif" font-size="76" font-weight="700" letter-spacing="18" fill="#1c1c1c">羊家的入口</text>
+      <text x="540" y="268" text-anchor="middle" font-family="'Noto Sans TC', 'PingFang TC', sans-serif" font-size="26" letter-spacing="14" fill="#4c4b47">SHEEP PORTAL</text>
+    </svg>`,
+  },
+  {
+    alt: '羊監視你 即時監視影像',
+    body: `<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="360" viewBox="0 0 1080 360" role="img" aria-label="羊監視你 即時監視影像">
+      <rect width="1080" height="360" fill="#f5f4f1" />
+      <rect x="18" y="18" width="1044" height="324" fill="none" stroke="#1c1c1c" stroke-width="2" />
+      <rect x="495" y="92" width="12" height="12" fill="#1c1c1c" />
+      <rect x="573" y="92" width="12" height="12" fill="#1c1c1c" />
+      <text x="540" y="190" text-anchor="middle" font-family="'Noto Serif TC', 'Songti TC', serif" font-size="68" font-weight="700" letter-spacing="16" fill="#1c1c1c">羊監視你</text>
+      <text x="540" y="248" text-anchor="middle" font-family="'Noto Sans TC', 'PingFang TC', sans-serif" font-size="22" letter-spacing="10" fill="#4c4b47">即時監視影像</text>
+      <text x="540" y="290" text-anchor="middle" font-family="'Noto Sans TC', 'PingFang TC', sans-serif" font-size="16" letter-spacing="8" fill="#8b8983">LIVE CAMERA</text>
+    </svg>`,
+  },
+  {
+    alt: '羊集章 集章活動紀錄',
+    body: `<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="360" viewBox="0 0 1080 360" role="img" aria-label="羊集章 集章活動紀錄">
+      <rect width="1080" height="360" fill="#f5f4f1" />
+      <rect x="18" y="18" width="1044" height="324" fill="none" stroke="#1c1c1c" stroke-width="2" />
+      <rect x="495" y="92" width="12" height="12" fill="#1c1c1c" />
+      <rect x="573" y="92" width="12" height="12" fill="#1c1c1c" />
+      <text x="540" y="190" text-anchor="middle" font-family="'Noto Serif TC', 'Songti TC', serif" font-size="68" font-weight="700" letter-spacing="16" fill="#1c1c1c">羊集章</text>
+      <text x="540" y="248" text-anchor="middle" font-family="'Noto Sans TC', 'PingFang TC', sans-serif" font-size="22" letter-spacing="10" fill="#4c4b47">集章活動紀錄</text>
+      <text x="540" y="290" text-anchor="middle" font-family="'Noto Sans TC', 'PingFang TC', sans-serif" font-size="16" letter-spacing="8" fill="#8b8983">BADGE COLLECTION</text>
+    </svg>`,
+  },
+  {
+    alt: '羊愛考試 線上測驗系統',
+    body: `<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="360" viewBox="0 0 1080 360" role="img" aria-label="羊愛考試 線上測驗系統">
+      <rect width="1080" height="360" fill="#f5f4f1" />
+      <rect x="18" y="18" width="1044" height="324" fill="none" stroke="#1c1c1c" stroke-width="2" />
+      <rect x="495" y="92" width="12" height="12" fill="#1c1c1c" />
+      <rect x="573" y="92" width="12" height="12" fill="#1c1c1c" />
+      <text x="540" y="190" text-anchor="middle" font-family="'Noto Serif TC', 'Songti TC', serif" font-size="68" font-weight="700" letter-spacing="16" fill="#1c1c1c">羊愛考試</text>
+      <text x="540" y="248" text-anchor="middle" font-family="'Noto Sans TC', 'PingFang TC', sans-serif" font-size="22" letter-spacing="10" fill="#4c4b47">線上測驗系統</text>
+      <text x="540" y="290" text-anchor="middle" font-family="'Noto Sans TC', 'PingFang TC', sans-serif" font-size="16" letter-spacing="8" fill="#8b8983">ONLINE EXAM</text>
+    </svg>`,
+  },
 ];
 ---
 
@@ -13,7 +56,7 @@ const banners = [
       {
         banners.map((b) => (
           <li class="banner-slide">
-            <img src={b.src} alt={b.alt} width="1080" height="360" />
+            <div class="banner-svg" set:html={b.body} role="img" aria-label={b.alt}></div>
           </li>
         ))
       }
@@ -54,7 +97,7 @@ const banners = [
     flex: 0 0 100%;
   }
 
-  .banner-slide img {
+  .banner-svg svg {
     width: 100%;
     height: auto;
     display: block;
