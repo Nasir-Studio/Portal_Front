@@ -1,0 +1,613 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="預約系統 — 羊家的入口">
+  <div class="container">
+    <h1 class="page-title">預約系統</h1>
+    <p class="page-sub">選擇時段預約，VIP會員可查看自己的預約紀錄</p>
+
+    <section class="module" id="vip-module">
+      <h2 class="module-title">
+        <span>VIP會員</span>
+      </h2>
+      <div class="vip-body" id="vip-body">
+        <p class="vip-desc">登入 VIP會員 後可查看自己的預約紀錄</p>
+        <a class="btn" href="/login/">
+          VIP會員登入
+        </a>
+      </div>
+    </section>
+
+    <section class="module" id="mine-module" hidden>
+      <h2 class="module-title">
+        <span>我的預約</span>
+      </h2>
+      <div class="mine-list" id="mine-list">
+        <p class="slot-empty">載入中…</p>
+      </div>
+    </section>
+
+    <section class="module">
+      <h2 class="module-title">
+        <span>開放預約時段</span>
+      </h2>
+      <div class="slot-list" id="slot-list">
+        <p class="slot-empty">載入中…</p>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .page-title {
+    font-family: var(--font-serif);
+    font-size: 2rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    padding: 3rem 0 0.4rem;
+  }
+
+  .page-sub {
+    margin-bottom: 1.6rem;
+    font-size: 0.9rem;
+    color: var(--ink-3);
+    letter-spacing: 0.08em;
+  }
+
+  .slot-list,
+  .mine-list {
+    padding: 1.2rem 1.4rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .slot-card {
+    border: 1px solid var(--border);
+    background: var(--surface);
+    transition: box-shadow var(--t), border-color var(--t);
+  }
+
+  .slot-card:hover {
+    border-color: var(--border-strong);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .slot-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.9rem 1.1rem 0.5rem;
+  }
+
+  .slot-title {
+    font-family: var(--font-serif);
+    font-size: 1.15rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+  }
+
+  .slot-meta {
+    font-size: 0.8rem;
+    color: var(--ink-3);
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+  }
+
+  .slot-desc {
+    padding: 0 1.1rem 0.6rem;
+    font-size: 0.9rem;
+    color: var(--ink-2);
+  }
+
+  .slot-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.7rem 1.1rem;
+    border-top: 1px solid var(--border);
+    background: var(--bg-soft);
+  }
+
+  .slot-remaining {
+    font-size: 0.85rem;
+    color: var(--ink-2);
+    letter-spacing: 0.05em;
+  }
+
+  .slot-remaining.full {
+    color: #a33;
+  }
+
+  .slot-empty {
+    color: var(--ink-3);
+    font-size: 0.92rem;
+    letter-spacing: 0.06em;
+    text-align: center;
+    padding: 1.4rem 0;
+  }
+
+  .book-form {
+    padding: 1.1rem;
+    border-top: 2px solid var(--ink);
+    background: var(--surface);
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    animation: module-in 0.3s var(--ease) both;
+  }
+
+  .book-form .field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .book-form .field-label {
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    color: var(--ink-2);
+  }
+
+  .book-form input,
+  .book-form textarea {
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    padding: 0.6rem 0.75rem;
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    border-radius: 0;
+    color: var(--ink);
+  }
+
+  .book-form textarea {
+    resize: vertical;
+    min-height: 64px;
+  }
+
+  .book-form input:focus,
+  .book-form textarea:focus {
+    outline: 2px solid var(--ink);
+    outline-offset: 0;
+    border-color: var(--ink);
+  }
+
+  .book-actions {
+    display: flex;
+    gap: 0.7rem;
+    align-items: center;
+  }
+
+  .btn--ghost {
+    background: var(--surface);
+    color: var(--ink);
+  }
+
+  .btn--ghost:hover {
+    background: var(--bg-soft);
+    color: var(--ink);
+    border-color: var(--ink);
+  }
+
+  .form-msg {
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+  }
+
+  .form-msg.ok {
+    color: #3f6e4f;
+  }
+
+  .form-msg.err {
+    color: #a33;
+  }
+
+  .vip-body {
+    padding: 1.2rem 1.4rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .vip-desc {
+    font-size: 0.9rem;
+    color: var(--ink-2);
+    letter-spacing: 0.05em;
+  }
+
+  .vip-user {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .vip-user-name {
+    font-family: var(--font-serif);
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+  }
+
+  .vip-user-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+
+  .vip-role {
+    font-size: 0.7rem;
+    padding: 0.1rem 0.45rem;
+    border: 1px solid var(--border-strong);
+    color: var(--ink-3);
+    letter-spacing: 0.12em;
+  }
+
+  .vip-logout {
+    background: none;
+    border: none;
+    padding: 0;
+    font-family: var(--font-sans);
+    font-size: 0.88rem;
+    color: var(--ink-2);
+    cursor: pointer;
+    letter-spacing: 0.08em;
+    transition: color var(--t);
+  }
+
+  .vip-logout:hover {
+    color: var(--ink);
+    text-decoration: underline;
+  }
+
+  .mine-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.92rem;
+  }
+
+  .mine-row:last-child {
+    border-bottom: none;
+  }
+
+  .mine-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .mine-name {
+    font-weight: 500;
+    letter-spacing: 0.05em;
+  }
+
+  .mine-note {
+    font-size: 0.8rem;
+    color: var(--ink-3);
+  }
+
+  .mine-status {
+    font-size: 0.78rem;
+    padding: 0.15rem 0.5rem;
+    border: 1px solid var(--border-strong);
+    color: var(--ink-2);
+    white-space: nowrap;
+  }
+
+  .mine-status.cancelled {
+    color: #a33;
+    border-color: #d8a8a2;
+  }
+</style>
+
+<script>
+  import { api, ApiError } from '../scripts/api';
+  import { currentUser, logout } from '../scripts/auth';
+
+  const TZ = 'Asia/Taipei';
+
+  type Slot = {
+    id: number;
+    title: string;
+    description: string;
+    startsAt: number;
+    durationMinutes: number;
+    capacity: number;
+    remaining: number;
+  };
+
+  type MyReservation = {
+    id: number;
+    slotId: number;
+    name: string;
+    email: string;
+    note: string;
+    status: 'confirmed' | 'cancelled';
+    createdAt: number;
+    slotTitle: string;
+  };
+
+  function fmtDate(ts: number): string {
+    return new Intl.DateTimeFormat('zh-TW', {
+      timeZone: TZ,
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      weekday: 'short',
+    }).format(ts * 1000);
+  }
+
+  function fmtTime(ts: number): string {
+    return new Intl.DateTimeFormat('zh-TW', {
+      timeZone: TZ,
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    }).format(ts * 1000);
+  }
+
+  const slotList = document.querySelector('#slot-list');
+  const vipBody = document.querySelector('#vip-body');
+  const mineModule = document.querySelector('#mine-module');
+  const mineList = document.querySelector('#mine-list');
+
+  const user = currentUser();
+  renderVip();
+  if (user !== null) {
+    if (mineModule !== null) mineModule.hidden = false;
+    void loadMine();
+  }
+
+  function renderVip(): void {
+    if (vipBody === null) return;
+    const u = currentUser();
+    if (u === null) {
+      vipBody.innerHTML = `
+        <p class="vip-desc">登入 VIP會員 後可查看自己的預約紀錄</p>
+        <a class="btn" href="/login/">VIP會員登入</a>
+      `;
+      return;
+    }
+    vipBody.replaceChildren();
+    const wrap = document.createElement('div');
+    wrap.className = 'vip-user';
+    const name = document.createElement('span');
+    name.className = 'vip-user-name';
+    name.textContent = u.displayName || u.email;
+    const meta = document.createElement('span');
+    meta.className = 'vip-user-meta';
+    const role = document.createElement('span');
+    role.className = 'vip-role';
+    role.textContent = u.role === 'admin' ? '管理員' : 'VIP會員';
+    const logoutBtn = document.createElement('button');
+    logoutBtn.type = 'button';
+    logoutBtn.className = 'vip-logout';
+    logoutBtn.textContent = '登出';
+    logoutBtn.addEventListener('click', async () => {
+      await logout();
+      window.location.href = '/reserve/';
+    });
+    meta.append(role, logoutBtn);
+    wrap.append(name, meta);
+    vipBody.append(wrap);
+  }
+
+  async function loadSlots(): Promise<void> {
+    if (slotList === null) return;
+    slotList.innerHTML = '<p class="slot-empty">載入中…</p>';
+    try {
+      const data = await api<{ slots: Slot[] }>('/slots');
+      renderSlots(data.slots);
+    } catch (err) {
+      slotList.innerHTML = '<p class="slot-empty">無法載入時段，請稍後再試</p>';
+    }
+  }
+
+  function renderSlots(slots: Slot[]): void {
+    if (slotList === null) return;
+    if (slots.length === 0) {
+      slotList.innerHTML = '<p class="slot-empty">目前沒有開放預約的時段</p>';
+      return;
+    }
+    slotList.replaceChildren(...slots.map(buildSlotCard));
+  }
+
+  function buildSlotCard(slot: Slot): HTMLElement {
+    const card = document.createElement('article');
+    card.className = 'slot-card';
+
+    const head = document.createElement('div');
+    head.className = 'slot-head';
+    const title = document.createElement('h3');
+    title.className = 'slot-title';
+    title.textContent = slot.title;
+    const meta = document.createElement('span');
+    meta.className = 'slot-meta';
+    meta.textContent = `${fmtDate(slot.startsAt)} ${fmtTime(slot.startsAt)} · ${slot.durationMinutes} 分鐘`;
+    head.append(title, meta);
+
+    const desc = document.createElement('p');
+    desc.className = 'slot-desc';
+    desc.textContent = slot.description.length > 0 ? slot.description : '';
+
+    const foot = document.createElement('div');
+    foot.className = 'slot-foot';
+    const remaining = document.createElement('span');
+    const full = slot.remaining <= 0;
+    remaining.className = `slot-remaining${full ? ' full' : ''}`;
+    remaining.textContent = full ? '名額已滿' : `剩餘 ${slot.remaining} / ${slot.capacity} 名額`;
+    const bookBtn = document.createElement('button');
+    bookBtn.type = 'button';
+    bookBtn.className = 'btn';
+    bookBtn.textContent = '預約';
+    bookBtn.disabled = full;
+    foot.append(remaining, bookBtn);
+
+    card.append(head);
+    if (desc.textContent.length > 0) card.append(desc);
+    card.append(foot);
+
+    bookBtn.addEventListener('click', () => {
+      bookBtn.disabled = true;
+      if (card.querySelector('.book-form') === null) {
+        const form = buildBookForm(slot, bookBtn);
+        card.append(form);
+        form.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    });
+
+    return card;
+  }
+
+  function buildBookForm(slot: Slot, bookBtn: HTMLButtonElement): HTMLFormElement {
+    const form = document.createElement('form');
+    form.className = 'book-form';
+    form.autocomplete = 'off';
+
+    const nameField = document.createElement('label');
+    nameField.className = 'field';
+    const nameLabel = document.createElement('span');
+    nameLabel.className = 'field-label';
+    nameLabel.textContent = '姓名';
+    const nameInput = document.createElement('input');
+    nameInput.type = 'text';
+    nameInput.name = 'name';
+    nameInput.required = true;
+    nameInput.value = user !== null ? user.displayName || '' : '';
+    nameField.append(nameLabel, nameInput);
+
+    const emailField = document.createElement('label');
+    emailField.className = 'field';
+    const emailLabel = document.createElement('span');
+    emailLabel.className = 'field-label';
+    emailLabel.textContent = 'Email';
+    const emailInput = document.createElement('input');
+    emailInput.type = 'email';
+    emailInput.name = 'email';
+    emailInput.required = true;
+    emailInput.value = user !== null ? user.email : '';
+    emailField.append(emailLabel, emailInput);
+
+    const noteField = document.createElement('label');
+    noteField.className = 'field';
+    const noteLabel = document.createElement('span');
+    noteLabel.className = 'field-label';
+    noteLabel.textContent = '備註（選填）';
+    const noteInput = document.createElement('textarea');
+    noteInput.name = 'note';
+    noteInput.rows = 2;
+    noteField.append(noteLabel, noteInput);
+
+    const actions = document.createElement('div');
+    actions.className = 'book-actions';
+    const submit = document.createElement('button');
+    submit.type = 'submit';
+    submit.className = 'btn';
+    submit.textContent = '送出預約';
+    const cancel = document.createElement('button');
+    cancel.type = 'button';
+    cancel.className = 'btn btn--ghost';
+    cancel.textContent = '取消';
+    const msg = document.createElement('span');
+    msg.className = 'form-msg';
+    actions.append(submit, cancel, msg);
+
+    form.append(nameField, emailField, noteField, actions);
+
+    cancel.addEventListener('click', () => {
+      form.remove();
+      bookBtn.disabled = false;
+    });
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      submit.disabled = true;
+      msg.textContent = '送出中…';
+      msg.className = 'form-msg';
+      try {
+        const body: { slotId: number; name: string; email: string; note?: string } = {
+          slotId: slot.id,
+          name: nameInput.value.trim(),
+          email: emailInput.value.trim(),
+        };
+        const note = noteInput.value.trim();
+        if (note.length > 0) body.note = note;
+        await api<{ id: number }>('/reservations', {
+          method: 'POST',
+          body,
+          auth: user !== null,
+        });
+        msg.textContent = '預約成功，我們會再與你確認';
+        msg.className = 'form-msg ok';
+        cancel.hidden = true;
+        await loadSlots();
+        if (user !== null) await loadMine();
+      } catch (err) {
+        if (err instanceof ApiError) {
+          if (err.code === 'slot_full') msg.textContent = '時段已滿，請選擇其他時段';
+          else if (err.code === 'slot_not_found') msg.textContent = '時段不存在或已下架';
+          else if (err.code === 'validation_failed') msg.textContent = '請確認欄位內容';
+          else if (err.code === 'network_error') msg.textContent = '無法連線到伺服器';
+          else msg.textContent = err.message;
+        } else {
+          msg.textContent = '發生未知錯誤';
+        }
+        msg.className = 'form-msg err';
+        submit.disabled = false;
+      }
+    });
+
+    return form;
+  }
+
+  async function loadMine(): Promise<void> {
+    if (mineList === null) return;
+    mineList.innerHTML = '<p class="slot-empty">載入中…</p>';
+    try {
+      const data = await api<{ reservations: MyReservation[] }>('/reservations/mine', { auth: true });
+      renderMine(data.reservations);
+    } catch {
+      mineList.innerHTML = '<p class="slot-empty">無法載入預約紀錄</p>';
+    }
+  }
+
+  function renderMine(reservations: MyReservation[]): void {
+    if (mineList === null) return;
+    if (reservations.length === 0) {
+      mineList.innerHTML = '<p class="slot-empty">尚無預約紀錄</p>';
+      return;
+    }
+    mineList.replaceChildren(
+      ...reservations.map((r) => {
+        const row = document.createElement('div');
+        row.className = 'mine-row';
+        const info = document.createElement('div');
+        info.className = 'mine-info';
+        const name = document.createElement('span');
+        name.className = 'mine-name';
+        name.textContent = r.slotTitle;
+        const note = document.createElement('span');
+        note.className = 'mine-note';
+        note.textContent = `${fmtDate(r.createdAt)} 建立`;
+        info.append(name, note);
+        const status = document.createElement('span');
+        status.className = `mine-status${r.status === 'cancelled' ? ' cancelled' : ''}`;
+        status.textContent = r.status === 'confirmed' ? '已確認' : '已取消';
+        row.append(info, status);
+        return row;
+      }),
+    );
+  }
+
+  void loadSlots();
+</script>

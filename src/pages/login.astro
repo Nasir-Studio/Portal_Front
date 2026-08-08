@@ -1,0 +1,176 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="登入 — 羊家的入口">
+  <div class="container">
+    <div class="login-wrap">
+      <h1 class="page-title">登入</h1>
+      <p class="page-sub">使用羊家會員或管理員帳號登入</p>
+
+      <div class="module">
+        <h2 class="module-title">帳號登入</h2>
+        <form class="login-form" id="login-form" novalidate>
+          <label class="field">
+            <span class="field-label">Email</span>
+            <input id="email" type="email" name="email" autocomplete="email" required />
+          </label>
+          <label class="field">
+            <span class="field-label">密碼</span>
+            <input id="password" type="password" name="password" autocomplete="current-password" required />
+          </label>
+          <p class="form-error" id="form-error" role="alert" hidden></p>
+          <button class="btn btn--block" id="submit-btn" type="submit">登入</button>
+        </form>
+      </div>
+
+      <p class="page-note">
+        訪客不需登入即可預約 —
+        <a class="note-link" href="/reserve/">前往預約系統</a>
+      </p>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .login-wrap {
+    max-width: 440px;
+    margin-inline: auto;
+    padding: 3.2rem 0 4rem;
+  }
+
+  .page-title {
+    font-family: var(--font-serif);
+    font-size: 2rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-align: center;
+  }
+
+  .page-sub {
+    margin-top: 0.5rem;
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--ink-3);
+    letter-spacing: 0.08em;
+  }
+
+  .login-form {
+    padding: 1.4rem 1.5rem 1.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .field-label {
+    font-size: 0.82rem;
+    letter-spacing: 0.12em;
+    color: var(--ink-2);
+  }
+
+  .field input {
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    padding: 0.65rem 0.8rem;
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    border-radius: 0;
+    color: var(--ink);
+    transition: border-color var(--t), outline var(--t);
+  }
+
+  .field input:focus {
+    outline: 2px solid var(--ink);
+    outline-offset: 0;
+    border-color: var(--ink);
+  }
+
+  .form-error {
+    font-size: 0.88rem;
+    color: #a33;
+    letter-spacing: 0.04em;
+  }
+
+  .page-note {
+    margin-top: 1.4rem;
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--ink-2);
+    letter-spacing: 0.05em;
+  }
+
+  .note-link {
+    color: var(--ink);
+    font-weight: 500;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: color var(--t);
+  }
+
+  .note-link:hover {
+    color: #000;
+  }
+</style>
+
+<script>
+  import { login, currentUser } from '../scripts/auth';
+  import { ApiError } from '../scripts/api';
+
+  const form = document.querySelector('#login-form') as HTMLFormElement;
+  const emailInput = document.querySelector('#email') as HTMLInputElement;
+  const passwordInput = document.querySelector('#password') as HTMLInputElement;
+  const errorBox = document.querySelector('#form-error') as HTMLParagraphElement;
+  const submitBtn = document.querySelector('#submit-btn') as HTMLButtonElement;
+
+  function showError(message: string): void {
+    errorBox.textContent = message;
+    errorBox.hidden = false;
+  }
+
+  async function redirectByRole(role: 'admin' | 'member'): Promise<void> {
+    window.location.href = role === 'admin' ? '/tickets/?admin=1' : '/reserve/';
+  }
+
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    errorBox.hidden = true;
+
+    const email = emailInput.value.trim();
+    const password = passwordInput.value;
+    if (email.length === 0 || password.length === 0) {
+      showError('請填寫 Email 與密碼');
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = '登入中…';
+    try {
+      const user = await login(email, password);
+      await redirectByRole(user.role);
+    } catch (err) {
+      if (err instanceof ApiError) {
+        if (err.code === 'invalid_credentials') showError('Email 或密碼錯誤');
+        else if (err.code === 'network_error') showError('無法連線到伺服器');
+        else showError(err.message);
+      } else {
+        showError('發生未知錯誤，請稍後再試');
+      }
+      submitBtn.disabled = false;
+      submitBtn.textContent = '登入';
+    }
+  });
+
+  // 已登入 → 直接跳轉
+  if (currentUser() !== null) {
+    const user = currentUser();
+    if (user !== null) {
+      void redirectByRole(user.role);
+    }
+  }
+</script>

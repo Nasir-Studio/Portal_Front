@@ -1,0 +1,836 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="問題專區 — 羊家的入口">
+  <div class="container">
+    <h1 class="page-title">問題專區</h1>
+    <p class="page-sub">提出問題或回報狀況，我們會儘快回覆</p>
+
+    <div class="view-list" id="view-list">
+      <div class="view-head">
+        <span class="view-head-title">我的工單</span>
+        <button class="btn btn--sm" id="new-ticket-btn" type="button">開新工單</button>
+      </div>
+
+      <div class="new-ticket-wrap" id="new-ticket-wrap" hidden>
+        <form class="new-ticket-form" id="new-ticket-form">
+          <label class="field">
+            <span class="field-label">主旨</span>
+            <input id="nt-subject" type="text" name="subject" maxlength="120" required />
+          </label>
+          <label class="field">
+            <span class="field-label">內容</span>
+            <textarea id="nt-body" name="body" rows="5" maxlength="4000" required></textarea>
+          </label>
+          <p class="form-msg err" id="nt-msg" hidden></p>
+          <div class="book-actions">
+            <button class="btn" type="submit">送出</button>
+            <button class="btn btn--ghost" id="nt-cancel" type="button">取消</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="ticket-list" id="ticket-list">
+        <p class="slot-empty">載入中…</p>
+      </div>
+    </div>
+
+    <div class="view-detail" id="view-detail" hidden>
+      <a class="back-link" href="/tickets/" id="back-link">← 返回工單列表</a>
+      <div class="detail-card" id="detail-card">
+        <p class="slot-empty">載入中…</p>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .page-title {
+    font-family: var(--font-serif);
+    font-size: 2rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    padding: 3rem 0 0.4rem;
+  }
+
+  .page-sub {
+    margin-bottom: 1.6rem;
+    font-size: 0.9rem;
+    color: var(--ink-3);
+    letter-spacing: 0.08em;
+  }
+
+  .view-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .view-head-title {
+    font-family: var(--font-serif);
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+  }
+
+  .btn--sm {
+    padding: 0.55rem 1.1rem;
+    font-size: 0.88rem;
+  }
+
+  .btn--ghost {
+    background: var(--surface);
+    color: var(--ink);
+  }
+
+  .btn--ghost:hover {
+    background: var(--bg-soft);
+    color: var(--ink);
+    border-color: var(--ink);
+  }
+
+  .new-ticket-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--ink);
+    margin-bottom: 1.2rem;
+    animation: module-in 0.3s var(--ease) both;
+  }
+
+  .new-ticket-form {
+    padding: 1.2rem 1.3rem 1.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .field-label {
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    color: var(--ink-2);
+  }
+
+  .new-ticket-form input,
+  .new-ticket-form textarea {
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    padding: 0.6rem 0.75rem;
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    border-radius: 0;
+    color: var(--ink);
+    resize: vertical;
+  }
+
+  .new-ticket-form input:focus,
+  .new-ticket-form textarea:focus {
+    outline: 2px solid var(--ink);
+    outline-offset: 0;
+    border-color: var(--ink);
+  }
+
+  .book-actions {
+    display: flex;
+    gap: 0.7rem;
+    align-items: center;
+  }
+
+  .form-msg {
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+  }
+
+  .form-msg.err {
+    color: #a33;
+  }
+
+  .ticket-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .slot-empty {
+    color: var(--ink-3);
+    font-size: 0.92rem;
+    letter-spacing: 0.06em;
+    text-align: center;
+    padding: 1.6rem 0;
+  }
+
+  .ticket-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.95rem 1.1rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: border-color var(--t), box-shadow var(--t);
+  }
+
+  .ticket-row:hover {
+    border-color: var(--border-strong);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .ticket-row-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    min-width: 0;
+  }
+
+  .ticket-row-subject {
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ticket-row-meta {
+    font-size: 0.78rem;
+    color: var(--ink-3);
+    letter-spacing: 0.06em;
+  }
+
+  .status-badge {
+    font-size: 0.75rem;
+    padding: 0.15rem 0.55rem;
+    border: 1px solid;
+    white-space: nowrap;
+    letter-spacing: 0.1em;
+  }
+
+  .status-open {
+    color: #4a6d8c;
+    border-color: #b8c9d8;
+    background: #eef3f7;
+  }
+
+  .status-replied {
+    color: #3f6e4f;
+    border-color: #bfd3c5;
+    background: #eef5f0;
+  }
+
+  .status-closed {
+    color: #8b8983;
+    border-color: #d8d7d2;
+    background: #f1f0ee;
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    color: var(--ink-2);
+    letter-spacing: 0.06em;
+    transition: color var(--t);
+  }
+
+  .back-link:hover {
+    color: var(--ink);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .detail-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--ink);
+    margin-bottom: 1.4rem;
+  }
+
+  .detail-head {
+    padding: 1.2rem 1.3rem 1rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .detail-subject {
+    font-family: var(--font-serif);
+    font-size: 1.3rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+  }
+
+  .detail-meta {
+    font-size: 0.8rem;
+    color: var(--ink-3);
+    letter-spacing: 0.06em;
+  }
+
+  .detail-body {
+    padding: 1.1rem 1.3rem;
+    font-size: 0.95rem;
+    color: var(--ink);
+    white-space: pre-wrap;
+    line-height: 1.9;
+  }
+
+  .detail-images {
+    padding: 0 1.3rem 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+  }
+
+  .detail-images img {
+    max-width: 300px;
+    max-height: 220px;
+    object-fit: cover;
+    border: 1px solid var(--border);
+    cursor: zoom-in;
+  }
+
+  .reply-list {
+    border-top: 1px solid var(--border);
+    background: var(--bg-soft);
+    padding: 0.6rem 0;
+  }
+
+  .reply-item {
+    padding: 0.9rem 1.3rem;
+  }
+
+  .reply-item + .reply-item {
+    border-top: 1px solid var(--border);
+  }
+
+  .reply-head {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    margin-bottom: 0.35rem;
+  }
+
+  .reply-author {
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+  }
+
+  .reply-author.admin {
+    color: #4a6d8c;
+  }
+
+  .reply-time {
+    font-size: 0.75rem;
+    color: var(--ink-3);
+  }
+
+  .reply-body {
+    font-size: 0.93rem;
+    white-space: pre-wrap;
+    line-height: 1.85;
+  }
+
+  .detail-actions {
+    padding: 1.1rem 1.3rem 1.3rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .reply-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+
+  .reply-form textarea {
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    padding: 0.6rem 0.75rem;
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    border-radius: 0;
+    color: var(--ink);
+    resize: vertical;
+    min-height: 72px;
+  }
+
+  .reply-form textarea:focus {
+    outline: 2px solid var(--ink);
+    outline-offset: 0;
+    border-color: var(--ink);
+  }
+
+  .upload-row {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+  }
+
+  .upload-row input[type='file'] {
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    color: var(--ink-2);
+  }
+
+  .admin-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    border-top: 1px solid var(--border);
+    padding-top: 1rem;
+  }
+
+  .admin-owner {
+    font-size: 0.82rem;
+    color: var(--ink-3);
+    letter-spacing: 0.06em;
+  }
+
+  .btn--danger {
+    background: var(--surface);
+    color: #a33;
+    border-color: #c99;
+  }
+
+  .btn--danger:hover {
+    background: #f8ecea;
+    color: #a33;
+    border-color: #a33;
+  }
+</style>
+
+<script>
+  import { api, ApiError } from '../../scripts/api';
+  import { currentUser, isAdmin } from '../../scripts/auth';
+
+  type TicketSummary = {
+    id: number;
+    subject: string;
+    status: 'open' | 'replied' | 'closed';
+    createdAt: number;
+    userId?: number;
+  };
+
+  type Reply = {
+    id: number;
+    authorRole: 'admin' | 'member';
+    authorId: number | null;
+    body: string;
+    createdAt: number;
+  };
+
+  type TicketImage = {
+    id: number;
+    url: string;
+    createdAt: number;
+  };
+
+  type TicketDetail = {
+    id: number;
+    subject: string;
+    body: string;
+    status: 'open' | 'replied' | 'closed';
+    createdAt: number;
+    replies: Reply[];
+    images: TicketImage[];
+  };
+
+  const TZ = 'Asia/Taipei';
+  const user = currentUser();
+  const adminMode = new URLSearchParams(window.location.search).get('admin') === '1';
+
+  const viewList = document.querySelector('#view-list');
+  const viewDetail = document.querySelector('#view-detail');
+  const ticketList = document.querySelector('#ticket-list');
+  const detailCard = document.querySelector('#detail-card');
+  const newTicketWrap = document.querySelector('#new-ticket-wrap');
+  const newTicketBtn = document.querySelector('#new-ticket-btn');
+
+  const STATUS_LABEL: Record<TicketSummary['status'], string> = {
+    open: '待處理',
+    replied: '已回覆',
+    closed: '已關閉',
+  };
+
+  function fmtDate(ts: number): string {
+    return new Intl.DateTimeFormat('zh-TW', {
+      timeZone: TZ,
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    }).format(ts * 1000);
+  }
+
+  function badge(status: TicketSummary['status']): HTMLSpanElement {
+    const el = document.createElement('span');
+    el.className = `status-badge status-${status}`;
+    el.textContent = STATUS_LABEL[status];
+    return el;
+  }
+
+  function requireLogin(): void {
+    if (user !== null) return;
+    if (viewList !== null) {
+      viewList.innerHTML =
+        '<div class="module"><div class="slot-empty">請先登入後使用問題專區 — <a class="back-link" href="/login/">前往登入</a></div></div>';
+    }
+  }
+
+  function showView(name: 'list' | 'detail'): void {
+    if (viewList !== null) viewList.hidden = name !== 'list';
+    if (viewDetail !== null) viewDetail.hidden = name !== 'detail';
+  }
+
+  async function loadList(): Promise<void> {
+    if (user === null || ticketList === null) return;
+    ticketList.innerHTML = '<p class="slot-empty">載入中…</p>';
+    try {
+      const endpoint = adminMode && isAdmin() ? '/admin/tickets' : '/tickets';
+      const data = await api<{ tickets: TicketSummary[] }>(endpoint, { auth: true });
+      renderList(data.tickets);
+    } catch (err) {
+      if (err instanceof ApiError && err.status === 401) {
+        window.location.href = '/login/';
+        return;
+      }
+      ticketList.innerHTML = '<p class="slot-empty">無法載入工單，請稍後再試</p>';
+    }
+  }
+
+  function renderList(tickets: TicketSummary[]): void {
+    if (ticketList === null) return;
+    if (tickets.length === 0) {
+      ticketList.innerHTML = '<p class="slot-empty">尚無工單，點「開新工單」開始</p>';
+      return;
+    }
+    ticketList.replaceChildren(
+      ...tickets.map((t) => {
+        const row = document.createElement('article');
+        row.className = 'ticket-row';
+        row.tabIndex = 0;
+        row.setAttribute('role', 'button');
+        row.addEventListener('click', () => openDetail(t.id));
+        row.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') openDetail(t.id);
+        });
+
+        const info = document.createElement('div');
+        info.className = 'ticket-row-info';
+        const subject = document.createElement('span');
+        subject.className = 'ticket-row-subject';
+        subject.textContent = t.subject;
+        const meta = document.createElement('span');
+        meta.className = 'ticket-row-meta';
+        meta.textContent = `#${t.id} · ${fmtDate(t.createdAt)}`;
+        if (t.userId !== undefined) meta.textContent += ` · 會員 #${t.userId}`;
+        info.append(subject, meta);
+
+        row.append(info, badge(t.status));
+        return row;
+      }),
+    );
+  }
+
+  async function openDetail(id: number): Promise<void> {
+    showView('detail');
+    if (detailCard === null) return;
+    detailCard.innerHTML = '<p class="slot-empty">載入中…</p>';
+    window.history.pushState({}, '', `/tickets/?id=${id}`);
+    try {
+      const data = await api<{ ticket: TicketDetail; userId?: number }>(`/tickets/${id}`, { auth: true });
+      renderDetail(data.ticket, data.userId);
+    } catch (err) {
+      if (err instanceof ApiError && err.status === 401) {
+        window.location.href = '/login/';
+        return;
+      }
+      detailCard.innerHTML = '<p class="slot-empty">無法載入工單</p>';
+    }
+  }
+
+  function renderDetail(ticket: TicketDetail, ownerId?: number): void {
+    if (detailCard === null) return;
+
+    const head = document.createElement('div');
+    head.className = 'detail-head';
+    const subject = document.createElement('h2');
+    subject.className = 'detail-subject';
+    subject.textContent = ticket.subject;
+    const meta = document.createElement('span');
+    meta.className = 'detail-meta';
+    meta.textContent = `#${ticket.id} · ${fmtDate(ticket.createdAt)}`;
+    head.append(subject, badge(ticket.status), meta);
+
+    const body = document.createElement('p');
+    body.className = 'detail-body';
+    body.textContent = ticket.body;
+
+    const images = document.createElement('div');
+    images.className = 'detail-images';
+    for (const img of ticket.images) {
+      const el = document.createElement('img');
+      el.alt = `附件 ${img.id}`;
+      void attachAuthedImage(el, img.url);
+      el.addEventListener('click', () => window.open(`/tickets/${ticket.id}/images/${img.id}`, '_blank'));
+      images.append(el);
+    }
+
+    const replies = document.createElement('div');
+    replies.className = 'reply-list';
+    if (ticket.replies.length === 0) {
+      const empty = document.createElement('p');
+      empty.className = 'slot-empty';
+      empty.textContent = '尚無回覆';
+      replies.append(empty);
+    } else {
+      for (const r of ticket.replies) {
+        const item = document.createElement('div');
+        item.className = 'reply-item';
+        const rHead = document.createElement('div');
+        rHead.className = 'reply-head';
+        const author = document.createElement('span');
+        author.className = `reply-author${r.authorRole === 'admin' ? ' admin' : ''}`;
+        author.textContent =
+          r.authorRole === 'admin'
+            ? '管理員'
+            : user !== null && r.authorId === user.id
+              ? '我'
+              : '會員';
+        const time = document.createElement('span');
+        time.className = 'reply-time';
+        time.textContent = fmtDate(r.createdAt);
+        rHead.append(author, time);
+        const rBody = document.createElement('p');
+        rBody.className = 'reply-body';
+        rBody.textContent = r.body;
+        item.append(rHead, rBody);
+        replies.append(item);
+      }
+    }
+
+    const actions = document.createElement('div');
+    actions.className = 'detail-actions';
+
+    // 回覆表單
+    const replyForm = document.createElement('form');
+    replyForm.className = 'reply-form';
+    const replyTextarea = document.createElement('textarea');
+    replyTextarea.placeholder = '輸入回覆內容…';
+    replyTextarea.rows = 3;
+    const replyActions = document.createElement('div');
+    replyActions.className = 'book-actions';
+    const replySubmit = document.createElement('button');
+    replySubmit.type = 'submit';
+    replySubmit.className = 'btn';
+    replySubmit.textContent = '送出回覆';
+    const replyMsg = document.createElement('span');
+    replyMsg.className = 'form-msg';
+    replyActions.append(replySubmit, replyMsg);
+    replyForm.append(replyTextarea, replyActions);
+    replyForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const text = replyTextarea.value.trim();
+      if (text.length === 0) return;
+      replySubmit.disabled = true;
+      replyMsg.textContent = '';
+      try {
+        const isAdminUser = isAdmin();
+        const endpoint =
+          isAdminUser && adminMode ? `/admin/tickets/${ticket.id}/replies` : `/tickets/${ticket.id}/replies`;
+        await api<{ reply: { id: number } }>(endpoint, {
+          method: 'POST',
+          body: { body: text },
+          auth: true,
+        });
+        await openDetail(ticket.id);
+      } catch {
+        replyMsg.textContent = '送出失敗，請稍後再試';
+        replyMsg.className = 'form-msg err';
+        replySubmit.disabled = false;
+      }
+    });
+    actions.append(replyForm);
+
+    // 圖片上傳
+    const uploadRow = document.createElement('div');
+    uploadRow.className = 'upload-row';
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = 'image/jpeg,image/png,image/webp,image/gif';
+    const uploadBtn = document.createElement('button');
+    uploadBtn.type = 'button';
+    uploadBtn.className = 'btn btn--ghost';
+    uploadBtn.textContent = '上傳圖片';
+    const uploadMsg = document.createElement('span');
+    uploadMsg.className = 'form-msg';
+    uploadBtn.addEventListener('click', async () => {
+      const file = fileInput.files?.[0];
+      if (file === undefined) {
+        uploadMsg.textContent = '請先選擇圖片';
+        uploadMsg.className = 'form-msg err';
+        return;
+      }
+      if (file.size > 5 * 1024 * 1024) {
+        uploadMsg.textContent = '圖片需小於 5MB';
+        uploadMsg.className = 'form-msg err';
+        return;
+      }
+      uploadBtn.disabled = true;
+      uploadMsg.textContent = '上傳中…';
+      uploadMsg.className = 'form-msg';
+      const formData = new FormData();
+      formData.append('file', file);
+      try {
+        await api<{ image: { id: number; url: string } }>(`/tickets/${ticket.id}/images`, {
+          method: 'POST',
+          formData,
+          auth: true,
+        });
+        await openDetail(ticket.id);
+      } catch (err) {
+        if (err instanceof ApiError) {
+          if (err.code === 'unsupported_image_type') uploadMsg.textContent = '僅支援 JPEG / PNG / WebP / GIF';
+          else if (err.code === 'image_too_large') uploadMsg.textContent = '圖片需小於 5MB';
+          else uploadMsg.textContent = '上傳失敗，請稍後再試';
+        } else {
+          uploadMsg.textContent = '上傳失敗';
+        }
+        uploadMsg.className = 'form-msg err';
+        uploadBtn.disabled = false;
+      }
+    });
+    uploadRow.append(fileInput, uploadBtn, uploadMsg);
+    actions.append(uploadRow);
+
+    // 管理員：關閉工單
+    if (isAdmin()) {
+      const adminRow = document.createElement('div');
+      adminRow.className = 'admin-row';
+      const owner = document.createElement('span');
+      owner.className = 'admin-owner';
+      owner.textContent = ownerId !== undefined ? `會員編號 #${ownerId}` : '';
+      adminRow.append(owner);
+      if (ticket.status !== 'closed') {
+        const closeBtn = document.createElement('button');
+        closeBtn.type = 'button';
+        closeBtn.className = 'btn btn--danger';
+        closeBtn.textContent = '關閉工單';
+        closeBtn.addEventListener('click', async () => {
+          closeBtn.disabled = true;
+          try {
+            await api<void>(`/admin/tickets/${ticket.id}/status`, {
+              method: 'PATCH',
+              body: { status: 'closed' },
+              auth: true,
+            });
+            await openDetail(ticket.id);
+          } catch {
+            closeBtn.disabled = false;
+          }
+        });
+        adminRow.append(closeBtn);
+      }
+      actions.append(adminRow);
+    }
+
+    detailCard.replaceChildren(head, body, images, replies, actions);
+  }
+
+  async function attachAuthedImage(img: HTMLImageElement, url: string): Promise<void> {
+    try {
+      const token = localStorage.getItem('sheep_portal_token');
+      const response = await fetch(`https://api.nsir.uk${url}`, {
+        headers: token !== null ? { Authorization: `Bearer ${token}` } : {},
+      });
+      if (!response.ok) return;
+      const blob = await response.blob();
+      img.src = URL.createObjectURL(blob);
+    } catch {
+      // 圖片載入失敗時留空
+    }
+  }
+
+  // 新工單表單
+  newTicketBtn?.addEventListener('click', () => {
+    if (newTicketWrap === null) return;
+    newTicketWrap.hidden = !newTicketWrap.hidden;
+  });
+
+  document.querySelector('#nt-cancel')?.addEventListener('click', () => {
+    if (newTicketWrap !== null) newTicketWrap.hidden = true;
+  });
+
+  document.querySelector('#new-ticket-form')?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const subjectInput = document.querySelector('#nt-subject') as HTMLInputElement;
+    const bodyInput = document.querySelector('#nt-body') as HTMLTextAreaElement;
+    const msg = document.querySelector('#nt-msg') as HTMLParagraphElement;
+    const submitBtn = event.submitter as HTMLButtonElement;
+    const subject = subjectInput.value.trim();
+    const body = bodyInput.value.trim();
+    if (subject.length === 0 || body.length === 0) {
+      msg.textContent = '請填寫主旨與內容';
+      msg.hidden = false;
+      return;
+    }
+    submitBtn.disabled = true;
+    msg.hidden = true;
+    try {
+      const data = await api<{ ticket: { id: number } }>('/tickets', {
+        method: 'POST',
+        body: { subject, body },
+        auth: true,
+      });
+      if (newTicketWrap !== null) newTicketWrap.hidden = true;
+      await openDetail(data.ticket.id);
+    } catch (err) {
+      msg.textContent = err instanceof ApiError ? err.message : '送出失敗';
+      msg.hidden = false;
+      submitBtn.disabled = false;
+    }
+  });
+
+  // back 鍵處理 query param
+  window.addEventListener('popstate', () => {
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+    if (id !== null) {
+      const n = Number(id);
+      if (Number.isInteger(n) && n > 0) void openDetail(n);
+    } else {
+      showView('list');
+      void loadList();
+    }
+  });
+
+  // 初始化
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get('id');
+  if (user === null) {
+    requireLogin();
+  } else if (id !== null && Number.isInteger(Number(id)) && Number(id) > 0) {
+    void openDetail(Number(id));
+  } else {
+    showView('list');
+    void loadList();
+  }
+</script>
