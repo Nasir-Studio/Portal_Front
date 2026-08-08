@@ -68,6 +68,24 @@ const badges = [
 
     <main class="col col-center">
       <Announcements />
+
+      <section class="module calendar-module" aria-label="行事曆">
+        <h2 class="module-title">
+          <span class="cal-head-left">
+            <span class="cal-square" aria-hidden="true"></span>
+            行事曆
+          </span>
+        </h2>
+        <div class="cal-frame">
+          <iframe
+            src="https://calendar.google.com/calendar/embed?src=bb049ab126a644ff77ce9a3dd0ad5c2aa0b1bd0272dd636a38dcfbabdd5aa7aa%40group.calendar.google.com&ctz=Asia%2FTaipei"
+            title="Google 行事曆"
+            loading="lazy"
+            frameborder="0"
+            scrolling="no"
+          ></iframe>
+        </div>
+      </section>
     </main>
 
     <aside class="col col-right">
@@ -93,24 +111,6 @@ const badges = [
       </section>
     </aside>
   </div>
-
-  <section class="module calendar-module container" aria-label="行事曆">
-    <h2 class="module-title">
-      <span class="cal-head-left">
-        <span class="cal-square" aria-hidden="true"></span>
-        行事曆
-      </span>
-    </h2>
-    <div class="cal-frame">
-      <iframe
-        src="https://calendar.google.com/calendar/embed?src=bb049ab126a644ff77ce9a3dd0ad5c2aa0b1bd0272dd636a38dcfbabdd5aa7aa%40group.calendar.google.com&ctz=Asia%2FTaipei"
-        title="Google 行事曆"
-        loading="lazy"
-        frameborder="0"
-        scrolling="no"
-      ></iframe>
-    </div>
-  </section>
 </BaseLayout>
 
 <style>
@@ -236,7 +236,7 @@ const badges = [
 
   .cal-frame iframe {
     width: 100%;
-    height: 600px;
+    height: 480px;
     border: 0;
     display: block;
   }
