@@ -4,9 +4,16 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 <BaseLayout title="考古刷題 ｜ 羊家的入口">
   <div class="quiz container" id="quiz-app">
-    <div id="view-select"></div>
-    <div id="view-quiz" style="display:none"></div>
-    <div id="view-result" style="display:none"></div>
+    <nav class="quiz-nav" aria-label="麵包屑">
+      <a href="/">首頁</a>
+      <span class="quiz-nav-sep" aria-hidden="true">/</span>
+      <span class="quiz-nav-current" aria-current="page">考古刷題</span>
+    </nav>
+    <div class="quiz-body">
+      <div id="view-select"></div>
+      <div id="view-quiz" style="display:none"></div>
+      <div id="view-result" style="display:none"></div>
+    </div>
   </div>
 </BaseLayout>
 
@@ -17,6 +24,38 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     border: 1px solid var(--border);
     margin-top: 2.4rem;
     margin-bottom: 3.5rem;
+  }
+
+  .quiz-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 1.6rem;
+    background: var(--bg-soft);
+    border-bottom: 1px solid var(--border);
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+  }
+
+  .quiz-nav a {
+    color: var(--ink);
+    border-bottom: 1px solid var(--border-strong);
+    transition: border-color var(--t), color var(--t);
+  }
+
+  .quiz-nav a:hover {
+    border-color: var(--ink);
+  }
+
+  .quiz-nav-sep {
+    color: var(--ink-3);
+  }
+
+  .quiz-nav-current {
+    color: var(--ink-3);
+  }
+
+  .quiz-body {
     padding: 2rem 1.6rem;
   }
 
@@ -32,12 +71,17 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     font-size: 1.3rem;
     font-weight: 600;
     letter-spacing: 0.1em;
-    margin: 2rem 0 0.75rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid var(--border);
+    margin: 0 0 0.5rem;
+    padding: 1.4rem 0 0.5rem;
+    border-bottom: 1px dashed var(--border);
     display: flex;
     align-items: center;
     gap: 0.6rem;
+  }
+
+  .cat-heading:first-child {
+    margin-top: 0;
+    padding-top: 0;
   }
 
   .cat-heading::before {
@@ -48,40 +92,35 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     transform: rotate(45deg);
   }
 
-  .cat-heading:first-child {
-    margin-top: 0;
-  }
-
-  .quiz-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 0.9rem;
-  }
-
-  .qcard {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    padding: 1rem 1.1rem;
+  .bank-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 0.2rem;
+    border-bottom: 1px solid var(--border);
     cursor: pointer;
     transition: background var(--t), border-color var(--t);
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
   }
 
-  .qcard:hover {
+  .bank-row:hover {
     background: var(--bg-soft);
-    border-color: var(--border-strong);
   }
 
-  .qcard-title {
+  .bank-main {
+    min-width: 0;
+  }
+
+  .bank-title {
     font-weight: 500;
-    font-size: 1rem;
+    font-size: 1.02rem;
     font-family: var(--font-serif);
     letter-spacing: 0.05em;
+    color: var(--ink);
+    margin-bottom: 0.4rem;
   }
 
-  .qcard-meta {
+  .bank-meta {
     display: flex;
     gap: 0.5rem;
     align-items: center;
@@ -98,6 +137,25 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   }
 
   .badge-score {
+    background: var(--ink);
+    color: var(--white);
+    border-color: var(--ink);
+  }
+
+  .bank-open {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    flex-shrink: 0;
+    font-size: 0.82rem;
+    letter-spacing: 0.12em;
+    color: var(--ink);
+    border: 1px solid var(--border-strong);
+    padding: 0.4rem 0.9rem;
+    transition: background var(--t), color var(--t), border-color var(--t);
+  }
+
+  .bank-row:hover .bank-open {
     background: var(--ink);
     color: var(--white);
     border-color: var(--ink);
@@ -342,11 +400,18 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     #quiz-app {
       margin-top: 1.2rem;
       margin-bottom: 2.5rem;
+    }
+
+    .quiz-nav {
+      padding: 0.8rem 1rem;
+    }
+
+    .quiz-body {
       padding: 1.2rem 0.9rem;
     }
 
-    .quiz-grid {
-      grid-template-columns: 1fr;
+    .bank-row {
+      padding: 0.9rem 0.1rem;
     }
   }
 </style>
@@ -400,19 +465,21 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     });
     let html = '';
     for (const [cat, banks] of Object.entries(cats)) {
-      html += `<div class="cat-heading">${cat}</div><div class="quiz-grid">`;
+      html += `<div class="cat-heading">${cat}</div>`;
       banks.forEach((b) => {
         const h = hist[b.bankId];
         const badge = h ? `<span class="badge badge-score">${h.score}/${h.total}</span>` : '';
-        html += `<div class="qcard" data-bid="${b.bankId}">
-          <div class="qcard-title">${b.bankName}</div>
-          <div class="qcard-meta"><span class="badge">載入中...</span>${badge}</div>
+        html += `<div class="bank-row" data-bid="${b.bankId}">
+          <div class="bank-main">
+            <div class="bank-title">${b.bankName}</div>
+            <div class="bank-meta"><span class="badge">載入中...</span>${badge}</div>
+          </div>
+          <span class="bank-open">開始測驗 <span aria-hidden="true">→</span></span>
         </div>`;
       });
-      html += '</div>';
     }
     $select.innerHTML = html;
-    $select.querySelectorAll('.qcard').forEach((c) => {
+    $select.querySelectorAll('.bank-row').forEach((c) => {
       c.addEventListener('click', () => startQuiz(c.dataset.bid));
     });
     registry.forEach(async (b) => {

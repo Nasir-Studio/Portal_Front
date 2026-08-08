@@ -17,19 +17,9 @@ const projects = [
     href: '/nytools/',
   },
   {
-    name: 'FocusClock',
-    desc: '多組計時器同時運行、環形進度條、自訂鈴聲',
-    href: '#',
-  },
-  {
     name: 'NTUB 資安稽核一條龍',
     desc: '一鍵式全自動資安檢測工具',
     href: '/nub-audit/',
-  },
-  {
-    name: '羊家門前有相機',
-    desc: '即時監視器串流觀看、錄影、回放',
-    href: 'https://cctv.nsir.uk',
   },
 ];
 
@@ -71,7 +61,7 @@ const badges = [
   <Banner />
   <div class="main container">
     <aside class="col col-left">
-      <section class="module" aria-label="服務連結">
+      <section class="module services-module" aria-label="服務連結">
         <h2 class="module-title">服務連結</h2>
         <nav class="menu-list" aria-label="服務連結列表">
           {
@@ -369,6 +359,10 @@ const badges = [
       grid-template-columns: 1fr;
       gap: 1rem;
       padding: 1.2rem 0 2.5rem;
+    }
+
+    .services-module {
+      display: none;
     }
 
     .col-left {
