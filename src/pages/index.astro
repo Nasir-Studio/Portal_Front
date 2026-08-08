@@ -80,9 +80,7 @@ const badges = [
           {
             badges.map((b) => (
               <li class="badge-item">
-                <a href={b.url} target="_blank" rel="noopener noreferrer" title={b.name}>
-                  <img class="badge-img" src={b.img} alt={b.name} width="120" height="120" loading="lazy" />
-                </a>
+                <img class="badge-img" src={b.img} alt={b.name} width="120" loading="lazy" />
                 <p class="badge-name">{b.name}</p>
               </li>
             ))
@@ -165,11 +163,14 @@ const badges = [
   }
 
   .badge-img {
+    display: block;
     width: 100%;
-    max-width: 88px;
+    aspect-ratio: 1 / 1;
+    object-fit: contain;
     margin-inline: auto;
     border: 1px solid var(--border);
     background: var(--surface);
+    padding: 0.25rem;
   }
 
   .badge-name {
