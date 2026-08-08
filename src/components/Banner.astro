@@ -1,0 +1,175 @@
+---
+const banners = [
+  { src: '/Portal_Front/banners/banner-1.svg', alt: '羊家的入口 SHEEP PORTAL' },
+  { src: '/Portal_Front/banners/banner-2.svg', alt: '羊監視你 即時監視影像' },
+  { src: '/Portal_Front/banners/banner-3.svg', alt: '羊集章 集章活動紀錄' },
+  { src: '/Portal_Front/banners/banner-4.svg', alt: '羊愛考試 線上測驗系統' },
+];
+---
+
+<div class="banner container" aria-label="活動輪播">
+  <div class="banner-viewport">
+    <ul class="banner-track">
+      {
+        banners.map((b) => (
+          <li class="banner-slide">
+            <img src={b.src} alt={b.alt} width="1080" height="360" />
+          </li>
+        ))
+      }
+    </ul>
+
+    <button class="banner-btn banner-prev" type="button" aria-label="上一張">‹</button>
+    <button class="banner-btn banner-next" type="button" aria-label="下一張">›</button>
+
+    <div class="banner-dots">
+      {
+        banners.map((_, i) => (
+          <button class="banner-dot" type="button" aria-label={`第 ${i + 1} 張`} data-index={i}></button>
+        ))
+      }
+    </div>
+  </div>
+</div>
+
+<style>
+  .banner {
+    padding: 1.6rem 0 0.4rem;
+  }
+
+  .banner-viewport {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: var(--surface);
+  }
+
+  .banner-track {
+    display: flex;
+    list-style: none;
+    transition: transform 0.5s var(--ease);
+  }
+
+  .banner-slide {
+    flex: 0 0 100%;
+  }
+
+  .banner-slide img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .banner-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(28, 28, 28, 0.55);
+    color: var(--white);
+    font-size: 1.3rem;
+    line-height: 1;
+    border: none;
+    cursor: pointer;
+    transition: background var(--t);
+  }
+
+  .banner-btn:hover {
+    background: var(--ink);
+  }
+
+  .banner-prev {
+    left: 0;
+  }
+
+  .banner-next {
+    right: 0;
+  }
+
+  .banner-dots {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+  }
+
+  .banner-dot {
+    width: 10px;
+    height: 10px;
+    border: 1px solid var(--white);
+    background: transparent;
+    cursor: pointer;
+    padding: 0;
+    transition: background var(--t);
+  }
+
+  .banner-dot.is-active {
+    background: var(--white);
+  }
+
+  @media (max-width: 700px) {
+    .banner-btn {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  const viewport = document.querySelector('.banner-viewport');
+  if (viewport) {
+    const track = viewport.querySelector('.banner-track');
+    const slides = Array.from(viewport.querySelectorAll('.banner-slide'));
+    const dots = Array.from(viewport.querySelectorAll('.banner-dot'));
+    const prevBtn = viewport.querySelector('.banner-prev');
+    const nextBtn = viewport.querySelector('.banner-next');
+    const total = slides.length;
+    let index = 0;
+    let timer = null;
+
+    const goTo = (i) => {
+      index = (i + total) % total;
+      track.style.transform = `translateX(-${index * 100}%)`;
+      dots.forEach((d, j) => d.classList.toggle('is-active', j === index));
+    };
+
+    const play = () => {
+      stop();
+      timer = setInterval(() => goTo(index + 1), 4500);
+    };
+
+    const stop = () => {
+      if (timer) clearInterval(timer);
+    };
+
+    nextBtn?.addEventListener('click', () => {
+      goTo(index + 1);
+      play();
+    });
+
+    prevBtn?.addEventListener('click', () => {
+      goTo(index - 1);
+      play();
+    });
+
+    dots.forEach((d, j) =>
+      d.addEventListener('click', () => {
+        goTo(j);
+        play();
+      })
+    );
+
+    viewport.addEventListener('mouseenter', stop);
+    viewport.addEventListener('mouseleave', play);
+
+    goTo(0);
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      play();
+    }
+  }
+</script>

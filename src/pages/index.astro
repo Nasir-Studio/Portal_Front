@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import SheepLogo from '../components/SheepLogo.astro';
+import Banner from '../components/Banner.astro';
 import Announcements from '../components/Announcements.astro';
 
 const services = [
@@ -9,9 +9,43 @@ const services = [
   { name: '羊愛考試', desc: '線上測驗系統', href: 'https://1ztests.nsir.uk' },
   { name: '羊-短網址(nsir.uk)', desc: '網址縮短服務', href: 'https://nsir.uk' },
 ];
+
+const badges = [
+  {
+    img: '/Portal_Front/badges/adobe-creativity-with-ai.png',
+    name: 'Adobe × Pearson：Creativity with AI',
+    url: 'https://www.credly.com/badges/dc78c48f-1fbb-4eac-afbf-b25e13ef7e1b/public_url',
+  },
+  {
+    img: '/Portal_Front/badges/genai-foundations.png',
+    name: 'Generative AI Foundations',
+    url: 'https://www.credly.com/badges/04543121-d04c-45ee-bb2d-b499752a10ae/public_url',
+  },
+  {
+    img: '/Portal_Front/badges/adobe-video-design.png',
+    name: 'Adobe 影片設計專業認證',
+    url: 'https://www.credly.com/badges/fa17ef56-fbd4-4f47-b7ae-ed9adc6755bf/public_url',
+  },
+  {
+    img: '/Portal_Front/badges/cisco-ccst.png',
+    name: 'Cisco CCST 網路安全',
+    url: 'https://www.credly.com/badges/28f42e0c-29a2-442a-a670-c9db938f638a/public_url',
+  },
+  {
+    img: '/Portal_Front/badges/adobe-premiere.png',
+    name: 'Adobe Premiere 數位影音',
+    url: 'https://www.credly.com/badges/3e176af8-edca-411e-8e52-6be837f644ac/public_url',
+  },
+  {
+    img: '/Portal_Front/badges/its-python.png',
+    name: 'IT Specialist Python',
+    url: 'https://www.credly.com/badges/7b8bbe2a-3bbd-4fdc-8ffc-7696c35876aa/public_url',
+  },
+];
 ---
 
 <BaseLayout>
+  <Banner />
   <div class="main container">
     <aside class="col col-left">
       <section class="module" aria-label="服務連結">
@@ -33,19 +67,31 @@ const services = [
     </aside>
 
     <main class="col col-center">
-      <div class="welcome">
-        <span class="welcome-mark" aria-hidden="true">■</span>
-        你好！很高興為您服務！歡迎來到羊家入口，在這邊你可以選擇想要去瀏覽哪個服務
-      </div>
       <Announcements />
     </main>
 
     <aside class="col col-right">
-      <section class="module" aria-label="校徽">
-        <h2 class="module-title">羊家的入口</h2>
-        <div class="crest">
-          <SheepLogo size={84} />
-        </div>
+      <section class="module" aria-label="我的徽章">
+        <h2 class="module-title">
+          <span>我的徽章</span>
+          <span class="badge-count">{badges.length} 枚</span>
+        </h2>
+        <ul class="badge-grid">
+          {
+            badges.map((b) => (
+              <li class="badge-item">
+                <a href={b.url} target="_blank" rel="noopener noreferrer" title={b.name}>
+                  <img class="badge-img" src={b.img} alt={b.name} width="120" height="120" loading="lazy" />
+                </a>
+                <p class="badge-name">{b.name}</p>
+              </li>
+            ))
+          }
+        </ul>
+        <a class="badge-more" href="https://www.credly.com/users/nasir-lin" target="_blank" rel="noopener noreferrer">
+          查看全部徽章
+          <span aria-hidden="true">↗</span>
+        </a>
       </section>
     </aside>
   </div>
@@ -57,7 +103,7 @@ const services = [
     grid-template-columns: 240px minmax(0, 1fr) 240px;
     gap: 1.4rem;
     align-items: start;
-    padding: 2.4rem 0 3.5rem;
+    padding: 2rem 0 3.5rem;
   }
 
   .menu-item {
@@ -98,29 +144,59 @@ const services = [
     letter-spacing: 0.04em;
   }
 
-  .welcome {
-    display: flex;
-    align-items: baseline;
-    gap: 0.6rem;
-    background: var(--surface);
+  .badge-count {
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    color: var(--ink-3);
+    border: 1px solid var(--border-strong);
+    padding: 0.1rem 0.55rem;
+  }
+
+  .badge-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.7rem;
+    padding: 1rem;
+    list-style: none;
+  }
+
+  .badge-item {
+    text-align: center;
+  }
+
+  .badge-img {
+    width: 100%;
+    max-width: 88px;
+    margin-inline: auto;
     border: 1px solid var(--border);
-    border-left: 4px solid var(--ink);
-    padding: 0.8rem 1.2rem;
-    margin-bottom: 1.4rem;
-    font-size: 0.9rem;
-    letter-spacing: 0.06em;
+    background: var(--surface);
+  }
+
+  .badge-name {
+    margin-top: 0.4rem;
+    font-size: 0.68rem;
+    line-height: 1.5;
     color: var(--ink-2);
+    letter-spacing: 0.03em;
   }
 
-  .welcome-mark {
-    font-size: 0.7rem;
-    color: var(--ink);
-  }
-
-  .crest {
+  .badge-more {
     display: flex;
+    align-items: center;
     justify-content: center;
-    padding: 1.3rem 1rem 1.5rem;
+    gap: 0.4rem;
+    padding: 0.6rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    color: var(--ink-2);
+    background: var(--bg-soft);
+    transition: color var(--t), background var(--t);
+  }
+
+  .badge-more:hover {
+    color: var(--ink);
+    background: var(--surface-2);
   }
 
   @media (max-width: 900px) {
