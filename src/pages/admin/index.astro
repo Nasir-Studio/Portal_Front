@@ -521,6 +521,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     displayName: string;
     active: boolean;
     createdAt: number;
+    lastLoginAt: number | null;
   };
 
   const TZ = 'Asia/Taipei';
@@ -988,8 +989,9 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
           email.textContent = u.email;
           const meta = document.createElement('span');
           meta.className = 'user-row-meta';
-          meta.textContent = `#${u.id} · ${u.role === 'admin' ? '管理員' : 'VIP 會員'} · ${fmtDate(u.createdAt)}`;
+          meta.textContent = `#${u.id} · ${u.role === 'admin' ? '管理員' : 'VIP 會員'} · 註冊 ${fmtDate(u.createdAt)}`;
           if (u.displayName.length > 0) meta.textContent += ` · ${u.displayName}`;
+          meta.textContent += ` · 最後登入 ${u.lastLoginAt === null ? '從未登入' : fmtDate(u.lastLoginAt)}`;
           info.append(email, meta);
 
           const right = document.createElement('div');
