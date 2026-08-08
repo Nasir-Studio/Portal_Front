@@ -683,6 +683,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     const detailCard = document.createElement('div');
     detailCard.className = 'detail-card';
     detailCard.hidden = true;
+    wrap.append(detailCard);
 
     function showList(): void {
       listEl.hidden = false;
