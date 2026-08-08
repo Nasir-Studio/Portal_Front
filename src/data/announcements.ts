@@ -5,7 +5,6 @@ export interface Announcement {
   content: string;
 }
 
-// 公告資料：以後新增公告就在這裡加一筆
 const announcements: Announcement[] = [
   {
     slug: 'portal-launch',

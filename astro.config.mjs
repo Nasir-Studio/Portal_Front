@@ -1,9 +1,8 @@
 import { defineConfig } from 'astro/config';
 
-// https://astro.build/config
 export default defineConfig({
-  site: 'https://nasir-studio.github.io',
-  base: '/Portal_Front/',
+  site: 'https://sheephome.nsir.uk',
+  base: '/',
   output: 'static',
   compressHTML: true,
   build: {

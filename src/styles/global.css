@@ -1,10 +1,4 @@
-/* ============================================================
-   羊家的入口 — 全域樣式
-   白 / 黑 / 灰 ・ 學校系網 / 公司入口風
-   ============================================================ */
-
 :root {
-  /* 色彩 — 只有白黑灰 */
   --bg: #f5f4f1;
   --bg-soft: #efeeea;
   --surface: #ffffff;
@@ -16,18 +10,15 @@
   --ink-3: #8b8983;
   --white: #ffffff;
 
-  /* 圓角 — 完全直角，公家機關網站感 */
   --radius-sm: 0px;
   --radius-md: 0px;
   --radius-lg: 0px;
   --shadow-soft: 0 4px 14px -8px rgba(28, 28, 28, 0.18);
   --shadow-lift: 0 12px 28px -14px rgba(28, 28, 28, 0.25);
 
-  /* 字體 */
   --font-serif: "Noto Serif TC", "Songti TC", "STSong", Georgia, "Times New Roman", serif;
   --font-sans: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, -apple-system, "Segoe UI", sans-serif;
 
-  /* 動畫 */
   --ease: cubic-bezier(0.4, 0, 0.2, 1);
   --t: 200ms var(--ease);
 }
@@ -73,13 +64,11 @@ svg {
   border-radius: 4px;
 }
 
-/* 版面 */
 .container {
   width: min(1080px, 100% - 2.5rem);
   margin-inline: auto;
 }
 
-/* 模組區塊 — 校園網站 CMS 三欄版型 */
 .module {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -99,7 +88,6 @@ svg {
   color: var(--ink);
 }
 
-/* 通用按鈕 — 方形、扁平、機關網站感 */
 .btn {
   display: inline-flex;
   align-items: center;

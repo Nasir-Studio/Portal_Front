@@ -14,7 +14,7 @@ import announcements from '../data/announcements';
   <div class="news-list">
     {
       announcements.map((item) => (
-        <a class="news-item" href={`/Portal_Front/news/${item.slug}/`}>
+        <a class="news-item" href={`/news/${item.slug}/`}>
           <span class="news-item-title">{item.title}</span>
           <span class="news-date">{item.date}</span>
         </a>

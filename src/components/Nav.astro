@@ -9,21 +9,19 @@ const links = [
 ---
 
 <header class="site-header">
-  <!-- 上方工具列 — 學校官網特徵 -->
   <div class="topbar">
     <div class="container topbar-inner">
       <span class="topbar-left">羊家入口網</span>
       <span class="topbar-right">
-        <a href="/Portal_Front/">首頁</a>
+        <a href="/">首頁</a>
         <span class="topbar-sep" aria-hidden="true">｜</span>
         <a href="#news">最新消息</a>
       </span>
     </div>
   </div>
 
-  <!-- 校名區 — 系網標準：中文校名 + 英文副標 + 校訓式標語 -->
   <div class="header-main container">
-    <a class="brand" href="/Portal_Front/">
+    <a class="brand" href="/">
       <SheepLogo size={58} />
       <span class="brand-text">
         <span class="brand-name">羊家的入口</span>
@@ -43,10 +41,9 @@ const links = [
     </button>
   </div>
 
-  <!-- 選單列 — 底部有明顯黑線 -->
   <div class="menubar-wrap" id="nav-menu">
     <nav class="menubar container" aria-label="主導覽">
-      <a class="menu-link is-home" href="/Portal_Front/">首頁</a>
+      <a class="menu-link is-home" href="/">首頁</a>
       <a class="menu-link" href="#news">最新消息</a>
       {
         links.map((link) => (
@@ -71,7 +68,6 @@ const links = [
     background: var(--surface);
   }
 
-  /* --- 工具列 --- */
   .topbar {
     background: var(--ink);
     color: rgba(255, 255, 255, 0.72);
@@ -99,7 +95,6 @@ const links = [
     color: rgba(255, 255, 255, 0.3);
   }
 
-  /* --- 校名區 --- */
   .header-main {
     display: flex;
     align-items: center;
@@ -140,7 +135,6 @@ const links = [
     color: var(--ink-3);
   }
 
-  /* --- 選單列 --- */
   .menubar-wrap {
     border-top: 1px solid var(--border);
     border-bottom: 2px solid var(--ink);
@@ -181,7 +175,6 @@ const links = [
     color: var(--ink);
   }
 
-  /* 旗艦按鈕 — 黑底白字，置於選單最右 */
   .menu-cta {
     margin-left: auto;
     border-right: none;
@@ -194,7 +187,6 @@ const links = [
     color: var(--white);
   }
 
-  /* --- 漢堡按鈕 --- */
   .nav-toggle {
     display: none;
     flex-direction: column;
@@ -230,9 +222,7 @@ const links = [
     transform: translateY(-7px) rotate(-45deg);
   }
 
-  /* --- 響應式 --- */
   @media (max-width: 900px) {
-    /* 手機版：頁首不固定，漢堡鈕收進校名列，選單改下拉面板 */
     .site-header {
       position: static;
     }
@@ -310,7 +300,6 @@ const links = [
     wrap?.classList.toggle('open', !open);
   });
 
-  // 點選連結後自動收起選單
   wrap?.querySelectorAll('a').forEach((a) => {
     a.addEventListener('click', () => {
       toggle?.setAttribute('aria-expanded', 'false');

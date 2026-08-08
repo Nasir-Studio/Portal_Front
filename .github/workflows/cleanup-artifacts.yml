@@ -2,7 +2,6 @@ name: Cleanup Actions Artifacts
 
 on:
   schedule:
-    # 每週日 03:00 UTC（台灣時間 11:00）自動清理
     - cron: '0 3 * * 0'
   workflow_dispatch:
 
