@@ -1,0 +1,597 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="考古刷題 ｜ 羊家的入口">
+  <div class="quiz container" id="quiz-app">
+    <div id="view-select"></div>
+    <div id="view-quiz" style="display:none"></div>
+    <div id="view-result" style="display:none"></div>
+  </div>
+</BaseLayout>
+
+<style>
+  #quiz-app {
+    min-height: 60vh;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    margin-top: 2.4rem;
+    margin-bottom: 3.5rem;
+    padding: 2rem 1.6rem;
+  }
+
+  .loading {
+    text-align: center;
+    padding: 4rem 0;
+    color: var(--ink-3);
+    letter-spacing: 0.1em;
+  }
+
+  .cat-heading {
+    font-family: var(--font-serif);
+    font-size: 1.3rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    margin: 2rem 0 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .cat-heading::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    background: var(--ink);
+    transform: rotate(45deg);
+  }
+
+  .cat-heading:first-child {
+    margin-top: 0;
+  }
+
+  .quiz-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 0.9rem;
+  }
+
+  .qcard {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 1rem 1.1rem;
+    cursor: pointer;
+    transition: background var(--t), border-color var(--t);
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .qcard:hover {
+    background: var(--bg-soft);
+    border-color: var(--border-strong);
+  }
+
+  .qcard-title {
+    font-weight: 500;
+    font-size: 1rem;
+    font-family: var(--font-serif);
+    letter-spacing: 0.05em;
+  }
+
+  .qcard-meta {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .badge {
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    padding: 0.08rem 0.45rem;
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    color: var(--ink-3);
+  }
+
+  .badge-score {
+    background: var(--ink);
+    color: var(--white);
+    border-color: var(--ink);
+  }
+
+  .quiz-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  .quiz-top-left {
+    font-size: 0.88rem;
+    color: var(--ink-3);
+    letter-spacing: 0.1em;
+  }
+
+  .btn-leave {
+    font-size: 0.82rem;
+    color: var(--ink-3);
+    background: none;
+    border: 1px solid var(--border);
+    padding: 0.28rem 0.8rem;
+    cursor: pointer;
+    transition: border-color var(--t), color var(--t);
+  }
+
+  .btn-leave:hover {
+    border-color: var(--ink);
+    color: var(--ink);
+  }
+
+  .progress-bar {
+    width: 100%;
+    height: 4px;
+    background: var(--bg-soft);
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--ink);
+    transition: width 0.3s ease;
+  }
+
+  .question-text {
+    font-size: 1rem;
+    line-height: 2;
+    margin-bottom: 1.2rem;
+    font-family: var(--font-sans);
+    color: var(--ink);
+    letter-spacing: 0.03em;
+  }
+
+  .option-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+    transition: border-color var(--t), background var(--t);
+    font-size: 0.95rem;
+    line-height: 1.9;
+    color: var(--ink-2);
+  }
+
+  .option-card:hover:not(.answered) {
+    border-color: var(--ink);
+    background: var(--bg-soft);
+  }
+
+  .option-card.selected {
+    border-color: var(--ink);
+    background: var(--bg-soft);
+  }
+
+  .option-card.correct {
+    border-color: var(--ink);
+    background: var(--bg-soft);
+  }
+
+  .option-card.correct::after {
+    content: ' ✓';
+    font-weight: 500;
+  }
+
+  .option-card.wrong {
+    border-color: var(--ink);
+    background: var(--surface-2);
+  }
+
+  .option-card.wrong::after {
+    content: ' ✗';
+    font-weight: 500;
+  }
+
+  .option-card.answered {
+    cursor: default;
+  }
+
+  .btn-submit-multi {
+    margin-top: 0.75rem;
+    padding: 0.5rem 1.5rem;
+    background: var(--ink);
+    color: var(--white);
+    border: none;
+    font-size: 0.88rem;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transition: background var(--t);
+  }
+
+  .btn-submit-multi:hover {
+    background: #000;
+  }
+
+  .explanation-box {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: var(--bg-soft);
+    border-left: 3px solid var(--ink);
+    font-size: 0.95rem;
+    line-height: 1.9;
+    color: var(--ink-2);
+  }
+
+  .btn-next {
+    margin-top: 1rem;
+    padding: 0.5rem 1.5rem;
+    background: var(--ink);
+    color: var(--white);
+    border: none;
+    font-size: 0.88rem;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transition: background var(--t);
+  }
+
+  .btn-next:hover {
+    background: #000;
+  }
+
+  .result-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .result-score {
+    font-size: 3rem;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .result-pct {
+    font-size: 1.2rem;
+    font-family: var(--font-serif);
+    color: var(--ink-3);
+    margin-bottom: 1rem;
+  }
+
+  .result-btns {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
+
+  .result-btns button {
+    padding: 0.5rem 1.5rem;
+    font-size: 0.88rem;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+  }
+
+  .result-btns .btn-retry {
+    background: var(--ink);
+    color: var(--white);
+    border: 1px solid var(--ink);
+    transition: background var(--t);
+  }
+
+  .result-btns .btn-retry:hover {
+    background: #000;
+  }
+
+  .result-btns .btn-back {
+    background: var(--surface);
+    color: var(--ink);
+    border: 1px solid var(--border-strong);
+    transition: border-color var(--t);
+  }
+
+  .result-btns .btn-back:hover {
+    border-color: var(--ink);
+  }
+
+  .review-item {
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .review-item:last-child {
+    border-bottom: none;
+  }
+
+  .review-q {
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+    font-family: var(--font-sans);
+    color: var(--ink);
+    line-height: 1.8;
+  }
+
+  .review-q .icon {
+    margin-right: 0.4rem;
+  }
+
+  .review-opt {
+    font-size: 0.9rem;
+    color: var(--ink-3);
+    padding-left: 1.5rem;
+    line-height: 1.8;
+  }
+
+  .review-opt.yours {
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  .review-expl {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--ink-2);
+    padding: 0.6rem;
+    background: var(--bg-soft);
+  }
+
+  @media (max-width: 700px) {
+    #quiz-app {
+      margin-top: 1.2rem;
+      margin-bottom: 2.5rem;
+      padding: 1.2rem 0.9rem;
+    }
+
+    .quiz-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  const HIST_KEY = 'pastpapers-history';
+  function loadHistory() {
+    try {
+      return JSON.parse(localStorage.getItem(HIST_KEY) || '{}');
+    } catch {
+      return {};
+    }
+  }
+  function saveHistory(h) {
+    localStorage.setItem(HIST_KEY, JSON.stringify(h));
+  }
+
+  const $select = document.getElementById('view-select');
+  const $quiz = document.getElementById('view-quiz');
+  const $result = document.getElementById('view-result');
+  let registry = [];
+  let currentQuiz = null;
+  let qIdx = 0;
+  let answers = [];
+  let multiSelected = [];
+  let answered = false;
+
+  function showView(v) {
+    $select.style.display = v === 'select' ? '' : 'none';
+    $quiz.style.display = v === 'quiz' ? '' : 'none';
+    $result.style.display = v === 'result' ? '' : 'none';
+  }
+
+  async function init() {
+    $select.innerHTML = '<div class="loading">載入中...</div>';
+    showView('select');
+    try {
+      const r = await fetch('/questions/registry.json');
+      registry = await r.json();
+    } catch {
+      registry = [];
+    }
+    renderSelect();
+  }
+
+  function renderSelect() {
+    const hist = loadHistory();
+    const cats = {};
+    registry.forEach((b) => {
+      (cats[b.category] = cats[b.category] || []).push(b);
+    });
+    let html = '';
+    for (const [cat, banks] of Object.entries(cats)) {
+      html += `<div class="cat-heading">${cat}</div><div class="quiz-grid">`;
+      banks.forEach((b) => {
+        const h = hist[b.bankId];
+        const badge = h ? `<span class="badge badge-score">${h.score}/${h.total}</span>` : '';
+        html += `<div class="qcard" data-bid="${b.bankId}">
+          <div class="qcard-title">${b.bankName}</div>
+          <div class="qcard-meta"><span class="badge">載入中...</span>${badge}</div>
+        </div>`;
+      });
+      html += '</div>';
+    }
+    $select.innerHTML = html;
+    $select.querySelectorAll('.qcard').forEach((c) => {
+      c.addEventListener('click', () => startQuiz(c.dataset.bid));
+    });
+    registry.forEach(async (b) => {
+      try {
+        const r = await fetch('/questions/' + b.bankId + '.json');
+        const d = await r.json();
+        const cards = $select.querySelectorAll(`[data-bid="${b.bankId}"] .badge`);
+        if (cards[0]) cards[0].textContent = d.questions.length + ' 題';
+      } catch {}
+    });
+  }
+
+  async function startQuiz(bankId) {
+    showView('quiz');
+    $quiz.innerHTML = '<div class="loading">載入題目...</div>';
+    try {
+      const r = await fetch('/questions/' + bankId + '.json');
+      currentQuiz = await r.json();
+    } catch {
+      $quiz.innerHTML = '<div class="loading">載入失敗</div>';
+      return;
+    }
+    qIdx = 0;
+    answers = [];
+    renderQuestion();
+  }
+
+  function renderQuestion() {
+    const qs = currentQuiz.questions;
+    const q = qs[qIdx];
+    answered = false;
+    multiSelected = [];
+    const pct = Math.round((qIdx / qs.length) * 100);
+    let h = `<div class="quiz-top">
+      <div class="quiz-top-left">第 ${qIdx + 1} / ${qs.length} 題</div>
+      <button class="btn-leave" id="btnLeave">離開測驗</button>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+    <div class="question-text">${q.question}</div>`;
+    q.options.forEach((opt, i) => {
+      h += `<div class="option-card" data-idx="${i}">${opt}</div>`;
+    });
+    if (q.type === 'multiple') {
+      h += `<button class="btn-submit-multi" id="btnSubmitMulti" style="display:none">確認送出</button>`;
+    }
+    h += `<div id="feedbackArea"></div>`;
+    $quiz.innerHTML = h;
+    document.getElementById('btnLeave').addEventListener('click', () => {
+      showView('select');
+      renderSelect();
+    });
+    const cards = $quiz.querySelectorAll('.option-card');
+    if (q.type === 'single') {
+      cards.forEach((c) =>
+        c.addEventListener('click', () => {
+          if (!answered) submitSingle(parseInt(c.dataset.idx));
+        })
+      );
+    } else {
+      const btnM = document.getElementById('btnSubmitMulti');
+      cards.forEach((c) =>
+        c.addEventListener('click', () => {
+          if (answered) return;
+          const idx = parseInt(c.dataset.idx);
+          if (multiSelected.includes(idx)) {
+            multiSelected = multiSelected.filter((x) => x !== idx);
+            c.classList.remove('selected');
+          } else {
+            multiSelected.push(idx);
+            c.classList.add('selected');
+          }
+          btnM.style.display = multiSelected.length > 0 ? '' : 'none';
+        })
+      );
+      btnM.addEventListener('click', () => {
+        if (multiSelected.length > 0) submitMulti();
+      });
+    }
+  }
+
+  function submitSingle(idx) {
+    answered = true;
+    const q = currentQuiz.questions[qIdx];
+    const correct = q.answer.includes(idx);
+    answers[qIdx] = [idx];
+    const cards = $quiz.querySelectorAll('.option-card');
+    cards.forEach((c) => {
+      c.classList.add('answered');
+      const ci = parseInt(c.dataset.idx);
+      if (q.answer.includes(ci)) c.classList.add('correct');
+      else if (ci === idx && !correct) c.classList.add('wrong');
+    });
+    showFeedback(q, correct);
+  }
+
+  function submitMulti() {
+    answered = true;
+    const q = currentQuiz.questions[qIdx];
+    const sorted = [...q.answer].sort();
+    const yours = [...multiSelected].sort();
+    const correct = sorted.length === yours.length && sorted.every((v, i) => v === yours[i]);
+    answers[qIdx] = [...multiSelected];
+    const cards = $quiz.querySelectorAll('.option-card');
+    cards.forEach((c) => {
+      c.classList.add('answered');
+      const ci = parseInt(c.dataset.idx);
+      if (q.answer.includes(ci)) c.classList.add('correct');
+      else if (multiSelected.includes(ci)) c.classList.add('wrong');
+    });
+    document.getElementById('btnSubmitMulti').style.display = 'none';
+    showFeedback(q, correct);
+  }
+
+  function showFeedback(q, correct) {
+    const area = document.getElementById('feedbackArea');
+    const icon = correct ? '✓' : '✗';
+    let html = `<div class="explanation-box">${icon} ${q.explanation || '暫無解析'}</div>`;
+    if (qIdx < currentQuiz.questions.length - 1) {
+      html += `<button class="btn-next" id="btnNext">下一題</button>`;
+    } else {
+      html += `<button class="btn-next" id="btnNext">查看結果</button>`;
+    }
+    area.innerHTML = html;
+    document.getElementById('btnNext').addEventListener('click', nextOrResult);
+  }
+
+  function nextOrResult() {
+    if (qIdx < currentQuiz.questions.length - 1) {
+      qIdx++;
+      renderQuestion();
+    } else showResult();
+  }
+
+  function showResult() {
+    const qs = currentQuiz.questions;
+    let score = 0;
+    qs.forEach((q, i) => {
+      const a = (answers[i] || []).sort();
+      const c = [...q.answer].sort();
+      if (a.length === c.length && a.every((v, j) => v === c[j])) score++;
+    });
+    const hist = loadHistory();
+    hist[currentQuiz.bankId] = {
+      score,
+      total: qs.length,
+      date: new Date().toISOString().slice(0, 10),
+    };
+    saveHistory(hist);
+    const pct = Math.round((score / qs.length) * 100);
+    let h = `<div class="result-header">
+      <div class="result-score">${score} / ${qs.length}</div>
+      <div class="result-pct">${pct}%</div>
+      <div class="result-btns">
+        <button class="btn-retry" id="btnRetry">重新測驗</button>
+        <button class="btn-back" id="btnBack">返回選單</button>
+      </div>
+    </div>`;
+    qs.forEach((q, i) => {
+      const a = (answers[i] || []).sort();
+      const c = [...q.answer].sort();
+      const ok = a.length === c.length && a.every((v, j) => v === c[j]);
+      const icon = ok ? '<span class="icon">✓</span>' : '<span class="icon">✗</span>';
+      const yourText = (answers[i] || []).map((x) => q.options[x]).join('、') || '未作答';
+      const correctText = q.answer.map((x) => q.options[x]).join('、');
+      h += `<div class="review-item">
+        <div class="review-q">${icon} 第${i + 1}題：${q.question}</div>
+        <div class="review-opt${ok ? '' : ' yours'}">你的答案：${yourText}</div>
+        ${!ok ? `<div class="review-opt">正確答案：${correctText}</div>` : ''}
+        <div class="review-expl">${q.explanation || ''}</div>
+      </div>`;
+    });
+    $result.innerHTML = h;
+    showView('result');
+    document.getElementById('btnRetry').addEventListener('click', () => startQuiz(currentQuiz.bankId));
+    document.getElementById('btnBack').addEventListener('click', () => {
+      showView('select');
+      renderSelect();
+    });
+  }
+
+  init();
+</script>

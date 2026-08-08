@@ -10,6 +10,29 @@ const services = [
   { name: '羊-短網址', desc: '網址縮短服務', href: 'https://nsir.uk' },
 ];
 
+const projects = [
+  {
+    name: 'NYTools',
+    desc: 'P2P 即時工具集 — 客服排隊、檔案傳輸、點播、投影',
+    href: '#',
+  },
+  {
+    name: 'FocusClock',
+    desc: '多組計時器同時運行、環形進度條、自訂鈴聲',
+    href: '#',
+  },
+  {
+    name: 'NTUB 資安稽核一條龍',
+    desc: '一鍵式全自動資安檢測工具',
+    href: '#',
+  },
+  {
+    name: '羊家門前有相機',
+    desc: '即時監視器串流觀看、錄影、回放',
+    href: 'https://cctv.nsir.uk',
+  },
+];
+
 const badges = [
   {
     img: '/badges/adobe-creativity-with-ai.png',
@@ -64,6 +87,17 @@ const badges = [
           }
         </nav>
       </section>
+
+      <section class="module" aria-label="考古刷題">
+        <h2 class="module-title">考古刷題</h2>
+        <div class="pastpapers-card">
+          <p class="pastpapers-desc">AI 應用規劃師考古題庫，收錄 338 題，支援單選與多選題型。</p>
+          <a class="pastpapers-btn" href="/pastpapers/">
+            進入測驗
+            <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      </section>
     </aside>
 
     <main class="col col-center">
@@ -109,6 +143,23 @@ const badges = [
           <span aria-hidden="true">↗</span>
         </a>
       </section>
+
+      <section class="module" aria-label="Side Project">
+        <h2 class="module-title">Side Project</h2>
+        <nav class="menu-list" aria-label="Side Project 列表">
+          {
+            projects.map((p) => (
+              <a class="menu-item" href={p.href}>
+                <span class="menu-item-name">
+                  {p.name}
+                  <span class="menu-item-arrow" aria-hidden="true">↗</span>
+                </span>
+                <span class="menu-item-desc">{p.desc}</span>
+              </a>
+            ))
+          }
+        </nav>
+      </section>
     </aside>
   </div>
 </BaseLayout>
@@ -120,6 +171,36 @@ const badges = [
     gap: 1.4rem;
     align-items: start;
     padding: 2rem 0 3.5rem;
+  }
+
+  .col-left {
+    animation-delay: 0.05s;
+  }
+
+  .col-center {
+    animation-delay: 0.12s;
+  }
+
+  .col-right {
+    animation-delay: 0.2s;
+  }
+
+  .col-left,
+  .col-center,
+  .col-right {
+    animation: col-in 0.5s var(--ease) both;
+  }
+
+  @keyframes col-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   .menu-item {
@@ -158,6 +239,36 @@ const badges = [
     font-size: 0.78rem;
     color: var(--ink-3);
     letter-spacing: 0.04em;
+  }
+
+  .pastpapers-card {
+    padding: 1rem;
+  }
+
+  .pastpapers-desc {
+    font-size: 0.82rem;
+    line-height: 1.8;
+    color: var(--ink-2);
+    letter-spacing: 0.04em;
+    margin-bottom: 0.9rem;
+  }
+
+  .pastpapers-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 0.6rem;
+    border: 1px solid var(--ink);
+    background: var(--ink);
+    color: var(--white);
+    font-size: 0.85rem;
+    letter-spacing: 0.15em;
+    transition: background var(--t), color var(--t);
+  }
+
+  .pastpapers-btn:hover {
+    background: #000;
   }
 
   .badge-count {
@@ -228,6 +339,7 @@ const badges = [
     width: 8px;
     height: 8px;
     background: var(--ink);
+    transform: rotate(45deg);
   }
 
   .cal-frame {

@@ -1,5 +1,6 @@
 ---
 import announcements from '../data/announcements';
+import posts from '../data/posts';
 ---
 
 <section class="module" id="news" aria-label="最新消息">
@@ -11,15 +12,56 @@ import announcements from '../data/announcements';
     <span class="news-count">{announcements.length} 則公告</span>
   </h2>
 
-  <div class="news-list">
-    {
-      announcements.map((item) => (
-        <a class="news-item" href={`/news/${item.slug}/`}>
-          <span class="news-item-title">{item.title}</span>
-          <span class="news-date">{item.date}</span>
-        </a>
-      ))
-    }
+  <div class="news-tabs" role="tablist" aria-label="最新消息分類">
+    <button
+      class="news-tab is-active"
+      id="tab-announce"
+      role="tab"
+      aria-selected="true"
+      aria-controls="panel-announce"
+      type="button"
+    >
+      最新消息
+    </button>
+    <button
+      class="news-tab"
+      id="tab-posts"
+      role="tab"
+      aria-selected="false"
+      aria-controls="panel-posts"
+      type="button"
+    >
+      其他文章
+    </button>
+  </div>
+
+  <div class="news-panel is-active" id="panel-announce" role="tabpanel" aria-labelledby="tab-announce">
+    <div class="news-list">
+      {
+        announcements.map((item) => (
+          <a class="news-item" href={`/news/${item.slug}/`}>
+            <span class="news-item-title">{item.title}</span>
+            <span class="news-date">{item.date}</span>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+
+  <div class="news-panel" id="panel-posts" role="tabpanel" aria-labelledby="tab-posts" hidden>
+    <div class="news-list">
+      {
+        posts.map((item) => (
+          <a class="news-item" href={`/posts/${item.slug}/`}>
+            <span class="news-item-title">
+              {item.title}
+              <span class="news-item-excerpt">{item.excerpt}</span>
+            </span>
+            <span class="news-date">{item.date}</span>
+          </a>
+        ))
+      }
+    </div>
   </div>
 </section>
 
@@ -38,6 +80,7 @@ import announcements from '../data/announcements';
     width: 8px;
     height: 8px;
     background: var(--ink);
+    transform: rotate(45deg);
   }
 
   .news-count {
@@ -46,6 +89,52 @@ import announcements from '../data/announcements';
     color: var(--ink-3);
     border: 1px solid var(--border-strong);
     padding: 0.1rem 0.55rem;
+  }
+
+  .news-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-soft);
+  }
+
+  .news-tab {
+    appearance: none;
+    background: none;
+    border: none;
+    border-right: 1px solid var(--border);
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    letter-spacing: 0.15em;
+    color: var(--ink-3);
+    padding: 0.6rem 1.2rem;
+    cursor: pointer;
+    transition: background var(--t), color var(--t);
+    position: relative;
+  }
+
+  .news-tab:hover {
+    color: var(--ink);
+    background: var(--surface);
+  }
+
+  .news-tab.is-active {
+    color: var(--ink);
+    background: var(--surface);
+  }
+
+  .news-tab.is-active::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 2px;
+    background: var(--ink);
+  }
+
+  .news-list {
+    display: flex;
+    flex-direction: column;
   }
 
   .news-item {
@@ -71,6 +160,18 @@ import announcements from '../data/announcements';
     font-size: 0.95rem;
     font-weight: 400;
     letter-spacing: 0.06em;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .news-item-excerpt {
+    font-size: 0.78rem;
+    color: var(--ink-3);
+    letter-spacing: 0.04em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .news-date {
@@ -92,3 +193,25 @@ import announcements from '../data/announcements';
     }
   }
 </style>
+
+<script>
+  const tabs = document.querySelectorAll<HTMLButtonElement>('.news-tab');
+  const panels = document.querySelectorAll<HTMLElement>('.news-panel');
+
+  function activate(tab: HTMLButtonElement) {
+    tabs.forEach((t) => {
+      const active = t === tab;
+      t.classList.toggle('is-active', active);
+      t.setAttribute('aria-selected', String(active));
+    });
+    panels.forEach((p) => {
+      const active = p.id === tab.getAttribute('aria-controls');
+      p.classList.toggle('is-active', active);
+      p.hidden = !active;
+    });
+  }
+
+  tabs.forEach((tab) => {
+    tab.addEventListener('click', () => activate(tab));
+  });
+</script>
