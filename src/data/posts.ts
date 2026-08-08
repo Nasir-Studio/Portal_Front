@@ -113,7 +113,7 @@ const posts: Post[] = [
 
       <h2>📥 程式下載</h2>
       <p>請點選下方連結，直接下載檔案（下載後記得務必先解壓縮後再依照說明書執行）：</p>
-      <p><a class="audit-dl" href="https://github.com/nasircy/ntub2026ITAudit/raw/main/NTUB_Audit.zip">📥 下載 NTUB_Audit.zip</a></p>
+      <p><a class="audit-dl" href="/files/NTUB_Audit.zip">📥 下載 NTUB_Audit.zip</a></p>
       <p class="audit-note">下載說明：點擊上方連結後，瀏覽器將會直接下載 .zip 壓縮檔。下載後請將其「解壓縮」，再以「最高管理員」執行 NTUB_Audit.bat。</p>
 
       <h2>功能說明</h2>

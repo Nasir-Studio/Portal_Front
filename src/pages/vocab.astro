@@ -1,0 +1,847 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<style is:global>
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--ink-3);
+    text-decoration: none;
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
+    transition: color 0.2s;
+  }
+
+  .back-link:hover {
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .page-header {
+    margin-bottom: 2rem;
+    animation: fadeIn 0.5s ease-out;
+  }
+
+  .page-header h1 {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .page-header p {
+    color: var(--ink-3);
+    font-size: 0.95rem;
+  }
+
+  .voc-setup {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    max-width: 400px;
+    margin: 1rem auto;
+    padding: 1.5rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 0px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+    animation: fadeIn 0.5s ease-out 0.1s both;
+  }
+
+  .voc-setup-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .voc-setup-label {
+    font-family: var(--font-serif);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .voc-select {
+    width: 100%;
+    padding: 0.65rem 1rem;
+    border: 1.5px solid var(--border);
+    border-radius: 0px;
+    background: var(--surface);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+
+  .voc-select:focus {
+    border-color: var(--ink);
+  }
+
+  .voc-start-btn {
+    width: 100%;
+    padding: 0.75rem;
+    background: var(--ink);
+    color: var(--white);
+    border: none;
+    border-radius: 0px;
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.15s, transform 0.1s;
+    text-align: center;
+    margin-top: 0.5rem;
+  }
+
+  .voc-start-btn:hover {
+    opacity: 0.85;
+    transform: translateY(-1px);
+  }
+
+  .voc-start-btn:active {
+    transform: translateY(0);
+  }
+
+  .voc-start-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  .voc-status {
+    font-size: 0.82rem;
+    color: var(--ink-3);
+    line-height: 1.5;
+    text-align: center;
+    background: var(--bg-soft);
+    padding: 0.6rem 0.8rem;
+    border-radius: 0px;
+    margin-top: 0.25rem;
+  }
+
+  .voc-quiz {
+    border: 1px solid var(--border);
+    border-radius: 0px;
+    overflow: hidden;
+    background: var(--surface);
+    animation: fadeIn 0.4s ease-out;
+  }
+
+  .voc-quiz-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1.1rem;
+    background: var(--bg-soft);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .voc-abort-btn {
+    padding: 0.25rem 0.6rem;
+    background: none;
+    border: 1px solid var(--border-strong);
+    border-radius: 0px;
+    color: var(--ink-3);
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s;
+  }
+
+  .voc-abort-btn:hover {
+    border-color: var(--ink);
+    color: var(--ink);
+  }
+
+  .voc-quiz-title {
+    font-family: var(--font-serif);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .voc-quiz-progress {
+    font-family: var(--font-sans);
+    font-size: 0.78rem;
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .voc-quiz-body {
+    padding: 1.5rem 1.2rem;
+    min-height: 180px;
+  }
+
+  .voc-question-type {
+    display: inline-block;
+    font-size: 0.68rem;
+    font-family: var(--font-sans);
+    font-weight: 700;
+    color: var(--white);
+    background: var(--ink);
+    border-radius: 0px;
+    padding: 0.15rem 0.5rem;
+    margin-bottom: 0.85rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .voc-question-word {
+    font-family: var(--font-serif);
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 0.4rem;
+    line-height: 1.3;
+  }
+
+  .voc-question-hint {
+    font-size: 0.82rem;
+    color: var(--ink-3);
+    margin-bottom: 1rem;
+  }
+
+  .voc-input-row { display: flex; gap: 0.6rem; }
+
+  .voc-input {
+    flex: 1;
+    padding: 0.65rem 1rem;
+    border: 1.5px solid var(--border);
+    border-radius: 0px;
+    background: var(--surface);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .voc-input:focus {
+    border-color: var(--ink);
+    box-shadow: 0 0 0 3px rgba(28, 28, 28, 0.1);
+  }
+
+  .voc-input.correct { border-color: #4caf50; background: rgba(76, 175, 80, 0.07); }
+  .voc-input.wrong { border-color: #e53935; background: rgba(229, 57, 53, 0.07); }
+
+  .voc-submit-btn {
+    padding: 0.65rem 1.2rem;
+    background: var(--ink);
+    color: var(--white);
+    border: none;
+    border-radius: 0px;
+    font-family: var(--font-sans);
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: opacity 0.15s, transform 0.1s;
+  }
+
+  .voc-submit-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+
+  .voc-choices {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.65rem;
+  }
+
+  .voc-choice {
+    padding: 0.85rem 1rem;
+    border: 1.5px solid var(--border);
+    border-radius: 0px;
+    background: var(--surface);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 0.92rem;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s, transform 0.1s;
+    text-align: left;
+    line-height: 1.5;
+  }
+
+  .voc-choice:hover:not(.chosen) {
+    border-color: var(--ink);
+    background: var(--bg-soft);
+    transform: translateY(-1px);
+  }
+
+  .voc-choice.correct-choice { border-color: #4caf50; background: rgba(76, 175, 80, 0.08); color: #388e3c; font-weight: 600; }
+  .voc-choice.wrong-choice { border-color: #e53935; background: rgba(229, 57, 53, 0.08); color: #c62828; }
+  .voc-choice.chosen { pointer-events: none; }
+
+  .voc-feedback {
+    margin-top: 1rem;
+    padding: 0.7rem 1rem;
+    border-radius: 0px;
+    font-size: 0.88rem;
+    font-family: var(--font-sans);
+    font-weight: 500;
+  }
+
+  .voc-feedback.correct-fb { background: rgba(76, 175, 80, 0.08); color: #388e3c; border-left: 3px solid #4caf50; }
+  .voc-feedback.wrong-fb { background: rgba(229, 57, 53, 0.08); color: #c62828; border-left: 3px solid #e53935; }
+
+  .voc-quiz-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.65rem 1.1rem;
+    border-top: 1px solid var(--border);
+    background: var(--bg-soft);
+  }
+
+  .voc-quiz-score { font-family: var(--font-sans); font-size: 0.82rem; color: var(--ink-3); font-weight: 500; }
+
+  .voc-quiz-next {
+    padding: 0.4rem 1rem;
+    background: var(--ink);
+    color: var(--white);
+    border: none;
+    border-radius: 0px;
+    font-family: var(--font-sans);
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+
+  .voc-quiz-next:hover { opacity: 0.85; }
+
+  .voc-result {
+    text-align: center;
+    padding: 2rem 1.2rem;
+    border: 1px solid var(--border);
+    border-radius: 0px;
+    background: var(--surface);
+    animation: fadeIn 0.4s ease-out;
+  }
+
+  .voc-result-title { font-family: var(--font-serif); font-size: 1rem; color: var(--ink-3); margin-bottom: 0.5rem; }
+  .voc-result-score { font-size: 3rem; font-weight: 700; font-family: var(--font-serif); color: var(--ink); line-height: 1; margin-bottom: 0.25rem; }
+  .voc-result-pct { font-size: 0.95rem; color: var(--ink-3); font-family: var(--font-sans); margin-bottom: 1.5rem; }
+
+  .voc-result-detail {
+    text-align: left;
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--border);
+    border-radius: 0px;
+    overflow: hidden;
+  }
+
+  .voc-result-word {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0.85rem;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.88rem;
+    gap: 1rem;
+  }
+
+  .voc-result-word:last-child { border-bottom: none; }
+  .voc-result-word .wrong-word { color: #c62828; font-weight: 600; }
+  .voc-result-word .correct-word { color: #388e3c; }
+
+  .voc-back-btn {
+    padding: 0.6rem 1.5rem;
+    background: var(--ink);
+    color: var(--white);
+    border: none;
+    border-radius: 0px;
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.15s, transform 0.1s;
+  }
+
+  .voc-back-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+
+  @media (max-width: 640px) {
+    .voc-choices {
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+    }
+
+    .voc-choice {
+      padding: 0.65rem 0.85rem;
+      font-size: 0.88rem;
+    }
+
+    .voc-quiz-body {
+      padding: 1rem 0.8rem;
+      min-height: auto;
+    }
+
+    .voc-question-word {
+      font-size: 1.3rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .voc-question-hint {
+      font-size: 0.78rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .voc-feedback {
+      margin-top: 0.6rem;
+      padding: 0.5rem 0.8rem;
+      font-size: 0.8rem;
+    }
+  }
+</style>
+
+<BaseLayout title="VOC 單字測驗 ｜ 羊家的入口">
+  <div class="container">
+    <a href="/" class="back-link">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6" /></svg>
+      返回羊家的入口
+    </a>
+
+    <div class="page-header">
+      <h1>VOC 單字測驗</h1>
+      <p>TOEIC 不熟單字 — 背單字刷題，支援多種題型。</p>
+    </div>
+
+    <div id="voc-setup" class="voc-setup">
+      <div class="voc-setup-group">
+        <label for="voc-day-select" class="voc-setup-label">選擇天數：</label>
+        <select id="voc-day-select" class="voc-select"></select>
+      </div>
+      <div class="voc-setup-group">
+        <label for="voc-mode-select" class="voc-setup-label">測驗模式：</label>
+        <select id="voc-mode-select" class="voc-select">
+          <option value="mixed">隨機混合</option>
+          <option value="type-en">輸入英文</option>
+          <option value="pick-zh">選擇中文</option>
+          <option value="pick-en">選擇英文</option>
+        </select>
+      </div>
+      <div id="voc-status" class="voc-status"></div>
+      <button id="voc-start-btn" class="voc-start-btn">開始測驗</button>
+    </div>
+
+    <div id="voc-quiz" class="voc-quiz" style="display:none">
+      <div class="voc-quiz-header">
+        <span class="voc-quiz-title" id="voc-quiz-title">Day 1</span>
+        <div style="display: flex; align-items: center; gap: 0.8rem;">
+          <span class="voc-quiz-progress" id="voc-quiz-progress">1 / 20</span>
+          <button id="voc-quiz-abort" class="voc-abort-btn">返回</button>
+        </div>
+      </div>
+      <div class="voc-quiz-body" id="voc-quiz-body"></div>
+      <div class="voc-quiz-footer">
+        <span class="voc-quiz-score" id="voc-quiz-score">✓ 0 &nbsp; ✗ 0</span>
+        <button class="voc-quiz-next" id="voc-quiz-next" style="display:none">下一題 →</button>
+      </div>
+    </div>
+
+    <div id="voc-result" class="voc-result" style="display:none"></div>
+  </div>
+</BaseLayout>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" is:inline></script>
+<script>
+  declare const Swal: any;
+
+  (function () {
+    const VOC_BASE = '/voc/';
+    const STORAGE_KEY = 'toeic-voc-history';
+    const MAX_DAY = 365;
+
+    const setupEl = document.getElementById('voc-setup')!;
+    const daySelectEl = document.getElementById('voc-day-select') as HTMLSelectElement;
+    const modeSelectEl = document.getElementById('voc-mode-select') as HTMLSelectElement;
+    const statusEl = document.getElementById('voc-status')!;
+    const startBtn = document.getElementById('voc-start-btn') as HTMLButtonElement;
+    const quizEl = document.getElementById('voc-quiz')!;
+    const quizTitle = document.getElementById('voc-quiz-title')!;
+    const quizProgress = document.getElementById('voc-quiz-progress')!;
+    const quizBody = document.getElementById('voc-quiz-body')!;
+    const quizScore = document.getElementById('voc-quiz-score')!;
+    const quizNext = document.getElementById('voc-quiz-next')! as HTMLButtonElement;
+    const quizAbortBtn = document.getElementById('voc-quiz-abort') as HTMLButtonElement;
+    const resultEl = document.getElementById('voc-result')!;
+
+    let allDays: number[] = [];
+    let currentWords: { en: string; zh: string }[] = [];
+    let currentDay = 0;
+    let qIndex = 0;
+    let correct = 0;
+    let wrong = 0;
+    let answered = false;
+    let wrongWords: { en: string; zh: string }[] = [];
+    let originalTestedWords: string[] = [];
+    let answeredWords: string[] = [];
+    let totalWordsCount = 0;
+
+    function showNextButton() {
+      quizNext.style.display = 'inline-block';
+      setTimeout(() => {
+        quizNext.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 100);
+    }
+
+    function recordWordAnswered(wordEn: string) {
+      wordEn = wordEn.toLowerCase();
+      if (answeredWords.includes(wordEn)) return;
+      answeredWords.push(wordEn);
+
+      let tempTested = [...originalTestedWords];
+      for (const w of answeredWords) {
+        if (!tempTested.includes(w)) {
+          tempTested.push(w);
+          if (tempTested.length >= totalWordsCount) {
+            tempTested = [];
+            for (const prev of answeredWords) {
+              if (originalTestedWords.includes(prev)) {
+                tempTested.push(prev);
+              }
+            }
+          }
+        }
+      }
+      saveTestedWords(currentDay, tempTested);
+    }
+
+    function loadHistory(): Record<number, { correct: number; wrong: number; date: string }> {
+      try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch { return {}; }
+    }
+
+    function saveHistory(day: number, c: number, w: number) {
+      const h = loadHistory();
+      h[day] = { correct: c, wrong: w, date: new Date().toISOString().slice(0, 10) };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(h));
+    }
+
+    const TESTED_KEY = 'toeic-voc-tested';
+
+    function loadTestedWords(day: number): string[] {
+      try {
+        const all = JSON.parse(localStorage.getItem(TESTED_KEY) || '{}');
+        return all[day] || [];
+      } catch {
+        return [];
+      }
+    }
+
+    function saveTestedWords(day: number, list: string[]) {
+      try {
+        const all = JSON.parse(localStorage.getItem(TESTED_KEY) || '{}');
+        all[day] = list;
+        localStorage.setItem(TESTED_KEY, JSON.stringify(all));
+      } catch {}
+    }
+
+    async function updateDayStatus() {
+      const day = parseInt(daySelectEl.value);
+      if (!day) {
+        statusEl.textContent = '';
+        return;
+      }
+      try {
+        const r = await fetch(VOC_BASE + `day${day}.json`);
+        const data = await r.json();
+        const total = data.words.length;
+        const tested = loadTestedWords(day);
+        const remaining = total - tested.length;
+        statusEl.innerHTML = `此天數共有 <strong>${total}</strong> 個單字，目前這一輪還剩 <strong>${remaining}</strong> 個未測試。`;
+      } catch {
+        statusEl.textContent = '';
+      }
+    }
+
+    async function discoverDays() {
+      daySelectEl.innerHTML = '<option value="">載入中…</option>';
+      try {
+        const r = await fetch(VOC_BASE + 'manifest.json');
+        const data = await r.json();
+        allDays = data.days || [];
+      } catch {
+        allDays = [];
+      }
+      renderDayList();
+    }
+
+    function renderDayList() {
+      if (!allDays.length) {
+        daySelectEl.innerHTML = '<option value="">無可用單字檔</option>';
+        startBtn.disabled = true;
+        statusEl.textContent = '';
+        return;
+      }
+      const hist = loadHistory();
+      daySelectEl.innerHTML = allDays.map(d => {
+        const h = hist[d];
+        const badge = h ? ` (✓${h.correct} ✗${h.wrong})` : '';
+        return `<option value="${d}">TOEIC VOC DAY ${d}${badge}</option>`;
+      }).join('');
+      startBtn.disabled = false;
+      updateDayStatus();
+    }
+
+    async function startQuiz(day: number) {
+      currentDay = day;
+      let data;
+      try {
+        const r = await fetch(VOC_BASE + `day${day}.json`);
+        data = await r.json();
+      } catch {
+        Swal.fire({
+          title: '載入失敗',
+          text: '無法讀取單字檔案，請確認網路連線或稍後再試。',
+          icon: 'error',
+          confirmButtonColor: 'var(--ink)',
+          background: '#fafaf8',
+          color: '#2c2c2c'
+        });
+        return;
+      }
+      qIndex = 0; correct = 0; wrong = 0; wrongWords = [];
+      answeredWords = [];
+      totalWordsCount = data.words.length;
+
+      let tested = loadTestedWords(day);
+      originalTestedWords = [...tested];
+
+      let pool = data.words.filter(w => !tested.includes(w.en.toLowerCase()));
+      let chosenWords = [];
+
+      if (pool.length >= 40) {
+        shuffle(pool);
+        chosenWords = pool.slice(0, 40);
+      } else {
+        chosenWords = [...pool];
+        shuffle(chosenWords);
+        const needed = Math.min(40, totalWordsCount) - chosenWords.length;
+        if (needed > 0) {
+          const justChoseEn = chosenWords.map(w => w.en.toLowerCase());
+          let freshPool = data.words.filter(w => !justChoseEn.includes(w.en.toLowerCase()));
+          shuffle(freshPool);
+          const topUp = freshPool.slice(0, needed);
+          chosenWords = [...chosenWords, ...topUp];
+        }
+      }
+
+      currentWords = chosenWords;
+      setupEl.style.display = 'none';
+      resultEl.style.display = 'none';
+      quizEl.style.display = 'block';
+      quizNext.style.display = 'none';
+      renderQuestion();
+    }
+
+    function renderQuestion() {
+      if (qIndex >= currentWords.length) { showResult(); return; }
+      answered = false;
+      quizTitle.textContent = `TOEIC VOC DAY ${currentDay}`;
+      quizProgress.textContent = `${qIndex + 1} / ${currentWords.length}`;
+      quizScore.textContent = `✓ ${correct}  ✗ ${wrong}`;
+      quizNext.style.display = 'none';
+
+      const word = currentWords[qIndex];
+      const selectedMode = modeSelectEl.value;
+      let mode = 0;
+      if (selectedMode === 'mixed') {
+        mode = Math.floor(Math.random() * 3);
+      } else if (selectedMode === 'type-en') {
+        mode = 0;
+      } else if (selectedMode === 'pick-zh') {
+        mode = 1;
+      } else if (selectedMode === 'pick-en') {
+        mode = 2;
+      }
+
+      if (mode === 0) {
+        renderTypeEn(word);
+      } else if (mode === 1) {
+        renderPickZhFromEn(word);
+      } else {
+        renderPickEnFromZh(word);
+      }
+    }
+
+    function renderTypeEn(word: { en: string; zh: string }) {
+      quizBody.innerHTML = `
+        <div class="voc-question-type">輸入英文</div>
+        <div class="voc-question-word">${word.zh}</div>
+        <div class="voc-question-hint">請打出正確的英文單字</div>
+        <div class="voc-input-row">
+          <input class="voc-input" id="voc-answer" type="text" autocomplete="off" spellcheck="false" placeholder="輸入英文…" />
+          <button class="voc-submit-btn" id="voc-submit">確認</button>
+        </div>
+        <div id="voc-feedback"></div>
+      `;
+      const input = document.getElementById('voc-answer') as HTMLInputElement;
+      const submitBtn = document.getElementById('voc-submit') as HTMLButtonElement;
+      const fb = document.getElementById('voc-feedback')!;
+
+      function checkAnswer() {
+        if (answered) return;
+        answered = true;
+        const ans = input.value.trim().toLowerCase();
+        const correctAns = word.en.toLowerCase();
+
+        recordWordAnswered(word.en);
+
+        if (ans === correctAns) {
+          correct++;
+          input.classList.add('correct');
+          fb.innerHTML = `<div class="voc-feedback correct-fb">✓ 正確！</div>`;
+        } else {
+          wrong++;
+          wrongWords.push(word);
+          input.classList.add('wrong');
+          fb.innerHTML = `<div class="voc-feedback wrong-fb">✗ 答案：${word.en}</div>`;
+        }
+        quizScore.textContent = `✓ ${correct}  ✗ ${wrong}`;
+        submitBtn.style.display = 'none';
+        input.blur();
+        input.disabled = true;
+        showNextButton();
+      }
+
+      submitBtn.addEventListener('click', checkAnswer);
+      input.addEventListener('keydown', e => { if (e.key === 'Enter') checkAnswer(); });
+      input.focus();
+    }
+
+    function renderPickZhFromEn(word: { en: string; zh: string }) {
+      const options = pickDistractors(word, 'zh');
+      quizBody.innerHTML = `
+        <div class="voc-question-type">選中文</div>
+        <div class="voc-question-word">${word.en}</div>
+        <div class="voc-choices">${options.map(o => `<button class="voc-choice" data-val="${o}">${o}</button>`).join('')}</div>
+        <div id="voc-feedback"></div>
+      `;
+      bindChoices(word, 'zh');
+    }
+
+    function renderPickEnFromZh(word: { en: string; zh: string }) {
+      const options = pickDistractors(word, 'en');
+      quizBody.innerHTML = `
+        <div class="voc-question-type">選英文</div>
+        <div class="voc-question-word">${word.zh}</div>
+        <div class="voc-choices">${options.map(o => `<button class="voc-choice" data-val="${o}">${o}</button>`).join('')}</div>
+        <div id="voc-feedback"></div>
+      `;
+      bindChoices(word, 'en');
+    }
+
+    function pickDistractors(word: { en: string; zh: string }, field: 'en' | 'zh'): string[] {
+      const pool = currentWords.filter(w => w[field] !== word[field]);
+      shuffle(pool);
+      const distractors = pool.slice(0, 3).map(w => w[field]);
+      const options = [...distractors, word[field]];
+      shuffle(options);
+      return options;
+    }
+
+    function bindChoices(word: { en: string; zh: string }, field: 'en' | 'zh') {
+      const fb = document.getElementById('voc-feedback')!;
+      quizBody.querySelectorAll('.voc-choice').forEach(btn => {
+        btn.addEventListener('click', () => {
+          if (answered) return;
+          answered = true;
+
+          recordWordAnswered(word.en);
+
+          const val = (btn as HTMLElement).dataset.val!;
+          const correctVal = word[field];
+          (btn as HTMLElement).classList.add('chosen');
+
+          if (val === correctVal) {
+            correct++;
+            (btn as HTMLElement).classList.add('correct-choice');
+            fb.innerHTML = `<div class="voc-feedback correct-fb">✓ 正確！</div>`;
+          } else {
+            wrong++;
+            wrongWords.push(word);
+            (btn as HTMLElement).classList.add('wrong-choice');
+            quizBody.querySelectorAll('.voc-choice').forEach(c => {
+              if ((c as HTMLElement).dataset.val === correctVal) c.classList.add('correct-choice');
+            });
+            fb.innerHTML = `<div class="voc-feedback wrong-fb">✗ 正確答案已標示</div>`;
+          }
+          quizScore.textContent = `✓ ${correct}  ✗ ${wrong}`;
+          showNextButton();
+        });
+      });
+    }
+
+    function showResult() {
+      quizEl.style.display = 'none';
+      resultEl.style.display = 'block';
+      saveHistory(currentDay, correct, wrong);
+
+      const total = currentWords.length;
+      const pct = Math.round((correct / total) * 100);
+      let detailHTML = '';
+      if (wrongWords.length) {
+        detailHTML = `<div class="voc-result-detail">${wrongWords.map(w =>
+          `<div class="voc-result-word"><span class="wrong-word">${w.en}</span><span>${w.zh}</span></div>`
+        ).join('')}</div>`;
+      }
+
+      resultEl.innerHTML = `
+        <div class="voc-result-title">TOEIC VOC DAY ${currentDay}</div>
+        <div class="voc-result-score">${correct} / ${total}</div>
+        <div class="voc-result-pct">正確率 ${pct}%</div>
+        ${detailHTML}
+        <button class="voc-back-btn" id="voc-back">返回選單</button>
+      `;
+      (document.getElementById('voc-back') as HTMLButtonElement).addEventListener('click', backToDays);
+    }
+
+    function backToDays() {
+      quizEl.style.display = 'none';
+      resultEl.style.display = 'none';
+      setupEl.style.display = '';
+      renderDayList();
+    }
+
+    startBtn.addEventListener('click', () => {
+      const day = parseInt(daySelectEl.value);
+      if (day) startQuiz(day);
+    });
+
+    quizAbortBtn.addEventListener('click', () => {
+      Swal.fire({
+        title: '確定要離開嗎？',
+        text: '本次測驗的進度將不會被儲存。',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: 'var(--ink)',
+        cancelButtonColor: 'var(--ink-3)',
+        confirmButtonText: '確定離開',
+        cancelButtonText: '取消',
+        background: '#fafaf8',
+        color: '#2c2c2c'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          backToDays();
+        }
+      });
+    });
+
+    quizNext.addEventListener('click', () => { qIndex++; renderQuestion(); });
+    daySelectEl.addEventListener('change', updateDayStatus);
+
+    discoverDays();
+  })();
+
+  function shuffle<T>(arr: T[]): T[] {
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+</script>
