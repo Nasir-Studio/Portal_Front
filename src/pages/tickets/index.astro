@@ -9,8 +9,11 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
     <div class="view-list" id="view-list">
       <div class="view-head">
-        <span class="view-head-title">我的工單</span>
-        <button class="btn btn--sm" id="new-ticket-btn" type="button">開新工單</button>
+        <span class="view-head-title" id="view-head-title">我的工單</span>
+        <div class="view-head-actions">
+          <button class="btn btn--sm btn--ghost" id="users-btn" type="button" hidden>會員管理</button>
+          <button class="btn btn--sm" id="new-ticket-btn" type="button">開新工單</button>
+        </div>
       </div>
 
       <div class="new-ticket-wrap" id="new-ticket-wrap" hidden>
@@ -33,6 +36,39 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
       <div class="ticket-list" id="ticket-list">
         <p class="slot-empty">載入中…</p>
+      </div>
+    </div>
+
+    <div class="view-users" id="view-users" hidden>
+      <div class="users-card">
+        <div class="users-head">
+          <h2 class="users-title">會員管理</h2>
+          <button class="btn btn--sm btn--ghost" id="users-back" type="button">← 返回工單</button>
+        </div>
+
+        <form class="user-create-form" id="user-create-form">
+          <p class="users-sub">建立會員帳號</p>
+          <label class="field">
+            <span class="field-label">Email</span>
+            <input id="uc-email" type="email" maxlength="254" autocomplete="off" required />
+          </label>
+          <label class="field">
+            <span class="field-label">密碼（至少 6 碼）</span>
+            <input id="uc-password" type="text" minlength="6" maxlength="200" autocomplete="off" required />
+          </label>
+          <label class="field">
+            <span class="field-label">顯示名稱（選填）</span>
+            <input id="uc-name" type="text" maxlength="50" autocomplete="off" />
+          </label>
+          <p class="form-msg" id="uc-msg" hidden></p>
+          <div class="book-actions">
+            <button class="btn" type="submit">建立帳號</button>
+          </div>
+        </form>
+
+        <div class="user-list" id="user-list">
+          <p class="slot-empty">載入中…</p>
+        </div>
       </div>
     </div>
 
@@ -74,6 +110,12 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     font-size: 1.25rem;
     font-weight: 600;
     letter-spacing: 0.1em;
+  }
+
+  .view-head-actions {
+    display: flex;
+    gap: 0.6rem;
+    align-items: center;
   }
 
   .btn--sm {
@@ -413,6 +455,111 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     color: #a33;
     border-color: #a33;
   }
+
+  .users-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--ink);
+    margin-bottom: 1.4rem;
+    animation: module-in 0.3s var(--ease) both;
+  }
+
+  .users-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 1.3rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .users-title {
+    font-family: var(--font-serif);
+    font-size: 1.15rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+  }
+
+  .users-sub {
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: var(--ink-2);
+  }
+
+  .user-create-form {
+    padding: 1rem 1.3rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .user-create-form input {
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    padding: 0.55rem 0.75rem;
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    border-radius: 0;
+    color: var(--ink);
+  }
+
+  .user-create-form input:focus {
+    outline: 2px solid var(--ink);
+    outline-offset: 0;
+    border-color: var(--ink);
+  }
+
+  .user-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .user-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.8rem 1.3rem;
+    flex-wrap: wrap;
+  }
+
+  .user-row + .user-row {
+    border-top: 1px solid var(--border);
+  }
+
+  .user-row-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    min-width: 0;
+  }
+
+  .user-row-email {
+    font-size: 0.95rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+  }
+
+  .user-row-meta {
+    font-size: 0.78rem;
+    color: var(--ink-3);
+    letter-spacing: 0.06em;
+  }
+
+  .user-actions {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .status-inactive {
+    color: #a33;
+    border-color: #d8b8b8;
+    background: #f8eeee;
+  }
 </style>
 
 <script>
@@ -451,16 +598,27 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     images: TicketImage[];
   };
 
+  type AdminUser = {
+    id: number;
+    email: string;
+    role: 'admin' | 'member';
+    displayName: string;
+    active: boolean;
+    createdAt: number;
+  };
+
   const TZ = 'Asia/Taipei';
   const user = currentUser();
   const adminMode = new URLSearchParams(window.location.search).get('admin') === '1';
 
   const viewList = document.querySelector('#view-list');
   const viewDetail = document.querySelector('#view-detail');
+  const viewUsers = document.querySelector('#view-users');
   const ticketList = document.querySelector('#ticket-list');
   const detailCard = document.querySelector('#detail-card');
   const newTicketWrap = document.querySelector('#new-ticket-wrap');
   const newTicketBtn = document.querySelector('#new-ticket-btn');
+  const usersBtn = document.querySelector('#users-btn');
 
   const STATUS_LABEL: Record<TicketSummary['status'], string> = {
     open: '待處理',
@@ -495,9 +653,10 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     }
   }
 
-  function showView(name: 'list' | 'detail'): void {
+  function showView(name: 'list' | 'detail' | 'users'): void {
     if (viewList !== null) viewList.hidden = name !== 'list';
     if (viewDetail !== null) viewDetail.hidden = name !== 'detail';
+    if (viewUsers !== null) viewUsers.hidden = name !== 'users';
   }
 
   async function loadList(): Promise<void> {
@@ -670,11 +829,12 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     });
     actions.append(replyForm);
 
-    // 圖片上傳
+    // 圖片上傳（一次最多 10 張、單檔 ≤10MB）
     const uploadRow = document.createElement('div');
     uploadRow.className = 'upload-row';
     const fileInput = document.createElement('input');
     fileInput.type = 'file';
+    fileInput.multiple = true;
     fileInput.accept = 'image/jpeg,image/png,image/webp,image/gif';
     const uploadBtn = document.createElement('button');
     uploadBtn.type = 'button';
@@ -683,24 +843,31 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     const uploadMsg = document.createElement('span');
     uploadMsg.className = 'form-msg';
     uploadBtn.addEventListener('click', async () => {
-      const file = fileInput.files?.[0];
-      if (file === undefined) {
+      const files = Array.from(fileInput.files ?? []);
+      if (files.length === 0) {
         uploadMsg.textContent = '請先選擇圖片';
         uploadMsg.className = 'form-msg err';
         return;
       }
-      if (file.size > 5 * 1024 * 1024) {
-        uploadMsg.textContent = '圖片需小於 5MB';
+      if (files.length > 10) {
+        uploadMsg.textContent = '一次最多上傳 10 張圖片';
         uploadMsg.className = 'form-msg err';
         return;
       }
+      for (const f of files) {
+        if (f.size > 10 * 1024 * 1024) {
+          uploadMsg.textContent = '每張圖片需小於 10MB';
+          uploadMsg.className = 'form-msg err';
+          return;
+        }
+      }
       uploadBtn.disabled = true;
-      uploadMsg.textContent = '上傳中…';
+      uploadMsg.textContent = `上傳中（${files.length} 張）…`;
       uploadMsg.className = 'form-msg';
       const formData = new FormData();
-      formData.append('file', file);
+      for (const f of files) formData.append('file', f);
       try {
-        await api<{ image: { id: number; url: string } }>(`/tickets/${ticket.id}/images`, {
+        await api<{ images: { id: number; url: string }[] }>(`/tickets/${ticket.id}/images`, {
           method: 'POST',
           formData,
           auth: true,
@@ -709,7 +876,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       } catch (err) {
         if (err instanceof ApiError) {
           if (err.code === 'unsupported_image_type') uploadMsg.textContent = '僅支援 JPEG / PNG / WebP / GIF';
-          else if (err.code === 'image_too_large') uploadMsg.textContent = '圖片需小於 5MB';
+          else if (err.code === 'image_too_large') uploadMsg.textContent = '每張圖片需小於 10MB';
+          else if (err.code === 'too_many_files') uploadMsg.textContent = '一次最多上傳 10 張圖片';
           else uploadMsg.textContent = '上傳失敗，請稍後再試';
         } else {
           uploadMsg.textContent = '上傳失敗';
@@ -769,6 +937,169 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     }
   }
 
+  function userStatusBadge(active: boolean): HTMLSpanElement {
+    const el = document.createElement('span');
+    el.className = `status-badge ${active ? 'status-replied' : 'status-inactive'}`;
+    el.textContent = active ? '啟用中' : '已停用';
+    return el;
+  }
+
+  async function loadUsers(): Promise<void> {
+    const list = document.querySelector('#user-list');
+    if (list === null) return;
+    list.innerHTML = '<p class="slot-empty">載入中…</p>';
+    try {
+      const data = await api<{ users: AdminUser[] }>('/admin/users', { auth: true });
+      renderUsers(data.users);
+    } catch (err) {
+      if (err instanceof ApiError && err.status === 401) {
+        window.location.href = '/login/';
+        return;
+      }
+      list.innerHTML = '<p class="slot-empty">無法載入會員列表</p>';
+    }
+  }
+
+  function renderUsers(users: AdminUser[]): void {
+    const list = document.querySelector('#user-list');
+    if (list === null) return;
+    if (users.length === 0) {
+      list.innerHTML = '<p class="slot-empty">尚無會員</p>';
+      return;
+    }
+    list.replaceChildren(
+      ...users.map((u) => {
+        const row = document.createElement('div');
+        row.className = 'user-row';
+
+        const info = document.createElement('div');
+        info.className = 'user-row-info';
+        const email = document.createElement('span');
+        email.className = 'user-row-email';
+        email.textContent = u.email;
+        const meta = document.createElement('span');
+        meta.className = 'user-row-meta';
+        meta.textContent = `#${u.id} · ${u.role === 'admin' ? '管理員' : '會員'} · ${fmtDate(u.createdAt)}`;
+        if (u.displayName.length > 0) meta.textContent += ` · ${u.displayName}`;
+        info.append(email, meta);
+
+        const right = document.createElement('div');
+        right.className = 'user-actions';
+        right.append(userStatusBadge(u.active));
+
+        if (u.role === 'member') {
+          const toggleBtn = document.createElement('button');
+          toggleBtn.type = 'button';
+          toggleBtn.className = 'btn btn--sm btn--ghost';
+          toggleBtn.textContent = u.active ? '停用' : '啟用';
+          toggleBtn.addEventListener('click', async () => {
+            if (!window.confirm(`確定要${u.active ? '停用' : '啟用'} ${u.email} 嗎？`)) return;
+            toggleBtn.disabled = true;
+            try {
+              await api<void>(`/admin/users/${u.id}/active`, {
+                method: 'PATCH',
+                body: { active: !u.active },
+                auth: true,
+              });
+              await loadUsers();
+            } catch {
+              toggleBtn.disabled = false;
+            }
+          });
+          right.append(toggleBtn);
+
+          const pwBtn = document.createElement('button');
+          pwBtn.type = 'button';
+          pwBtn.className = 'btn btn--sm btn--ghost';
+          pwBtn.textContent = '重置密碼';
+          pwBtn.addEventListener('click', async () => {
+            const next = window.prompt(`為 ${u.email} 設定新密碼（至少 6 碼）：`);
+            if (next === null) return;
+            if (next.length < 6) {
+              window.alert('密碼至少 6 碼');
+              return;
+            }
+            pwBtn.disabled = true;
+            try {
+              await api<void>(`/admin/users/${u.id}/password`, {
+                method: 'PATCH',
+                body: { password: next },
+                auth: true,
+              });
+              window.alert('密碼已更新');
+            } catch {
+              window.alert('更新失敗，請稍後再試');
+            } finally {
+              pwBtn.disabled = false;
+            }
+          });
+          right.append(pwBtn);
+        }
+
+        row.append(info, right);
+        return row;
+      }),
+    );
+  }
+
+  usersBtn?.addEventListener('click', () => {
+    showView('users');
+    void loadUsers();
+  });
+
+  document.querySelector('#users-back')?.addEventListener('click', () => {
+    showView('list');
+    void loadList();
+  });
+
+  document.querySelector('#user-create-form')?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const emailInput = document.querySelector('#uc-email') as HTMLInputElement;
+    const passwordInput = document.querySelector('#uc-password') as HTMLInputElement;
+    const nameInput = document.querySelector('#uc-name') as HTMLInputElement;
+    const msg = document.querySelector('#uc-msg') as HTMLParagraphElement;
+    const submitBtn = event.submitter as HTMLButtonElement;
+    const email = emailInput.value.trim().toLowerCase();
+    const password = passwordInput.value;
+    if (email.length === 0 || password.length === 0) {
+      msg.textContent = '請填寫 Email 與密碼';
+      msg.className = 'form-msg err';
+      msg.hidden = false;
+      return;
+    }
+    submitBtn.disabled = true;
+    msg.hidden = true;
+    try {
+      await api<{ user: { id: number; email: string } }>('/admin/users', {
+        method: 'POST',
+        body: {
+          email,
+          password,
+          displayName: nameInput.value.trim(),
+        },
+        auth: true,
+      });
+      emailInput.value = '';
+      passwordInput.value = '';
+      nameInput.value = '';
+      msg.textContent = '帳號已建立';
+      msg.className = 'form-msg';
+      msg.hidden = false;
+      void loadUsers();
+    } catch (err) {
+      if (err instanceof ApiError) {
+        if (err.code === 'email_taken') msg.textContent = '此 Email 已被使用';
+        else if (err.code === 'validation_failed') msg.textContent = '請檢查輸入內容（密碼至少 6 碼）';
+        else msg.textContent = '建立失敗，請稍後再試';
+      } else {
+        msg.textContent = '建立失敗';
+      }
+      msg.className = 'form-msg err';
+      msg.hidden = false;
+      submitBtn.disabled = false;
+    }
+  });
+
   // 新工單表單
   newTicketBtn?.addEventListener('click', () => {
     if (newTicketWrap === null) return;
@@ -825,6 +1156,11 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   // 初始化
   const params = new URLSearchParams(window.location.search);
   const id = params.get('id');
+  if (adminMode && isAdmin()) {
+    const headTitle = document.querySelector('#view-head-title');
+    if (headTitle !== null) headTitle.textContent = '全部工單';
+    if (usersBtn !== null) usersBtn.hidden = false;
+  }
   if (user === null) {
     requireLogin();
   } else if (id !== null && Number.isInteger(Number(id)) && Number(id) > 0) {
