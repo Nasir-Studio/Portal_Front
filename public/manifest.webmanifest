@@ -1,0 +1,19 @@
+{
+  "name": "羊家的入口",
+  "short_name": "羊家的入口",
+  "description": "羊家的入口 — 個人入口網站：羊監視你、羊集章、羊愛考試與羊-短網址服務。",
+  "lang": "zh-Hant",
+  "start_url": "/Portal_Front/",
+  "scope": "/Portal_Front/",
+  "display": "standalone",
+  "background_color": "#f5f4f1",
+  "theme_color": "#fafaf8",
+  "icons": [
+    {
+      "src": "/Portal_Front/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

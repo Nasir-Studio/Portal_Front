@@ -3,6 +3,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Banner from '../components/Banner.astro';
 import Announcements from '../components/Announcements.astro';
 
+const services = [
+  { name: '羊監視你', desc: '即時監視影像', href: 'https://cctv.nsir.uk' },
+  { name: '羊集章', desc: '集章活動紀錄', href: 'https://badges.nsir.uk' },
+  { name: '羊愛考試', desc: '線上測驗系統', href: 'https://1ztests.nsir.uk' },
+  { name: '羊-短網址(nsir.uk)', desc: '網址縮短服務', href: 'https://nsir.uk' },
+];
+
 const badges = [
   {
     img: '/Portal_Front/badges/adobe-creativity-with-ai.png',
@@ -40,6 +47,25 @@ const badges = [
 <BaseLayout>
   <Banner />
   <div class="main container">
+    <aside class="col col-left">
+      <section class="module" aria-label="服務連結">
+        <h2 class="module-title">服務連結</h2>
+        <nav class="menu-list" aria-label="服務連結列表">
+          {
+            services.map((s) => (
+              <a class="menu-item" href={s.href} target="_blank" rel="noopener noreferrer">
+                <span class="menu-item-name">
+                  {s.name}
+                  <span class="menu-item-arrow" aria-hidden="true">↗</span>
+                </span>
+                <span class="menu-item-desc">{s.desc}</span>
+              </a>
+            ))
+          }
+        </nav>
+      </section>
+    </aside>
+
     <main class="col col-center">
       <Announcements />
     </main>
@@ -72,10 +98,48 @@ const badges = [
 <style>
   .main {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 240px;
+    grid-template-columns: 240px minmax(0, 1fr) 240px;
     gap: 1.4rem;
     align-items: start;
     padding: 2rem 0 3.5rem;
+  }
+
+  .menu-item {
+    display: block;
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid var(--border);
+    transition: background var(--t);
+  }
+
+  .menu-item:last-child {
+    border-bottom: none;
+  }
+
+  .menu-item:hover {
+    background: var(--bg-soft);
+  }
+
+  .menu-item-name {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.92rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    color: var(--ink);
+  }
+
+  .menu-item-arrow {
+    font-size: 0.8rem;
+    color: var(--ink-3);
+  }
+
+  .menu-item-desc {
+    display: block;
+    margin-top: 0.1rem;
+    font-size: 0.78rem;
+    color: var(--ink-3);
+    letter-spacing: 0.04em;
   }
 
   .badge-count {
@@ -143,13 +207,17 @@ const badges = [
       padding: 1.2rem 0 2.5rem;
     }
 
-    /* 手機版順序：最新消息 → 我的徽章 */
+    /* 手機版順序：最新消息 → 服務連結 → 我的徽章 */
+    .col-left {
+      order: 2;
+    }
+
     .col-center {
       order: 1;
     }
 
     .col-right {
-      order: 2;
+      order: 3;
     }
 
     .main .module {
@@ -163,18 +231,6 @@ const badges = [
 
     .badge-name {
       font-size: 0.72rem;
-    }
-  }
-
-  /* 手機徽章縮小：三欄排列 */
-  @media (max-width: 700px) {
-    .badge-grid {
-      grid-template-columns: repeat(3, 1fr);
-      gap: 0.5rem;
-    }
-
-    .badge-name {
-      font-size: 0.66rem;
     }
   }
 </style>
