@@ -1,4 +1,5 @@
 export interface Announcement {
+  slug: string;
   date: string;
   title: string;
   content: string;
@@ -7,6 +8,7 @@ export interface Announcement {
 // 公告資料：以後新增公告就在這裡加一筆
 const announcements: Announcement[] = [
   {
+    slug: 'portal-launch',
     date: '2026.08.08',
     title: '羊家的入口網正式啟用',
     content:
