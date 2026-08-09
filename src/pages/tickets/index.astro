@@ -581,13 +581,13 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     );
   }
 
-  async function openDetail(id: number): Promise<void> {
+  async function openDetail(id: number, updateHistory = true): Promise<void> {
     currentTicketId = id;
     showView('detail');
     if (detailCard === null) return;
     const hasContent = detailCard.querySelector('.detail-subject') !== null;
     if (!hasContent) detailCard.innerHTML = '<p class="slot-empty">載入中…</p>';
-    window.history.pushState({}, '', `/tickets/?id=${id}`);
+    if (updateHistory) window.history.pushState({}, '', `/tickets/?id=${id}`);
     try {
       const data = await api<{ ticket: TicketDetail }>(`/tickets/${id}`, { auth: true });
       renderDetail(data.ticket);
@@ -756,7 +756,14 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     detailCard.replaceChildren(head, body, images, replies, actions);
   }
 
+  const imageCache = new Map<string, string>();
+
   async function attachAuthedImage(img: HTMLImageElement, url: string): Promise<void> {
+    const cached = imageCache.get(url);
+    if (cached !== undefined) {
+      img.src = cached;
+      return;
+    }
     try {
       const token = localStorage.getItem('sheep_portal_token');
       const response = await fetch(`https://api.nsir.uk${url}`, {
@@ -764,7 +771,9 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       });
       if (!response.ok) return;
       const blob = await response.blob();
-      img.src = URL.createObjectURL(blob);
+      const blobUrl = URL.createObjectURL(blob);
+      imageCache.set(url, blobUrl);
+      img.src = blobUrl;
     } catch {
       // 圖片載入失敗時留空
     }
@@ -874,21 +883,35 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   }
 
   // 即時同步：其他端（管理員或會員）回覆/改狀態/刪除時自動重抓
+  // 去抖 400ms：短時間內多個事件（例如管理員連回覆數次）合併成一次重抓
   if (user !== null) {
+    let refreshTimer: ReturnType<typeof setTimeout> | null = null;
+    const refreshView = (): void => {
+      if (refreshTimer !== null) clearTimeout(refreshTimer);
+      refreshTimer = setTimeout(() => {
+        refreshTimer = null;
+        if (viewName === 'list') {
+          void loadList();
+        } else if (viewName === 'detail' && currentTicketId !== null) {
+          void openDetail(currentTicketId, false);
+        }
+      }, 400);
+    };
     connectTicketSocket((event) => {
       if (event.event === 'deleted') {
         if (viewName === 'detail' && currentTicketId === event.ticketId) {
+          currentTicketId = null;
           showView('list');
           void loadList();
         } else if (viewName === 'list') {
-          void loadList();
+          refreshView();
         }
         return;
       }
       if (viewName === 'detail' && currentTicketId === event.ticketId) {
-        void openDetail(event.ticketId);
+        refreshView();
       } else if (viewName === 'list') {
-        void loadList();
+        refreshView();
       }
     });
   }

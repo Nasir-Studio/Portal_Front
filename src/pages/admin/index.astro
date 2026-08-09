@@ -964,7 +964,14 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       }
     }
 
+    const imageCache = new Map<string, string>();
+
     async function attachAuthedImage(img: HTMLImageElement, url: string): Promise<void> {
+      const cached = imageCache.get(url);
+      if (cached !== undefined) {
+        img.src = cached;
+        return;
+      }
       try {
         const token = localStorage.getItem('sheep_portal_token');
         const response = await fetch(`https://api.nsir.uk${url}`, {
@@ -972,7 +979,9 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
         });
         if (!response.ok) return;
         const blob = await response.blob();
-        img.src = URL.createObjectURL(blob);
+        const blobUrl = URL.createObjectURL(blob);
+        imageCache.set(url, blobUrl);
+        img.src = blobUrl;
       } catch {
         // 圖片載入失敗時留空
       }
@@ -1129,19 +1138,32 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     void loadTickets();
 
     // 即時同步：會員回覆/新工單/狀態變更/刪除時自動重抓目前 view
+    // 去抖 400ms：短時間內多個事件合併成一次重抓，避免連續回覆時頻繁重抓
+    let refreshTimer: ReturnType<typeof setTimeout> | null = null;
+    const refreshView = (): void => {
+      if (refreshTimer !== null) clearTimeout(refreshTimer);
+      refreshTimer = setTimeout(() => {
+        refreshTimer = null;
+        if (currentView === 'list') {
+          void loadTickets();
+        } else if (currentView === 'detail' && currentTicketId !== null) {
+          void openDetail(currentTicketId);
+        }
+      }, 400);
+    };
     connectTicketSocket((event) => {
       if (event.event === 'deleted') {
         if (currentView === 'detail' && currentTicketId === event.ticketId) {
           showList();
         } else if (currentView === 'list') {
-          void loadTickets();
+          refreshView();
         }
         return;
       }
       if (currentView === 'detail' && currentTicketId === event.ticketId) {
-        void openDetail(event.ticketId);
+        refreshView();
       } else if (currentView === 'list') {
-        void loadTickets();
+        refreshView();
       }
     });
   }
