@@ -622,8 +622,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     for (const img of ticket.images) {
       const el = document.createElement('img');
       el.alt = `附件 ${img.id}`;
-      void attachAuthedImage(el, img.url);
-      el.addEventListener('click', () => window.open(`/tickets/${ticket.id}/images/${img.id}`, '_blank'));
+      el.src = img.url;
+      el.addEventListener('click', () => window.open(img.url, '_blank'));
       images.append(el);
     }
 
@@ -754,29 +754,6 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     actions.append(uploadRow);
 
     detailCard.replaceChildren(head, body, images, replies, actions);
-  }
-
-  const imageCache = new Map<string, string>();
-
-  async function attachAuthedImage(img: HTMLImageElement, url: string): Promise<void> {
-    const cached = imageCache.get(url);
-    if (cached !== undefined) {
-      img.src = cached;
-      return;
-    }
-    try {
-      const token = localStorage.getItem('sheep_portal_token');
-      const response = await fetch(`https://api.nsir.uk${url}`, {
-        headers: token !== null ? { Authorization: `Bearer ${token}` } : {},
-      });
-      if (!response.ok) return;
-      const blob = await response.blob();
-      const blobUrl = URL.createObjectURL(blob);
-      imageCache.set(url, blobUrl);
-      img.src = blobUrl;
-    } catch {
-      // 圖片載入失敗時留空
-    }
   }
 
   // 新工單表單

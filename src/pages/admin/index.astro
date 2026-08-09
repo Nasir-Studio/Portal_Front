@@ -107,6 +107,48 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     gap: 0.8rem;
   }
 
+  .ticket-item {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ticket-item.open .ticket-row {
+    border-color: var(--ink);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .ticket-chevron {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.4rem;
+    height: 1.4rem;
+    font-size: 0.85rem;
+    color: var(--ink-3);
+    transition: color var(--t);
+    flex-shrink: 0;
+  }
+
+  .ticket-item.open .ticket-chevron {
+    color: var(--ink);
+  }
+
+  .ticket-detail {
+    border: 1px solid var(--border);
+    border-top: none;
+    background: var(--surface);
+  }
+
+  .ticket-detail:empty {
+    display: none;
+  }
+
+  .ticket-create {
+    border: 1px dashed var(--border-strong);
+    background: var(--surface);
+    margin-bottom: 1rem;
+  }
+
   .slot-empty {
     color: var(--ink-3);
     font-size: 0.92rem;
@@ -578,18 +620,6 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     return el;
   }
 
-  function makeBackLink(): HTMLAnchorElement {
-    const back = document.createElement('a');
-    back.className = 'back-link';
-    back.href = '/admin/';
-    back.textContent = '← 返回列表';
-    back.addEventListener('click', (e) => {
-      e.preventDefault();
-      showList();
-    });
-    return back;
-  }
-
   function renderForbidden(): void {
     const user = currentUser();
     const wrap = document.createElement('div');
@@ -626,6 +656,13 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     usersBtn.className = 'btn btn--sm btn--ghost';
     usersBtn.type = 'button';
     usersBtn.textContent = '會員管理';
+    const createTicketBtn = document.createElement('button');
+    createTicketBtn.className = 'btn btn--sm';
+    createTicketBtn.type = 'button';
+    createTicketBtn.textContent = '＋ 開工單';
+    createTicketBtn.addEventListener('click', () => {
+      openCreateCard();
+    });
     const logoutBtn = document.createElement('button');
     logoutBtn.className = 'btn btn--sm btn--ghost';
     logoutBtn.type = 'button';
@@ -634,14 +671,117 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       await logout();
       window.location.href = '/login/';
     });
-    actions.append(usersBtn, logoutBtn);
+    actions.append(usersBtn, createTicketBtn, logoutBtn);
     head.append(title, actions);
 
     const listEl = document.createElement('div');
     listEl.className = 'ticket-list';
     listEl.innerHTML = '<p class="slot-empty">載入中…</p>';
 
-    wrap.append(head, listEl);
+    const createCard = document.createElement('div');
+    createCard.className = 'card ticket-create';
+    createCard.hidden = true;
+    const createHead = document.createElement('div');
+    createHead.className = 'card-head';
+    const createTitle = document.createElement('h2');
+    createTitle.className = 'card-title';
+    createTitle.textContent = '開工單給會員';
+    const createCancel = document.createElement('button');
+    createCancel.className = 'btn btn--sm btn--ghost';
+    createCancel.type = 'button';
+    createCancel.textContent = '取消';
+    createHead.append(createTitle, createCancel);
+    const adminTicketForm = document.createElement('form');
+    adminTicketForm.className = 'admin-create-form';
+    const adminCreateSub = document.createElement('p');
+    adminCreateSub.className = 'card-sub';
+    adminCreateSub.textContent = '選擇會員並填寫主旨與內容，送出後會員會在工單區收到';
+    const memberField = document.createElement('label');
+    memberField.className = 'field';
+    const memberLabel = document.createElement('span');
+    memberLabel.className = 'field-label';
+    memberLabel.textContent = '會員';
+    const memberSelect = document.createElement('select');
+    memberField.append(memberLabel, memberSelect);
+    const subjectField = document.createElement('label');
+    subjectField.className = 'field';
+    const subjectLabel = document.createElement('span');
+    subjectLabel.className = 'field-label';
+    subjectLabel.textContent = '主旨';
+    const subjectInput = document.createElement('input');
+    subjectInput.type = 'text';
+    subjectInput.maxLength = 100;
+    subjectField.append(subjectLabel, subjectInput);
+    const bodyField = document.createElement('label');
+    bodyField.className = 'field';
+    const bodyLabel = document.createElement('span');
+    bodyLabel.className = 'field-label';
+    bodyLabel.textContent = '內容';
+    const bodyInput = document.createElement('textarea');
+    bodyInput.rows = 4;
+    bodyInput.maxLength = 2000;
+    bodyField.append(bodyLabel, bodyInput);
+    const adminCreateActions = document.createElement('div');
+    adminCreateActions.className = 'book-actions';
+    const adminCreateSubmit = document.createElement('button');
+    adminCreateSubmit.className = 'btn';
+    adminCreateSubmit.type = 'submit';
+    adminCreateSubmit.textContent = '送出';
+    const adminCreateMsg = document.createElement('span');
+    adminCreateMsg.className = 'form-msg';
+    adminCreateActions.append(adminCreateSubmit, adminCreateMsg);
+    adminTicketForm.append(adminCreateSub, memberField, subjectField, bodyField, adminCreateActions);
+    createCard.append(createHead, adminTicketForm);
+    createCancel.addEventListener('click', () => {
+      createCard.hidden = true;
+      adminCreateMsg.hidden = false;
+      adminCreateMsg.textContent = '';
+    });
+    adminTicketForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const userId = Number(memberSelect.value);
+      const subject = subjectInput.value.trim();
+      const body = bodyInput.value.trim();
+      if (!Number.isInteger(userId) || userId <= 0) {
+        adminCreateMsg.textContent = '請選擇會員';
+        adminCreateMsg.className = 'form-msg err';
+        adminCreateMsg.hidden = false;
+        return;
+      }
+      if (subject.length === 0 || body.length === 0) {
+        adminCreateMsg.textContent = '請填寫主旨與內容';
+        adminCreateMsg.className = 'form-msg err';
+        adminCreateMsg.hidden = false;
+        return;
+      }
+      adminCreateSubmit.disabled = true;
+      adminCreateMsg.hidden = true;
+      try {
+        const result = await api<{ ticket: { id: number } }>('/admin/tickets', {
+          method: 'POST',
+          body: { userId, subject, body },
+          auth: true,
+        });
+        adminCreateMsg.textContent = `已開單 ${result.ticket.id}`;
+        adminCreateMsg.className = 'form-msg';
+        adminCreateMsg.hidden = false;
+        memberSelect.value = '';
+        subjectInput.value = '';
+        bodyInput.value = '';
+        void loadTickets();
+      } catch (err) {
+        if (err instanceof ApiError && err.status === 401) {
+          window.location.href = '/login/';
+          return;
+        }
+        adminCreateMsg.textContent = '開單失敗，請稍後再試';
+        adminCreateMsg.className = 'form-msg err';
+        adminCreateMsg.hidden = false;
+        adminCreateSubmit.disabled = false;
+      }
+    });
+
+    wrap.append(head, listEl, createCard);
 
     const usersCard = document.createElement('div');
     usersCard.className = 'card';
@@ -718,20 +858,13 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     wrap.append(usersCard);
     app.replaceChildren(wrap);
 
-    const detailCard = document.createElement('div');
-    detailCard.className = 'detail-card';
-    detailCard.hidden = true;
-    wrap.append(detailCard);
-
-    let currentView: 'list' | 'users' | 'detail' = 'list';
-    let currentTicketId: number | null = null;
+    let currentView: 'list' | 'users' = 'list';
+    let expandedId: number | null = null;
 
     function showList(): void {
       currentView = 'list';
-      currentTicketId = null;
       listEl.hidden = false;
       usersCard.hidden = true;
-      detailCard.hidden = true;
       head.hidden = false;
       title.textContent = '全部工單';
       void loadTickets();
@@ -740,24 +873,37 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
     function showUsers(): void {
       currentView = 'users';
-      currentTicketId = null;
+      expandedId = null;
       listEl.hidden = true;
       usersCard.hidden = false;
-      detailCard.hidden = true;
       head.hidden = true;
       void loadUsers();
       window.scrollTo({ top: 0, behavior: 'instant' });
     }
 
-    function showDetail(id: number): void {
-      currentView = 'detail';
-      currentTicketId = id;
-      listEl.hidden = true;
-      usersCard.hidden = true;
-      head.hidden = true;
-      detailCard.hidden = false;
+    function toggleTicket(id: number): void {
+      if (expandedId === id) {
+        collapseDetail();
+        return;
+      }
+      collapseDetail();
+      expandedId = id;
       void openDetail(id);
-      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+
+    function collapseDetail(): void {
+      if (expandedId === null) return;
+      const item = findTicketItem(expandedId);
+      if (item !== null) {
+        item.classList.remove('open');
+        const slot = item.querySelector<HTMLElement>('.ticket-detail');
+        if (slot !== null) slot.hidden = true;
+      }
+      expandedId = null;
+    }
+
+    function findTicketItem(id: number): HTMLElement | null {
+      return listEl.querySelector(`.ticket-item[data-id="${id}"]`);
     }
 
     async function loadTickets(): Promise<void> {
@@ -766,6 +912,14 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       try {
         const data = await api<{ tickets: TicketSummary[] }>('/admin/tickets', { auth: true });
         renderList(data.tickets);
+        if (expandedId !== null) {
+          const item = findTicketItem(expandedId);
+          if (item === null) {
+            expandedId = null;
+          } else {
+            void openDetail(expandedId);
+          }
+        }
       } catch (err) {
         if (err instanceof ApiError && err.status === 401) {
           window.location.href = '/login/';
@@ -782,13 +936,21 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       }
       listEl.replaceChildren(
         ...tickets.map((t) => {
+          const item = document.createElement('div');
+          item.className = 'ticket-item';
+          item.dataset.id = String(t.id);
+
           const row = document.createElement('article');
           row.className = 'ticket-row';
           row.tabIndex = 0;
           row.setAttribute('role', 'button');
-          row.addEventListener('click', () => showDetail(t.id));
+          row.setAttribute('aria-expanded', 'false');
+          row.addEventListener('click', () => toggleTicket(t.id));
           row.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' || e.key === ' ') showDetail(t.id);
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              toggleTicket(t.id);
+            }
           });
 
           const info = document.createElement('div');
@@ -802,41 +964,48 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
           if (t.userId !== undefined) meta.textContent += ` · 會員 #${t.userId}`;
           info.append(subject, meta);
 
-          row.append(info, badge(t.status));
-          return row;
+          const chevron = document.createElement('span');
+          chevron.className = 'ticket-chevron';
+          chevron.textContent = '▾';
+
+          row.append(info, badge(t.status), chevron);
+
+          const detail = document.createElement('div');
+          detail.className = 'ticket-detail';
+          detail.hidden = true;
+
+          item.append(row, detail);
+          return item;
         }),
       );
     }
 
     async function openDetail(id: number): Promise<void> {
-      const hasContent = detailCard.querySelector('.detail-card .detail-subject') !== null;
-      if (!hasContent) {
-        detailCard.replaceChildren(makeBackLink());
-        const loading = document.createElement('p');
-        loading.className = 'slot-empty';
-        loading.textContent = '載入中…';
-        detailCard.append(loading);
-      }
+      const item = findTicketItem(id);
+      if (item === null) return;
+      const slot = item.querySelector<HTMLElement>('.ticket-detail');
+      if (slot === null) return;
+      item.classList.add('open');
+      const row = item.querySelector('.ticket-row');
+      if (row !== null) row.setAttribute('aria-expanded', 'true');
+      slot.hidden = false;
+      const hasContent = slot.querySelector('.detail-subject') !== null;
+      if (!hasContent) slot.innerHTML = '<p class="slot-empty">載入中…</p>';
       try {
         const data = await api<{ ticket: TicketDetail; userId?: number }>(`/admin/tickets/${id}`, {
           auth: true,
         });
-        renderDetail(data.ticket, data.userId);
+        renderDetail(data.ticket, data.userId, slot);
       } catch (err) {
         if (err instanceof ApiError && err.status === 401) {
           window.location.href = '/login/';
           return;
         }
-        if (!hasContent) {
-          const msg = document.createElement('p');
-          msg.className = 'slot-empty';
-          msg.textContent = '無法載入工單';
-          detailCard.append(msg);
-        }
+        if (!hasContent) slot.innerHTML = '<p class="slot-empty">無法載入工單</p>';
       }
     }
 
-    function renderDetail(ticket: TicketDetail, ownerId?: number): void {
+    function renderDetail(ticket: TicketDetail, ownerId: number | undefined, slot: HTMLElement): void {
       const card = document.createElement('div');
       card.className = 'detail-card-body';
 
@@ -855,7 +1024,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
       const sideWrap = document.createElement('div');
       sideWrap.className = 'detail-side';
-      sideWrap.append(badge(ticket.status), makeBackLink());
+      sideWrap.append(badge(ticket.status));
 
       headEl.append(titleWrap, sideWrap);
 
@@ -868,8 +1037,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       for (const img of ticket.images) {
         const el = document.createElement('img');
         el.alt = `附件 ${img.id}`;
-        void attachAuthedImage(el, img.url);
-        el.addEventListener('click', () => window.open(`/tickets/${ticket.id}/images/${img.id}`, '_blank'));
+        el.src = img.url;
+        el.addEventListener('click', () => window.open(img.url, '_blank'));
         images.append(el);
       }
 
@@ -987,30 +1156,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       actions.append(adminRow);
 
       card.append(headEl, body, images, replies, actions);
-      detailCard.replaceChildren(card);
-    }
-
-    const imageCache = new Map<string, string>();
-
-    async function attachAuthedImage(img: HTMLImageElement, url: string): Promise<void> {
-      const cached = imageCache.get(url);
-      if (cached !== undefined) {
-        img.src = cached;
-        return;
-      }
-      try {
-        const token = localStorage.getItem('sheep_portal_token');
-        const response = await fetch(`https://api.nsir.uk${url}`, {
-          headers: token !== null ? { Authorization: `Bearer ${token}` } : {},
-        });
-        if (!response.ok) return;
-        const blob = await response.blob();
-        const blobUrl = URL.createObjectURL(blob);
-        imageCache.set(url, blobUrl);
-        img.src = blobUrl;
-      } catch {
-        // 圖片載入失敗時留空
-      }
+      slot.replaceChildren(card);
     }
 
     function userStatusBadge(active: boolean): HTMLSpanElement {
@@ -1171,26 +1317,58 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       refreshTimer = setTimeout(() => {
         refreshTimer = null;
         if (currentView === 'list') {
-          void loadTickets();
-        } else if (currentView === 'detail' && currentTicketId !== null) {
-          void openDetail(currentTicketId);
+function openCreateCard(): void {
+      adminCreateMsg.hidden = true;
+      adminCreateMsg.textContent = '';
+      adminCreateSubmit.disabled = false;
+      memberSelect.value = '';
+      subjectInput.value = '';
+      bodyInput.value = '';
+      createCard.hidden = false;
+      void populateMemberOptions();
+    }
+
+    async function populateMemberOptions(): Promise<void> {
+      memberSelect.replaceChildren();
+      const loading = document.createElement('option');
+      loading.value = '';
+      loading.textContent = '載入會員…';
+      memberSelect.append(loading);
+      try {
+        const data = await api<{ users: AdminUser[] }>('/admin/users', { auth: true });
+        memberSelect.replaceChildren();
+        if (data.users.length === 0) {
+          const none = document.createElement('option');
+          none.value = '';
+          none.textContent = '尚無會員';
+          memberSelect.append(none);
+          return;
+        }
+        for (const u of data.users) {
+          const opt = document.createElement('option');
+          opt.value = String(u.id);
+          opt.textContent = `#${u.id} ${u.email}`;
+          memberSelect.append(opt);
+        }
+      } catch {
+        memberSelect.replaceChildren();
+        const none = document.createElement('option');
+        none.value = '';
+        none.textContent = '無法載入會員';
+        memberSelect.append(none);
+      }
+    }
+
+    void loadTickets();
         }
       }, 400);
     };
     connectTicketSocket((event) => {
-      if (event.event === 'deleted') {
-        if (currentView === 'detail' && currentTicketId === event.ticketId) {
-          showList();
-        } else if (currentView === 'list') {
-          refreshView();
-        }
-        return;
+      if (currentView !== 'list') return;
+      if (event.event === 'deleted' && expandedId === event.ticketId) {
+        expandedId = null;
       }
-      if (currentView === 'detail' && currentTicketId === event.ticketId) {
-        refreshView();
-      } else if (currentView === 'list') {
-        refreshView();
-      }
+      refreshView();
     });
   }
 </script>
