@@ -471,7 +471,10 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     border-bottom: 1px solid var(--border);
   }
 
-  .user-create-form input {
+  .user-create-form input,
+  .admin-create-form input,
+  .admin-create-form select,
+  .admin-create-form textarea {
     font-family: var(--font-sans);
     font-size: 0.95rem;
     padding: 0.55rem 0.75rem;
@@ -481,10 +484,36 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     color: var(--ink);
   }
 
-  .user-create-form input:focus {
+  .user-create-form input:focus,
+  .admin-create-form input:focus,
+  .admin-create-form select:focus,
+  .admin-create-form textarea:focus {
     outline: 2px solid var(--ink);
     outline-offset: 0;
     border-color: var(--ink);
+  }
+
+  .admin-create-form {
+    padding: 1rem 1.3rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .admin-create-form select {
+    appearance: none;
+    background-image: linear-gradient(45deg, transparent 50%, var(--ink-3) 50%),
+      linear-gradient(135deg, var(--ink-3) 50%, transparent 50%);
+    background-position: calc(100% - 1rem) 55%, calc(100% - 0.65rem) 55%;
+    background-size: 0.35rem 0.35rem;
+    background-repeat: no-repeat;
+    padding-right: 2.2rem;
+    cursor: pointer;
+  }
+
+  .admin-create-form textarea {
+    resize: vertical;
+    line-height: 1.5;
   }
 
   .field {
