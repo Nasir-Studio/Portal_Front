@@ -213,6 +213,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    min-width: 0;
   }
 
   .ticket-row-meta {
@@ -227,6 +228,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     border: 1px solid;
     white-space: nowrap;
     letter-spacing: 0.1em;
+    flex-shrink: 0;
   }
 
   .status-open {
@@ -273,9 +275,10 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     padding: 1.2rem 1.3rem 1rem;
     border-bottom: 1px solid var(--border);
     display: flex;
-    align-items: baseline;
+    align-items: center;
     justify-content: space-between;
-    gap: 1rem;
+    gap: 0.8rem 1rem;
+    flex-wrap: wrap;
   }
 
   .detail-subject {
@@ -283,6 +286,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     font-size: 1.3rem;
     font-weight: 600;
     letter-spacing: 0.08em;
+    min-width: 0;
+    overflow-wrap: break-word;
   }
 
   .detail-meta {
@@ -307,7 +312,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   }
 
   .detail-images img {
-    max-width: 300px;
+    max-width: 100%;
     max-height: 220px;
     object-fit: cover;
     border: 1px solid var(--border);
@@ -333,6 +338,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     align-items: baseline;
     gap: 0.6rem;
     margin-bottom: 0.35rem;
+    flex-wrap: wrap;
   }
 
   .reply-author {
@@ -440,6 +446,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 <script>
   import { api, ApiError } from '../../scripts/api';
   import { currentUser } from '../../scripts/auth';
+  import { connectTicketSocket } from '../../scripts/ticket-socket';
 
   type TicketSummary = {
     id: number;
@@ -482,6 +489,9 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   const newTicketWrap = document.querySelector('#new-ticket-wrap');
   const newTicketBtn = document.querySelector('#new-ticket-btn');
 
+  let currentTicketId: number | null = null;
+  let viewName: 'list' | 'detail' = 'list';
+
   const STATUS_LABEL: Record<TicketSummary['status'], string> = {
     open: '待處理',
     replied: '已回覆',
@@ -516,13 +526,16 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   }
 
   function showView(name: 'list' | 'detail'): void {
+    viewName = name;
     if (viewList !== null) viewList.hidden = name !== 'list';
     if (viewDetail !== null) viewDetail.hidden = name !== 'detail';
+    window.scrollTo({ top: 0, behavior: 'instant' });
   }
 
   async function loadList(): Promise<void> {
     if (user === null || ticketList === null) return;
-    ticketList.innerHTML = '<p class="slot-empty">載入中…</p>';
+    const hasContent = ticketList.querySelector('.ticket-row') !== null;
+    if (!hasContent) ticketList.innerHTML = '<p class="slot-empty">載入中…</p>';
     try {
       const data = await api<{ tickets: TicketSummary[] }>('/tickets', { auth: true });
       renderList(data.tickets);
@@ -531,7 +544,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
         window.location.href = '/login/';
         return;
       }
-      ticketList.innerHTML = '<p class="slot-empty">無法載入工單，請稍後再試</p>';
+      if (!hasContent) ticketList.innerHTML = '<p class="slot-empty">無法載入工單，請稍後再試</p>';
     }
   }
 
@@ -569,9 +582,11 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   }
 
   async function openDetail(id: number): Promise<void> {
+    currentTicketId = id;
     showView('detail');
     if (detailCard === null) return;
-    detailCard.innerHTML = '<p class="slot-empty">載入中…</p>';
+    const hasContent = detailCard.querySelector('.detail-subject') !== null;
+    if (!hasContent) detailCard.innerHTML = '<p class="slot-empty">載入中…</p>';
     window.history.pushState({}, '', `/tickets/?id=${id}`);
     try {
       const data = await api<{ ticket: TicketDetail }>(`/tickets/${id}`, { auth: true });
@@ -581,7 +596,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
         window.location.href = '/login/';
         return;
       }
-      detailCard.innerHTML = '<p class="slot-empty">無法載入工單</p>';
+      if (!hasContent) detailCard.innerHTML = '<p class="slot-empty">無法載入工單</p>';
     }
   }
 
@@ -840,6 +855,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       const n = Number(id);
       if (Number.isInteger(n) && n > 0) void openDetail(n);
     } else {
+      currentTicketId = null;
       showView('list');
       void loadList();
     }
@@ -855,5 +871,25 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   } else {
     showView('list');
     void loadList();
+  }
+
+  // 即時同步：其他端（管理員或會員）回覆/改狀態/刪除時自動重抓
+  if (user !== null) {
+    connectTicketSocket((event) => {
+      if (event.event === 'deleted') {
+        if (viewName === 'detail' && currentTicketId === event.ticketId) {
+          showView('list');
+          void loadList();
+        } else if (viewName === 'list') {
+          void loadList();
+        }
+        return;
+      }
+      if (viewName === 'detail' && currentTicketId === event.ticketId) {
+        void openDetail(event.ticketId);
+      } else if (viewName === 'list') {
+        void loadList();
+      }
+    });
   }
 </script>
