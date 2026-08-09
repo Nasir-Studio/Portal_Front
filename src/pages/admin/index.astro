@@ -1317,7 +1317,12 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       refreshTimer = setTimeout(() => {
         refreshTimer = null;
         if (currentView === 'list') {
-function openCreateCard(): void {
+          void loadTickets();
+        }
+      }, 400);
+    };
+
+    function openCreateCard(): void {
       adminCreateMsg.hidden = true;
       adminCreateMsg.textContent = '';
       adminCreateSubmit.disabled = false;
@@ -1358,11 +1363,6 @@ function openCreateCard(): void {
         memberSelect.append(none);
       }
     }
-
-    void loadTickets();
-        }
-      }, 400);
-    };
     connectTicketSocket((event) => {
       if (currentView !== 'list') return;
       if (event.event === 'deleted' && expandedId === event.ticketId) {
