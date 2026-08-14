@@ -2,10 +2,10 @@
 import SheepLogo from './SheepLogo.astro';
 
 const links = [
-  { label: '羊-短網址', href: 'https://nsir.uk' },
-  { label: '羊監視你', href: 'https://cctv.nsir.uk' },
-  { label: '羊集章', href: 'https://badges.nsir.uk' },
-  { label: '羊愛考試', href: 'https://1ztests.nsir.uk' },
+  { label: '羊-短網址', href: 'https://nsir.uk', external: true },
+  { label: '羊監視你', href: '/cctv', external: false },
+  { label: '羊集章', href: 'https://badges.nsir.uk', external: true },
+  { label: '羊愛考試', href: 'https://1ztests.nsir.uk', external: true },
 ];
 ---
 
@@ -54,7 +54,12 @@ const links = [
       <a class="menu-link is-home" href="/">首頁</a>
       {
         links.map((link) => (
-          <a class="menu-link" href={link.href} target="_blank" rel="noopener noreferrer">
+          <a
+            class="menu-link"
+            href={link.href}
+            target={link.external ? '_blank' : undefined}
+            rel={link.external ? 'noopener noreferrer' : undefined}
+          >
             {link.label}
           </a>
         ))

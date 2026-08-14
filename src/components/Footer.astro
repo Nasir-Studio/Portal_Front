@@ -1,9 +1,9 @@
 ---
 const links = [
-  { label: '羊監視你', href: 'https://cctv.nsir.uk' },
-  { label: '羊集章', href: 'https://badges.nsir.uk' },
-  { label: '羊愛考試', href: 'https://1ztests.nsir.uk' },
-  { label: '羊-短網址', href: 'https://nsir.uk' },
+  { label: '羊監視你', href: '/cctv', external: false },
+  { label: '羊集章', href: 'https://badges.nsir.uk', external: true },
+  { label: '羊愛考試', href: 'https://1ztests.nsir.uk', external: true },
+  { label: '羊-短網址', href: 'https://nsir.uk', external: true },
 ];
 ---
 
@@ -14,7 +14,11 @@ const links = [
         links.map((link, i) => (
           <>
             {i > 0 && <span class="footer-sep" aria-hidden="true">｜</span>}
-            <a href={link.href} target="_blank" rel="noopener noreferrer">{link.label}</a>
+            <a
+              href={link.href}
+              target={link.external ? '_blank' : undefined}
+              rel={link.external ? 'noopener noreferrer' : undefined}
+            >{link.label}</a>
           </>
         ))
       }

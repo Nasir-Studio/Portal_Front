@@ -43,14 +43,14 @@ const {
       <slot />
     </main>
     <Footer />
-  </body>
-  <script is:inline>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', function () {
-        navigator.serviceWorker.register('/sw.js', { updateViaCache: 'none' }).catch(function (err) {
-          console.warn('SW registration failed:', err);
+    <script is:inline>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function () {
+          navigator.serviceWorker.register('/sw.js', { updateViaCache: 'none' }).catch(function (err) {
+            console.warn('SW registration failed:', err);
+          });
         });
-      });
-    }
-  </script>
+      }
+    </script>
+  </body>
 </html>

@@ -4,10 +4,10 @@ import Banner from '../components/Banner.astro';
 import Announcements from '../components/Announcements.astro';
 
 const services = [
-  { name: '羊監視你', desc: '即時監視影像', href: 'https://cctv.nsir.uk' },
-  { name: '羊集章', desc: '集章活動紀錄', href: 'https://badges.nsir.uk' },
-  { name: '羊愛考試', desc: '線上測驗系統', href: 'https://1ztests.nsir.uk' },
-  { name: '羊-短網址', desc: '網址縮短服務', href: 'https://nsir.uk' },
+  { name: '羊監視你', desc: '即時監視影像', href: '/cctv', external: false },
+  { name: '羊集章', desc: '集章活動紀錄', href: 'https://badges.nsir.uk', external: true },
+  { name: '羊愛考試', desc: '線上測驗系統', href: 'https://1ztests.nsir.uk', external: true },
+  { name: '羊-短網址', desc: '網址縮短服務', href: 'https://nsir.uk', external: true },
 ];
 
 const badges = [
@@ -53,10 +53,15 @@ const badges = [
         <nav class="menu-list" aria-label="服務連結列表">
           {
             services.map((s) => (
-              <a class="menu-item" href={s.href} target="_blank" rel="noopener noreferrer">
+              <a
+                class="menu-item"
+                href={s.href}
+                target={s.external ? '_blank' : undefined}
+                rel={s.external ? 'noopener noreferrer' : undefined}
+              >
                 <span class="menu-item-name">
                   {s.name}
-                  <span class="menu-item-arrow" aria-hidden="true">↗</span>
+                  <span class="menu-item-arrow" aria-hidden="true">{s.external ? '↗' : ''}</span>
                 </span>
                 <span class="menu-item-desc">{s.desc}</span>
               </a>
