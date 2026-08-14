@@ -1,0 +1,235 @@
+---
+import BaseLayout from '../../shop/layouts/BaseLayout.astro';
+import Header from '../../shop/components/Header.astro';
+import Footer from '../../shop/components/Footer.astro';
+const API_URL = import.meta.env.PUBLIC_API_URL || 'http://localhost:8000';
+---
+
+<BaseLayout>
+  <Header />
+
+  <main class="pt-header">
+    <section class="hero">
+      <div class="container hero-inner">
+        <p class="hero-label">Little Sheep Farm</p>
+        <h1 class="hero-title">小羊農場</h1>
+        <p class="hero-subtitle">物品價值，淋漓盡致</p>
+        <div class="hero-actions">
+          <a href="/shop/products/" class="btn btn-primary btn-lg">開始選購</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <h2>精選商品</h2>
+          <a href="/shop/products/" class="btn btn-ghost btn-sm">查看全部 →</a>
+        </div>
+        <div class="grid grid-4" id="featured-products">
+          <div class="text-center text-secondary" style="grid-column:1/-1;padding:var(--sp-10)">載入中...</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-alt">
+      <div class="container">
+        <div class="section-header">
+          <h2>探索分類</h2>
+        </div>
+        <div class="grid grid-3" id="home-categories">
+          <div class="text-center text-secondary" style="grid-column:1/-1;padding:var(--sp-10)">載入中...</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<script is:inline>
+  var API_URL = window.location.hostname === 'shop.nsir.uk' ? 'https://shopbackend.nsir.uk' : 'http://localhost:8000';
+
+  var __cc = window.__currency;
+  function _fmt(ntd) {
+    if (ntd === 0) return '<span data-ntd="0">免費</span>';
+    if (__cc && __cc._rates) return __cc.format(ntd);
+    return '<span data-ntd="' + ntd + '">NT$' + (ntd || 0).toLocaleString() + '</span>';
+  }
+  var conditionLabels = { new: '全新', like_new: '近乎全新', used: '二手', refurbished: '整新品' };
+  var conditionNotes = {
+    new: '全新商品，原廠包裝未拆封',
+    like_new: '近乎全新，極輕微使用痕跡',
+    used: '此為二手商品，請確認狀況後索取',
+    refurbished: '整新品，功能經檢測正常',
+  };
+  function conditionNoteText(p) {
+    return conditionNotes[p.condition] || '請確認商品狀況後索取';
+  }
+
+  document.addEventListener('DOMContentLoaded', async function() {
+      var cache = window.__apiCache;
+      try {
+        var data = cache
+          ? await cache.fetch(API_URL + '/api/products?page_size=8&sort=newest', 'home_products')
+          : await (await fetch(API_URL + '/api/products?page_size=8&sort=newest')).json();
+      var container = document.getElementById('featured-products');
+
+      if (!data.items || !data.items.length) {
+        container.innerHTML = '<div class="text-center text-secondary" style="grid-column:1/-1;padding:var(--sp-10)">暫無商品</div>';
+      } else {
+
+      container.innerHTML = data.items.map(function(p) {
+        var priceHtml = p.sale_price != null
+          ? '<span style="font-weight:500">' + _fmt(p.sale_price) + '</span><span style="text-decoration:line-through;color:var(--c-text-light);font-size:var(--text-xs);margin-left:4px">' + _fmt(p.price) + '</span>'
+          : '<span style="font-weight:500">' + _fmt(p.price) + '</span>';
+        var imgHtml = p.image_url
+          ? '<img src="' + p.image_url + '" alt="' + escHtml(p.name) + '" loading="lazy" style="width:100%;height:100%;object-fit:cover" />'
+          : '<div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%"><svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1" opacity="0.15"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>';
+        return '<a href="/shop/products/' + p.slug + '/" class="product-card">' +
+          '<div class="product-image">' + imgHtml + '</div>' +
+          '<div class="product-meta">' +
+          (p.category_name ? '<span class="product-category">' + escHtml(p.category_name) + '</span>' : '') +
+          '<h3 class="product-name">' + escHtml(p.name) + '</h3>' +
+          '<div class="product-price">' + priceHtml + '</div>' +
+          '<div class="product-condition-note">' + conditionNoteText(p) + '</div>' +
+          '</div></a>';
+      }).join('');
+      }
+    } catch (e) {
+      var grid = document.getElementById('featured-products');
+      grid.innerHTML = '<div class="text-center text-secondary" style="grid-column:1/-1;padding:var(--sp-10)">目前網路出現狀況中，請稍後再試</div>';
+    }
+
+    try {
+      var catRes = await fetch(API_URL + '/api/categories');
+      if (!catRes.ok) throw new Error();
+      var cats = await catRes.json();
+      var catContainer = document.getElementById('home-categories');
+
+      if (!cats.length) {
+        catContainer.innerHTML = '<div class="text-center text-secondary" style="grid-column:1/-1;padding:var(--sp-10)">暫無分類</div>';
+        return;
+      }
+
+      var icons = [
+        '<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M20.38 3.46L16 2 12 5 8 2 3.62 3.46a2 2 0 00-1.34 2.23l.58 3.47a1 1 0 00.99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 002-2V10h2.15a1 1 0 00.99-.84l.58-3.47a2 2 0 00-1.34-2.23z"/></svg>',
+        '<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>',
+        '<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>'
+      ];
+
+      catContainer.innerHTML = cats.map(function(c, i) {
+        return '<a href="/shop/products/?category=' + c.slug + '" class="category-card">' +
+          '<div class="category-icon">' + icons[i % icons.length] + '</div>' +
+          '<h3>' + escHtml(c.name) + '</h3>' +
+          (c.description ? '<p>' + escHtml(c.description) + '</p>' : '') +
+          '</a>';
+      }).join('');
+    } catch (e) {
+      var catContainer = document.getElementById('home-categories');
+      catContainer.innerHTML = '<div class="text-center text-secondary" style="grid-column:1/-1;padding:var(--sp-10)">目前網路出現狀況中，請稍後再試</div>';
+    }
+  });
+</script>
+
+<style>
+  .hero {
+    padding: var(--sp-10) 0 var(--sp-16);
+    text-align: center;
+    border-bottom: 1px solid var(--c-border);
+  }
+
+  .hero-label {
+    font-size: var(--text-xs);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--c-text-light);
+    margin-bottom: var(--sp-4);
+  }
+
+  .hero-title {
+    font-size: var(--text-5xl);
+    font-weight: 300;
+    letter-spacing: 0.08em;
+    margin-bottom: var(--sp-4);
+  }
+
+  .hero-subtitle {
+    font-size: var(--text-lg);
+    color: var(--c-text-secondary);
+    font-weight: 300;
+    margin-bottom: var(--sp-8);
+  }
+
+  .hero-actions {
+    display: flex;
+    justify-content: center;
+    gap: var(--sp-4);
+  }
+
+  .section {
+    padding: var(--sp-16) 0;
+  }
+
+  .section-alt {
+    background: var(--c-bg-alt);
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--sp-8);
+  }
+
+  .section-header h2 {
+    font-size: var(--text-2xl);
+    font-weight: 400;
+  }
+
+  .product-condition-note {
+    font-size: 10px;
+    color: var(--c-text-light);
+    margin-top: var(--sp-2);
+    line-height: 1.3;
+  }
+
+  .category-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: var(--sp-10) var(--sp-6);
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius);
+    transition: all var(--duration) var(--ease);
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .category-card:hover {
+    border-color: var(--c-text);
+    box-shadow: var(--shadow);
+  }
+
+  .category-icon {
+    margin-bottom: var(--sp-4);
+    opacity: 0.6;
+  }
+
+  .category-card h3 {
+    font-size: var(--text-base);
+    font-weight: 500;
+    margin-bottom: var(--sp-2);
+  }
+
+  .category-card p {
+    font-size: var(--text-sm);
+    color: var(--c-text-secondary);
+  }
+
+  @media (max-width: 768px) {
+    .hero-title { font-size: var(--text-3xl); }
+    .section { padding: var(--sp-10) 0; }
+  }
+</style>

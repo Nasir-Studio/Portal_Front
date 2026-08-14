@@ -1,0 +1,347 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = '小羊農場 — 物品價值，淋漓盡致',
+  description = '小羊農場，讓每件物品的價值淋漓盡致。',
+} = Astro.props;
+
+---
+
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content={description} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://sheephome.nsir.uk" />
+  <title>{title}</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#fafaf8" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="羊家的入口" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://shopbackend.nsir.uk" />
+  <link rel="dns-prefetch" href="https://shopbackend.nsir.uk" />
+  <link rel="preconnect" href="https://open.er-api.com" />
+
+  <script is:inline>
+    (function() {
+      var t = localStorage.getItem('shop_token');
+      if (t) {
+        document.documentElement.classList.add('auth-logged-in');
+        try {
+          var u = JSON.parse(localStorage.getItem('shop_user') || '{}');
+          if (u.role === 'admin') document.documentElement.classList.add('auth-admin');
+        } catch(e) {}
+      }
+      // PWA 獨立模式啟動時，管理員自動前往 /shop/admin（僅一次，避免循環）
+      if (!sessionStorage.getItem('pwa_admin_redirected')) {
+        if (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) {
+          var u2 = null;
+          try { u2 = JSON.parse(localStorage.getItem('shop_user') || 'null'); } catch(e) {}
+          var path = window.location.pathname;
+          if (u2 && u2.role === 'admin' && path !== '/shop/admin' && !path.startsWith('/shop/admin')) {
+            sessionStorage.setItem('pwa_admin_redirected', '1');
+            window.location.replace('/shop/admin');
+          }
+        }
+      }
+      var c = parseInt(localStorage.getItem('shop_cart_count') || '0', 10);
+      if (c > 0) { document.documentElement.classList.add('has-cart'); }
+
+      var closeTs = localStorage.getItem('announcement_closed');
+      var WEEK = 7 * 24 * 60 * 60 * 1000;
+      if (!closeTs || (Date.now() - parseInt(closeTs) > WEEK)) {
+        document.documentElement.classList.add('announcement-visible');
+      }
+    })();
+  </script>
+
+  <style>
+    #user-dropdown { display: none; }
+    #mobile-account-link { display: none; }
+    #announcement-banner { display: none; }
+    .auth-logged-in #login-btn { display: none !important; }
+    .auth-logged-in #user-dropdown { display: block !important; }
+    .auth-logged-in #mobile-login-link { display: none !important; }
+    .auth-logged-in #mobile-account-link { display: block !important; }
+    .auth-logged-in #mobile-orders-link { display: block !important; }
+    .auth-logged-in #mobile-logout-btn { display: block !important; }
+    .auth-admin #admin-link { display: block !important; }
+    .has-cart #cart-badge { display: flex !important; }
+    .announcement-visible #announcement-banner { display: block; }
+  </style>
+
+  <script is:inline>
+    (function() {
+      window.__currency = {};
+
+      var STORAGE_KEY = 'shop_currency_code';
+      var RATES_KEY = 'shop_exchange_rates';
+      var RATES_TTL = 3600000; // 1 小時
+
+      var CURRENCIES = {
+        TWD: { symbol: 'NT$', label: '台幣', decimals: 0 },
+        USD: { symbol: '$',    label: '美元', decimals: 2 },
+        EUR: { symbol: '€',    label: '歐元', decimals: 2 },
+        JPY: { symbol: '¥',    label: '日圓', decimals: 0 },
+        CNY: { symbol: '¥',    label: '人民幣', decimals: 2 },
+        HKD: { symbol: 'HK$',  label: '港幣', decimals: 2 },
+        SGD: { symbol: 'S$',   label: '新加坡幣', decimals: 2 },
+        KRW: { symbol: '₩',    label: '韓圓', decimals: 0 },
+        GBP: { symbol: '£',    label: '英鎊', decimals: 2 },
+        AUD: { symbol: 'A$',   label: '澳幣', decimals: 2 },
+      };
+
+      var cc = window.__currency;
+      cc.currencies = CURRENCIES;
+      cc._code = localStorage.getItem(STORAGE_KEY) || 'TWD';
+      cc._rates = null;
+      cc._rateCallbacks = [];
+
+      cc.getCode = function() { return cc._code; };
+      cc.getInfo = function(code) { return CURRENCIES[code] || CURRENCIES.TWD; };
+      cc.getSymbol = function(code) { return cc.getInfo(code || cc._code).symbol; };
+      cc.getDecimals = function(code) { return cc.getInfo(code || cc._code).decimals; };
+
+      cc.convert = function(ntd, toCode) {
+        if (!toCode) toCode = cc._code;
+        if (toCode === 'TWD') return ntd;
+        var rate = cc._rates && cc._rates[toCode];
+        return rate ? ntd * rate : ntd;
+      };
+
+      cc.format = function(ntd, toCode) {
+        var code = toCode || cc._code;
+        var info = cc.getInfo(code);
+        var converted = cc.convert(ntd, code);
+        var formatted = converted.toLocaleString(undefined, {
+          minimumFractionDigits: info.decimals,
+          maximumFractionDigits: info.decimals,
+        });
+        var sym = info.symbol;
+        if (code === 'JPY' || code === 'CNY' || code === 'KRW') return sym + formatted;
+        return sym + ' ' + formatted;
+      };
+
+      cc.setCurrency = function(code) {
+        if (!CURRENCIES[code]) return;
+        cc._code = code;
+        try { localStorage.setItem(STORAGE_KEY, code); } catch(e) {}
+        document.documentElement.setAttribute('data-currency', code);
+        cc.applyPrices();
+      };
+
+      cc.applyPrices = function() {
+        document.querySelectorAll('[data-ntd]').forEach(function(el) {
+          var ntd = parseFloat(el.getAttribute('data-ntd'));
+          if (!isNaN(ntd)) {
+            if (ntd === 0) { el.textContent = '免費'; return; }
+            var text = cc.format(ntd);
+            if (el.tagName === 'INPUT') {
+              el.value = text;
+            } else {
+              el.textContent = text;
+            }
+          }
+        });
+      };
+
+      cc._loadRates = function(callback) {
+        cc._rateCallbacks.push(callback || function(){});
+        if (cc._loading) return;
+        cc._loading = true;
+
+        var cached = null;
+        try {
+          var raw = localStorage.getItem(RATES_KEY);
+          if (raw) {
+            var parsed = JSON.parse(raw);
+            if (parsed.ts && Date.now() - parsed.ts < RATES_TTL) {
+              cached = parsed.rates;
+            }
+          }
+        } catch(e) {}
+
+        if (cached) {
+          cc._rates = cached;
+          cc._loading = false;
+          var cbs = cc._rateCallbacks;
+          cc._rateCallbacks = [];
+          cbs.forEach(function(fn) { try { fn(); } catch(e) {} });
+          return;
+        }
+
+        var script = document.createElement('script');
+        script.src = 'https://open.er-api.com/v6/latest/TWD?callback=__currency_cb';
+        var timeout = setTimeout(function() {
+          cc._rates = { USD: 0.031, EUR: 0.028, JPY: 4.75, CNY: 0.22, HKD: 0.24, SGD: 0.041, KRW: 40.5, GBP: 0.024, AUD: 0.046 };
+          cc._loading = false;
+          var cbs = cc._rateCallbacks;
+          cc._rateCallbacks = [];
+          cbs.forEach(function(fn) { try { fn(); } catch(e) {} });
+        }, 5000);
+
+        window.__currency_cb = function(data) {
+          clearTimeout(timeout);
+          if (data && data.rates) {
+            cc._rates = data.rates;
+            try {
+              localStorage.setItem(RATES_KEY, JSON.stringify({ rates: data.rates, ts: Date.now() }));
+            } catch(e) {}
+          } else {
+            cc._rates = { USD: 0.031, EUR: 0.028, JPY: 4.75, CNY: 0.22, HKD: 0.24, SGD: 0.041, KRW: 40.5, GBP: 0.024, AUD: 0.046 };
+          }
+          cc._loading = false;
+          var cbs = cc._rateCallbacks;
+          cc._rateCallbacks = [];
+          cbs.forEach(function(fn) { try { fn(); } catch(e) {} });
+          delete window.__currency_cb;
+        };
+        document.head.appendChild(script);
+      };
+
+      cc.ready = function(callback) {
+        if (cc._rates) {
+          setTimeout(callback, 0);
+          return;
+        }
+        cc._loadRates(callback);
+      };
+
+      document.documentElement.setAttribute('data-currency', cc._code);
+      cc._loadRates();
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function() { cc.ready(cc.applyPrices); });
+      } else {
+        cc.ready(cc.applyPrices);
+      }
+    })();
+  </script>
+
+  <script is:inline>
+    (function() {
+      // 網域綁定：僅允許我們的網域
+      var allowed = ['sheephome.nsir.uk', 'localhost', '127.0.0.1', 'nsir-studio.github.io'];
+      var host = window.location.hostname;
+      var ok = allowed.some(function(d) { return host === d || host.endsWith('.' + d); });
+      if (!ok) {
+        document.open();
+        document.write('<!DOCTYPE html><html><head><title>Access Denied</title></head><body style="background:#111;color:#fff;font-family:sans-serif;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0"><h1>Access Denied</h1></body></html>');
+        document.close();
+        window.stop();
+        return;
+      }
+
+      // 正式環境停用 console
+      if (host === 'sheephome.nsir.uk') {
+        var noop = function() {};
+        ['log','warn','info','debug','dir','table','trace','group','groupCollapsed','groupEnd','time','timeEnd','profile','profileEnd'].forEach(function(m) {
+          if (window.console) window.console[m] = noop;
+        });
+        // 週期性覆寫以封鎖 debugger
+        var blockDebugger = function() {
+          var start = Date.now();
+          debugger; // devtools 開啟時會在此暫停，後續程式碼無法及時執行
+          var diff = Date.now() - start;
+          if (diff > 5) {
+            document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;min-height:100vh;font-family:sans-serif;background:#111;color:#fff;margin:0"><p>DevTools 已禁用</p></div>';
+            window.stop();
+          }
+        };
+        try {
+          Object.defineProperty(document, 'domain', { get: function() { return 'sheephome.nsir.uk'; } });
+        } catch(e) {}
+        // 凍結部分全域物件以防竄改
+        if (Object.freeze) {
+          try { Object.freeze(window.console); } catch(e) {}
+        }
+        setTimeout(blockDebugger, 1000);
+      }
+    })();
+  </script>
+
+  <script is:inline>
+    (function() {
+      var CACHE_PREFIX = 'shop_cache_';
+      var CACHE_TTL = 10000; // 快取 10 秒，過期即重新抓取
+      window.__apiCache = {
+        get: function(key) {
+          try {
+            var raw = localStorage.getItem(CACHE_PREFIX + key);
+            if (!raw) return null;
+            var entry = JSON.parse(raw);
+            entry.stale = Date.now() - entry.ts > CACHE_TTL;
+            return entry;
+          } catch(e) { return null; }
+        },
+        set: function(key, data) {
+          try {
+            localStorage.setItem(CACHE_PREFIX + key, JSON.stringify({ data: data, ts: Date.now() }));
+          } catch(e) {}
+        },
+        // stale-while-revalidate：先回傳快取，背景更新
+        fetch: async function(url, key, options) {
+          var cached = window.__apiCache.get(key || url);
+          if (cached && !cached.stale) return cached.data; // 新鮮
+          if (cached) {
+            // 過期：重新抓取等新資料，網路失敗才退回舊快取
+            try {
+              var res = await fetch(url, options || {});
+              if (!res.ok) throw new Error();
+              var fresh = await res.json();
+              window.__apiCache.set(key || url, fresh);
+              return fresh;
+            } catch (e) {
+              return cached.data;
+            }
+          }
+          var res = await fetch(url, options || {});
+          if (!res.ok) throw new Error('API error');
+          var data = await res.json();
+          window.__apiCache.set(key || url, data);
+          return data;
+        }
+      };
+    })();
+  </script>
+</head>
+<body>
+  <slot />
+  <script is:inline>
+    (function() {
+      const token = localStorage.getItem('shop_token');
+      const user = localStorage.getItem('shop_user');
+      if (!token && user) localStorage.removeItem('shop_user');
+      window.dispatchEvent(new Event('shop:loaded'));
+    })();
+
+    // 全站註冊 Service Worker（PWA — 無推播）
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('/sw.js', { updateViaCache: 'none' }).catch(function(err) {
+          console.warn('SW registration failed:', err);
+        });
+      });
+    }
+  </script>
+</body>
+</html>
+
+<style is:global>
+  @import '../styles/global.css';
+</style>

@@ -7,7 +7,7 @@ export interface Project {
 const projects: Project[] = [
   {
     name: '【小專案】NYTools',
-    desc: 'P2P 即時工具集 — 客服排隊、檔案傳輸、點播、投影',
+    desc: 'P2P 工具集 — 檔案傳輸、螢幕投影',
     href: '/nytools/',
   },
   {

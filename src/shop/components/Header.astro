@@ -1,0 +1,643 @@
+---
+---
+<!--
+  小羊農場 Header — SheepHome 樣式
+  保留：公告、購物車、貨幣切換、會員下拉（登入/帳號/管理後台/登出）、行動選單
+  移除：推播通知鈴鐺
+  導覽：只留「回首頁」與「回羊家的入口」
+-->
+
+<header class="header">
+  <div id="announcement-banner" class="announcement-bar">
+    <div class="announcement-inner">
+      <span class="announcement-text">
+        <strong>2026/08/01</strong> 系統正式上線！小羊農場的理念是把每件物品的價值淋漓盡致，讓不需要的物品以 0 元分享給需要的人（如需寄送僅需負擔 7-11 運費 $75（運費 $60 + 包材 $15））。大家一起讓物品發揮最大價值 🐑
+      </span>
+      <button id="announcement-close" class="announcement-close" aria-label="關閉公告">✕</button>
+    </div>
+  </div>
+
+  <div class="topbar">
+    <div class="container topbar-inner">
+      <span class="topbar-left">小羊農場</span>
+      <span class="topbar-right">
+        <a href="/">回羊家的入口</a>
+        <span class="topbar-sep" aria-hidden="true">｜</span>
+        <a href="/shop/">回首頁</a>
+      </span>
+    </div>
+  </div>
+
+  <div class="header-main container">
+    <a href="/shop/" class="brand">
+      <svg class="logo-icon" viewBox="0 0 24 24" width="52" height="52" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true">
+        <path d="M12 3C8 3 4 6 4 10c0 2 1 4 3 5l-1 6h12l-1-6c2-1 3-3 3-5 0-4-4-7-8-7z"/>
+        <circle cx="9" cy="10" r="1" fill="currentColor"/>
+        <circle cx="15" cy="10" r="1" fill="currentColor"/>
+        <path d="M9 14c1 .8 5 .8 6 0" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
+      </svg>
+      <span class="brand-text">
+        <span class="brand-name">小羊農場</span>
+        <span class="brand-en">SHEEP FARM</span>
+      </span>
+    </a>
+
+    <div class="header-actions">
+      <div class="currency-selector" id="currency-selector">
+        <button class="currency-btn" id="currency-btn">
+          <span id="currency-btn-label">NT$</span>
+          <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="currency-menu" id="currency-menu">
+          <div class="currency-menu-header">選擇貨幣</div>
+          <div id="currency-options"></div>
+        </div>
+      </div>
+
+      <a href="/shop/cart" class="cart-btn" aria-label="購物車">
+        <span class="cart-btn-icon">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <path d="M16 10a4 4 0 01-8 0"/>
+          </svg>
+        </span>
+        <span class="cart-badge" id="cart-badge" style="display:none">0</span>
+      </a>
+
+      <div id="user-menu-container">
+        <a href="/shop/login" class="btn btn-sm btn-secondary" id="login-btn">登入</a>
+        <div id="user-dropdown" style="display:none" class="user-dropdown">
+          <button id="user-btn" class="user-avatar-btn">
+            <span id="user-avatar-initial" class="user-avatar-initial"></span>
+          </button>
+          <div class="dropdown-menu" id="user-dropdown-menu">
+            <div class="dropdown-user-info" id="dropdown-user-info">
+              <span class="dropdown-user-name" id="dropdown-user-name"></span>
+              <span class="dropdown-user-email" id="dropdown-user-email"></span>
+            </div>
+            <hr class="divider" style="margin:4px 0" />
+            <a href="/shop/account" class="dropdown-item">個人資料</a>
+            <a href="/shop/account/?tab=orders" class="dropdown-item">訂單紀錄</a>
+            <a href="#" class="dropdown-item" id="admin-link" style="display:none">管理後台</a>
+            <hr class="divider" style="margin:4px 0" />
+            <button class="dropdown-item logout-item" id="logout-btn">登出</button>
+          </div>
+        </div>
+      </div>
+
+      <button class="nav-toggle hide-desktop" id="mobile-menu-btn" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label="開啟選單">
+        <svg width="22" height="18" viewBox="0 0 22 18" fill="none" aria-hidden="true">
+          <rect y="0" width="22" height="3" fill="currentColor" />
+          <rect y="7.5" width="22" height="3" fill="currentColor" />
+          <rect y="15" width="22" height="3" fill="currentColor" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="menubar-wrap">
+    <nav class="menubar container" aria-label="主導覽">
+      <a class="menu-link is-home" href="/shop/">回首頁</a>
+      <a class="menu-link" href="/shop/products">全部商品</a>
+      <a class="menu-link" href="/shop/zero-price/">0元活動</a>
+      <a class="menu-link menu-cta" href="/">回羊家的入口</a>
+    </nav>
+  </div>
+
+  <div class="mobile-nav" id="mobile-nav">
+    <a href="/shop/" class="mobile-nav-link">回首頁</a>
+    <a href="/" class="mobile-nav-link">回羊家的入口</a>
+    <a href="/shop/zero-price/" class="mobile-nav-link">0元活動</a>
+    <a href="/shop/products" class="mobile-nav-link">全部商品</a>
+    <a href="/shop/cart" class="mobile-nav-link">購物車</a>
+    <a href="/shop/login" class="mobile-nav-link" id="mobile-login-link">登入</a>
+    <a href="/shop/account" class="mobile-nav-link" id="mobile-account-link" style="display:none">我的帳號</a>
+    <a href="/shop/account/?tab=orders" class="mobile-nav-link" id="mobile-orders-link" style="display:none">訂單紀錄</a>
+    <button class="mobile-nav-link mobile-logout-btn" id="mobile-logout-btn" style="display:none">登出</button>
+  </div>
+</header>
+
+<script is:inline>
+  // XSS 防護：跳脫使用者資料中的 HTML
+  window.escHtml = function(s) {
+    if (!s) return '';
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+  };
+  (function() {
+    var header = document.querySelector('.header');
+    if (header) {
+      function setHeaderH() { document.documentElement.style.setProperty('--header-h', header.offsetHeight + 'px'); }
+      setHeaderH();
+      if (window.ResizeObserver) {
+        new ResizeObserver(setHeaderH).observe(header);
+      } else {
+        window.addEventListener('resize', setHeaderH);
+      }
+    }
+  })();
+
+  document.addEventListener('DOMContentLoaded', function() {
+    var announceClose = document.getElementById('announcement-close');
+    if (announceClose) {
+      announceClose.addEventListener('click', function() {
+        var banner = document.getElementById('announcement-banner');
+        if (banner) banner.style.display = 'none';
+        localStorage.setItem('announcement_closed', String(Date.now()));
+        document.documentElement.classList.remove('announcement-visible');
+        var h = document.querySelector('.header');
+        if (h) document.documentElement.style.setProperty('--header-h', h.offsetHeight + 'px');
+      });
+    }
+
+    const userBtn = document.getElementById('user-btn');
+    const dropdownMenu = document.getElementById('user-dropdown-menu');
+    const logoutBtn = document.getElementById('logout-btn');
+    const badge = document.getElementById('cart-badge');
+
+    var count = parseInt(localStorage.getItem('shop_cart_count') || '0', 10);
+    if (badge) {
+      if (count > 0) {
+        badge.textContent = String(count);
+        badge.style.display = 'flex';
+      } else {
+        badge.style.display = 'none';
+      }
+    }
+
+    var userStr = localStorage.getItem('shop_user');
+    var token = localStorage.getItem('shop_token');
+    if (userStr && token) {
+      try {
+        var userData = JSON.parse(userStr);
+        document.getElementById('login-btn').style.display = 'none';
+        document.getElementById('user-dropdown').style.display = 'block';
+        var initial = (userData.name || userData.email || '?').charAt(0).toUpperCase();
+        var avatarEl = document.getElementById('user-avatar-initial');
+        if (avatarEl) avatarEl.textContent = initial;
+        var nameEl = document.getElementById('dropdown-user-name');
+        var emailEl = document.getElementById('dropdown-user-email');
+        if (nameEl) nameEl.textContent = userData.name || '';
+        if (emailEl) emailEl.textContent = userData.email || '';
+        document.getElementById('mobile-login-link').style.display = 'none';
+        document.getElementById('mobile-account-link').style.display = 'block';
+        document.getElementById('mobile-orders-link').style.display = 'block';
+        document.getElementById('mobile-logout-btn').style.display = 'block';
+      } catch(e) {}
+    }
+
+    // 管理後台連結
+    var adminLink = document.getElementById('admin-link');
+    if (adminLink) {
+      adminLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        window.location.href = '/shop/admin';
+      });
+    }
+
+    if (userBtn && dropdownMenu) {
+      userBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        dropdownMenu.classList.toggle('show');
+      });
+      document.addEventListener('click', function() {
+        dropdownMenu.classList.remove('show');
+      });
+    }
+
+    var cc = window.__currency;
+    if (cc) {
+      var currencyBtn = document.getElementById('currency-btn');
+      var currencyMenu = document.getElementById('currency-menu');
+      var currencyOptions = document.getElementById('currency-options');
+      var currencyLabel = document.getElementById('currency-btn-label');
+
+      if (currencyOptions) {
+        var codes = Object.keys(cc.currencies);
+        var activeCode = cc.getCode();
+        currencyOptions.innerHTML = codes.map(function(code) {
+          var info = cc.currencies[code];
+          var active = code === activeCode ? ' active' : '';
+          return '<button class="currency-option' + active + '" data-currency="' + code + '">' +
+            '<span class="currency-option-sym">' + info.symbol + '</span>' +
+            '<span class="currency-option-label">' + info.label + '</span>' +
+            '<span class="currency-option-check">' + (active ? '✓' : '') + '</span>' +
+            '</button>';
+        }).join('');
+
+        currencyOptions.addEventListener('click', function(e) {
+          var btn = e.target.closest('.currency-option');
+          if (!btn) return;
+          var code = btn.getAttribute('data-currency');
+          if (code && code !== cc.getCode()) {
+            cc.setCurrency(code);
+            window.location.reload();
+          } else {
+            currencyMenu.classList.remove('show');
+          }
+        });
+      }
+
+      if (currencyLabel) {
+        currencyLabel.textContent = cc.getSymbol() + (cc.getCode() !== 'TWD' ? ' ' + cc.getCode() : '');
+      }
+
+      if (currencyBtn && currencyMenu) {
+        currencyBtn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          currencyMenu.classList.toggle('show');
+        });
+        document.addEventListener('click', function() {
+          currencyMenu.classList.remove('show');
+        });
+      }
+    }
+
+    if (logoutBtn) {
+      logoutBtn.addEventListener('click', function() {
+        var keysToRemove = [];
+        for (var i = 0; i < localStorage.length; i++) {
+          var key = localStorage.key(i);
+          if (key && key.startsWith('shop_')) {
+            keysToRemove.push(key);
+          }
+        }
+        keysToRemove.forEach(function(k) { localStorage.removeItem(k); });
+        sessionStorage.clear();
+        window.location.href = '/shop/';
+      });
+    }
+
+    const navToggle = document.getElementById('mobile-menu-btn');
+    const mobileNav = document.getElementById('mobile-nav');
+    if (navToggle && mobileNav) {
+      navToggle.addEventListener('click', function() {
+        const open = navToggle.getAttribute('aria-expanded') === 'true';
+        navToggle.setAttribute('aria-expanded', String(!open));
+        mobileNav.classList.toggle('show', !open);
+      });
+      mobileNav.querySelectorAll('a, button').forEach(function(el) {
+        el.addEventListener('click', function() {
+          navToggle.setAttribute('aria-expanded', 'false');
+          mobileNav.classList.remove('show');
+        });
+      });
+    }
+
+    var mobileLogoutBtn = document.getElementById('mobile-logout-btn');
+    if (mobileLogoutBtn) {
+      mobileLogoutBtn.addEventListener('click', function() {
+        for (var i = 0; i < localStorage.length; i++) {
+          var key = localStorage.key(i);
+          if (key && key.startsWith('shop_')) localStorage.removeItem(key);
+        }
+        sessionStorage.clear();
+        window.location.href = '/shop/';
+      });
+    }
+  });
+</script>
+
+<style>
+  .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: var(--c-bg);
+  }
+
+  /* 公告列 */
+  .announcement-bar {
+    background: var(--c-bg-dark);
+    color: var(--c-text-inverse);
+    font-size: var(--text-sm);
+    line-height: 1.5;
+  }
+  .announcement-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-4);
+    padding: var(--sp-2) var(--sp-6);
+    max-width: var(--max-w);
+    margin: 0 auto;
+  }
+  .announcement-text {
+    flex: 1;
+    color: rgba(255,255,255,0.85);
+  }
+  .announcement-text strong { color: #fff; }
+  .announcement-close {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius);
+    color: rgba(255,255,255,0.5);
+    font-size: 14px;
+    transition: all var(--duration) var(--ease);
+  }
+  .announcement-close:hover {
+    color: #fff;
+    background: rgba(255,255,255,0.1);
+  }
+  @media (max-width: 768px) {
+    .announcement-inner { padding: var(--sp-2) var(--sp-4); }
+    .announcement-text { font-size: var(--text-xs); }
+  }
+
+  /* SheepHome 風格 topbar */
+  .topbar {
+    background: var(--c-bg-dark);
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+  }
+  .topbar-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 32px;
+  }
+  .topbar a { transition: color var(--duration) var(--ease); }
+  .topbar a:hover { color: #fff; }
+  .topbar-sep { margin: 0 0.5rem; color: rgba(255,255,255,0.3); }
+
+  /* header-main：品牌 + 動作區 */
+  .header-main {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.1rem 0;
+  }
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.85rem;
+    color: var(--c-text);
+  }
+  .logo-icon { flex-shrink: 0; filter: drop-shadow(0 4px 8px rgba(28,28,28,0.2)); }
+  .brand-text { display: flex; flex-direction: column; line-height: 1.25; }
+  .brand-name {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 1.55rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+  }
+  .brand-en {
+    font-size: 0.66rem;
+    font-weight: 400;
+    letter-spacing: 0.42em;
+    text-transform: uppercase;
+    color: var(--c-text-light);
+  }
+
+  /* menubar */
+  .menubar-wrap {
+    border-top: 1px solid var(--c-border);
+    border-bottom: 2px solid var(--c-bg-dark);
+    background: var(--c-bg);
+  }
+  .menubar {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    min-height: 48px;
+  }
+  .menu-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0 1.35rem;
+    height: 48px;
+    font-size: 0.95rem;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    color: var(--c-text-secondary);
+    border-right: 1px solid var(--c-border);
+    transition: background var(--duration) var(--ease), color var(--duration) var(--ease);
+  }
+  .menu-link:hover { background: var(--c-bg-alt); color: var(--c-text); }
+  .is-home { color: var(--c-text); }
+  .menu-cta {
+    margin-left: auto;
+    border-right: none;
+    font-weight: 500;
+    background: var(--c-bg-dark);
+    color: var(--c-text-inverse);
+  }
+  .menu-cta:hover { background: #000; color: #fff; }
+
+  /* 動作區 */
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-3);
+  }
+  .currency-selector { position: relative; }
+  .currency-btn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    height: 36px;
+    padding: 0 var(--sp-2);
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius);
+    background: var(--c-bg);
+    cursor: pointer;
+    font-size: var(--text-xs);
+    color: var(--c-text);
+    transition: all var(--duration) var(--ease);
+    white-space: nowrap;
+  }
+  .currency-btn:hover { border-color: var(--c-text); }
+  .currency-menu {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    background: var(--c-bg);
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    min-width: 150px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-4px);
+    transition: all var(--duration) var(--ease);
+    z-index: 110;
+  }
+  .currency-menu.show { opacity: 1; visibility: visible; transform: translateY(0); }
+  .currency-menu-header {
+    padding: var(--sp-3) var(--sp-4);
+    font-size: var(--text-xs);
+    color: var(--c-text-light);
+    border-bottom: 1px solid var(--c-border);
+    letter-spacing: 0.05em;
+  }
+  .currency-option {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-3);
+    width: 100%;
+    padding: var(--sp-2) var(--sp-4);
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: var(--text-xs);
+    color: var(--c-text-secondary);
+    text-align: left;
+    transition: background var(--duration) var(--ease);
+  }
+  .currency-option:hover { background: var(--c-bg-alt); color: var(--c-text); }
+  .currency-option.active { color: var(--c-text); font-weight: 500; }
+  .currency-option + .currency-option { border-top: 1px solid var(--c-border); }
+  .currency-option-sym { width: 28px; text-align: center; flex-shrink: 0; font-size: var(--text-sm); }
+  .currency-option-label { flex: 1; letter-spacing: 0.02em; }
+  .currency-option-check { width: 18px; text-align: center; font-size: 12px; color: var(--c-bg-dark); }
+
+  .cart-btn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius);
+    color: var(--c-text);
+    transition: background var(--duration) var(--ease);
+  }
+  .cart-btn:hover { background: var(--c-bg-alt); }
+  .cart-badge {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    min-width: 16px;
+    height: 16px;
+    font-size: 10px;
+    font-weight: 600;
+    background: var(--c-bg-dark);
+    color: var(--c-text-inverse);
+    border-radius: 50%;
+    padding: 0 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .user-dropdown { position: relative; }
+  .user-avatar-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid var(--c-border);
+    background: var(--c-bg-dark);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--duration) var(--ease);
+    padding: 0;
+  }
+  .user-avatar-btn:hover { border-color: var(--c-text); background: #333; }
+  .user-avatar-initial {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--c-text-inverse);
+    line-height: 1;
+  }
+  .dropdown-menu {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    background: var(--c-bg);
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    min-width: 180px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-4px);
+    transition: all var(--duration) var(--ease);
+    z-index: 120;
+  }
+  .dropdown-menu.show { opacity: 1; visibility: visible; transform: translateY(0); }
+  .dropdown-user-info {
+    padding: var(--sp-3) var(--sp-4);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .dropdown-user-name { font-size: var(--text-sm); font-weight: 500; color: var(--c-text); }
+  .dropdown-user-email {
+    font-size: var(--text-xs);
+    color: var(--c-text-light);
+    word-break: break-all;
+  }
+  .dropdown-item {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: var(--sp-2) var(--sp-4);
+    font-size: var(--text-sm);
+    color: var(--c-text-secondary);
+    transition: all var(--duration) var(--ease);
+    border: none;
+    background: none;
+  }
+  .dropdown-item:hover { color: var(--c-text); background: var(--c-bg-alt); }
+  .logout-item { color: var(--c-error); }
+  .logout-item:hover { color: #dc2626; background: #fef2f2; }
+
+  .nav-toggle {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    background: transparent;
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius);
+    cursor: pointer;
+    color: var(--c-text);
+  }
+
+  /* 行動選單 */
+  .mobile-nav {
+    display: none;
+    flex-direction: column;
+    padding: var(--sp-4) var(--sp-6);
+    border-top: 1px solid var(--c-border);
+    background: var(--c-bg);
+  }
+  .mobile-nav.show { display: flex; }
+  .mobile-nav-link {
+    padding: var(--sp-3) 0;
+    font-size: var(--text-sm);
+    color: var(--c-text-secondary);
+    border-bottom: 1px solid var(--c-border);
+    text-align: left;
+    width: 100%;
+    background: none;
+  }
+  .mobile-nav-link:last-child { border-bottom: none; }
+  .mobile-logout-btn { color: var(--c-error) !important; }
+
+  @media (max-width: 900px) {
+    .hide-desktop { display: flex !important; }
+    .nav-toggle { display: flex; }
+    .header-main { padding: 0.9rem 0; }
+    .logo-icon { width: 44px; height: 44px; }
+    .brand-name { font-size: 1.25rem; }
+    .menu-link { display: none; }
+    .menubar-wrap { display: none; }
+  }
+  @media (min-width: 901px) {
+    .hide-mobile { display: flex !important; }
+  }
+</style>
