@@ -1,0 +1,141 @@
+---
+import BaseLayout from '../../cctv/layouts/BaseLayout.astro';
+import cameras from '../../cctv/data/cameras_thumb.json';
+const base = '/cctv';
+const totalCams = cameras.length;
+const totalRegions = [...new Set(cameras.filter(c => c.region).map(c => c.region))].length;
+---
+
+<BaseLayout title="地圖">
+  <div id="mapContainer">
+    <div id="map"></div>
+  </div>
+
+  <div id="mapStats">
+    <span>{totalCams.toLocaleString()}</span> 台攝影機
+    <span>{totalRegions}</span> 個縣市
+  </div>
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+  <!-- is:inline 保留 classic script 順序: leaflet 先載入, markercluster 才能用全域 L -->
+  <script is:inline src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script is:inline src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+
+  <script is:inline>
+    document.addEventListener('DOMContentLoaded', function() {
+      if (typeof L === 'undefined') return;
+
+      var base = '/cctv';
+      var regionColors = {
+        '台北市':'#e74c3c','新北市':'#3498db','基隆市':'#2ecc71',
+        '桃園市':'#f39c12','新竹縣':'#9b59b6','新竹市':'#1abc9c',
+        '苗栗縣':'#e67e22','台中市':'#2980b9','彰化縣':'#27ae60',
+        '南投縣':'#d35400','雲林縣':'#8e44ad','嘉義縣':'#16a085',
+        '嘉義市':'#c0392b','台南市':'#2c3e50','高雄市':'#f1c40f',
+        '屏東縣':'#7f8c8d','台東縣':'#34495e','宜蘭縣':'#e91e63',
+        '花蓮縣':'#00bcd4'
+      };
+
+      var map = L.map('map', {
+        center: [23.5, 121],
+        zoom: 8, minZoom: 7,
+        maxBounds: L.latLngBounds(L.latLng(21.5, 118), L.latLng(25.5, 122.5)),
+        maxBoundsViscosity: 1.0,
+        zoomControl: true, attributionControl: false
+      });
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 18, className: 'map-tiles'
+      }).addTo(map);
+
+      var mcg = L.markerClusterGroup({
+        chunkedLoading: true,
+        maxClusterRadius: 50,
+        spiderfyOnMaxZoom: true,
+        showCoverageOnHover: false,
+        iconCreateFunction: function(cluster) {
+          var count = cluster.getChildCount();
+          var size = count < 100 ? 'small' : count < 500 ? 'medium' : 'large';
+          return L.divIcon({
+            html: '<div class="cluster-icon cluster-' + size + '"><span>' + count + '</span></div>',
+            className: 'cluster-wrapper',
+            iconSize: L.point(40, 40)
+          });
+        }
+      });
+
+      function escHtml(s) {
+        return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+      }
+
+      // Fetch camera data from JSON file (not inlined - too large)
+      fetch(base + '/cameras_thumb.json')
+        .then(function(r) { return r.json(); })
+        .then(function(cameras) {
+          cameras.forEach(function(cam) {
+            if (!cam.lat || !cam.lng) return;
+            var color = regionColors[cam.region] || '#7f8c8d';
+            var marker = L.circleMarker([cam.lat, cam.lng], {
+              radius: 5,
+              fillColor: color,
+              color: '#fff',
+              weight: 1,
+              opacity: 0.8,
+              fillOpacity: 0.7
+            });
+
+            marker.bindPopup(
+              '<div class="popup-wrap">' +
+                '<div class="popup-name">' + escHtml(cam.name || '未命名') + '</div>' +
+                '<div class="popup-loc">' + (escHtml(cam.city || '') + (cam.city && cam.region ? ' · ' : '') + escHtml(cam.region || '')) + '</div>' +
+                '<a href="' + base + '/camera/#' + cam.id + '" class="popup-link">觀看即時影像</a>' +
+              '</div>',
+              { closeButton: true, className: 'cam-popup' }
+            );
+
+            mcg.addLayer(marker);
+          });
+          map.addLayer(mcg);
+        })
+        .catch(function(e) {
+          console.error('Failed to load camera data:', e);
+        });
+    });
+  </script>
+
+  <style is:inline>
+    #mapContainer { position: fixed; top: 48px; left: 0; right: 0; bottom: 0; z-index: 1; }
+    #map { width: 100%; height: 100%; }
+    .map-tiles { filter: saturate(0.6) hue-rotate(340deg); }
+    #mapStats {
+      position: fixed; top: 58px; left: 50%; transform: translateX(-50%);
+      z-index: 10; background: rgba(255,255,255,0.92); backdrop-filter: blur(8px);
+      padding: 4px 14px; font-size: 0.72rem; color: var(--text-muted);
+      letter-spacing: 0.05em; border: 1px solid var(--border-light); white-space: nowrap;
+    }
+    #mapStats span { color: var(--text); font-weight: 500; }
+    .cluster-wrapper { background: none !important; border: none !important; }
+    .cluster-icon {
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 50%; font-size: 0.72rem; font-weight: 600;
+      color: #fff; font-family: var(--font-mono);
+      border: 2px solid rgba(255,255,255,0.8);
+    }
+    .cluster-small { width: 36px; height: 36px; background: rgba(52,152,219,0.7); font-size: 0.65rem; }
+    .cluster-medium { width: 44px; height: 44px; background: rgba(231,76,60,0.7); }
+    .cluster-large { width: 52px; height: 52px; background: rgba(155,89,182,0.7); }
+    .cam-popup .leaflet-popup-content-wrapper {
+      border-radius: 0; padding: 0; box-shadow: 0 2px 16px rgba(0,0,0,0.12); background: var(--surface);
+    }
+    .cam-popup .leaflet-popup-content { margin: 0; padding: 12px 14px; font-family: inherit; min-width: 180px; }
+    .cam-popup .leaflet-popup-tip { background: var(--surface); }
+    .popup-name { font-size: 0.82rem; font-weight: 500; color: var(--text); margin-bottom: 3px; line-height: 1.3; }
+    .popup-loc { font-size: 0.68rem; color: var(--text-dim); margin-bottom: 8px; }
+    .popup-link { display: inline-block; font-size: 0.7rem; color: var(--accent); letter-spacing: 0.05em; text-decoration: none; border-bottom: 1px solid transparent; transition: border-color 0.2s; }
+    .popup-link:hover { border-bottom-color: var(--accent); }
+    :global(main) { max-width: none !important; padding: 0 !important; margin: 0 !important; }
+    :global(footer) { display: none; }
+  </style>
+</BaseLayout>

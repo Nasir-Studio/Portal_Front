@@ -1,0 +1,197 @@
+---
+import '../styles/global.css';
+const { title } = Astro.props;
+const base = '/cctv';
+---
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title} | 羊在偷看你</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#8b7355" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="羊在偷看你" />
+  <link rel="apple-touch-icon" href="/icon-192.png" />
+</head>
+<body>
+  <div class="page-loader" id="pageLoader">
+    <div class="loader-inner">
+      <div class="loader-text">羊在偷看你</div>
+      <div class="loader-sub">台灣即時影像</div>
+      <div class="loader-bar-track">
+        <div class="loader-bar" id="loaderBar"></div>
+      </div>
+      <div class="loader-pct" id="loaderPct">0%</div>
+    </div>
+  </div>
+
+  <header>
+    <nav>
+      <a href={`${base}/`} class="logo">羊在偷看<span class="logo-dot">・</span>你</a>
+      <button class="hamburger" id="hamburgerBtn" aria-label="選單">
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href={`${base}/`}>首頁</a></li>
+        <li><a href={`${base}/regions`}>區域</a></li>
+        <li><a href={`${base}/search`}>搜尋</a></li>
+        <li><a href={`${base}/map-full`}>地圖</a></li>
+        <li><a href={`${base}/map`}>定位</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <slot />
+  </main>
+
+  <footer>
+    <p>Nasir 2026 羊在偷看你</p>
+  </footer>
+
+  <style>
+    header {
+      position: sticky; top: 0;
+      background: rgba(246, 244, 240, 0.92); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-light);
+      z-index: 100;
+    }
+    nav {
+      max-width: var(--max-w); margin: 0 auto;
+      padding: 0 1.5rem;
+      height: 48px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .logo {
+      font-family: var(--font-serif);
+      font-size: 1.1rem; font-weight: 400;
+      color: var(--text); text-decoration: none;
+      letter-spacing: 0.15em;
+    }
+    .logo-dot { color: var(--accent); }
+    .logo:hover { text-decoration: none; color: var(--accent); }
+
+    .hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; }
+    .hamburger .bar { width: 16px; height: 1.5px; background: var(--text); transition: 0.3s; }
+    .hamburger.open .bar:first-child { transform: translateY(3.25px) rotate(45deg); }
+    .hamburger.open .bar:last-child { transform: translateY(-3.25px) rotate(-45deg); }
+
+    nav ul { list-style: none; display: flex; gap: 2rem; align-items: center; }
+    nav a { color: var(--text-muted); text-decoration: none; font-size: 0.8rem; letter-spacing: 0.1em; transition: color 0.2s; }
+    nav a:hover { color: var(--accent); }
+
+    main { max-width: var(--max-w); margin: 0 auto; padding: 3rem 1.5rem 4rem; flex: 1; width: 100%; }
+
+    footer {
+      border-top: 1px solid var(--border-light);
+      text-align: center; padding: 2rem 1.5rem;
+      color: var(--text-dim); font-size: 0.72rem;
+      letter-spacing: 0.08em;
+    }
+
+    @media (max-width: 640px) {
+      .hamburger { display: flex; }
+      nav ul { display: none; position: absolute; top: 100%; left: 0; right: 0;
+        background: var(--surface); border-bottom: 1px solid var(--border);
+        flex-direction: column; padding: 1rem 1.5rem; gap: 1rem;
+      }
+      nav ul.open { display: flex; }
+    }
+
+    .page-loader {
+      position: fixed; inset: 0; z-index: 9999;
+      background: var(--bg);
+      display: flex; align-items: center; justify-content: center;
+      transition: opacity 0.8s ease, visibility 0.8s ease;
+    }
+    .page-loader.hide {
+      opacity: 0; visibility: hidden; pointer-events: none;
+    }
+    .loader-inner { text-align: center; width: 200px; }
+    .loader-text {
+      font-family: var(--font-serif);
+      font-size: 1.4rem; letter-spacing: 0.25em;
+      color: var(--text); margin-bottom: 0.4rem;
+      font-weight: 400;
+    }
+    .loader-sub {
+      font-size: 0.6rem; color: var(--text-dim);
+      letter-spacing: 0.3em; margin-bottom: 2rem;
+    }
+    .loader-bar-track {
+      width: 100%; height: 1px;
+      background: var(--border); overflow: hidden;
+    }
+    .loader-bar {
+      width: 0%; height: 100%;
+      background: var(--accent);
+      transition: width 0.3s ease;
+    }
+    .loader-pct {
+      font-size: 0.65rem; color: var(--text-dim);
+      font-family: var(--font-mono);
+      margin-top: 0.75rem; letter-spacing: 0.1em;
+    }
+  </style>
+
+  <script>
+    (function() {
+      var btn = document.getElementById('hamburgerBtn');
+      var links = document.getElementById('navLinks');
+      if (btn && links) {
+        btn.addEventListener('click', function() {
+          btn.classList.toggle('open');
+          links.classList.toggle('open');
+        });
+      }
+
+      var loader = document.getElementById('pageLoader');
+      if (!loader) return;
+
+      if (sessionStorage.getItem('livecctv_loaded')) {
+        loader.remove();
+        return;
+      }
+
+      var bar = document.getElementById('loaderBar');
+      var pct = document.getElementById('loaderPct');
+      var progress = 0;
+      var steps = [
+        { target: 25, speed: 25 },
+        { target: 50, speed: 35 },
+        { target: 75, speed: 40 },
+        { target: 90, speed: 30 },
+        { target: 100, speed: 20 }
+      ];
+      var stepIdx = 0;
+
+      function tick() {
+        if (stepIdx >= steps.length) {
+          sessionStorage.setItem('livecctv_loaded', '1');
+          setTimeout(function() { loader.classList.add('hide'); }, 200);
+          setTimeout(function() { loader.remove(); }, 1000);
+          return;
+        }
+        var step = steps[stepIdx];
+        if (progress < step.target) {
+          progress += 1;
+          bar.style.width = progress + '%';
+          pct.textContent = progress + '%';
+          setTimeout(tick, step.speed);
+        } else {
+          stepIdx++;
+          setTimeout(tick, 150);
+        }
+      }
+
+      setTimeout(tick, 200);
+    })();
+  </script>
+</body>
+</html>

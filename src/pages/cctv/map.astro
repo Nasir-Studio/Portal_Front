@@ -1,0 +1,479 @@
+---
+import BaseLayout from '../../cctv/layouts/BaseLayout.astro';
+const base = '/cctv';
+---
+
+<BaseLayout title="即時定位">
+  <section class="page-header">
+    <p class="page-label">NEARBY CAMERAS</p>
+    <h1>附近的攝影機</h1>
+    <p class="page-desc">開啟 GPS，偵測附近的即時影像</p>
+  </section>
+
+  <div class="gps-bar">
+    <div class="gps-status">
+      <span class="gps-dot" id="gpsDot"></span>
+      <span id="gpsText">定位中...</span>
+    </div>
+    <div class="gps-radius">
+      <span>偵測範圍：<strong id="radiusLabel">300</strong>m</span>
+      <input type="range" id="radiusSlider" min="100" max="2000" value="300" step="50" />
+    </div>
+    <div class="gps-nearby">附近：<strong id="nearbyCount">0</strong>台</div>
+    <button class="gps-refresh" id="refreshBtn">重新整理</button>
+  </div>
+
+  <div class="cam-grid" id="nearbyList">
+    <div class="empty-state">正在定位中...</div>
+  </div>
+
+  <div class="toast-container" id="toastContainer"></div>
+
+  <style is:inline>
+    .page-header { margin-bottom: 2rem; }
+    .page-label {
+      font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--text-dim); margin-bottom: 0.5rem;
+    }
+    h1 { font-size: 1.6rem; font-weight: 400; margin-bottom: 0.25rem; }
+    .page-desc { color: var(--text-muted); font-size: 0.82rem; }
+
+    .gps-bar {
+      display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;
+      padding: 1rem 0; border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border); margin-bottom: 2rem;
+    }
+    .gps-status {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 0.78rem; color: var(--text-muted);
+    }
+    .gps-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--text-dim); transition: background 0.3s;
+    }
+    .gps-dot.active { background: var(--green); }
+    .gps-dot.error { background: var(--red); }
+    .gps-dot.searching { animation: pulse 1s ease infinite; background: #d4a843; }
+
+    .gps-radius {
+      display: flex; align-items: center; gap: 0.5rem;
+      font-size: 0.78rem; color: var(--text-muted);
+    }
+    .gps-radius strong { color: var(--text); font-weight: 500; }
+    .gps-radius input[type="range"] { width: 100px; accent-color: var(--accent); }
+
+    .gps-nearby {
+      font-size: 0.78rem; color: var(--text-muted);
+    }
+    .gps-nearby strong { color: var(--text); font-weight: 500; }
+
+    .gps-refresh {
+      background: none; border: 1px solid var(--border);
+      padding: 0.3rem 0.8rem; font-size: 0.72rem;
+      color: var(--text-muted); cursor: pointer;
+      transition: all 0.2s; font-family: inherit;
+      letter-spacing: 0.05em;
+    }
+    .gps-refresh:hover { border-color: var(--accent); color: var(--accent); }
+
+    .cam-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1px; background: var(--border); border: 1px solid var(--border);
+    }
+    .empty-state {
+      grid-column: 1 / -1;
+      text-align: center; padding: 3rem; color: var(--text-dim);
+      font-size: 0.82rem; background: var(--surface);
+    }
+
+    .cam-card {
+      background: var(--surface); overflow: hidden;
+      transition: background 0.2s;
+    }
+    .cam-card:hover { background: #faf9f7; }
+    .cam-preview {
+      width: 100%; aspect-ratio: 16/9;
+      background: #eae7e1; position: relative; overflow: hidden;
+    }
+    .cam-preview img, .cam-preview video {
+      width: 100%; height: 100%; object-fit: cover;
+      position: absolute; inset: 0; display: block;
+    }
+    .cam-preview .cam-media-box {
+      position: absolute; inset: 0; overflow: hidden;
+      background: #eae7e1;
+    }
+    .cam-nosig {
+      display: flex; align-items: center; justify-content: center;
+      height: 100%; color: var(--text-dim); font-size: 0.7rem;
+      letter-spacing: 0.15em; font-family: var(--font-mono);
+    }
+    .cam-live {
+      position: absolute; top: 10px; left: 10px; z-index: 2;
+      background: rgba(255,255,255,0.88); backdrop-filter: blur(4px);
+      padding: 2px 8px; font-size: 0.58rem; letter-spacing: 0.15em;
+      color: var(--red); font-family: var(--font-mono); font-weight: 500;
+    }
+    .cam-dist {
+      position: absolute; top: 10px; right: 10px; z-index: 2;
+      background: rgba(255,255,255,0.88); backdrop-filter: blur(4px);
+      padding: 2px 8px; font-size: 0.58rem; letter-spacing: 0.1em;
+      color: var(--accent); font-family: var(--font-mono); font-weight: 500;
+    }
+    .cam-info { padding: 1rem 1.25rem; }
+    .cam-name {
+      font-size: 0.82rem; font-weight: 500;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      margin-bottom: 0.2rem;
+    }
+    .cam-city {
+      font-size: 0.7rem; color: var(--text-dim);
+      margin-bottom: 0.75rem;
+    }
+    .cam-actions { display: flex; gap: 0.5rem; }
+    .cam-link {
+      font-size: 0.7rem; color: var(--accent);
+      letter-spacing: 0.05em; padding: 3px 0;
+      border-bottom: 1px solid transparent; transition: border-color 0.2s;
+    }
+    .cam-link:hover { border-bottom-color: var(--accent); text-decoration: none; }
+
+    .toast-container {
+      position: fixed; bottom: 16px; right: 16px; max-width: 280px;
+      display: flex; flex-direction: column; gap: 6px; z-index: 9999;
+    }
+    .toast {
+      background: var(--surface); border: 1px solid var(--border);
+      padding: 0.6rem 0.9rem; font-size: 0.78rem;
+      animation: slideIn 0.2s ease;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    }
+    .toast-title { font-weight: 500; color: var(--text); margin-bottom: 2px; font-size: 0.8rem; }
+    .toast-body { color: var(--text-dim); font-size: 0.7rem; }
+    @keyframes slideIn {
+      from { transform: translateY(8px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+  </style>
+
+  <script is:inline src="https://cdn.jsdelivr.net/npm/hls.js@1"></script>
+  <script is:inline src="/cctv/hls-budget.js"></script>
+  <script>
+    var BASE = '/cctv';
+    document.addEventListener('DOMContentLoaded', function() {
+      var gpsDot = document.getElementById('gpsDot');
+      var gpsText = document.getElementById('gpsText');
+      var nearbyCount = document.getElementById('nearbyCount');
+      var nearbyList = document.getElementById('nearbyList');
+      var radiusSlider = document.getElementById('radiusSlider');
+      var radiusLabel = document.getElementById('radiusLabel');
+      var refreshBtn = document.getElementById('refreshBtn');
+      var toastContainer = document.getElementById('toastContainer');
+
+      var watchId = null;
+      var currentPos = null;
+      var lastFixTime = 0;
+      var allCameras = [];
+      var lastNotified = {};
+      var radius = 300;
+      var retryTimer = null;
+      var safetyTimer = null;
+
+      // 已渲染卡片: id -> { el, dist, cam }
+      var cardEls = {};
+
+      function isIOS() {
+        return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+               (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+      }
+      function isThbUrl(u) { return u.indexOf('.thb.gov.tw') !== -1; }
+      var IOS = isIOS();
+      var SNAP_INTERVAL = 3000;
+
+      function deg2rad(d) { return d * (Math.PI / 180); }
+
+      function haversineDist(lat1, lng1, lat2, lng2) {
+        var R = 6371000;
+        var dLat = deg2rad(lat2 - lat1);
+        var dLng = deg2rad(lng2 - lng1);
+        var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+                Math.sin(dLng/2) * Math.sin(dLng/2);
+        return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      }
+
+      function showToast(title, body) {
+        var toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.innerHTML = '<div class="toast-title">' + title + '</div><div class="toast-body">' + body + '</div>';
+        toastContainer.appendChild(toast);
+        setTimeout(function() { if (toast.parentNode) toast.remove(); }, 8000);
+      }
+
+      var cctvSvg = '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>';
+
+      function showNoSignal(el) {
+        if (el.querySelector('.cam-nosig')) return;
+        var d = document.createElement('div');
+        d.className = 'cam-nosig';
+        d.innerHTML = cctvSvg + '<span>NO SIGNAL</span>';
+        el.replaceWith(d);
+      }
+
+      function distStr(d) {
+        return d < 1000 ? Math.round(d) + 'm' : (d/1000).toFixed(1) + 'km';
+      }
+
+      // HLS 串流統一由 HlsBudget 管理 (視口門控 + 預算上限 9/4 + LRU 逐出 + 定格牆)
+
+      // 停止卡片內的 iOS 快照輪詢
+      function stopSnapPollForCard(cardEl) {
+        var img = cardEl.querySelector('img.cam-snap');
+        if (img && img._timer) { clearInterval(img._timer); img._timer = null; }
+      }
+
+      function initCardMedia(cardEl, cam) {
+        var mediaBox = cardEl.querySelector('.cam-media-box');
+        if (!mediaBox) return;
+        var url = cam.url;
+        var isHls = cam.type === 'hls' || (url && url.indexOf('.m3u8') !== -1);
+
+        if (isHls) {
+          // HlsBudget 內部會建立 video 並以視口 observer 決定何時啟動串流
+          HlsBudget.observe(mediaBox, url);
+        } else {
+          var img = document.createElement('img');
+          img.alt = '';
+          img.loading = 'lazy';
+          img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;position:absolute;inset:0';
+          mediaBox.appendChild(img);
+          if (IOS && isThbUrl(url)) {
+            // iOS: multipart MJPEG 無法播放, 改輪詢官方 /snapshot 快照
+            img.className = 'cam-snap';
+            var snapBase = url + '/snapshot';
+            var tick = function() {
+              if (!img.isConnected) { clearInterval(img._timer); return; }
+              img.src = snapBase + '?_=' + Date.now();
+            };
+            img.onerror = function() { clearInterval(img._timer); img.remove(); showNoSignal(mediaBox); };
+            tick();
+            img._timer = setInterval(tick, SNAP_INTERVAL);
+          } else {
+            img.onerror = function() { img.remove(); showNoSignal(mediaBox); };
+            img.src = url;
+          }
+        }
+      }
+
+      function createCard(cam) {
+        var div = document.createElement('div');
+        div.className = 'cam-card';
+        div.dataset.camId = cam.id;
+        div.innerHTML =
+            '<div class="cam-preview">' +
+              '<span class="cam-live">LIVE</span>' +
+              '<span class="cam-dist" data-dist="' + Math.round(cam.dist) + '">' + distStr(cam.dist) + '</span>' +
+              '<div class="cam-media-box"></div>' +
+            '</div>' +
+            '<div class="cam-info">' +
+              '<div class="cam-name">' + (cam.name || '') + '</div>' +
+              '<div class="cam-city">' + (cam.city || '') + '</div>' +
+              '<div class="cam-actions">' +
+                '<a href="' + BASE + '/camera/#' + (cam.id || '') + '" class="cam-link">觀看影像</a>' +
+              '</div>' +
+            '</div>';
+        initCardMedia(div, cam);
+        return div;
+      }
+
+      // 原地更新距離, 不重建卡片(保留 HLS 串流)
+      function updateDistInPlace(cam) {
+        var card = cardEls[String(cam.id)];
+        if (!card) return;
+        var distEl = card.el.querySelector('.cam-dist');
+        if (distEl) {
+          distEl.textContent = distStr(cam.dist);
+          distEl.dataset.dist = Math.round(cam.dist);
+        }
+      }
+
+      function updateNearby() {
+        if (!currentPos || allCameras.length === 0) {
+          if (!currentPos) nearbyList.innerHTML = '<div class="empty-state">正在定位中...</div>';
+          return;
+        }
+
+        var nearby = allCameras
+          .map(function(cam) {
+            var dist = haversineDist(currentPos.lat, currentPos.lng, cam.lat, cam.lng);
+            var c = Object.assign({}, cam);
+            c.dist = dist;
+            return c;
+          })
+          .filter(function(cam) { return cam.dist <= radius; })
+          .sort(function(a, b) { return a.dist - b.dist; });
+
+        nearbyCount.textContent = nearby.length;
+
+        // 1) 原地更新既有卡片的距離(不重渲染, 不中斷串流)
+        nearby.forEach(function(cam) {
+          updateDistInPlace(cam);
+        });
+
+        // 2) 接近提醒: 只針對新進入範圍的攝影機
+        nearby.forEach(function(cam) {
+          var key = String(cam.id);
+          if (!lastNotified[key]) {
+            lastNotified[key] = true;
+            showToast(cam.name, distStr(cam.dist) + ' · ' + (cam.city || ''));
+          }
+        });
+
+        // 3) 差集渲染: 新增進入範圍的卡片, 移除離開範圍的卡片
+        var nearbyIds = {};
+        nearby.forEach(function(cam) { nearbyIds[String(cam.id)] = true; });
+
+        var toRemove = [];
+        Object.keys(cardEls).forEach(function(id) {
+          if (!nearbyIds[id]) toRemove.push(id);
+        });
+        toRemove.forEach(function(id) {
+          var card = cardEls[id];
+          stopSnapPollForCard(card.el);
+          HlsBudget.unobserve(card.el.querySelector('.cam-media-box'));
+          if (card.el.parentNode) card.el.parentNode.removeChild(card.el);
+          delete cardEls[id];
+        });
+
+        var emptyState = nearbyList.querySelector('.empty-state');
+        var added = 0;
+        nearby.forEach(function(cam) {
+          if (cardEls[String(cam.id)]) return;
+          if (added >= 100) return; // 上限 100 張卡片
+          var card = createCard(cam);
+          cardEls[String(cam.id)] = { el: card, dist: cam.dist };
+          // 依距離排序插入
+          var insertBefore = null;
+          var els = nearbyList.querySelectorAll('.cam-card');
+          for (var i = 0; i < els.length; i++) {
+            var d = parseInt(els[i].querySelector('.cam-dist').dataset.dist, 10);
+            if (cam.dist < d) { insertBefore = els[i]; break; }
+          }
+          nearbyList.insertBefore(card, insertBefore || emptyState);
+          added++;
+        });
+
+        // 更新 "其他 N 台" 提示
+        var moreNote = nearbyList.querySelector('.cam-more-note');
+        if (nearby.length > 100) {
+          if (!moreNote) {
+            moreNote = document.createElement('div');
+            moreNote.className = 'empty-state cam-more-note';
+            nearbyList.appendChild(moreNote);
+          }
+          moreNote.textContent = '其他 ' + (nearby.length - 100) + ' 台攝影機（請縮小範圍）';
+        } else if (moreNote) {
+          moreNote.remove();
+        }
+      }
+
+      // ---------- 定位: watchPosition + 錯誤恢復 + 定期後備 ----------
+      function setStatus(cls, text) {
+        gpsDot.className = 'gps-dot ' + cls;
+        gpsText.textContent = text;
+      }
+
+      function handlePosition(pos) {
+        currentPos = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+        lastFixTime = Date.now();
+        setStatus('active', '位置確定 (' + pos.coords.accuracy.toFixed(0) + 'm)');
+        updateNearby();
+      }
+
+      function handlePositionError(err) {
+        setStatus('error', err.code === 1 ? '請允許位置權限' : '取得失敗，重試中...');
+        // 錯誤後自動重試, 避免 watchPosition 靜默停止
+        scheduleRetry();
+      }
+
+      function scheduleRetry() {
+        if (retryTimer) clearTimeout(retryTimer);
+        retryTimer = setTimeout(function() {
+          retryTimer = null;
+          if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(handlePosition, handlePositionError,
+              { enableHighAccuracy: true, maximumAge: 10000, timeout: 12000 });
+          }
+        }, 5000);
+      }
+
+      function startSafetyFallback() {
+        // 每 20 秒檢查: 若最後一次定位超過 30 秒沒更新, 主動抓一次
+        if (safetyTimer) clearInterval(safetyTimer);
+        safetyTimer = setInterval(function() {
+          if (currentPos && Date.now() - lastFixTime > 30000) {
+            setStatus('searching', '位置更新中...');
+            navigator.geolocation.getCurrentPosition(handlePosition, function(){}, 
+              { enableHighAccuracy: true, maximumAge: 10000, timeout: 12000 });
+          }
+        }, 20000);
+      }
+
+      function startWatching() {
+        if (!('geolocation' in navigator)) {
+          setStatus('error', '位置情報非対応');
+          return;
+        }
+
+        setStatus('searching', '取得中...');
+
+        if (watchId !== null) { navigator.geolocation.clearWatch(watchId); watchId = null; }
+
+        watchId = navigator.geolocation.watchPosition(
+          handlePosition,
+          handlePositionError,
+          { enableHighAccuracy: true, maximumAge: 10000, timeout: 12000 }
+        );
+
+        startSafetyFallback();
+      }
+
+      // 載入全部攝影機資料 (cameras_thumb.json)
+      function loadAllCameras() {
+        fetch(BASE + '/cameras_thumb.json')
+          .then(function(r) { return r.json(); })
+          .then(function(data) {
+            allCameras = data;
+            updateNearby();
+          })
+          .catch(function(e) {
+            console.error('Failed to load camera data:', e);
+            gpsText.textContent = '攝影機資料取得失敗';
+          });
+      }
+
+      // 分頁回到前景時, 若定位停滯則重新啟動 watch
+      document.addEventListener('visibilitychange', function() {
+        if (document.visibilityState === 'visible' && currentPos) {
+          if (Date.now() - lastFixTime > 30000) {
+            startWatching();
+          }
+        }
+      });
+
+      radiusSlider.addEventListener('input', function() {
+        radius = parseInt(radiusSlider.value);
+        radiusLabel.textContent = radius;
+        updateNearby();
+      });
+
+      refreshBtn.addEventListener('click', function() {
+        lastNotified = {};
+        startWatching();
+      });
+
+      loadAllCameras();
+      startWatching();
+    });
+  </script>
+</BaseLayout>

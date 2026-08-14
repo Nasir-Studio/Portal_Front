@@ -1,0 +1,346 @@
+---
+import BaseLayout from '../../../cctv/layouts/BaseLayout.astro';
+import regions from '../../../cctv/data/regions.json';
+import cameras from '../../../cctv/data/cameras_thumb.json';
+const base = '/cctv';
+
+export function getStaticPaths() {
+  const entries = Object.entries(regions);
+  return entries.map(([name], i) => ({
+    params: { slug: String(i) },
+    props: { regionName: name, regionInfo: regions[name] }
+  }));
+}
+
+const { regionName, regionInfo } = Astro.props;
+const camCount = regionInfo.count;
+const regionCams = cameras.filter(c => c.region === regionName);
+// 資料無 type 欄位: 依 URL 判定串流類型 (.m3u8 = HLS, 其餘為 MJPEG/圖片)
+const typedCams = regionCams.map(c => ({
+  ...c,
+  type: /\.m3u8/i.test(c.url || '') ? 'hls' : (c.type || 'img')
+}));
+const PAGE_SIZE = 50;
+const initialCams = typedCams.slice(0, PAGE_SIZE);
+const remainingCams = typedCams.slice(PAGE_SIZE);
+const totalPages = Math.ceil(regionCams.length / PAGE_SIZE);
+---
+
+<BaseLayout title={regionName}>
+  <section class="page-header">
+    <a href={`${base}/regions`} class="back">&larr; 返回</a>
+    <p class="page-label">CAMERA</p>
+    <h1>{regionName}</h1>
+    <p class="page-desc">
+      <span id="camCount">{camCount.toLocaleString()}</span> 台攝影機
+      <span class="page-desc-sub" id="pageInfo">（顯示前{PAGE_SIZE}台）</span>
+    </p>
+  </section>
+
+  <div class="cam-grid" id="camGrid">
+    {initialCams.map(cam => (
+      <div class="cam-card">
+        <div class="cam-preview">
+          <span class="cam-live">LIVE</span>
+          <div class="cam-media" data-url={cam.url} data-type={cam.type || 'img'} data-id={cam.id} />
+        </div>
+        <div class="cam-info">
+          <div class="cam-name" title={cam.name}>{cam.name}</div>
+          <div class="cam-city">{cam.city}</div>
+          <div class="cam-actions">
+            <a href={`${base}/camera/#${cam.id}`} class="cam-link">觀看影像</a>
+          </div>
+        </div>
+      </div>
+    ))}
+
+    <div class="load-more-wrap" id="loadMoreWrap">
+      <button class="load-more-btn" id="loadMoreBtn">
+        載入更多（+{PAGE_SIZE}）
+      </button>
+    </div>
+  </div>
+
+  <script is:inline type="application/json" id="camDataRemaining" set:html={JSON.stringify(remainingCams)}></script>
+
+  <style is:inline>
+    .page-header { margin-bottom: 2.5rem; }
+    .back { font-size: 0.72rem; color: var(--text-dim); display: inline-block; margin-bottom: 1rem; letter-spacing: 0.05em; }
+    .back:hover { color: var(--accent); }
+    .page-label { font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 0.5rem; }
+    h1 { font-size: 1.6rem; font-weight: 400; margin-bottom: 0.25rem; }
+    .page-desc { color: var(--text-muted); font-size: 0.82rem; display: flex; gap: 0.3rem; flex-wrap: wrap; }
+    .page-desc-sub { color: var(--text-dim); font-size: 0.72rem; }
+    .cam-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1px; background: var(--border); border: 1px solid var(--border);
+    }
+    .cam-card { background: var(--surface); overflow: hidden; }
+    .cam-preview {
+      width: 100%; aspect-ratio: 16/9;
+      background: #eae7e1; position: relative; overflow: hidden;
+    }
+    .cam-preview :global(.cam-media) {
+      width: 100%; height: 100%; background: #eae7e1;
+    }
+    .cam-preview :global(img),
+    .cam-preview :global(video) {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      position: absolute; inset: 0;
+    }
+    .cam-nosig {
+      display: flex; align-items: center; justify-content: center;
+      height: 100%; color: var(--text-dim);
+      font-size: 0.65rem; letter-spacing: 0.1em;
+      font-family: var(--font-mono); flex-direction: column; gap: 0.4rem;
+      position: absolute; inset: 0;
+    }
+    .cam-nosig svg { opacity: 0.4; }
+    .cam-live {
+      position: absolute; top: 10px; left: 10px; z-index: 2;
+      background: rgba(255,255,255,0.88); backdrop-filter: blur(4px);
+      padding: 2px 8px; font-size: 0.58rem; letter-spacing: 0.15em;
+      color: var(--red); font-family: var(--font-mono); font-weight: 500;
+    }
+    .cam-info { padding: 0.8rem 1rem; }
+    .cam-name {
+      font-size: 0.78rem; font-weight: 500;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+      overflow: hidden; line-height: 1.4; margin-bottom: 0.15rem;
+    }
+    .cam-city {
+      font-size: 0.68rem; color: var(--text-dim);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      margin-bottom: 0.5rem;
+    }
+    .cam-actions { display: flex; gap: 0.5rem; }
+    .cam-link {
+      font-size: 0.68rem; color: var(--accent);
+      letter-spacing: 0.05em; padding: 3px 0;
+      border-bottom: 1px solid transparent; transition: border-color 0.2s;
+    }
+    .cam-link:hover { border-bottom-color: var(--accent); text-decoration: none; }
+
+    .load-more-wrap {
+      display: flex; justify-content: center; padding: 2rem 0 3rem;
+      grid-column: 1 / -1;
+    }
+    .load-more-btn {
+      background: var(--surface); border: 1px solid var(--border);
+      padding: 0.7rem 2rem; font-size: 0.82rem; font-family: inherit;
+      color: var(--text); cursor: pointer; letter-spacing: 0.08em;
+      transition: all 0.2s;
+    }
+    .load-more-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
+    .load-more-btn:disabled { opacity: 0.3; cursor: default; }
+    .load-more-btn:disabled:hover { border-color: var(--border); color: var(--text); background: var(--surface); }
+    @media (max-width: 640px) { .cam-grid { grid-template-columns: 1fr; } }
+  </style>
+
+  <script is:inline src="https://cdn.jsdelivr.net/npm/hls.js@1"></script>
+  <script is:inline src="/cctv/hls-budget.js"></script>
+  <script is:inline>
+    (function() {
+      document.addEventListener('DOMContentLoaded', function() {
+        var cctvSvg = '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>';
+        var base = '/cctv';
+
+        // ---------- 裝置偵測 ----------
+        // iOS Safari / iPadOS 不支援 multipart/x-mixed-replace MJPEG 串流,
+        // 需改用 snapshot 端點輪詢。
+        function isIOS() {
+          return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+                 (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+        }
+        // 公路總局(THB) 串流網址尾端加 /snapshot 可取得單張 JPEG 快照
+        function isThbUrl(u) { return u.indexOf('.thb.gov.tw') !== -1; }
+        var IOS = isIOS();
+        var SNAP_INTERVAL = 3000;
+
+        // ---------- Media Initialization ----------
+        var inited = new WeakSet();
+        
+        // iOS THB 快照輪詢: 建立 img 並開始 3 秒輪詢; 離開畫面時暫停
+        function startSnapshotPoll(img, snapBase) {
+          var parent = img.parentNode;
+          var tick = function() {
+            if (!img.isConnected) { clearInterval(img._timer); return; }
+            img.src = snapBase + '?_=' + Date.now();
+          };
+          img.onerror = function() {
+            clearInterval(img._timer);
+            img.remove();
+            showNoSignal(parent);
+          };
+          img.dataset.snap = snapBase;
+          tick();
+          img._timer = setInterval(tick, SNAP_INTERVAL);
+        }
+        
+        function stopSnapshotPoll(img) {
+          if (img && img._timer) { clearInterval(img._timer); img._timer = null; }
+        }
+        
+        var observer = new IntersectionObserver(function(entries) {
+          entries.forEach(function(entry) {
+            var el = entry.target;
+            var url = el.dataset.url;
+            var type = el.dataset.type;
+            
+            if (type === 'hls') {
+              // HLS 串流由 HlsBudget 內部視口 observer 統一管理 (observeMedia 已註冊), 此處略過
+              return;
+            }
+            var img = el.querySelector('img');
+            if (entry.isIntersecting) {
+              if (!inited.has(el)) {
+                inited.add(el);
+                img = document.createElement('img');
+                img.alt = '';
+                img.loading = 'lazy';
+                img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;position:absolute;inset:0';
+                el.appendChild(img);
+                if (IOS && isThbUrl(url)) {
+                  // iOS: multipart MJPEG 無法播放, 改輪詢官方 /snapshot 快照
+                  startSnapshotPoll(img, url + '/snapshot');
+                } else {
+                  img.onerror = function() { img.remove(); showNoSignal(el); };
+                  img.src = url;
+                }
+              } else if (img && img.dataset.snap && !img._timer) {
+                // 回到畫面: 恢復輪詢
+                var snap = img.dataset.snap;
+                img.src = snap + '?_=' + Date.now();
+                img._timer = setInterval(function() {
+                  if (!img.isConnected) { clearInterval(img._timer); return; }
+                  img.src = snap + '?_=' + Date.now();
+                }, SNAP_INTERVAL);
+              }
+            } else if (img && img._timer) {
+              // 離開畫面: 暫停輪詢
+              stopSnapshotPoll(img);
+            }
+          });
+        }, { rootMargin: '200px' });
+        
+        function observeMedia() {
+          document.querySelectorAll('#camGrid .cam-media[data-url]').forEach(function(v) {
+            if (v.dataset.type === 'hls') {
+              // HLS: 交由 HlsBudget 內部視口 observer 管理 (進入自動啟動, 離開自動定格)
+              HlsBudget.observe(v, v.dataset.url);
+            } else if (!inited.has(v)) {
+              observer.observe(v);
+            }
+          });
+        }
+        
+        // ---------- Pagination ----------
+        var remaining = [];
+        try {
+          var scriptTag = document.getElementById('camDataRemaining');
+          if (scriptTag) {
+            remaining = JSON.parse(scriptTag.textContent);
+          }
+        } catch(e) {}
+        
+        var pageSize = 50;
+        var loadMoreBtn = document.getElementById('loadMoreBtn');
+        var pageInfo = document.getElementById('pageInfo');
+        var camGrid = document.getElementById('camGrid');
+        var totalCamCount = parseInt((document.getElementById('camCount') || {}).textContent) || 0;
+        var shownCount = 0;
+        
+        function escHtml(s) {
+          return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+        }
+        
+        function createCardHtml(cam) {
+          var city = cam.city || cam.region || '';
+          return '<div class="cam-card">' +
+            '<div class="cam-preview">' +
+              '<span class="cam-live">LIVE</span>' +
+              '<div class="cam-media" data-url="' + escHtml(cam.url || '') + '" data-type="' + escHtml(cam.type || 'img') + '" data-id="' + escHtml(cam.id) + '"></div>' +
+            '</div>' +
+            '<div class="cam-info">' +
+              '<div class="cam-name" title="' + escHtml(cam.name || '') + '">' + escHtml(cam.name || '未命名') + '</div>' +
+              '<div class="cam-city">' + escHtml(city) + '</div>' +
+              '<div class="cam-actions">' +
+                '<a href="' + base + '/camera/#' + escHtml(cam.id) + '" class="cam-link">觀看影像</a>' +
+              '</div>' +
+            '</div>' +
+          '</div>';
+        }
+        
+        function loadMore() {
+          if (remaining.length === 0) return;
+          
+          var batch = remaining.splice(0, pageSize);
+          var html = '';
+          for (var i = 0; i < batch.length; i++) {
+            html += createCardHtml(batch[i]);
+          }
+          
+          // Insert before the load-more button
+          var temp = document.createElement('div');
+          temp.innerHTML = html;
+          var fragment = document.createDocumentFragment();
+          while (temp.firstChild) {
+            fragment.appendChild(temp.firstChild);
+          }
+          
+          // Get reference node: the load-more-wrap
+          var loadMoreWrap = document.getElementById('loadMoreWrap');
+          camGrid.insertBefore(fragment, loadMoreWrap);
+          
+          shownCount += batch.length;
+          
+          // Observe new media elements
+          var newMedia = camGrid.querySelectorAll('.cam-media[data-url]');
+          newMedia.forEach(function(v) {
+            if (v.dataset.type === 'hls') {
+              HlsBudget.observe(v, v.dataset.url);
+            } else if (!inited.has(v)) {
+              observer.observe(v);
+            }
+          });
+          
+          // Update info text
+          var total = shownCount;
+          var remainingCount = remaining.length;
+          if (pageInfo) {
+            if (remainingCount > 0) {
+              pageInfo.textContent = '（' + total + '/' + totalCamCount + '台）';
+            } else {
+              pageInfo.textContent = '（共' + total + '台）';
+            }
+          }
+          
+          if (remaining.length === 0) {
+            loadMoreBtn.disabled = true;
+            loadMoreBtn.textContent = '已全部載入';
+          } else {
+            loadMoreBtn.textContent = '載入更多（+' + Math.min(pageSize, remaining.length) + '）';
+          }
+        }
+        
+        if (loadMoreBtn) {
+          loadMoreBtn.addEventListener('click', loadMore);
+          shownCount = document.querySelectorAll('#camGrid .cam-card').length;
+          var remainingCount = remaining.length;
+          if (remainingCount > 0) {
+            if (pageInfo) pageInfo.textContent = '（' + shownCount + '/' + totalCamCount + '台）';
+            loadMoreBtn.textContent = '載入更多（+' + Math.min(pageSize, remainingCount) + '）';
+          } else {
+            loadMoreBtn.disabled = true;
+            loadMoreBtn.textContent = '已全部載入';
+            if (pageInfo) pageInfo.textContent = '（共' + shownCount + '台）';
+          }
+        }
+        
+        // Observe initial media
+        observeMedia();
+      });
+    })();
+  </script>
+</BaseLayout>
