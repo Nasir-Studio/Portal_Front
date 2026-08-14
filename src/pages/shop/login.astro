@@ -2,7 +2,7 @@
 import BaseLayout from '../../shop/layouts/BaseLayout.astro';
 import Header from '../../shop/components/Header.astro';
 import Footer from '../../shop/components/Footer.astro';
-const API_URL = import.meta.env.PUBLIC_API_URL || 'http://localhost:8000';
+const API_URL = import.meta.env.PUBLIC_API_URL || 'https://api.nsir.uk';
 ---
 
 <BaseLayout title="登入 — 小羊農場">
@@ -45,7 +45,7 @@ const API_URL = import.meta.env.PUBLIC_API_URL || 'http://localhost:8000';
 </BaseLayout>
 
 <script is:inline>
-  var API_URL = window.location.hostname === 'shop.nsir.uk' ? 'https://shopbackend.nsir.uk' : 'http://localhost:8000';
+  var API_URL = 'https://api.nsir.uk';
   document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('login-form');
     const errorEl = document.getElementById('login-error');

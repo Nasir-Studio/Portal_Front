@@ -3,7 +3,7 @@ import BaseLayout from '../../../shop/layouts/BaseLayout.astro';
 import Header from '../../../shop/components/Header.astro';
 import Footer from '../../../shop/components/Footer.astro';
 import AdminGuard from '../../../shop/components/AdminGuard.astro';
-const API_URL = import.meta.env.PUBLIC_API_URL || 'http://localhost:8000';
+const API_URL = import.meta.env.PUBLIC_API_URL || 'https://api.nsir.uk';
 ---
 
 <BaseLayout title="訊息管理 — 小羊農場">
@@ -80,7 +80,7 @@ const API_URL = import.meta.env.PUBLIC_API_URL || 'http://localhost:8000';
 </BaseLayout>
 
 <script is:inline>
-  var API_URL = window.location.hostname === 'shop.nsir.uk' ? 'https://shopbackend.nsir.uk' : 'http://localhost:8000';
+  var API_URL = 'https://api.nsir.uk';
   var currentMsgId = null;
 
   document.addEventListener('DOMContentLoaded', async function() {
