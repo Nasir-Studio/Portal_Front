@@ -20,7 +20,7 @@ const {
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://sheephome.nsir.uk" />
+  <meta property="og:url" content="https://lamb.nsir.uk" />
   <title>{title}</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="manifest" href="/manifest.json" />
@@ -236,7 +236,7 @@ const {
   <script is:inline>
     (function() {
       // 網域綁定：僅允許我們的網域
-      var allowed = ['sheephome.nsir.uk', 'localhost', '127.0.0.1', 'nsir-studio.github.io'];
+      var allowed = ['lamb.nsir.uk', 'localhost', '127.0.0.1', 'nsir-studio.github.io'];
       var host = window.location.hostname;
       var ok = allowed.some(function(d) { return host === d || host.endsWith('.' + d); });
       if (!ok) {
@@ -248,7 +248,7 @@ const {
       }
 
       // 正式環境停用 console
-      if (host === 'sheephome.nsir.uk') {
+      if (host === 'lamb.nsir.uk') {
         var noop = function() {};
         ['log','warn','info','debug','dir','table','trace','group','groupCollapsed','groupEnd','time','timeEnd','profile','profileEnd'].forEach(function(m) {
           if (window.console) window.console[m] = noop;
@@ -264,7 +264,7 @@ const {
           }
         };
         try {
-          Object.defineProperty(document, 'domain', { get: function() { return 'sheephome.nsir.uk'; } });
+          Object.defineProperty(document, 'domain', { get: function() { return 'lamb.nsir.uk'; } });
         } catch(e) {}
         // 凍結部分全域物件以防竄改
         if (Object.freeze) {

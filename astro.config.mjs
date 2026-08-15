@@ -1,7 +1,7 @@
 import { defineConfig } from 'astro/config';
 
 export default defineConfig({
-  site: 'https://sheephome.nsir.uk',
+  site: 'https://lamb.nsir.uk',
   base: '/',
   output: 'static',
   compressHTML: true,
