@@ -15,6 +15,7 @@ export default defineConfig({
     resolve: {
       alias: {
         $lib: fileURLToPath(new URL('./src/badges/lib', import.meta.url)),
+        $ntub: fileURLToPath(new URL('./src/ntub/lib', import.meta.url)),
       },
     },
   },

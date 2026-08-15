@@ -1,0 +1,38 @@
+---
+import Home from '../../ntub/components/Home.svelte';
+import '../../ntub/app.css';
+import '@fontsource-variable/space-grotesk';
+
+const title = '學分學程・學分戰士 — 國立臺北商業大學';
+const description = 'NTUB 學分學程學分系統：簡章、學分勾選、本系外系採認';
+---
+
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;700&family=Zen+Old+Mincho:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#f7f5f0" />
+    <meta name="description" content={description} />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <div id="app">
+      <Home client:only="svelte" />
+    </div>
+    <style is:global>
+      body {
+        background: #f7f5f0;
+      }
+    </style>
+  </body>
+</html>

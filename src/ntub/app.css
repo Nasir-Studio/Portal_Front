@@ -1,0 +1,44 @@
+/* ===== NTUB 學分學程全域樣式（自原 SvelteKit +layout.svelte 提取） ===== */
+
+:root {
+  --paper: #f7f5f0;
+  --paper-2: #fbfaf6;
+  --ink: #2f2b26;
+  --ink-soft: #6b6459;
+  --accent: #a63f3f;
+  --accent-soft: #c9a9a0;
+  --line: #e2ddd2;
+  --line-strong: #c9c2b3;
+  --serif: 'Zen Old Mincho', 'Noto Serif TC', 'Songti TC', serif;
+  --sans: 'Noto Sans TC', 'PingFang TC', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  background: var(--paper);
+}
+
+body {
+  font-family: var(--sans);
+  color: var(--ink);
+  background: var(--paper);
+  line-height: 1.8;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--serif);
+  font-weight: 600;
+}

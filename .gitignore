@@ -22,3 +22,6 @@ bun.lockb
 
 # opencode workspace
 .omo/
+
+# 獨立 repo（Badges_Front 有自己 .git）
+Badges_Front/
