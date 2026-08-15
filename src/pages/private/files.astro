@@ -1,0 +1,46 @@
+---
+import FileManager from '../../components/files/FileManager.svelte';
+---
+
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>檔案管理</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <style is:global>
+      :root {
+        --bg: #f5f5f4;
+        --panel: #ffffff;
+        --border: #e4e4e3;
+        --text: #1c1917;
+        --muted: #78716c;
+        --accent: #2563eb;
+        --accent-dark: #1d4ed8;
+        --danger: #dc2626;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans TC', 'PingFang TC', sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+      }
+      button {
+        font: inherit;
+        cursor: pointer;
+      }
+      input {
+        font: inherit;
+      }
+    </style>
+  </head>
+  <body>
+    <FileManager client:load />
+  </body>
+</html>
