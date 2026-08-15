@@ -128,17 +128,15 @@
 	}
 
 	.login-card {
-		background: var(--paper-2);
-		border: 1px solid var(--line);
-		border-radius: 14px;
+		background: var(--surface);
+		border: 1px solid var(--border);
 		padding: 40px 36px;
-		box-shadow: 0 8px 32px rgba(47, 43, 38, 0.06);
 	}
 
 	.kicker {
 		font-size: 12px;
-		letter-spacing: 0.28em;
-		color: var(--accent);
+		letter-spacing: 0.3em;
+		color: var(--ink-2);
 		margin-bottom: 8px;
 	}
 
@@ -172,8 +170,7 @@
 		font: inherit;
 		font-size: 15px;
 		padding: 10px 14px;
-		border: 1px solid var(--line-strong);
-		border-radius: 8px;
+		border: 1px solid var(--border-strong);
 		background: #fff;
 		color: var(--ink);
 		outline: none;
@@ -181,17 +178,16 @@
 	}
 
 	.field input:focus {
-		border-color: var(--accent);
+		border-color: var(--ink);
 	}
 
 	.error {
 		margin: 4px 0 14px;
 		padding: 10px 14px;
-		background: #f9ecea;
-		border: 1px solid #e3bfba;
-		border-radius: 8px;
+		background: var(--bg-soft);
+		border: 1px solid var(--border-strong);
 		font-size: 13px;
-		color: #9c3f3a;
+		color: var(--ink-2);
 	}
 
 	.submit {
@@ -201,16 +197,16 @@
 		font-weight: 600;
 		letter-spacing: 0.12em;
 		padding: 12px;
-		background: var(--accent);
+		background: var(--ink);
 		color: #fff;
-		border: none;
-		border-radius: 8px;
+		border: 1px solid var(--ink);
 		cursor: pointer;
 		transition: background 0.2s;
 	}
 
 	.submit:hover {
-		background: #8f3535;
+		background: #000;
+		border-color: #000;
 	}
 
 	.submit:disabled {
@@ -223,7 +219,7 @@
 		align-items: center;
 		gap: 12px;
 		margin: 20px 0;
-		color: #9a9388;
+		color: var(--ink-3);
 		font-size: 12px;
 	}
 
@@ -232,7 +228,7 @@
 		content: '';
 		flex: 1;
 		height: 1px;
-		background: var(--line);
+		background: var(--border);
 	}
 
 	.google {
@@ -245,14 +241,13 @@
 		font-size: 15px;
 		padding: 12px;
 		background: #fff;
-		border: 1px solid var(--line-strong);
-		border-radius: 8px;
+		border: 1px solid var(--border-strong);
 		cursor: pointer;
 		transition: background 0.2s;
 	}
 
 	.google:hover {
-		background: #faf7f2;
+		background: var(--bg-soft);
 	}
 
 	.google:disabled {
@@ -271,7 +266,7 @@
 		background: none;
 		border: none;
 		font: inherit;
-		color: var(--accent);
+		color: var(--ink);
 		cursor: pointer;
 		text-decoration: underline;
 		padding: 0;

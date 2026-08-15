@@ -266,9 +266,8 @@
     position: sticky;
     top: 0;
     z-index: 50;
-    background: rgba(247, 245, 240, 0.92);
-    backdrop-filter: blur(8px);
-    border-bottom: 1px solid var(--line);
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
   }
 
   .ntub-header-inner {
@@ -298,9 +297,8 @@
     place-items: center;
     width: 40px;
     height: 40px;
-    border: 1.5px solid var(--accent);
-    border-radius: 50%;
-    color: var(--accent);
+    border: 1.5px solid var(--ink);
+    color: var(--ink);
     font-family: var(--serif);
     font-size: 20px;
     line-height: 1;
@@ -337,9 +335,8 @@
     gap: 8px;
     margin-left: 8px;
     padding: 6px 6px 6px 14px;
-    border: 1px solid var(--line);
-    border-radius: 999px;
-    background: var(--paper-2);
+    border: 1px solid var(--border);
+    background: var(--surface);
     font-size: 13px;
     white-space: nowrap;
   }
@@ -366,18 +363,17 @@
   }
 
   .ntub-logout-btn:hover {
-    color: var(--accent);
+    color: var(--ink);
   }
 
   .ntub-login-link {
     margin-left: 8px;
-    border: 1px solid var(--line-strong);
-    border-radius: 999px;
+    border: 1px solid var(--border-strong);
     padding: 4px 18px !important;
   }
 
   .ntub-login-link:hover {
-    background: rgba(166, 63, 63, 0.06) !important;
+    background: var(--bg-soft) !important;
   }
 
   .ntub-nav-link {
@@ -385,17 +381,16 @@
     flex-direction: column;
     align-items: center;
     padding: 10px 14px;
-    border-radius: 6px;
     position: relative;
     transition: background 0.2s;
   }
 
   .ntub-nav-link:hover {
-    background: rgba(166, 63, 63, 0.06);
+    background: var(--bg-soft);
   }
 
   .ntub-nav-link.active {
-    color: var(--accent);
+    color: var(--ink);
   }
 
   .ntub-nav-link.active::after {
@@ -405,7 +400,7 @@
     right: 14px;
     bottom: 2px;
     height: 2px;
-    background: var(--accent);
+    background: var(--ink);
   }
 
   .ntub-nav-ja {
@@ -430,10 +425,10 @@
   }
 
   .ntub-site-footer {
-    border-top: 1px solid var(--line);
+    border-top: 1px solid var(--border);
     padding: 24px;
     text-align: center;
-    color: var(--ink-soft);
+    color: var(--ink-2);
     font-size: 12px;
     letter-spacing: 0.06em;
   }
@@ -441,7 +436,7 @@
   .ntub-footer-sub {
     margin-top: 4px;
     font-size: 11px;
-    color: #9a9388;
+    color: var(--ink-3);
   }
 
   @media (max-width: 900px) {

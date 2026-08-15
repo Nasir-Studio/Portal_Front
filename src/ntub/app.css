@@ -1,16 +1,16 @@
-/* ===== NTUB 學分學程全域樣式（自原 SvelteKit +layout.svelte 提取） ===== */
+/* ===== NTUB 學分學程全域樣式（自原 SvelteKit +layout.svelte 提取，與主站 global.css 一致） ===== */
 
 :root {
-  --paper: #f7f5f0;
-  --paper-2: #fbfaf6;
-  --ink: #2f2b26;
-  --ink-soft: #6b6459;
-  --accent: #a63f3f;
-  --accent-soft: #c9a9a0;
-  --line: #e2ddd2;
-  --line-strong: #c9c2b3;
-  --serif: 'Zen Old Mincho', 'Noto Serif TC', 'Songti TC', serif;
-  --sans: 'Noto Sans TC', 'PingFang TC', sans-serif;
+  --paper: #f5f4f1;
+  --paper-2: #ffffff;
+  --ink: #1c1c1c;
+  --ink-soft: #4c4b47;
+  --accent: #1c1c1c;
+  --accent-soft: #8b8983;
+  --line: #d8d7d2;
+  --line-strong: #b9b8b2;
+  --serif: 'Noto Serif TC', 'Songti TC', 'STSong', Georgia, 'Times New Roman', serif;
+  --sans: 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', system-ui, -apple-system, 'Segoe UI', sans-serif;
 }
 
 * {

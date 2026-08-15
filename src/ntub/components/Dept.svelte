@@ -171,7 +171,7 @@
 	.page-kicker {
 		font-size: 12px;
 		letter-spacing: 0.3em;
-		color: var(--accent);
+		color: var(--ink-2);
 		margin-bottom: 8px;
 	}
 
@@ -183,13 +183,12 @@
 	.page-desc {
 		margin-top: 8px;
 		font-size: 14px;
-		color: var(--ink-soft);
+		color: var(--ink-2);
 	}
 
 	.dept-picker {
-		background: var(--paper-2);
-		border: 1px solid var(--line);
-		border-radius: 12px;
+		background: var(--surface);
+		border: 1px solid var(--border);
 		padding: 20px 24px;
 		margin-bottom: 24px;
 	}
@@ -210,28 +209,28 @@
 		padding: 6px 16px;
 		font-size: 13px;
 		font-family: var(--sans);
-		background: #f6f4ef;
-		border: 1px solid var(--line);
-		border-radius: 999px;
+		background: var(--surface);
+		border: 1px solid var(--border);
 		cursor: pointer;
-		transition: all 0.18s;
+		transition: border-color 0.18s, background 0.18s, color 0.18s;
 		color: var(--ink);
 	}
 
 	.dept-chip:hover {
-		border-color: var(--line-strong);
+		border-color: var(--border-strong);
+		background: var(--bg-soft);
 	}
 
 	.dept-chip.active {
-		background: var(--accent);
-		border-color: var(--accent);
-		color: #fff;
+		background: var(--ink);
+		border-color: var(--ink);
+		color: var(--white);
 	}
 
 	.picker-hint {
 		margin-top: 12px;
 		font-size: 12px;
-		color: #9a9388;
+		color: var(--ink-3);
 	}
 
 	.dept-layout {
@@ -261,22 +260,22 @@
 		justify-content: space-between;
 		gap: 8px;
 		padding: 10px 14px;
-		background: var(--paper-2);
-		border: 1px solid var(--line);
-		border-radius: 8px;
+		background: var(--surface);
+		border: 1px solid var(--border);
 		cursor: pointer;
 		font: inherit;
 		text-align: left;
-		transition: all 0.18s;
+		transition: border-color 0.18s, background 0.18s;
 	}
 
 	.prog-tab:hover {
-		border-color: var(--line-strong);
+		border-color: var(--border-strong);
+		background: var(--bg-soft);
 	}
 
 	.prog-tab.active {
-		border-color: var(--accent);
-		background: #fdfaf7;
+		border-color: var(--ink);
+		background: var(--bg-soft);
 	}
 
 	.prog-tab-name {
@@ -288,7 +287,7 @@
 
 	.prog-tab-kind {
 		font-size: 11px;
-		color: var(--ink-soft);
+		color: var(--ink-2);
 		flex-shrink: 0;
 	}
 
@@ -307,29 +306,25 @@
 		display: flex;
 		flex-direction: column;
 		padding: 18px 20px;
-		border-radius: 10px;
-		border: 1px solid var(--line);
-		background: var(--paper-2);
+		border: 1px solid var(--border);
+		background: var(--surface);
 	}
 
 	.ov-card.mine {
-		border-color: #b9c9b4;
-		background: #f6f9f3;
+		border-color: var(--border-strong);
 	}
 
 	.ov-card.ext {
-		border-color: #e0c8a8;
-		background: #faf6ee;
+		background: var(--bg-soft);
 	}
 
 	.ov-card.total {
-		border-color: var(--accent-soft);
-		background: #fdf8f7;
+		border-color: var(--ink);
 	}
 
 	.ov-label {
 		font-size: 12px;
-		color: var(--ink-soft);
+		color: var(--ink-2);
 		letter-spacing: 0.06em;
 	}
 
@@ -341,21 +336,9 @@
 		line-height: 1.4;
 	}
 
-	.ov-card.mine .ov-value {
-		color: #5f7a5f;
-	}
-
-	.ov-card.ext .ov-value {
-		color: #a9793f;
-	}
-
-	.ov-card.total .ov-value {
-		color: var(--accent);
-	}
-
 	.ov-sub {
 		font-size: 12px;
-		color: var(--ink-soft);
+		color: var(--ink-2);
 	}
 
 	.cross-status {
@@ -363,18 +346,15 @@
 		align-items: center;
 		gap: 12px;
 		padding: 12px 16px;
-		border-radius: 8px;
 		margin-bottom: 20px;
 		font-size: 13px;
-		background: #faf5ee;
-		border: 1px solid #e0d2b8;
-		color: #8a6d3b;
+		background: var(--bg-soft);
+		border: 1px solid var(--border);
+		color: var(--ink-2);
 	}
 
 	.cross-status.met {
-		background: #eef4ea;
-		border-color: #b9c9b4;
-		color: #4c6b4c;
+		border-color: var(--border-strong);
 	}
 
 	.cross-mark {
@@ -396,20 +376,19 @@
 	}
 
 	.cat-mine {
-		border-left: 3px solid #8aa08a;
-		color: #4c6b4c;
+		border-left: 3px solid var(--ink);
+		color: var(--ink);
 	}
 
 	.cat-ext {
-		border-left: 3px solid #d4b483;
-		color: #8a6d3b;
+		border-left: 3px solid var(--ink);
+		color: var(--ink);
 	}
 
 	.dept-courses {
 		list-style: none;
-		background: var(--paper-2);
-		border: 1px solid var(--line);
-		border-radius: 10px;
+		background: var(--surface);
+		border: 1px solid var(--border);
 		overflow: hidden;
 	}
 
@@ -419,7 +398,7 @@
 		justify-content: space-between;
 		gap: 12px;
 		padding: 12px 18px;
-		border-bottom: 1px solid var(--line);
+		border-bottom: 1px solid var(--border);
 		flex-wrap: wrap;
 	}
 
@@ -428,7 +407,7 @@
 	}
 
 	.dc-row.checked {
-		background: #f3f6ef;
+		background: var(--bg-soft);
 	}
 
 	.dc-name {
@@ -438,7 +417,7 @@
 	}
 
 	.dc-row.checked .dc-name {
-		color: #5f7a5f;
+		color: var(--ink-2);
 	}
 
 	.dc-meta {
@@ -447,34 +426,32 @@
 		flex-wrap: wrap;
 		gap: 8px;
 		font-size: 12px;
-		color: var(--ink-soft);
+		color: var(--ink-2);
 	}
 
 	.type-chip {
 		font-size: 11px;
 		padding: 1px 8px;
-		border-radius: 4px;
-		background: #f0ede6;
+		background: var(--bg-soft);
 	}
 
 	.type-chip.req {
-		background: #f3e2e0;
-		color: var(--accent);
+		background: var(--ink);
+		color: var(--white);
 	}
 
 	.credit-chip {
 		font-family: var(--serif);
 		font-weight: 600;
-		color: var(--accent);
+		color: var(--ink);
 	}
 
 	.group-mark {
 		display: inline-block;
 		margin-left: 6px;
 		font-size: 10px;
-		color: #5f7a5f;
-		border: 1px solid #b9c9b4;
-		border-radius: 4px;
+		color: var(--ink-2);
+		border: 1px solid var(--border-strong);
 		padding: 0 6px;
 		white-space: nowrap;
 		font-family: var(--sans);
@@ -483,22 +460,21 @@
 	.empty-row {
 		padding: 16px;
 		font-size: 13px;
-		color: #9a9388;
-		background: var(--paper-2);
-		border: 1px dashed var(--line-strong);
-		border-radius: 10px;
+		color: var(--ink-3);
+		background: var(--surface);
+		border: 1px dashed var(--border-strong);
 	}
 
 	.empty-state {
 		text-align: center;
 		padding: 60px 20px;
-		color: var(--ink-soft);
+		color: var(--ink-2);
 		font-size: 14px;
 	}
 
 	.empty-symbol {
 		font-size: 40px;
-		color: var(--accent-soft);
+		color: var(--ink-3);
 		margin-bottom: 12px;
 	}
 

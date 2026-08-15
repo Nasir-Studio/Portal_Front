@@ -58,83 +58,87 @@
 
 <style>
 	.hero {
-		text-align: center;
-		padding: 56px 0 48px;
+		text-align: left;
+		padding: 8px 0 40px;
+		border-bottom: 1px solid var(--border);
+		margin-bottom: 28px;
 	}
 
 	.eyebrow {
-		font-size: 13px;
-		letter-spacing: 0.35em;
-		color: var(--accent);
-		margin-bottom: 24px;
+		font-size: 12px;
+		letter-spacing: 0.3em;
+		color: var(--ink-2);
+		margin-bottom: 8px;
 	}
 
 	.hero-title {
-		font-size: clamp(44px, 8vw, 72px);
-		line-height: 1.25;
-		letter-spacing: 0.18em;
+		font-size: 30px;
+		line-height: 1.3;
+		letter-spacing: 0.1em;
 		color: var(--ink);
 	}
 
 	.hero-sub {
-		margin-top: 28px;
-		color: var(--ink-soft);
-		font-size: 15px;
-		letter-spacing: 0.12em;
+		margin-top: 8px;
+		color: var(--ink-2);
+		font-size: 14px;
+		letter-spacing: 0.08em;
 	}
 
 	.hero-stats {
-		display: flex;
-		justify-content: center;
-		gap: 56px;
-		margin-top: 40px;
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 12px;
+		margin-top: 24px;
 	}
 
 	.stat {
 		display: flex;
 		flex-direction: column;
-		align-items: center;
+		align-items: flex-start;
+		gap: 2px;
+		padding: 18px 20px;
+		background: var(--surface);
+		border: 1px solid var(--border);
 	}
 
 	.stat-num {
 		font-family: var(--serif);
-		font-size: 40px;
+		font-size: 32px;
 		font-weight: 700;
-		color: var(--accent);
+		color: var(--ink);
 		line-height: 1.2;
 	}
 
 	.stat-label {
 		font-size: 13px;
 		letter-spacing: 0.2em;
-		color: var(--ink-soft);
+		color: var(--ink-2);
 	}
 
 	.guide {
 		display: grid;
 		grid-template-columns: repeat(3, 1fr);
-		gap: 20px;
-		margin-top: 16px;
+		gap: 12px;
 	}
 
 	.guide-item {
 		display: flex;
 		gap: 16px;
-		padding: 24px 22px;
-		background: var(--paper-2);
-		border: 1px solid var(--line);
-		border-radius: 10px;
+		padding: 20px 22px;
+		background: var(--surface);
+		border: 1px solid var(--border);
 		transition: border-color 0.2s;
 	}
 
 	.guide-item:hover {
-		border-color: var(--line-strong);
+		border-color: var(--border-strong);
 	}
 
 	.guide-num {
 		font-family: var(--serif);
-		font-size: 26px;
-		color: var(--accent);
+		font-size: 24px;
+		color: var(--ink);
 		line-height: 1.4;
 		flex-shrink: 0;
 	}
@@ -146,18 +150,18 @@
 
 	.guide-item p {
 		font-size: 13px;
-		color: var(--ink-soft);
+		color: var(--ink-2);
 	}
 
 	@media (max-width: 720px) {
 		.guide {
 			grid-template-columns: 1fr;
 		}
+		.hero-stats {
+			grid-template-columns: 1fr;
+		}
 		.br-sp {
 			display: none;
-		}
-		.hero-stats {
-			gap: 32px;
 		}
 	}
 </style>
