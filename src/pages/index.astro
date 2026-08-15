@@ -91,27 +91,6 @@ const badges = [
         <h2 class="module-title">訪客計數器</h2>
         <VisitorCounter client:load />
       </section>
-
-      <section class="module" aria-label="動態 API 展示">
-        <h2 class="module-title">動態 API 展示</h2>
-        <div class="api-body">
-          <p class="api-desc">未來將整合 Google 產品 API（行事曆、地圖、Gmail 等）即時資料。</p>
-          <ul class="api-list">
-            <li class="api-item">
-              <span class="api-item-name">Google Calendar</span>
-              <span class="api-item-status">準備中</span>
-            </li>
-            <li class="api-item">
-              <span class="api-item-name">Google Maps</span>
-              <span class="api-item-status">準備中</span>
-            </li>
-            <li class="api-item">
-              <span class="api-item-name">Google Drive</span>
-              <span class="api-item-status">準備中</span>
-            </li>
-          </ul>
-        </div>
-      </section>
     </aside>
 
     <main class="col col-center">
@@ -166,21 +145,6 @@ const badges = [
           查看更多資格認證
           <span aria-hidden="true">↗</span>
         </a>
-      </section>
-
-      <section class="module music-module" aria-label="音樂">
-        <h2 class="module-title">音樂</h2>
-        <div class="music-frame">
-          <iframe
-            src="https://open.spotify.com/embed/track/31A4dKZXe19JOJig4ZTZRy?utm_source=generator&theme=0"
-            title="Moonlight Sonata"
-            width="100%"
-            height="152"
-            frameborder="0"
-            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-            loading="lazy"
-          ></iframe>
-        </div>
       </section>
     </aside>
   </div>
@@ -320,25 +284,6 @@ const badges = [
     gap: 0.6rem;
   }
 
-  .music-module {
-    padding: 0;
-    overflow: hidden;
-  }
-
-  .music-module .module-title {
-    padding: 0.85rem 1rem;
-  }
-
-  .music-frame {
-    padding: 0.5rem;
-    background: #191919;
-  }
-
-  .music-frame iframe {
-    display: block;
-    border-radius: 0;
-  }
-
   .gh-module {
     padding: 0;
   }
@@ -347,53 +292,6 @@ const badges = [
     display: block;
     width: 100%;
     height: auto;
-  }
-
-  .api-body {
-    padding: 0.5rem 0;
-  }
-
-  .api-desc {
-    padding: 0.85rem 1rem;
-    font-size: 0.76rem;
-    line-height: 1.8;
-    color: var(--ink-3);
-    letter-spacing: 0.04em;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .api-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  .api-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.5rem;
-    padding: 0.65rem 1rem;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .api-item:last-child {
-    border-bottom: none;
-  }
-
-  .api-item-name {
-    font-size: 0.82rem;
-    letter-spacing: 0.05em;
-    color: var(--ink);
-  }
-
-  .api-item-status {
-    font-size: 0.68rem;
-    letter-spacing: 0.1em;
-    color: var(--ink-3);
-    border: 1px solid var(--border);
-    padding: 0.12rem 0.45rem;
-    background: var(--bg-soft);
   }
 
   .cal-square {
