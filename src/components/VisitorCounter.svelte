@@ -1,13 +1,13 @@
 <script>
   import { onMount } from 'svelte';
-  import { getFirestoreInstance } from '../ntub/lib/firebase/client';
+  import { getHomeFirestore } from '../lib/firebase/client';
   import { doc, increment, onSnapshot, setDoc } from 'firebase/firestore';
 
   let count = 0;
   let loaded = false;
 
   onMount(() => {
-    const db = getFirestoreInstance();
+    const db = getHomeFirestore();
     const ref = doc(db, 'visitor_counts', 'total');
 
     // 同一瀏覽器 session 只計一次（避免重整洗版）
