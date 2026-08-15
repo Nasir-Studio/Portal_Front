@@ -87,20 +87,6 @@ const badges = [
         </nav>
       </section>
 
-      <section class="module music-module" aria-label="音樂">
-        <div class="music-frame">
-          <iframe
-            src="https://open.spotify.com/embed/track/31A4dKZXe19JOJig4ZTZRy?utm_source=generator&theme=0"
-            title="Moonlight Sonata"
-            width="100%"
-            height="80"
-            frameborder="0"
-            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-            loading="lazy"
-          ></iframe>
-        </div>
-      </section>
-
       <section class="module" aria-label="訪客計數器">
         <h2 class="module-title">訪客計數器</h2>
         <VisitorCounter client:load />
@@ -180,6 +166,21 @@ const badges = [
           查看更多資格認證
           <span aria-hidden="true">↗</span>
         </a>
+      </section>
+
+      <section class="module music-module" aria-label="音樂">
+        <h2 class="module-title">音樂</h2>
+        <div class="music-frame">
+          <iframe
+            src="https://open.spotify.com/embed/track/31A4dKZXe19JOJig4ZTZRy?utm_source=generator&theme=0"
+            title="Moonlight Sonata"
+            width="100%"
+            height="152"
+            frameborder="0"
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+            loading="lazy"
+          ></iframe>
+        </div>
       </section>
     </aside>
   </div>
@@ -320,11 +321,22 @@ const badges = [
   }
 
   .music-module {
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .music-module .module-title {
+    padding: 0.85rem 1rem;
+  }
+
+  .music-frame {
     padding: 0.5rem;
+    background: #191919;
   }
 
   .music-frame iframe {
     display: block;
+    border-radius: 0;
   }
 
   .gh-module {
