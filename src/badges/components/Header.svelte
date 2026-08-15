@@ -426,15 +426,19 @@
     transition: width 0.7s var(--ease);
   }
 
-  @media (max-width: 480px) {
-    .app-topbar__left {
+  @media (max-width: 900px) {
+    /* 手機：隱藏 topbar 連結列 */
+    .app-topbar {
       display: none;
     }
 
-    .app-topbar__inner {
-      justify-content: flex-end;
+    /* 手機：隱藏 menubar 連結列（保留集章進度列） */
+    .app-menubar {
+      display: none;
     }
+  }
 
+  @media (max-width: 480px) {
     .app-brand__name {
       font-size: 1.25rem;
     }
