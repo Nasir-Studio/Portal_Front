@@ -14,25 +14,35 @@ const { size = 40, class: className = '' } = Astro.props;
   viewBox="0 0 64 64"
   fill="none"
   role="img"
-  aria-label="可愛小羊"
+  aria-label="OviNas"
 >
-  <rect x="17" y="49" width="4.5" height="9" rx="2.25" fill="#26262a" />
-  <rect x="25.5" y="50" width="4.5" height="9" rx="2.25" fill="#26262a" />
-  <rect x="34" y="50" width="4.5" height="9" rx="2.25" fill="#26262a" />
-  <rect x="42.5" y="49" width="4.5" height="9" rx="2.25" fill="#26262a" />
-  <circle cx="21" cy="45" r="7.5" fill="#f4f3f0" stroke="#dcdbd6" stroke-width="1.6" />
-  <circle cx="43" cy="45" r="7.5" fill="#f4f3f0" stroke="#dcdbd6" stroke-width="1.6" />
-  <circle cx="32" cy="47" r="9.5" fill="#f4f3f0" stroke="#dcdbd6" stroke-width="1.6" />
-  <ellipse cx="13.5" cy="31" rx="5" ry="7.5" fill="#26262a" transform="rotate(24 13.5 31)" />
-  <ellipse cx="50.5" cy="31" rx="5" ry="7.5" fill="#26262a" transform="rotate(-24 50.5 31)" />
-  <rect x="17.5" y="21" width="29" height="27" rx="13" fill="#26262a" />
-  <circle cx="15.5" cy="19" r="7" fill="#f4f3f0" stroke="#dcdbd6" stroke-width="1.6" />
-  <circle cx="26.5" cy="13.5" r="8" fill="#f4f3f0" stroke="#dcdbd6" stroke-width="1.6" />
-  <circle cx="37.5" cy="13.5" r="8" fill="#f4f3f0" stroke="#dcdbd6" stroke-width="1.6" />
-  <circle cx="48.5" cy="19" r="7" fill="#f4f3f0" stroke="#dcdbd6" stroke-width="1.6" />
-  <circle cx="32" cy="11" r="7" fill="#f4f3f0" stroke="#dcdbd6" stroke-width="1.6" />
-  <circle cx="26" cy="30.5" r="2.4" fill="#f4f3f0" />
-  <circle cx="38" cy="30.5" r="2.4" fill="#f4f3f0" />
-  <ellipse cx="32" cy="39.5" rx="6.5" ry="4.8" fill="#4a4a50" />
-  <path d="M29.8 37.6h4.4L32 40.6z" fill="#f4f3f0" />
+  <!-- 深炭圓角底 -->
+  <rect x="0" y="0" width="64" height="64" rx="14" fill="#1c1c20" />
+
+  <!-- 金色左捲角（新月弧） -->
+  <path
+    d="M20 29 C13 25 8 18 10 11 C12 5.5 18 4 21.5 8"
+    stroke="#d4af37"
+    stroke-width="4.5"
+    stroke-linecap="round"
+    fill="none"
+  />
+  <!-- 金色右捲角（新月弧） -->
+  <path
+    d="M44 29 C51 25 56 18 54 11 C52 5.5 46 4 42.5 8"
+    stroke="#d4af37"
+    stroke-width="4.5"
+    stroke-linecap="round"
+    fill="none"
+  />
+
+  <!-- 米白幾何圓臉 -->
+  <circle cx="32" cy="38" r="13.5" fill="#f4f3f0" />
+
+  <!-- 眼睛 -->
+  <circle cx="27" cy="36.5" r="2.1" fill="#1c1c20" />
+  <circle cx="37" cy="36.5" r="2.1" fill="#1c1c20" />
+
+  <!-- 金色鼻點 -->
+  <path d="M29.5 42.5 h5 L32 46 z" fill="#d4af37" />
 </svg>
