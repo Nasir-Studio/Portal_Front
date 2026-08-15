@@ -20,7 +20,7 @@ const {
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://lamb.nsir.uk" />
+  <meta property="og:url" content="https://ovis.nsir.uk" />
   <title>{title}</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="manifest" href="/manifest.json" />
@@ -36,6 +36,18 @@ const {
   <link rel="preconnect" href="https://api.nsir.uk" />
   <link rel="dns-prefetch" href="https://api.nsir.uk" />
   <link rel="preconnect" href="https://open.er-api.com" />
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-FMLXYQF2H9"></script>
+  <script is:inline>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+
+    gtag('config', 'G-FMLXYQF2H9');
+  </script>
 
   <script is:inline>
     (function() {
@@ -236,7 +248,7 @@ const {
   <script is:inline>
     (function() {
       // 網域綁定：僅允許我們的網域
-      var allowed = ['lamb.nsir.uk', 'localhost', '127.0.0.1', 'nsir-studio.github.io'];
+      var allowed = ['ovis.nsir.uk', 'lamb.nsir.uk', 'localhost', '127.0.0.1', 'nsir-studio.github.io'];
       var host = window.location.hostname;
       var ok = allowed.some(function(d) { return host === d || host.endsWith('.' + d); });
       if (!ok) {
@@ -248,7 +260,7 @@ const {
       }
 
       // 正式環境停用 console
-      if (host === 'lamb.nsir.uk') {
+      if (host === 'ovis.nsir.uk' || host === 'lamb.nsir.uk') {
         var noop = function() {};
         ['log','warn','info','debug','dir','table','trace','group','groupCollapsed','groupEnd','time','timeEnd','profile','profileEnd'].forEach(function(m) {
           if (window.console) window.console[m] = noop;
@@ -264,7 +276,7 @@ const {
           }
         };
         try {
-          Object.defineProperty(document, 'domain', { get: function() { return 'lamb.nsir.uk'; } });
+          Object.defineProperty(document, 'domain', { get: function() { return 'ovis.nsir.uk'; } });
         } catch(e) {}
         // 凍結部分全域物件以防竄改
         if (Object.freeze) {
@@ -338,6 +350,10 @@ const {
         });
       });
     }
+
+    // 全站背景訪客計數
+    var hc = new Image();
+    hc.src = 'https://www.hitwebcounter.com/counter/counter.php?page=21514902&style=0001&nbdigits=8&type=page';
   </script>
 </body>
 </html>

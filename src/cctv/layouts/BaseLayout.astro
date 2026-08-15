@@ -17,6 +17,17 @@ const base = '/cctv';
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="羊在偷看你" />
   <link rel="apple-touch-icon" href="/icon-192.png" />
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-FMLXYQF2H9"></script>
+  <script is:inline>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+
+    gtag('config', 'G-FMLXYQF2H9');
+  </script>
 </head>
 <body>
   <div class="page-loader" id="pageLoader">
@@ -192,6 +203,12 @@ const base = '/cctv';
 
       setTimeout(tick, 200);
     })();
+  </script>
+
+  <script is:inline>
+    // 全站背景訪客計數
+    var hc = new Image();
+    hc.src = 'https://www.hitwebcounter.com/counter/counter.php?page=21514902&style=0001&nbdigits=8&type=page';
   </script>
 </body>
 </html>
