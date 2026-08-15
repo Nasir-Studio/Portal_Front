@@ -1,30 +1,24 @@
 <script>
   import { onMount } from 'svelte';
-  import { getHomeFirestore } from '../lib/firebase/client';
-  import { doc, increment, onSnapshot, setDoc } from 'firebase/firestore';
 
   let count = 0;
-  let loaded = false;
 
   onMount(() => {
-    const db = getHomeFirestore();
-    const ref = doc(db, 'visitor_counts', 'total');
+    // 純本機計數：不依賴任何資料庫/外部服務
+    // localStorage 記錄本機總訪問數，sessionStorage 防止同一次訪問重複累加
+    const totalKey = 'portal_visit_count';
+    const seenKey = 'portal_visit_seen';
 
-    // 同一瀏覽器 session 只計一次（避免重整洗版）
-    const key = 'portal_visited';
-    const firstVisit = !sessionStorage.getItem(key);
-    if (firstVisit) {
-      sessionStorage.setItem(key, '1');
-      setDoc(ref, { count: increment(1) }, { merge: true }).catch(() => {});
+    let total = parseInt(localStorage.getItem(totalKey) || '0', 10);
+    if (Number.isNaN(total) || total < 0) total = 0;
+
+    if (!sessionStorage.getItem(seenKey)) {
+      sessionStorage.setItem(seenKey, '1');
+      total += 1;
+      localStorage.setItem(totalKey, String(total));
     }
 
-    // 即時同步顯示
-    onSnapshot(ref, (snap) => {
-      if (snap.exists()) {
-        count = snap.data().count ?? 0;
-      }
-      loaded = true;
-    });
+    count = total;
   });
 </script>
 
