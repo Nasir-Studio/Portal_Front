@@ -58,8 +58,8 @@
     <div class="login__hero-frame">
       <span class="login__hero-square login__hero-square--l" aria-hidden="true"></span>
       <span class="login__hero-square login__hero-square--r" aria-hidden="true"></span>
-      <h1 class="login__hero-title">【雙北捷運】捷運章集戳</h1>
-      <p class="login__hero-en">TAIPEI & NEW TAIPEI METRO BADGE</p>
+      <h1 class="login__hero-title">羊-集章</h1>
+      <p class="login__hero-en">SHEEP BADGE</p>
       <p class="login__hero-sub">捷運紀念章收集冊</p>
     </div>
   </div>
@@ -69,7 +69,7 @@
     <div class="login__cols">
       <!-- 左欄：登入卡 -->
       <main class="login__col login__col--center">
-        <section class="login__module login__card" aria-label="捷運章集戳登入">
+        <section class="login__module login__card" aria-label="羊集章登入">
           <h2 class="login__module-title">
             <span class="login__card-head">
               <span class="login__cal-square" aria-hidden="true"></span>
@@ -80,8 +80,8 @@
             <div class="login__logo">
               <SheepLogo size={52} />
             </div>
-            <h2 class="login__title">【雙北捷運】捷運章集戳</h2>
-            <p class="login__brand-en-small">TAIPEI & NEW TAIPEI METRO BADGE</p>
+            <h2 class="login__title">羊-集章</h2>
+            <p class="login__brand-en-small">SHEEP BADGE</p>
             <p class="login__tagline">
               登入後開始收集紀念章，<br />
               記錄屬於你的每一趟旅程。

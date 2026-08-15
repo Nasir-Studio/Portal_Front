@@ -46,8 +46,8 @@
     <div class="splash__mark">
       <SheepLogo size={88} />
     </div>
-    <p class="splash__label">【雙北捷運】捷運章集戳</p>
-    <p class="splash__sub">TAIPEI & NEW TAIPEI METRO BADGE</p>
+    <p class="splash__label">羊-集章</p>
+    <p class="splash__sub">SHEEP BADGE</p>
   </div>
 {:else if !$user}
   <Login />
