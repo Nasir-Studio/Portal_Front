@@ -42,6 +42,15 @@ const badges = [
     url: 'https://www.credly.com/badges/7b8bbe2a-3bbd-4fdc-8ffc-7696c35876aa/public_url',
   },
 ];
+
+// GitHub 貢獻：build 時抓取 repo 列表（失敗則顯示連結）
+const ghRepos = await fetch(
+  'https://api.github.com/users/Nasir-VM/repos?sort=updated&per_page=4&type=owner',
+  { headers: { 'User-Agent': 'Portal_Front' } }
+)
+  .then((r) => (r.ok ? r.json() : []))
+  .catch(() => []);
+const ghError = !Array.isArray(ghRepos) || ghRepos.length === 0;
 ---
 
 <BaseLayout>
@@ -68,6 +77,71 @@ const badges = [
             ))
           }
         </nav>
+      </section>
+
+      <section class="module" aria-label="音樂播放器">
+        <h2 class="module-title">音樂播放器</h2>
+        <div class="music-frame">
+          <iframe
+            src="https://open.spotify.com/embed/track/31A4dKZXe19JOJig4ZTZRy?utm_source=generator&theme=0"
+            title="Spotify 播放器 — Moonlight Sonata"
+            width="100%"
+            height="152"
+            frameborder="0"
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+            loading="lazy"
+          ></iframe>
+          <p class="music-caption">Moonlight Sonata — Beethoven</p>
+        </div>
+      </section>
+
+      <section class="module" aria-label="GitHub 貢獻">
+        <h2 class="module-title">GitHub 貢獻</h2>
+        {
+          ghError ? (
+            <a class="gh-profile" href="https://github.com/Nasir-VM" target="_blank" rel="noopener noreferrer">
+              <span class="gh-profile-name">Nasir-VM</span>
+              <span class="gh-profile-meta">前往 GitHub 個人頁面 ↗</span>
+            </a>
+          ) : (
+            <ul class="gh-list">
+              {
+                ghRepos.map((r) => (
+                  <li>
+                    <a class="gh-item" href={r.html_url} target="_blank" rel="noopener noreferrer">
+                      <span class="gh-item-name">{r.name}</span>
+                      <span class="gh-item-meta">
+                        {r.language || '—'}
+                        {r.stargazers_count > 0 ? ` · ★ ${r.stargazers_count}` : ''}
+                      </span>
+                    </a>
+                  </li>
+                ))
+              }
+              <li>
+                <a class="gh-more" href="https://github.com/Nasir-VM" target="_blank" rel="noopener noreferrer">
+                  前往 GitHub 個人頁面 ↗
+                </a>
+              </li>
+            </ul>
+          )
+        }
+      </section>
+
+      <section class="module" aria-label="Buy Me a Coffee">
+        <h2 class="module-title">Buy Me a Coffee</h2>
+        <div class="bmc-body">
+          <p class="bmc-text">喜歡這個網站的話，可以請我一杯咖啡 ☕</p>
+          <a
+            class="bmc-btn"
+            href="https://www.buymeacoffee.com/YOUR_USERNAME"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            請我喝咖啡
+            <span aria-hidden="true">↗</span>
+          </a>
+        </div>
       </section>
     </aside>
 
@@ -249,6 +323,129 @@ const badges = [
     display: flex;
     align-items: center;
     gap: 0.6rem;
+  }
+
+  .music-frame {
+    padding: 1rem 0.75rem;
+  }
+
+  .music-frame iframe {
+    display: block;
+    border: 1px solid var(--border);
+  }
+
+  .music-caption {
+    margin-top: 0.6rem;
+    font-size: 0.72rem;
+    color: var(--ink-3);
+    letter-spacing: 0.06em;
+    text-align: center;
+  }
+
+  .gh-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .gh-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    padding: 0.7rem 1rem;
+    border-bottom: 1px solid var(--border);
+    transition: background var(--t);
+  }
+
+  .gh-item:hover {
+    background: var(--bg-soft);
+  }
+
+  .gh-item-name {
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+  }
+
+  .gh-item-meta {
+    font-size: 0.72rem;
+    color: var(--ink-3);
+    letter-spacing: 0.04em;
+  }
+
+  .gh-more {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 0.6rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    color: var(--ink-2);
+    background: var(--bg-soft);
+    transition: color var(--t), background var(--t);
+  }
+
+  .gh-more:hover {
+    color: var(--ink);
+    background: var(--surface-2);
+  }
+
+  .gh-profile {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    padding: 1rem;
+    border-bottom: 1px solid var(--border);
+    transition: background var(--t);
+  }
+
+  .gh-profile:hover {
+    background: var(--bg-soft);
+  }
+
+  .gh-profile-name {
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+  }
+
+  .gh-profile-meta {
+    font-size: 0.74rem;
+    color: var(--ink-3);
+    letter-spacing: 0.04em;
+  }
+
+  .bmc-body {
+    padding: 1rem;
+    text-align: center;
+  }
+
+  .bmc-text {
+    font-size: 0.8rem;
+    line-height: 1.7;
+    color: var(--ink-2);
+    letter-spacing: 0.04em;
+    margin-bottom: 0.9rem;
+  }
+
+  .bmc-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 0.65rem;
+    background: var(--ink);
+    color: var(--white);
+    font-size: 0.85rem;
+    letter-spacing: 0.15em;
+    transition: background var(--t);
+  }
+
+  .bmc-btn:hover {
+    background: #000;
   }
 
   .cal-square {
