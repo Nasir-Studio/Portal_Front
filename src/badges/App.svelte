@@ -43,12 +43,11 @@
 
 {#if !$authReady}
   <div class="splash">
-    <div class="splash__inner">
-      <div class="splash__mark">
-        <SheepLogo size={88} />
-      </div>
-      <p class="splash__label">載入中…</p>
+    <div class="splash__mark">
+      <SheepLogo size={88} />
     </div>
+    <p class="splash__label">羊家入口網</p>
+    <p class="splash__sub">載入中…</p>
   </div>
 {:else if !$user}
   <Login />
@@ -74,6 +73,82 @@
   {/if}
 
   <footer class="app-footer">
-    印章圖源：台北捷運・新北捷運 · © Nasir 2026
+    <div class="app-footer__inner">
+      <span>羊家入口網</span>
+      <span class="app-footer__sep" aria-hidden="true">｜</span>
+      <span>印章圖源：台北捷運・新北捷運</span>
+      <span class="app-footer__sep" aria-hidden="true">｜</span>
+      <span>© Nasir 2026</span>
+    </div>
   </footer>
 {/if}
+
+<style>
+  .splash {
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    background: #f5f4f1;
+  }
+
+  .splash__mark {
+    width: 88px;
+    margin-bottom: 0.6rem;
+    line-height: 0;
+    animation: swing 1.5s ease-in-out infinite;
+  }
+
+  @keyframes swing {
+    0%,
+    100% {
+      transform: rotate(-10deg);
+    }
+    50% {
+      transform: rotate(10deg);
+    }
+  }
+
+  .splash__label {
+    font-family: 'Noto Serif TC', 'Songti TC', serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    color: #1c1c1c;
+  }
+
+  .splash__sub {
+    margin-top: 0.6rem;
+    font-family: 'Noto Sans TC', 'PingFang TC', system-ui, sans-serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.3em;
+    color: #8b8983;
+  }
+
+  .app-footer {
+    border-top: 1px solid #d8d7d2;
+    background: #f5f4f1;
+  }
+
+  .app-footer__inner {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 2rem 1.25rem 2.4rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    text-align: center;
+    font-family: 'Noto Sans TC', 'PingFang TC', system-ui, sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    color: #8b8983;
+  }
+
+  .app-footer__sep {
+    color: #b9b8b2;
+  }
+</style>

@@ -16,268 +16,376 @@
   async function onLogout() {
     closeMenu()
     await logout()
+    window.location.href = '/'
   }
 </script>
 
-<div class="badges-nav">
-  <div class="badges-nav__inner">
-    <a class="badges-nav__link" href="/">回到入口</a>
-    <span class="badges-nav__sep" aria-hidden="true">｜</span>
-    <a class="badges-nav__link" href="/badges/">羊-集章</a>
+<!-- 黑 topbar：與主站 Nav.astro 相同 -->
+<div class="app-topbar">
+  <div class="app-topbar__inner">
+    <span class="app-topbar__left">羊家入口網</span>
+    <span class="app-topbar__right">
+      <a href="/">首頁</a>
+      <span class="app-topbar__sep" aria-hidden="true">｜</span>
+      <a href="#news">最新消息</a>
+      <span class="app-topbar__sep" aria-hidden="true">｜</span>
+      <a href="/badges/" aria-current="page">羊集章</a>
+    </span>
   </div>
 </div>
 
-<header class="app-header">
-  <div class="app-header__inner">
-    <div class="brand">
-      <span class="brand__mark">
-        <SheepLogo size={38} />
-      </span>
-      <div class="brand__name">羊-集章</div>
-    </div>
+<!-- 白 header：SheepLogo + 羊家的入口 -->
+<div class="app-header-main">
+  <a class="app-brand" href="/">
+    <SheepLogo size={58} />
+    <span class="app-brand__text">
+      <span class="app-brand__name">羊家的入口</span>
+      <span class="app-brand__en">SHEEP PORTAL</span>
+    </span>
+  </a>
 
-    {#if user}
-      <div class="user-menu">
-        <button
-          class="user-menu__trigger"
-          onclick={toggleMenu}
-          aria-haspopup="menu"
-          aria-expanded={menuOpen}
-          aria-label="帳號選單">
-          {#if user.photoURL}
-            <img class="avatar" src={user.photoURL} alt="" />
-          {:else}
-            <span class="avatar avatar--fallback"></span>
-          {/if}
-        </button>
-
-        {#if menuOpen}
-          <div class="user-menu__backdrop" onclick={closeMenu}></div>
-          <div class="user-menu__panel" role="menu">
-            <div class="user-menu__head">
-              {#if user.photoURL}
-                <img class="user-menu__avatar" src={user.photoURL} alt="" />
-              {:else}
-                <span class="user-menu__avatar avatar--fallback"></span>
-              {/if}
-              <div class="user-menu__who">
-                <div class="user-menu__name">{user.displayName ?? '使用者'}</div>
-                <div class="user-menu__email">{user.email ?? ''}</div>
-              </div>
-            </div>
-            <a class="user-menu__item" href="/">回到入口</a>
-            <button class="user-menu__item" role="menuitem" onclick={onLogout}>登出</button>
-          </div>
+  {#if user}
+    <div class="app-user">
+      <button
+        class="app-user__trigger"
+        onclick={toggleMenu}
+        aria-haspopup="menu"
+        aria-expanded={menuOpen}
+        aria-label="帳號選單">
+        {#if user.photoURL}
+          <img class="app-user__avatar" src={user.photoURL} alt="" />
+        {:else}
+          <span class="app-user__avatar app-user__avatar--fallback"></span>
         {/if}
-      </div>
-    {/if}
-  </div>
+        <span class="app-user__name">{user.displayName ?? '使用者'}</span>
+      </button>
 
-  <div class="progress">
-    <div class="progress__row">
-      <span class="progress__label">已集章</span>
-      <span class="progress__count">
-        {count}<span class="total"> / {total}</span>
+      {#if menuOpen}
+        <div class="app-user__backdrop" onclick={closeMenu}></div>
+        <div class="app-user__panel" role="menu">
+          <div class="app-user__head">
+            {#if user.photoURL}
+              <img class="app-user__head-avatar" src={user.photoURL} alt="" />
+            {:else}
+              <span class="app-user__head-avatar app-user__avatar--fallback"></span>
+            {/if}
+            <div class="app-user__who">
+              <div class="app-user__name--lg">{user.displayName ?? '使用者'}</div>
+              <div class="app-user__email">{user.email ?? ''}</div>
+            </div>
+          </div>
+          <a class="app-user__item" href="/">回到入口</a>
+          <button class="app-user__item" role="menuitem" onclick={onLogout}>登出</button>
+        </div>
+      {/if}
+    </div>
+  {/if}
+</div>
+
+<!-- menubar：黑 2px 底線 -->
+<div class="app-menubar-wrap">
+  <nav class="app-menubar" aria-label="主導覽">
+    <a class="app-menu-link" href="/">首頁</a>
+    <a class="app-menu-link" href="https://nsir.uk" target="_blank" rel="noopener noreferrer">羊-短網址</a>
+    <a class="app-menu-link" href="/cctv/">羊監視你</a>
+    <a class="app-menu-link app-menu-link--active" href="/badges/" aria-current="page">羊集章</a>
+    <a class="app-menu-link" href="https://1ztests.nsir.uk" target="_blank" rel="noopener noreferrer">羊愛考試</a>
+    <a class="app-menu-link app-menu-cta" href="/reserve/">預約系統</a>
+  </nav>
+
+  <!-- 集章進度列 -->
+  <div class="app-progress">
+    <div class="app-progress__row">
+      <span class="app-progress__label">已集章</span>
+      <span class="app-progress__count">
+        {count}<span class="app-progress__total"> / {total}</span>
       </span>
     </div>
-    <div class="progress__bar" role="progressbar" aria-valuenow={count} aria-valuemin="0" aria-valuemax={total}>
-      <div class="progress__fill" style="width: {total ? (count / total) * 100 : 0}%;"></div>
+    <div
+      class="app-progress__bar"
+      role="progressbar"
+      aria-valuenow={count}
+      aria-valuemin="0"
+      aria-valuemax={total}>
+      <div class="app-progress__fill" style="width: {total ? (count / total) * 100 : 0}%;"></div>
     </div>
   </div>
-</header>
+</div>
 
 <style>
-  .badges-nav {
-    background: var(--sheep-ink, #1c1c1c);
+  /* ===== 與主站 global.css 一致的設計變數 ===== */
+  .app-topbar,
+  .app-header-main,
+  .app-menubar-wrap,
+  .app-user {
+    --ink: #1c1c1c;
+    --ink-2: #4c4b47;
+    --ink-3: #8b8983;
+    --white: #ffffff;
+    --bg: #f5f4f1;
+    --bg-soft: #efeeea;
+    --surface: #ffffff;
+    --surface-2: #efeeea;
+    --border: #d8d7d2;
+    --border-strong: #b9b8b2;
+    --font-serif: 'Noto Serif TC', 'Songti TC', 'STSong', Georgia, 'Times New Roman', serif;
+    --font-sans: 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --ease: cubic-bezier(0.4, 0, 0.2, 1);
+    --t: 200ms var(--ease);
+  }
+
+  /* ===== 黑 topbar ===== */
+  .app-topbar {
+    background: var(--ink);
     color: rgba(255, 255, 255, 0.72);
     font-size: 0.75rem;
     letter-spacing: 0.14em;
+    font-family: var(--font-sans);
   }
 
-  .badges-nav__inner {
-    max-width: 1180px;
-    margin: 0 auto;
-    padding: 0 20px;
-    min-height: 32px;
+  .app-topbar__inner {
+    width: min(1080px, 100% - 2.5rem);
+    margin-inline: auto;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    justify-content: space-between;
+    min-height: 32px;
   }
 
-  .badges-nav__link {
-    color: rgba(255, 255, 255, 0.72);
+  .app-topbar a {
+    color: inherit;
     text-decoration: none;
-    transition: color var(--sheep-t);
+    transition: color var(--t);
   }
 
-  .badges-nav__link:hover {
-    color: var(--sheep-white, #fff);
+  .app-topbar a:hover {
+    color: var(--white);
   }
 
-  .badges-nav__sep {
+  .app-topbar__sep {
+    margin: 0 0.5rem;
     color: rgba(255, 255, 255, 0.3);
   }
 
-  .app-header {
-    position: sticky;
-    top: 0;
-    z-index: 60;
-    background: var(--header-bg, rgba(245, 244, 241, 0.9));
-    backdrop-filter: blur(14px);
-    border-bottom: 1px solid var(--line, #dcd8cc);
-  }
-
-  .app-header__inner {
-    max-width: 1180px;
-    margin: 0 auto;
-    padding: 12px 20px;
+  /* ===== 白 header ===== */
+  .app-header-main {
+    width: min(1080px, 100% - 2.5rem);
+    margin-inline: auto;
     display: flex;
     align-items: center;
-    gap: 16px;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.25rem 0 1.1rem;
   }
 
-  .brand {
-    display: flex;
+  .app-brand {
+    display: inline-flex;
     align-items: center;
-    gap: 12px;
-    margin-right: auto;
+    gap: 0.9rem;
+    color: var(--ink);
+    text-decoration: none;
   }
 
-  .brand__mark {
-    width: 38px;
-    height: 38px;
-    display: grid;
-    place-items: center;
-    line-height: 0;
+  .app-brand svg {
+    filter: drop-shadow(0 4px 8px rgba(28, 28, 28, 0.2));
   }
 
-  .brand__mark svg {
-    filter: drop-shadow(0 2px 4px rgba(28, 28, 28, 0.18));
+  .app-brand__text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.25;
   }
 
-  .brand__name {
-    font-family: var(--sheep-serif, 'Noto Serif TC', serif);
-    font-size: 19px;
+  .app-brand__name {
+    font-family: var(--font-serif);
+    font-size: 1.55rem;
     font-weight: 600;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.16em;
   }
 
-  .user-menu {
+  .app-brand__en {
+    font-size: 0.66rem;
+    font-weight: 400;
+    letter-spacing: 0.42em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  /* ===== user menu（主站 topbar-user 風） ===== */
+  .app-user {
     position: relative;
+    font-family: var(--font-sans);
   }
 
-  .user-menu__trigger {
+  .app-user__trigger {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 4px;
-    margin: -4px;
-    border-radius: var(--radius);
+    gap: 0.5rem;
+    padding: 0.25rem 0.5rem;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    cursor: pointer;
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+    transition: border-color var(--t), background var(--t);
   }
 
-  .user-menu__trigger:hover .avatar {
-    border-color: var(--text-faint);
+  .app-user__trigger:hover {
+    border-color: var(--border-strong);
+    background: var(--bg-soft);
   }
 
-  .user-menu__backdrop {
+  .app-user__avatar {
+    width: 26px;
+    height: 26px;
+    border-radius: 0;
+    object-fit: cover;
+    background: var(--surface-2);
+    border: 1px solid var(--border-strong);
+  }
+
+  .app-user__avatar--fallback {
+    display: block;
+  }
+
+  .app-user__backdrop {
     position: fixed;
     inset: 0;
     z-index: 90;
   }
 
-  .user-menu__panel {
+  .app-user__panel {
     position: absolute;
-    top: calc(100% + 10px);
+    top: calc(100% + 8px);
     right: 0;
     z-index: 100;
     width: min(240px, calc(100vw - 32px));
-    background: var(--surface, #ffffff);
-    border: 1px solid var(--line-strong, #b8b3a5);
-    border-radius: 8px;
-    padding: 6px;
-    box-shadow: var(--shadow);
-    animation: rise 0.2s var(--ease) both;
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    border-radius: 0;
+    padding: 6px 0;
+    box-shadow: 0 12px 28px -14px rgba(28, 28, 28, 0.25);
   }
 
-  .user-menu__head {
+  .app-user__head {
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 8px;
-    border-bottom: 1px solid var(--line, #dcd8cc);
+    padding: 8px 14px;
+    border-bottom: 1px solid var(--border);
     margin-bottom: 6px;
   }
 
-  .user-menu__avatar {
+  .app-user__head-avatar {
     width: 34px;
     height: 34px;
-    border-radius: var(--radius);
-    background: var(--surface-2, #f2efe8);
-    border: 1px solid var(--line-strong, #b8b3a5);
+    border-radius: 0;
     object-fit: cover;
+    background: var(--surface-2);
+    border: 1px solid var(--border-strong);
   }
 
-  .user-menu__who {
+  .app-user__who {
     min-width: 0;
   }
 
-  .user-menu__name {
-    font-size: 14px;
-    font-weight: 600;
+  .app-user__name--lg {
+    font-size: 0.88rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
 
-  .user-menu__email {
-    font-size: 12px;
-    color: var(--text-faint);
+  .app-user__email {
+    font-size: 0.72rem;
+    color: var(--ink-3);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
 
-  .user-menu__item {
+  .app-user__item {
     display: block;
     width: 100%;
     text-align: left;
-    padding: 9px 12px;
-    border-radius: var(--radius);
-    font-size: 14px;
-    color: var(--text-dim);
+    padding: 0.55rem 14px;
+    font-size: 0.85rem;
+    color: var(--ink-2);
     text-decoration: none;
     background: none;
     border: none;
-    font-family: inherit;
+    font-family: var(--font-sans);
     cursor: pointer;
+    letter-spacing: 0.05em;
   }
 
-  .user-menu__item:hover {
-    background: var(--surface-2, #f2efe8);
-    color: var(--danger, #c0452a);
+  .app-user__item:hover {
+    background: var(--bg-soft);
+    color: var(--ink);
   }
 
-  .avatar {
-    width: 32px;
-    height: 32px;
-    border-radius: var(--radius);
-    background: var(--surface-2, #f2efe8);
-    border: 1px solid var(--line-strong, #b8b3a5);
-    object-fit: cover;
-    transition: border-color 0.16s;
+  /* ===== menubar ===== */
+  .app-menubar-wrap {
+    border-top: 1px solid var(--border);
+    border-bottom: 2px solid var(--ink);
+    background: var(--surface);
   }
 
-  .avatar--fallback {
-    display: block;
+  .app-menubar {
+    width: min(1080px, 100% - 2.5rem);
+    margin-inline: auto;
+    display: flex;
+    align-items: center;
+    min-height: 48px;
   }
 
-  .progress {
-    max-width: 1180px;
-    margin: 0 auto;
-    padding: 0 32px 14px;
+  .app-menu-link {
+    display: inline-flex;
+    align-items: center;
+    padding: 0 1.35rem;
+    height: 48px;
+    font-size: 0.95rem;
+    letter-spacing: 0.12em;
+    color: var(--ink-2);
+    border-right: 1px solid var(--border);
+    text-decoration: none;
+    transition: background var(--t), color var(--t);
   }
 
-  .progress__row {
+  .app-menu-link:hover {
+    background: var(--bg-soft);
+    color: var(--ink);
+  }
+
+  .app-menu-link--active {
+    color: var(--ink);
+  }
+
+  .app-menu-cta {
+    margin-left: auto;
+    border-right: none;
+    font-weight: 500;
+    background: var(--ink);
+    color: var(--white);
+  }
+
+  .app-menu-cta:hover {
+    background: #000;
+    color: var(--white);
+  }
+
+  /* ===== 集章進度列 ===== */
+  .app-progress {
+    width: min(1080px, 100% - 2.5rem);
+    margin-inline: auto;
+    padding: 0.9rem 0 1.1rem;
+  }
+
+  .app-progress__row {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
@@ -285,35 +393,54 @@
     margin-bottom: 8px;
   }
 
-  .progress__label {
-    font-size: 13px;
-    color: var(--text-dim);
+  .app-progress__label {
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+    color: var(--ink-2);
   }
 
-  .progress__count {
-    font-family: var(--font-display);
-    font-size: 30px;
-    font-weight: 700;
+  .app-progress__count {
+    font-family: var(--font-serif);
+    font-size: 1.7rem;
+    font-weight: 600;
     font-variant-numeric: tabular-nums;
     line-height: 1;
+    color: var(--ink);
   }
 
-  .progress__count .total {
-    font-size: 15px;
-    color: var(--text-faint);
+  .app-progress__total {
+    font-size: 0.85rem;
+    color: var(--ink-3);
     font-weight: 500;
   }
 
-  .progress__bar {
+  .app-progress__bar {
     height: 3px;
-    border-radius: 0;
-    background: var(--surface-2, #f2efe8);
+    background: var(--bg-soft);
     overflow: hidden;
   }
 
-  .progress__fill {
+  .app-progress__fill {
     height: 100%;
-    background: var(--text);
+    background: var(--ink);
     transition: width 0.7s var(--ease);
+  }
+
+  @media (max-width: 480px) {
+    .app-topbar__left {
+      display: none;
+    }
+
+    .app-topbar__inner {
+      justify-content: flex-end;
+    }
+
+    .app-brand__name {
+      font-size: 1.25rem;
+    }
+
+    .app-user__name {
+      display: none;
+    }
   }
 </style>
