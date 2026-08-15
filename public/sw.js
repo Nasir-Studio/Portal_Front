@@ -1,4 +1,4 @@
-// 羊家的入口 — Service Worker（PWA，無推播）
+// OviNas — Service Worker（PWA，無推播）
 // 快取策略：靜態資源快取優先、頁面導覽網路優先（失敗回 /shop/offline）
 
 var CACHE = 'sheep-cache-v1';

@@ -30,7 +30,7 @@
 <!-- ===== 黑 topbar：與主站 Nav.astro 相同 ===== -->
 <div class="ntub-topbar">
   <div class="ntub-topbar__inner">
-    <span class="ntub-topbar__left">羊家入口網</span>
+    <span class="ntub-topbar__left">OviNas</span>
     <span class="ntub-topbar__right">
       <a href="/">首頁</a>
       <span class="ntub-topbar__sep" aria-hidden="true">｜</span>
@@ -41,12 +41,12 @@
   </div>
 </div>
 
-<!-- ===== 白 header：SheepLogo + 羊家的入口 ===== -->
+<!-- ===== 白 header：SheepLogo + OviNas ===== -->
 <div class="ntub-header-main">
   <a class="ntub-brand" href="/">
     <SheepLogo size={58} />
     <span class="ntub-brand__text">
-      <span class="ntub-brand__name">羊家的入口</span>
+      <span class="ntub-brand__name">OviNas</span>
       <span class="ntub-brand__en">SHEEP PORTAL</span>
     </span>
   </a>

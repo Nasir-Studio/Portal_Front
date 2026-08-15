@@ -1,7 +1,7 @@
 {
-  "name": "羊家的入口",
-  "short_name": "羊家的入口",
-  "description": "羊家的入口 — 個人入口網站：羊監視你、羊集章、羊愛考試、羊-短網址與小羊農場（物品 0 元分享）。",
+  "name": "OviNas",
+  "short_name": "OviNas",
+  "description": "OviNas — 個人入口網站：羊監視你、羊集章、羊愛考試、羊-短網址與小羊農場（物品 0 元分享）。",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

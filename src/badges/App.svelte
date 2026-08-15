@@ -74,7 +74,7 @@
 
   <footer class="app-footer">
     <div class="app-footer__inner">
-      <span>羊家入口網</span>
+      <span>OviNas</span>
       <span class="app-footer__sep" aria-hidden="true">｜</span>
       <span>印章圖源：台北捷運・新北捷運</span>
       <span class="app-footer__sep" aria-hidden="true">｜</span>

@@ -23,7 +23,7 @@
 <!-- 黑 topbar：與主站 Nav.astro 相同 -->
 <div class="app-topbar">
   <div class="app-topbar__inner">
-    <span class="app-topbar__left">羊家入口網</span>
+    <span class="app-topbar__left">OviNas</span>
     <span class="app-topbar__right">
       <a href="/">首頁</a>
       <span class="app-topbar__sep" aria-hidden="true">｜</span>
@@ -32,12 +32,12 @@
   </div>
 </div>
 
-<!-- 白 header：SheepLogo + 羊家的入口 -->
+<!-- 白 header：SheepLogo + OviNas -->
 <div class="app-header-main">
   <a class="app-brand" href="/">
     <SheepLogo size={58} />
     <span class="app-brand__text">
-      <span class="app-brand__name">羊家的入口</span>
+      <span class="app-brand__name">OviNas</span>
       <span class="app-brand__en">SHEEP PORTAL</span>
     </span>
   </a>
