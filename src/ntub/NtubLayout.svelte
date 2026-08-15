@@ -182,7 +182,7 @@
     text-decoration: none;
   }
 
-  .ntub-brand svg {
+  .ntub-brand svg, .ntub-brand img {
     filter: drop-shadow(0 4px 8px rgba(28, 28, 28, 0.2));
   }
 

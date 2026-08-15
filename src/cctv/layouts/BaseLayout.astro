@@ -43,7 +43,11 @@ const base = '/cctv';
 
   <header>
     <nav>
-      <a href={`${base}/`} class="logo">羊在偷看<span class="logo-dot">・</span>你</a>
+      <a href={`${base}/`} class="logo">
+        <span class="logo-text">羊在偷看</span>
+        <img class="logo-icon" src="/logo.png" width="24" height="24" alt="OviNas" aria-hidden="true" draggable="false">
+        <span class="logo-text">你</span>
+      </a>
       <button class="hamburger" id="hamburgerBtn" aria-label="選單">
         <span class="bar"></span>
         <span class="bar"></span>
@@ -84,8 +88,9 @@ const base = '/cctv';
       font-size: 1.1rem; font-weight: 400;
       color: var(--text); text-decoration: none;
       letter-spacing: 0.15em;
+      display: inline-flex; align-items: center; gap: 0.35rem;
     }
-    .logo-dot { color: var(--accent); }
+    .logo-icon { width: 24px; height: 24px; flex-shrink: 0; }
     .logo:hover { text-decoration: none; color: var(--accent); }
 
     .hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; }
