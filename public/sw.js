@@ -5,7 +5,7 @@ var CACHE = 'sheep-cache-v1';
 var PRECACHE_URLS = [
   '/',
   '/manifest.json',
-  '/favicon.svg',
+  '/favicon.png',
   '/icon-192.png',
   '/icon-512.png',
   '/icon-96.png',
