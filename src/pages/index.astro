@@ -2,6 +2,8 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Banner from '../components/Banner.astro';
 import Announcements from '../components/Announcements.astro';
+import QuoteOfTheDay from '../components/QuoteOfTheDay.svelte';
+import VisitorCounter from '../components/VisitorCounter.svelte';
 
 const services = [
   { name: '羊監視你', desc: '即時監視影像', href: '/cctv', external: false },
@@ -41,6 +43,16 @@ const badges = [
     name: 'IT Specialist Python',
     url: 'https://www.credly.com/badges/7b8bbe2a-3bbd-4fdc-8ffc-7696c35876aa/public_url',
   },
+  {
+    img: '/certs/adobe-photoshop.png',
+    name: 'Adobe Certified Professional in Visual Design Using Adobe Photoshop',
+    url: 'https://www.credly.com/badges/4e2825dd-e2d1-4b42-922c-bdcb39fd899a/public_url',
+  },
+  {
+    img: '/certs/mos-powerpoint.png',
+    name: 'Microsoft Office Specialist: PowerPoint',
+    url: 'https://www.credly.com/badges/5b7beead-dc12-4bbd-83a2-1301db598b52/public_url',
+  },
 ];
 
 // GitHub 貢獻：build 時抓取 repo 列表（失敗則顯示連結）
@@ -57,6 +69,11 @@ const ghError = !Array.isArray(ghRepos) || ghRepos.length === 0;
   <Banner />
   <div class="main container">
     <aside class="col col-left">
+      <section class="module" aria-label="每日一句">
+        <h2 class="module-title">每日一句</h2>
+        <QuoteOfTheDay client:load />
+      </section>
+
       <section class="module services-module" aria-label="服務連結">
         <h2 class="module-title">服務連結</h2>
         <nav class="menu-list" aria-label="服務連結列表">
@@ -141,6 +158,32 @@ const ghError = !Array.isArray(ghRepos) || ghRepos.length === 0;
             請我喝咖啡
             <span aria-hidden="true">↗</span>
           </a>
+        </div>
+      </section>
+
+      <section class="module" aria-label="訪客計數器">
+        <h2 class="module-title">訪客計數器</h2>
+        <VisitorCounter client:load />
+      </section>
+
+      <section class="module" aria-label="動態 API 展示">
+        <h2 class="module-title">動態 API 展示</h2>
+        <div class="api-body">
+          <p class="api-desc">未來將整合 Google 產品 API（行事曆、地圖、Gmail 等）即時資料。</p>
+          <ul class="api-list">
+            <li class="api-item">
+              <span class="api-item-name">Google Calendar</span>
+              <span class="api-item-status">準備中</span>
+            </li>
+            <li class="api-item">
+              <span class="api-item-name">Google Maps</span>
+              <span class="api-item-status">準備中</span>
+            </li>
+            <li class="api-item">
+              <span class="api-item-name">Google Drive</span>
+              <span class="api-item-status">準備中</span>
+            </li>
+          </ul>
         </div>
       </section>
     </aside>
@@ -446,6 +489,53 @@ const ghError = !Array.isArray(ghRepos) || ghRepos.length === 0;
 
   .bmc-btn:hover {
     background: #000;
+  }
+
+  .api-body {
+    padding: 0.5rem 0;
+  }
+
+  .api-desc {
+    padding: 0.85rem 1rem;
+    font-size: 0.76rem;
+    line-height: 1.8;
+    color: var(--ink-3);
+    letter-spacing: 0.04em;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .api-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .api-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.65rem 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .api-item:last-child {
+    border-bottom: none;
+  }
+
+  .api-item-name {
+    font-size: 0.82rem;
+    letter-spacing: 0.05em;
+    color: var(--ink);
+  }
+
+  .api-item-status {
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    color: var(--ink-3);
+    border: 1px solid var(--border);
+    padding: 0.12rem 0.45rem;
+    background: var(--bg-soft);
   }
 
   .cal-square {
