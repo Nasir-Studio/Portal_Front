@@ -38,7 +38,6 @@
       <SheepLogo size={58} />
       <span class="login__brand-text">
         <span class="login__brand-name">OviNas</span>
-        <span class="login__brand-en">SHEEP PORTAL</span>
       </span>
     </div>
   </div>
@@ -229,14 +228,6 @@
     font-size: 1.55rem;
     font-weight: 600;
     letter-spacing: 0.16em;
-  }
-
-  .login__brand-en {
-    font-size: 0.66rem;
-    font-weight: 400;
-    letter-spacing: 0.42em;
-    text-transform: uppercase;
-    color: var(--ink-3);
   }
 
   /* ===== menubar（與 Nav.astro .menubar 相同） ===== */

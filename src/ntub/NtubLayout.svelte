@@ -47,7 +47,6 @@
     <SheepLogo size={58} />
     <span class="ntub-brand__text">
       <span class="ntub-brand__name">OviNas</span>
-      <span class="ntub-brand__en">SHEEP PORTAL</span>
     </span>
   </a>
 </div>
@@ -198,14 +197,6 @@
     font-size: 1.55rem;
     font-weight: 600;
     letter-spacing: 0.16em;
-  }
-
-  .ntub-brand__en {
-    font-size: 0.66rem;
-    font-weight: 400;
-    letter-spacing: 0.42em;
-    text-transform: uppercase;
-    color: var(--ink-3);
   }
 
   /* ===== menubar ===== */
