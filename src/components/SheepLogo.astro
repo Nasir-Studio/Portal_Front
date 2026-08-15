@@ -16,48 +16,47 @@ const { size = 40, class: className = '' } = Astro.props;
   role="img"
   aria-label="OviNas"
 >
-  <!-- 圓滾滾絨毛身體（三團雲，手繪重疊） -->
-  <circle cx="23" cy="45" r="9" fill="#f4f3f0" stroke="#1c1c20" stroke-width="2.2" />
-  <circle cx="41" cy="45" r="9" fill="#f4f3f0" stroke="#1c1c20" stroke-width="2.2" />
-  <circle cx="32" cy="47" r="10" fill="#f4f3f0" stroke="#1c1c20" stroke-width="2.2" />
-
-  <!-- 大圓頭（圓滾滾，略扁橢圓） -->
-  <ellipse cx="32" cy="32" rx="14" ry="13" fill="#f4f3f0" stroke="#1c1c20" stroke-width="2.4" />
-
-  <!-- 小圓耳朵（左右略不對稱） -->
-  <ellipse cx="15.5" cy="25" rx="4" ry="5" fill="#f4f3f0" stroke="#1c1c20" stroke-width="2" />
-  <ellipse cx="48.5" cy="25.5" rx="4" ry="4.8" fill="#f4f3f0" stroke="#1c1c20" stroke-width="2" />
-
-  <!-- 金色小捲角（手繪螺旋弧，左右不同） -->
+  <!-- 左角：手繪抖動弧線（較彎、較長） -->
   <path
-    d="M21 21 C 17 17, 16 12, 19 10.5 C 22 9, 24 12, 22.5 14"
-    stroke="#c9a227"
-    stroke-width="2.4"
-    stroke-linecap="round"
-    fill="none"
-  />
-  <path
-    d="M43 21 C 47 17, 48 12, 45 10.5 C 42 9, 40 12, 41.5 14"
-    stroke="#c9a227"
-    stroke-width="2.4"
-    stroke-linecap="round"
-    fill="none"
-  />
-
-  <!-- 豆豆眼 -->
-  <circle cx="27" cy="31" r="2.4" fill="#1c1c20" />
-  <circle cx="37" cy="31" r="2.4" fill="#1c1c20" />
-
-  <!-- 腮紅（暖金，圓滾滾的蘋果肌） -->
-  <circle cx="23.5" cy="36" r="2.6" fill="#c9a227" opacity="0.85" />
-  <circle cx="40.5" cy="36" r="2.6" fill="#c9a227" opacity="0.85" />
-
-  <!-- 微笑 -->
-  <path
-    d="M29 36.5 C 30.5 38.5, 33.5 38.5, 35 36.5"
+    d="M22 29 C 16 26, 9 20, 8.5 13.5 C 8.2 8.5, 13 5, 18.5 7.5"
     stroke="#1c1c20"
-    stroke-width="1.8"
+    stroke-width="3.2"
     stroke-linecap="round"
     fill="none"
   />
+
+  <!-- 右角：與左角不同（較短、較直、角度略異）→ 打破對稱 -->
+  <path
+    d="M43 28 C 50 24, 55 17, 53.5 11 C 52.5 7, 46.5 4.5, 43.5 8"
+    stroke="#1c1c20"
+    stroke-width="3.2"
+    stroke-linecap="round"
+    fill="none"
+  />
+
+  <!-- 臉：手繪略歪的橢圓（非完美正圓） -->
+  <path
+    d="M32 25 C 40 24.5, 45 30, 44.5 38 C 44 46, 38 50, 32 49.5 C 26 49, 20 45.5, 19.5 38 C 19 30.5, 24 25, 32 25 Z"
+    stroke="#1c1c20"
+    stroke-width="2.8"
+    stroke-linejoin="round"
+    fill="none"
+  />
+
+  <!-- 眼睛：不對稱（左大右小、位置錯落） -->
+  <circle cx="26.5" cy="35.5" r="2.8" fill="#1c1c20" />
+  <circle cx="38" cy="34.5" r="2.1" fill="#1c1c20" />
+
+  <!-- 口鼻：手繪短曲線（金色） -->
+  <path
+    d="M29 43.5 C 31 44.5, 33 44.5, 35 43.5"
+    stroke="#c9a227"
+    stroke-width="2.2"
+    stroke-linecap="round"
+    fill="none"
+  />
+
+  <!-- 雀斑點：不對稱（金色） -->
+  <circle cx="23" cy="41" r="1.1" fill="#c9a227" />
+  <circle cx="41" cy="40.5" r="0.8" fill="#c9a227" />
 </svg>
