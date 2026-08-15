@@ -17,12 +17,6 @@
       busy = false
     }
   }
-
-  const services = [
-    { name: '羊-短網址', desc: '網址縮短服務', href: 'https://nsir.uk', external: true },
-    { name: '羊監視你', desc: '即時監視影像', href: '/cctv/', external: false },
-    { name: '羊愛考試', desc: '線上測驗系統', href: 'https://1ztests.nsir.uk', external: true },
-  ]
 </script>
 
 <div class="login">
@@ -49,15 +43,13 @@
     </div>
   </div>
 
-  <!-- menubar：黑 2px 底線，與主站相同 -->
+  <!-- menubar：只留「回入口」 -->
   <div class="login__menubar-wrap">
     <nav class="login__menubar" aria-label="主導覽">
-      <a class="login__menu-link" href="/">首頁</a>
-      <a class="login__menu-link" href="https://nsir.uk" target="_blank" rel="noopener noreferrer">羊-短網址</a>
-      <a class="login__menu-link" href="/cctv/">羊監視你</a>
-      <a class="login__menu-link login__menu-link--active" href="/badges/" aria-current="page">羊集章</a>
-      <a class="login__menu-link" href="https://1ztests.nsir.uk" target="_blank" rel="noopener noreferrer">羊愛考試</a>
-      <a class="login__menu-link login__menu-cta" href="/reserve/">預約系統</a>
+      <a class="login__menu-link login__menu-link--back" href="/">
+        <span class="login__menu-back-arrow" aria-hidden="true">←</span>
+        回入口
+      </a>
     </nav>
   </div>
 
@@ -72,33 +64,10 @@
     </div>
   </div>
 
-  <!-- 三欄內容：與主站首頁同樣式 -->
+  <!-- 兩欄內容：登入 + 收集目標 -->
   <main class="login__main">
     <div class="login__cols">
-      <!-- 左欄：服務連結 -->
-      <aside class="login__col">
-        <section class="login__module" aria-label="服務連結">
-          <h2 class="login__module-title">服務連結</h2>
-          <nav class="login__menu-list" aria-label="服務連結列表">
-            <a class="login__menu-item" href="/">回到入口</a>
-            {#each services as s (s.href)}
-              <a
-                class="login__menu-item"
-                href={s.href}
-                target={s.external ? '_blank' : undefined}
-                rel={s.external ? 'noopener noreferrer' : undefined}>
-                <span class="login__menu-item-name">
-                  {s.name}
-                  <span class="login__menu-item-arrow" aria-hidden="true">{s.external ? '↗' : ''}</span>
-                </span>
-                <span class="login__menu-item-desc">{s.desc}</span>
-              </a>
-            {/each}
-          </nav>
-        </section>
-      </aside>
-
-      <!-- 中欄：登入卡 -->
+      <!-- 左欄：登入卡 -->
       <main class="login__col login__col--center">
         <section class="login__module login__card" aria-label="羊集章登入">
           <h2 class="login__module-title">
@@ -285,39 +254,28 @@
     min-height: 48px;
   }
 
-  .login__menu-link {
+  .login__menu-link--back {
     display: inline-flex;
     align-items: center;
+    gap: 0.45rem;
     padding: 0 1.35rem;
     height: 48px;
     font-size: 0.95rem;
     letter-spacing: 0.12em;
-    color: var(--ink-2);
+    color: var(--ink);
     border-right: 1px solid var(--border);
     text-decoration: none;
+    font-weight: 500;
     transition: background var(--t), color var(--t);
   }
 
-  .login__menu-link:hover {
+  .login__menu-link--back:hover {
     background: var(--bg-soft);
-    color: var(--ink);
   }
 
-  .login__menu-link--active {
-    color: var(--ink);
-  }
-
-  .login__menu-cta {
-    margin-left: auto;
-    border-right: none;
-    font-weight: 500;
-    background: var(--ink);
-    color: var(--white);
-  }
-
-  .login__menu-cta:hover {
-    background: #000;
-    color: var(--white);
+  .login__menu-back-arrow {
+    font-size: 1rem;
+    line-height: 1;
   }
 
   /* ===== Hero banner（複刻主站 Banner.astro） ===== */
@@ -387,7 +345,7 @@
     }
   }
 
-  /* ===== 三欄內容（與主站首頁 .main 相同） ===== */
+  /* ===== 兩欄內容 ===== */
   .login__main {
     flex: 1;
     padding: 1.4rem 0 3.5rem;
@@ -397,7 +355,7 @@
     width: min(1080px, 100% - 2.5rem);
     margin-inline: auto;
     display: grid;
-    grid-template-columns: 240px minmax(0, 1fr) 240px;
+    grid-template-columns: minmax(0, 1fr) 300px;
     gap: 1.4rem;
     align-items: start;
   }
@@ -443,52 +401,6 @@
     height: 8px;
     background: var(--ink);
     transform: rotate(45deg);
-  }
-
-  /* 左欄服務連結（與主站 .menu-item 相同） */
-  .login__menu-list {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .login__menu-item {
-    display: block;
-    padding: 0.85rem 1rem;
-    border-bottom: 1px solid var(--border);
-    text-decoration: none;
-    color: var(--ink);
-    transition: background var(--t);
-  }
-
-  .login__menu-item:last-child {
-    border-bottom: none;
-  }
-
-  .login__menu-item:hover {
-    background: var(--bg-soft);
-  }
-
-  .login__menu-item-name {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-size: 0.92rem;
-    font-weight: 500;
-    letter-spacing: 0.05em;
-    color: var(--ink);
-  }
-
-  .login__menu-item-arrow {
-    font-size: 0.8rem;
-    color: var(--ink-3);
-  }
-
-  .login__menu-item-desc {
-    display: block;
-    margin-top: 0.1rem;
-    font-size: 0.78rem;
-    color: var(--ink-3);
-    letter-spacing: 0.04em;
   }
 
   /* 中欄登入卡 */
