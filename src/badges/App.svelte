@@ -46,8 +46,8 @@
     <div class="splash__mark">
       <SheepLogo size={88} />
     </div>
-    <p class="splash__label">羊家入口網</p>
-    <p class="splash__sub">載入中…</p>
+    <p class="splash__label">羊-集章</p>
+    <p class="splash__sub">SHEEP BADGE</p>
   </div>
 {:else if !$user}
   <Login />
@@ -113,18 +113,34 @@
 
   .splash__label {
     font-family: 'Noto Serif TC', 'Songti TC', serif;
-    font-size: 1.1rem;
-    font-weight: 600;
+    font-size: 2.2rem;
+    font-weight: 700;
     letter-spacing: 0.2em;
     color: #1c1c1c;
+    margin-top: 0.2rem;
+    animation: splash-in 0.6s ease-out both;
   }
 
   .splash__sub {
-    margin-top: 0.6rem;
+    margin-top: 0.7rem;
     font-family: 'Noto Sans TC', 'PingFang TC', system-ui, sans-serif;
-    font-size: 0.78rem;
-    letter-spacing: 0.3em;
-    color: #8b8983;
+    font-size: 0.68rem;
+    font-weight: 400;
+    letter-spacing: 0.5em;
+    text-transform: uppercase;
+    color: #4c4b47;
+    animation: splash-in 0.6s ease-out 0.15s both;
+  }
+
+  @keyframes splash-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   .app-footer {
