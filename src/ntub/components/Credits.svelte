@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { programs } from '$ntub/data';
-	import { checkedCourses, toggleCourse, earnedCredits, breakdown } from '$ntub/stores/credits';
+	import { checkedCourses, toggleCourse, earnedCredits, breakdown, myDept, ALL_DEPTS } from '$ntub/stores/credits';
 	import { currentUser } from '$ntub/stores/auth';
 	import type { Program, Course } from '$ntub/types';
 	import NtubLayout from '../NtubLayout.svelte';
@@ -22,6 +22,23 @@
 		return $checkedCourses.has(courseId);
 	}
 
+	/** 依科系判定某課程是否為本系開課 */
+	function courseIsMine(course: Course): boolean {
+		const dept = $myDept;
+		if (!dept) return false;
+		return course.unit.includes(dept);
+	}
+
+	/** 本系課程總學分 */
+	function deptCredits(program: Program): number {
+		return program.courses.filter((c) => courseIsMine(c)).reduce((sum, c) => sum + c.credits, 0);
+	}
+
+	/** 外系課程總學分 */
+	function extCredits(program: Program): number {
+		return program.courses.filter((c) => !courseIsMine(c)).reduce((sum, c) => sum + c.credits, 0);
+	}
+
 	function groupedCourses(program: Program): Course[] {
 		return program.courses;
 	}
@@ -40,6 +57,24 @@
 		{/if}
 	</p>
 </div>
+
+<section class="dept-picker">
+	<h3>我的科系</h3>
+	<div class="dept-options">
+		{#each ALL_DEPTS as dept (dept)}
+			<button
+				class="dept-chip"
+				class:active={dept === $myDept}
+				onclick={() => myDept.set($myDept === dept ? '' : dept)}
+			>
+				{dept}
+			</button>
+		{/each}
+	</div>
+	{#if !$myDept}
+		<p class="picker-hint">※ 尚未設定科系。設定後可判定課程為本系或外系開設。</p>
+	{/if}
+</section>
 
 <div class="check-layout">
 	<aside class="side">
@@ -93,6 +128,19 @@
 				</div>
 			</div>
 
+			{#if $myDept}
+				<div class="dept-stats">
+					<div class="d-stat">
+						<span class="d-label">本系（{$myDept}）</span>
+						<span class="d-value">{deptCredits(selected)}<small> 學分</small></span>
+					</div>
+					<div class="d-stat">
+						<span class="d-label">外系（跨系）</span>
+						<span class="d-value">{extCredits(selected)}<small> 學分</small></span>
+					</div>
+				</div>
+			{/if}
+
 			{#if isDone}
 				<p class="done-banner">✓ 已達修業門檻！記得依簡章流程申請證明。</p>
 			{:else if selected.requirement.crossDept}
@@ -144,6 +192,11 @@
 							{#if course.group}<span class="group-mark">{course.group}</span>{/if}
 						</span>
 						<span class="row-meta">
+							{#if $myDept}
+								<span class="dept-tag" class:mine={courseIsMine(course)}>
+									{courseIsMine(course) ? '本系' : '外系'}
+								</span>
+							{/if}
 							<span class="type-chip" class:req={course.required}>
 								{course.required ? '必修' : '選修'}
 							</span>
@@ -184,6 +237,102 @@
 	.desc-link {
 		color: var(--ink);
 		text-decoration: underline;
+	}
+
+	.dept-picker {
+		background: var(--surface);
+		border: 1px solid var(--border);
+		padding: 20px 24px;
+		margin-bottom: 24px;
+	}
+
+	.dept-picker h3 {
+		font-size: 16px;
+		margin-bottom: 12px;
+		letter-spacing: 0.08em;
+	}
+
+	.dept-options {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+	}
+
+	.dept-chip {
+		padding: 6px 16px;
+		font-size: 13px;
+		font-family: var(--sans);
+		background: var(--surface);
+		border: 1px solid var(--border);
+		cursor: pointer;
+		transition: background 0.18s, border-color 0.18s;
+		color: var(--ink);
+	}
+
+	.dept-chip:hover {
+		background: var(--bg-soft);
+		border-color: var(--border-strong);
+	}
+
+	.dept-chip.active {
+		background: var(--ink);
+		border-color: var(--ink);
+		color: #fff;
+	}
+
+	.picker-hint {
+		margin-top: 12px;
+		font-size: 12px;
+		color: var(--ink-3);
+	}
+
+	.dept-stats {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 12px;
+		margin-top: 18px;
+	}
+
+	.d-stat {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+		padding: 12px 14px;
+		background: var(--surface);
+		border: 1px solid var(--border);
+	}
+
+	.d-label {
+		font-size: 12px;
+		color: var(--ink-2);
+		letter-spacing: 0.08em;
+	}
+
+	.d-value {
+		font-family: var(--serif);
+		font-size: 22px;
+		font-weight: 700;
+		color: var(--ink);
+	}
+
+	.d-value small {
+		font-size: 12px;
+		font-family: var(--sans);
+		color: var(--ink-3);
+	}
+
+	.dept-tag {
+		font-size: 11px;
+		padding: 1px 8px;
+		border: 1px solid var(--border);
+		background: var(--surface);
+		color: var(--ink-3);
+	}
+
+	.dept-tag.mine {
+		background: var(--bg-soft);
+		border-color: var(--border-strong);
+		color: var(--ink);
 	}
 
 	.check-layout {

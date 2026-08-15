@@ -10,12 +10,7 @@
 
 <NtubLayout>
 <section class="hero">
-	<p class="eyebrow">國立臺北商業大學 · 學分學程系統</p>
 	<h1 class="hero-title">學分學程<br />學分戰士</h1>
-	<p class="hero-sub">
-		翻閱每一份簡章，勾選每一門課程，<br class="br-sp" />
-		清楚掌握屬於你的修業進度。
-	</p>
 	<div class="hero-stats">
 		<div class="stat">
 			<span class="stat-num">{counts.programs}</span>
@@ -44,31 +39,16 @@
 		<span class="guide-num">二</span>
 		<div>
 			<h3>學分勾選</h3>
-			<p>勾選已修課程，即時計算學分進度。</p>
-		</div>
-	</div>
-	<div class="guide-item">
-		<span class="guide-num">三</span>
-		<div>
-			<h3>本系・外系</h3>
-			<p>設定你的科系，判斷課程是否為跨系修習。</p>
+			<p>設定科系、勾選已修課程，即時計算學分與跨系進度。</p>
 		</div>
 	</div>
 </section>
 
 <style>
 	.hero {
-		text-align: left;
 		padding: 8px 0 40px;
 		border-bottom: 1px solid var(--border);
 		margin-bottom: 28px;
-	}
-
-	.eyebrow {
-		font-size: 12px;
-		letter-spacing: 0.3em;
-		color: var(--ink-2);
-		margin-bottom: 8px;
 	}
 
 	.hero-title {
@@ -76,13 +56,6 @@
 		line-height: 1.3;
 		letter-spacing: 0.1em;
 		color: var(--ink);
-	}
-
-	.hero-sub {
-		margin-top: 8px;
-		color: var(--ink-2);
-		font-size: 14px;
-		letter-spacing: 0.08em;
 	}
 
 	.hero-stats {
@@ -118,7 +91,7 @@
 
 	.guide {
 		display: grid;
-		grid-template-columns: repeat(3, 1fr);
+		grid-template-columns: repeat(2, 1fr);
 		gap: 12px;
 	}
 
@@ -159,9 +132,6 @@
 		}
 		.hero-stats {
 			grid-template-columns: 1fr;
-		}
-		.br-sp {
-			display: none;
 		}
 	}
 </style>

@@ -8,7 +8,6 @@
     { path: `${BASE}/`, label: '首頁', en: 'Home' },
     { path: `${BASE}/brochure`, label: '簡章', en: 'Programs' },
     { path: `${BASE}/credits`, label: '學分勾選', en: 'Credits' },
-    { path: `${BASE}/dept`, label: '本系・外系', en: 'Dept' },
   ];
 
   function isActive(path: string): boolean {
