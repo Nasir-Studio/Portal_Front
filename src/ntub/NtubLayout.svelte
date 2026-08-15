@@ -5,8 +5,7 @@
   const BASE = '/ntub';
 
   const navItems = [
-    { path: `${BASE}/`, label: '首頁', en: 'Home' },
-    { path: `${BASE}/brochure`, label: '簡章', en: 'Programs' },
+    { path: `${BASE}/`, label: '簡章', en: 'Programs' },
     { path: `${BASE}/credits`, label: '學分勾選', en: 'Credits' },
   ];
 
@@ -37,7 +36,7 @@
       <span class="ntub-topbar__sep" aria-hidden="true">｜</span>
       <a href="/#news">最新消息</a>
       <span class="ntub-topbar__sep" aria-hidden="true">｜</span>
-      <a href="/ntub/" aria-current="page">NTUB 學程</a>
+      <a href="/ntub/" aria-current="page">【學分學程】NTUB學分學程查詢及預算學分</a>
     </span>
   </div>
 </div>
@@ -59,8 +58,8 @@
     <a class="ntub-menu-link" href="/">首頁</a>
     <a class="ntub-menu-link" href="https://nsir.uk" target="_blank" rel="noopener noreferrer">羊-短網址</a>
     <a class="ntub-menu-link" href="/cctv/">羊監視你</a>
-    <a class="ntub-menu-link" href="/badges/">羊集章</a>
-    <a class="ntub-menu-link ntub-menu-link--active" href="/ntub/" aria-current="page">NTUB 學程</a>
+    <a class="ntub-menu-link" href="/badges/">【雙北捷運】捷運章集戳</a>
+    <a class="ntub-menu-link ntub-menu-link--active" href="/ntub/" aria-current="page">【學分學程】NTUB學分學程查詢及預算學分</a>
     <a class="ntub-menu-link" href="https://1ztests.nsir.uk" target="_blank" rel="noopener noreferrer">羊愛考試</a>
     <a class="ntub-menu-link ntub-menu-cta" href="/reserve/">預約系統</a>
   </nav>

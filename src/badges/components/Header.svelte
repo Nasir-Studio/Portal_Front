@@ -29,7 +29,7 @@
       <span class="app-topbar__sep" aria-hidden="true">｜</span>
       <a href="#news">最新消息</a>
       <span class="app-topbar__sep" aria-hidden="true">｜</span>
-      <a href="/badges/" aria-current="page">羊集章</a>
+      <a href="/badges/" aria-current="page">【雙北捷運】捷運章集戳</a>
     </span>
   </div>
 </div>
@@ -88,7 +88,7 @@
     <a class="app-menu-link" href="/">首頁</a>
     <a class="app-menu-link" href="https://nsir.uk" target="_blank" rel="noopener noreferrer">羊-短網址</a>
     <a class="app-menu-link" href="/cctv/">羊監視你</a>
-    <a class="app-menu-link app-menu-link--active" href="/badges/" aria-current="page">羊集章</a>
+    <a class="app-menu-link app-menu-link--active" href="/badges/" aria-current="page">【雙北捷運】捷運章集戳</a>
     <a class="app-menu-link" href="https://1ztests.nsir.uk" target="_blank" rel="noopener noreferrer">羊愛考試</a>
     <a class="app-menu-link app-menu-cta" href="/reserve/">預約系統</a>
   </nav>

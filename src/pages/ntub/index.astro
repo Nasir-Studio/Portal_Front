@@ -1,10 +1,10 @@
 ---
-import Home from '../../ntub/components/Home.svelte';
+import Brochure from '../../ntub/components/Brochure.svelte';
 import '../../ntub/app.css';
 import '@fontsource-variable/space-grotesk';
 
-const title = '學分學程・學分戰士 — 國立臺北商業大學';
-const description = 'NTUB 學分學程學分系統：簡章、學分勾選、本系外系採認';
+const title = '簡章 — 學分學程學分戰士';
+const description = 'NTUB 學分學程簡章：收錄各學分學程及微學程之設置要點暨計畫書內容。';
 ---
 
 <!doctype html>
@@ -27,7 +27,7 @@ const description = 'NTUB 學分學程學分系統：簡章、學分勾選、本
   </head>
   <body>
     <div id="app">
-      <Home client:only="svelte" />
+      <Brochure client:only="svelte" />
     </div>
     <style is:global>
       body {
