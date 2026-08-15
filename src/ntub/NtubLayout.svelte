@@ -58,7 +58,6 @@
     <a class="ntub-menu-link" href="/">首頁</a>
     <a class="ntub-menu-link" href="https://nsir.uk" target="_blank" rel="noopener noreferrer">羊-短網址</a>
     <a class="ntub-menu-link" href="/cctv/">羊監視你</a>
-    <a class="ntub-menu-link" href="/badges/">羊集章</a>
     <a class="ntub-menu-link ntub-menu-link--active" href="/ntub/" aria-current="page">NTUB 學程</a>
     <a class="ntub-menu-link" href="https://1ztests.nsir.uk" target="_blank" rel="noopener noreferrer">羊愛考試</a>
     <a class="ntub-menu-link ntub-menu-cta" href="/reserve/">預約系統</a>

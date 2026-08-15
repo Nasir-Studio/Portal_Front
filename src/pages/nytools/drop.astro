@@ -24,6 +24,37 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     text-decoration: none;
   }
 
+  .tools-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 1.6rem;
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    margin-bottom: 2rem;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+  }
+
+  .tools-nav a {
+    color: var(--ink);
+    border-bottom: 1px solid var(--border-strong);
+    transition: border-color var(--t), color var(--t);
+    text-decoration: none;
+  }
+
+  .tools-nav a:hover {
+    border-color: var(--ink);
+  }
+
+  .tools-nav-sep {
+    color: var(--ink-3);
+  }
+
+  .tools-nav-current {
+    color: var(--ink-3);
+  }
+
   .page-header {
     margin-bottom: 2rem;
     animation: fadeIn 0.5s ease-out;
@@ -389,10 +420,13 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
 <BaseLayout title="NY DROP ｜ 羊家的入口">
   <div class="container">
-  <a href="/nytools" class="back-link">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6" /></svg>
-    返回 NYTools
-  </a>
+  <nav class="tools-nav" aria-label="麵包屑">
+    <a href="/">首頁</a>
+    <span class="tools-nav-sep" aria-hidden="true">/</span>
+    <a href="/nytools">NYTools</a>
+    <span class="tools-nav-sep" aria-hidden="true">/</span>
+    <span class="tools-nav-current" aria-current="page">NY DROP</span>
+  </nav>
 
   <div class="page-header">
     <h1>NY DROP</h1>

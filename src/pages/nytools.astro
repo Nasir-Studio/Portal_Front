@@ -2,7 +2,65 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<style>
+<style is:global>
+  #tools-app {
+    min-height: 60vh;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    margin-top: 2.4rem;
+    margin-bottom: 3.5rem;
+  }
+
+  .tools-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 1.6rem;
+    background: var(--bg-soft);
+    border-bottom: 1px solid var(--border);
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+  }
+
+  .tools-nav a {
+    color: var(--ink);
+    border-bottom: 1px solid var(--border-strong);
+    transition: border-color var(--t), color var(--t);
+  }
+
+  .tools-nav a:hover {
+    border-color: var(--ink);
+  }
+
+  .tools-nav-sep {
+    color: var(--ink-3);
+  }
+
+  .tools-nav-current {
+    color: var(--ink-3);
+  }
+
+  .tools-body {
+    padding: 2rem 1.6rem;
+  }
+
+  .tools-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  .tool-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 2rem 1.75rem;
+    text-decoration: none;
+    color: var(--ink);
+    transition: background var(--t), border-color var(--t);
+    animation: fadeUp 0.5s ease-out forwards;
+    opacity: 0;
+  }
+
   @keyframes fadeUp {
     from {
       opacity: 0;
@@ -14,27 +72,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     }
   }
 
-  .tools-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
-    margin-top: 1rem;
+  .tool-card:nth-child(1) {
+    animation-delay: 0.1s;
   }
-
-  .tool-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 0px;
-    padding: 2rem 1.75rem;
-    text-decoration: none;
-    color: var(--ink);
-    transition: background var(--t), border-color var(--t);
-    opacity: 0;
-    animation: fadeUp 0.5s ease-out forwards;
+  .tool-card:nth-child(2) {
+    animation-delay: 0.2s;
   }
-
-  .tool-card:nth-child(1) { animation-delay: 0.1s; }
-  .tool-card:nth-child(2) { animation-delay: 0.2s; }
 
   .tool-card:hover {
     border-color: var(--ink);
@@ -46,7 +89,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     height: 48px;
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 0px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -83,11 +125,23 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     color: var(--ink);
     background: var(--bg-soft);
     padding: 0.25rem 0.6rem;
-    border-radius: 0px;
     letter-spacing: 0.02em;
   }
 
   @media (max-width: 640px) {
+    #tools-app {
+      margin-top: 1.2rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .tools-nav {
+      padding: 0.8rem 1rem;
+    }
+
+    .tools-body {
+      padding: 1.2rem 0.9rem;
+    }
+
     .tools-grid {
       grid-template-columns: 1fr;
     }
@@ -95,31 +149,38 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 </style>
 
 <BaseLayout title="NYTools ｜ 羊家的入口">
-  <section class="container">
-    <div class="tools-grid">
-      <a href="/nytools/drop" class="tool-card">
-        <div class="icon">
-          <svg viewBox="0 0 24 24">
-            <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48" />
-          </svg>
-        </div>
-        <h3>NY DROP</h3>
-        <p>6 位數代碼配對，檔案直接從 A 電腦傳送到 B 電腦，點對點即時傳輸。</p>
-        <span class="tag">P2P Transfer</span>
-      </a>
+  <div class="tools container" id="tools-app">
+    <nav class="tools-nav" aria-label="麵包屑">
+      <a href="/">首頁</a>
+      <span class="tools-nav-sep" aria-hidden="true">/</span>
+      <span class="tools-nav-current" aria-current="page">NYTools</span>
+    </nav>
+    <div class="tools-body">
+      <div class="tools-grid">
+        <a href="/nytools/drop" class="tool-card">
+          <div class="icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48" />
+            </svg>
+          </div>
+          <h3>NY DROP</h3>
+          <p>6 位數代碼配對，檔案直接從 A 電腦傳送到 B 電腦，點對點即時傳輸。</p>
+          <span class="tag">P2P Transfer</span>
+        </a>
 
-      <a href="/nytools/screen" class="tool-card">
-        <div class="icon">
-          <svg viewBox="0 0 24 24">
-            <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
-            <line x1="8" y1="21" x2="16" y2="21" />
-            <line x1="12" y1="17" x2="12" y2="21" />
-          </svg>
-        </div>
-        <h3>NY Screen</h3>
-        <p>免安裝、免登入、免配對碼，開網頁就能投影，支援全螢幕顯示。</p>
-        <span class="tag">Screen Share</span>
-      </a>
+        <a href="/nytools/screen" class="tool-card">
+          <div class="icon">
+            <svg viewBox="0 0 24 24">
+              <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+              <line x1="8" y1="21" x2="16" y2="21" />
+              <line x1="12" y1="17" x2="12" y2="21" />
+            </svg>
+          </div>
+          <h3>NY Screen</h3>
+          <p>免安裝、免登入、免配對碼，開網頁就能投影，支援全螢幕顯示。</p>
+          <span class="tag">Screen Share</span>
+        </a>
+      </div>
     </div>
-  </section>
+  </div>
 </BaseLayout>
