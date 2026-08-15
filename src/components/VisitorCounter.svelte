@@ -1,18 +1,49 @@
 <div class="vcount">
-  <nobr>
-    <!-- hitwebcounter Code START -->
-    <a href="https://www.hitwebcounter.com/character-counter" target="_blank" rel="noopener" title="Total Characters">
-      <img src="https://www.hitwebcounter.com/counter/counter.php?page=21514902&amp;style=0001&amp;nbdigits=8&amp;type=page" alt="Total Characters" decoding="async" style="border:0;max-width:100%;height:auto;" />
-    </a>
-    <br />
-    <a href="https://www.hitwebcounter.com/" target="_blank" rel="noopener" style="font-family:Arial, Helvetica, sans-serif;font-size:10px;color:#636066;text-decoration:underline;font-weight:strong;">PageHits</a>
-    <!-- hitwebcounter Code END -->
-  </nobr>
+  <span class="vcount-label">VISITOR COUNT</span>
+  <span class="vcount-counter">
+    <img
+      src="https://www.hitwebcounter.com/counter/counter.php?page=21514902&amp;style=0001&amp;nbdigits=8&amp;type=page"
+      alt="訪客計數"
+      decoding="async"
+      width="140"
+      height="40"
+    />
+  </span>
 </div>
 
 <style>
   .vcount {
-    padding: 1.1rem 0.75rem;
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.4rem 0 0.6rem;
+  }
+
+  .vcount-label {
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  .vcount-counter {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.5rem 0.85rem;
+    line-height: 0;
+  }
+
+  .vcount-counter img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    image-rendering: auto;
   }
 </style>
+
