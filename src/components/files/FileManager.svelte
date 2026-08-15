@@ -210,8 +210,23 @@
 
   const breadcrumbs = $derived(prefix.split('/').filter(Boolean));
 
-  onMount(() => {
-    checkAuth();
+  // 跨域部署（PUBLIC_API_URL 指向另一 domain）時，瀏覽器需要該 domain 的 Access cookie。
+  // 用隱藏 iframe 觸發一次導覽式請求，讓 Cloudflare Access 完成跨域 SSO 並簽發 cookie。
+  function warmAccessCookie() {
+    if (!import.meta.env.PUBLIC_API_URL) return Promise.resolve();
+    return new Promise((resolve) => {
+      const iframe = document.createElement('iframe');
+      iframe.src = api('/api/me');
+      iframe.style.display = 'none';
+      iframe.onload = () => resolve();
+      iframe.onerror = () => resolve();
+      document.body.appendChild(iframe);
+    });
+  }
+
+  onMount(async () => {
+    await warmAccessCookie();
+    await checkAuth();
   });
 </script>
 

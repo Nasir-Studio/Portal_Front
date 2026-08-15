@@ -29,6 +29,8 @@ jobs:
 
       - name: Build Astro
         run: bun run build
+        env:
+          PUBLIC_API_URL: ${{ vars.PUBLIC_API_URL }}
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
