@@ -1,5 +1,4 @@
 <div class="vcount">
-  <span class="vcount-label">VISITOR COUNT</span>
   <span class="vcount-counter">
     <img
       src="https://www.hitwebcounter.com/counter/counter.php?page=21514902&amp;style=0001&amp;nbdigits=8&amp;type=page"
@@ -16,16 +15,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.55rem;
     padding: 0.4rem 0 0.6rem;
-  }
-
-  .vcount-label {
-    font-size: 0.68rem;
-    font-weight: 500;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--ink-3);
   }
 
   .vcount-counter {
