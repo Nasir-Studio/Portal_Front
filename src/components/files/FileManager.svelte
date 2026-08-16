@@ -3,9 +3,9 @@
 
   // 私人檔案管理（Files_System 前端）
   // 網址固定不變，所有檔案操作皆由 JS 狀態管理 + fetch 後端。
-  // API 基底：PUBLIC_API_URL 設定時指向該網域（如 https://api.nsir.uk），
-  // 未設定時同源（/files）→ 與 Portal 同域部署時 cookie 自動帶上。
-  const API_BASE = (import.meta.env.PUBLIC_API_URL || '').replace(/\/+$/, '') + '/files';
+  // API 基底：同源 /private/files，由 files-proxy Worker 轉發到 api.nsir.uk/files/*，
+  // 無 CORS / 跨域 cookie 問題，Access + FILE_SYS_PASS 雙層保護保留。
+  const API_BASE = '/private/files';
 
   let bucket = $state('');
   let prefix = $state('');
@@ -59,7 +59,7 @@
       return;
     }
     if (d.error === 'setup_required') {
-      error = '管理員尚未設定密碼，請先在 Cloudflare Dashboard 設定 ADMIN_PASSWORD。';
+      error = '管理員尚未設定密碼，請先在 Cloudflare Dashboard 設定 FILE_SYS_PASS。';
     } else {
       error = 'Email 或密碼錯誤。';
     }
@@ -210,22 +210,7 @@
 
   const breadcrumbs = $derived(prefix.split('/').filter(Boolean));
 
-  // 跨域部署（PUBLIC_API_URL 指向另一 domain）時，瀏覽器需要該 domain 的 Access cookie。
-  // 用隱藏 iframe 觸發一次導覽式請求，讓 Cloudflare Access 完成跨域 SSO 並簽發 cookie。
-  function warmAccessCookie() {
-    if (!import.meta.env.PUBLIC_API_URL) return Promise.resolve();
-    return new Promise((resolve) => {
-      const iframe = document.createElement('iframe');
-      iframe.src = api('/api/me');
-      iframe.style.display = 'none';
-      iframe.onload = () => resolve();
-      iframe.onerror = () => resolve();
-      document.body.appendChild(iframe);
-    });
-  }
-
   onMount(async () => {
-    await warmAccessCookie();
     await checkAuth();
   });
 </script>
