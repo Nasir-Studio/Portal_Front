@@ -7,9 +7,9 @@ var PRECACHE_URLS = [
   '/cctv/regions',
   '/cctv/search',
   '/cctv/manifest.webmanifest',
-  '/cctv/icon-192.png',
-  '/cctv/icon-512.png',
-  '/cctv/apple-touch-icon.png',
+  '/icon-192.png',
+  '/icon-512.png',
+  '/apple-touch-icon.png',
   '/logo.png',
   '/favicon.png'
 ];
