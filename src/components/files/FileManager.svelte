@@ -60,6 +60,9 @@
     }
     if (d.error === 'setup_required') {
       error = '管理員尚未設定密碼，請先在 Cloudflare Dashboard 設定 FILE_SYS_PASS。';
+    } else if (d.error === 'too_many_attempts') {
+      const mins = Math.ceil((d.retry_after ?? 900) / 60);
+      error = `嘗試次數過多，請 ${mins} 分鐘後再試。`;
     } else {
       error = 'Email 或密碼錯誤。';
     }
