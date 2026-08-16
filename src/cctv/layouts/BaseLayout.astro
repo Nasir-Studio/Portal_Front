@@ -11,13 +11,14 @@ const base = '/cctv';
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{title} | 羊在偷看你</title>
   <link rel="icon" href="/favicon.png" type="image/png" />
-  <link rel="manifest" href="/manifest.json" />
+  <link rel="manifest" href="/cctv/manifest.webmanifest" />
   <meta name="theme-color" content="#8b7355" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="羊在偷看你" />
-  <link rel="apple-touch-icon" href="/icon-192.png" />
-  <!-- Google tag (gtag.js) -->
+  <link rel="apple-touch-icon" href="/cctv/apple-touch-icon.png" />
+  
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y3XYZ3RKPZ"></script>
   <script is:inline>
     window.dataLayer = window.dataLayer || [];
@@ -158,6 +159,11 @@ const base = '/cctv';
 
   <script>
     (function() {
+      // PWA：註冊 /cctv service worker（放在最前，避免 loader 早退時被跳過）
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/cctv/sw.js', { updateViaCache: 'none' }).catch(function() {});
+      }
+
       var btn = document.getElementById('hamburgerBtn');
       var links = document.getElementById('navLinks');
       if (btn && links) {
@@ -211,7 +217,7 @@ const base = '/cctv';
   </script>
 
   <script is:inline>
-    // 全站背景訪客計數
+    
     var hc = new Image();
     hc.src = 'https://www.hitwebcounter.com/counter/counter.php?page=21514902&style=0001&nbdigits=8&type=page';
   </script>

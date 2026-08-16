@@ -1,0 +1,31 @@
+{
+  "name": "羊在偷看你 — 台灣即時影像",
+  "short_name": "羊CCTV",
+  "description": "彙整全台即時影像 CCTV，涵蓋國道、省道、市區道路、水利署防災、旅遊景點等公開影像，可直接加入主畫面使用。",
+  "start_url": "/cctv/",
+  "scope": "/cctv/",
+  "display": "standalone",
+  "background_color": "#f6f4f0",
+  "theme_color": "#8b7355",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/cctv/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/cctv/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/cctv/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

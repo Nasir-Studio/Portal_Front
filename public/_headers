@@ -6,3 +6,9 @@
 
 /badges/sw.js
   Content-Type: application/javascript
+
+/cctv/manifest.webmanifest
+  Content-Type: application/manifest+json
+
+/cctv/sw.js
+  Content-Type: application/javascript
