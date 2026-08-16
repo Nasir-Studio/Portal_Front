@@ -6,6 +6,8 @@
   // API 基底：PUBLIC_API_URL 設定時指向該網域（如 https://api.nsir.uk），
   // 未設定時同源（/files）→ 與 Portal 同域部署時 cookie 自動帶上。
   const API_BASE = (import.meta.env.PUBLIC_API_URL || '').replace(/\/+$/, '') + '/files';
+  // Turnstile site key：PUBLIC_TURNSTILE_SITE_KEY 設定時啟用機器人驗證
+  const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
 
   let bucket = $state('');
   let prefix = $state('');
@@ -19,6 +21,8 @@
   let lightboxName = $state('');
   let lightboxKind = $state('img');
   let lightboxSrc = $state('');
+  let turnstileToken = $state('');
+  let turnstileWidgetId = $state(undefined);
 
   const api = (path) => `${API_BASE}${path}`;
   const fileSrc = (key, opts = '') =>
@@ -44,13 +48,17 @@
 
   async function doLogin() {
     error = '';
+    if (TURNSTILE_SITE_KEY && !turnstileToken) {
+      error = '請先完成機器人驗證。';
+      return;
+    }
     const email = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value;
     const r = await fetch(api('/api/login'), {
       method: 'POST',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ email, password, turnstileToken: turnstileToken || undefined }),
     });
     const d = await r.json().catch(() => ({}));
     if (r.ok) {
@@ -63,6 +71,9 @@
     } else if (d.error === 'too_many_attempts') {
       const mins = Math.ceil((d.retry_after ?? 900) / 60);
       error = `嘗試次數過多，請 ${mins} 分鐘後再試。`;
+    } else if (d.error === 'captcha_required') {
+      error = '機器人驗證失敗，請重新驗證。';
+      turnstileToken = '';
     } else {
       error = 'Email 或密碼錯誤。';
     }
@@ -230,6 +241,13 @@
   onMount(async () => {
     await warmAccessCookie();
     await checkAuth();
+    if (TURNSTILE_SITE_KEY) {
+      const script = document.createElement('script');
+      script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
+      script.async = true;
+      script.defer = true;
+      document.head.appendChild(script);
+    }
   });
 </script>
 
@@ -242,6 +260,15 @@
       <input id="email" type="email" autocomplete="username" placeholder="hi@nasirlin.net" />
       <label for="password">密碼</label>
       <input id="password" type="password" autocomplete="current-password" />
+      {#if TURNSTILE_SITE_KEY}
+        <div
+          id="turnstile-widget"
+          class="turnstile-wrap"
+          data-sitekey={TURNSTILE_SITE_KEY}
+          data-callback={(token) => { turnstileToken = token; }}
+          data-expired-callback={() => { turnstileToken = ''; }}
+        ></div>
+      {/if}
       <button onclick={doLogin}>登入</button>
       <p class="login-error">{error}</p>
     </div>
@@ -528,6 +555,7 @@
     font-weight: 600;
   }
   .login-card button:hover { background: var(--accent-dark, #1d4ed8); }
+  .turnstile-wrap { margin-top: 14px; min-height: 65px; display: flex; justify-content: center; }
   .login-error { color: var(--danger, #dc2626); font-size: 13px; margin-top: 12px; min-height: 18px; }
   .lightbox {
     position: fixed;
