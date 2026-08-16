@@ -22,7 +22,7 @@
   let lightboxKind = $state('img');
   let lightboxSrc = $state('');
   let turnstileToken = $state('');
-  let turnstileWidgetId = $state(undefined);
+  let turnstileReady = $state(false);
 
   const api = (path) => `${API_BASE}${path}`;
   const fileSrc = (key, opts = '') =>
@@ -224,30 +224,28 @@
 
   const breadcrumbs = $derived(prefix.split('/').filter(Boolean));
 
-  // 跨域部署（PUBLIC_API_URL 指向另一 domain）時，瀏覽器需要該 domain 的 Access cookie。
-  // 用隱藏 iframe 觸發一次導覽式請求，讓 Cloudflare Access 完成跨域 SSO 並簽發 cookie。
-  function warmAccessCookie() {
-    if (!import.meta.env.PUBLIC_API_URL) return Promise.resolve();
-    return new Promise((resolve) => {
-      const iframe = document.createElement('iframe');
-      iframe.src = api('/api/me');
-      iframe.style.display = 'none';
-      iframe.onload = () => resolve();
-      iframe.onerror = () => resolve();
-      document.body.appendChild(iframe);
-    });
+  // data-callback 需為全域函式名稱字串，不能是行內箭頭函式；須在 client 端（onMount）註冊
+  function registerTurnstileCallbacks() {
+    window.fsTurnstileCallback = (token) => {
+      turnstileToken = token;
+    };
+    window.fsTurnstileExpired = () => {
+      turnstileToken = '';
+    };
   }
 
   onMount(async () => {
-    await warmAccessCookie();
     await checkAuth();
-    if (TURNSTILE_SITE_KEY) {
-      const script = document.createElement('script');
-      script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
-      script.async = true;
-      script.defer = true;
-      document.head.appendChild(script);
-    }
+    if (!TURNSTILE_SITE_KEY) return;
+    registerTurnstileCallbacks();
+    const script = document.createElement('script');
+    script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
+    script.async = true;
+    script.defer = true;
+    script.onload = () => {
+      turnstileReady = true;
+    };
+    document.head.appendChild(script);
   });
 </script>
 
@@ -262,11 +260,10 @@
       <input id="password" type="password" autocomplete="current-password" />
       {#if TURNSTILE_SITE_KEY}
         <div
-          id="turnstile-widget"
-          class="turnstile-wrap"
+          class="cf-turnstile turnstile-wrap"
           data-sitekey={TURNSTILE_SITE_KEY}
-          data-callback={(token) => { turnstileToken = token; }}
-          data-expired-callback={() => { turnstileToken = ''; }}
+          data-callback="fsTurnstileCallback"
+          data-expired-callback="fsTurnstileExpired"
         ></div>
       {/if}
       <button onclick={doLogin}>登入</button>
