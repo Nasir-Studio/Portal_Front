@@ -6,11 +6,6 @@ export interface Project {
 
 const projects: Project[] = [
   {
-    name: '【考古】AI應用規劃師',
-    desc: 'AI 應用規劃師考古題庫，收錄 338 題',
-    href: '/pastpapers/',
-  },
-  {
     name: '【雙北捷運】捷運章集戳',
     desc: '收集台北捷運與新北捷運的紀念章',
     href: '/badges/',
