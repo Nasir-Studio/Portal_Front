@@ -8,6 +8,17 @@ export interface Post {
 
 const posts: Post[] = [
   {
+    slug: 'ai-planner-past-exam-info',
+    date: '2026.08.17',
+    title: '【文章】AI應用規劃師考古資訊',
+    excerpt: '想要測驗AI應用規劃師的，輸入 hi@nasirlin.net 就可以測驗囉！',
+    content: `
+      <p>
+        想要測驗AI應用規劃師的，輸入 <a href="mailto:hi@nasirlin.net">hi@nasirlin.net</a> 就可以測驗囉！
+      </p>
+    `,
+  },
+  {
     slug: 'windows-experience-freestyle',
     date: '2026.07.26',
     title: '【文章】新找到的玩意兒：利用 Win10 重新復刻 WinXP',
