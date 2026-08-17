@@ -17,47 +17,9 @@ const posts: Post[] = [
         不小心傳錯訊息、或是傳了不該傳的內容？「IG自動訊息收回工具 （Nasir）」是一支 Chrome 擴充套件，可以批次收回 Instagram 私訊中「你所傳送」的訊息，不用一隻一隻手動刪！
       </p>
 
-      <h2>📥 程式下載</h2>
-      <p>請點選下方連結，直接下載擴充套件 ZIP 檔（下載後請先解壓縮）：</p>
+      <h2>📥 工具下載</h2>
       <p><a class="audit-dl" href="/files/IGUnsend.zip">📥 下載 IGUnsend.zip</a></p>
-      <p class="audit-note">下載說明：點擊上方連結後，瀏覽器將直接下載 .zip 壓縮檔。下載後請將其「解壓縮」，再依照下方步驟安裝至 Chrome。</p>
-
-      <h2>功能特色</h2>
-      <ul>
-        <li><strong>批次收回</strong>：一次收回聊天室中所有你傳送的訊息，不用逐則手動處理。</li>
-        <li><strong>安全間隔</strong>：每則訊息之間可設定隨機間隔（最短 2 秒起），避免被 IG 限速或觸發風控。</li>
-        <li><strong>即時進度</strong>：擴充視窗即時顯示收回進度與狀態，隨時可以一鍵停止。</li>
-        <li><strong>只處理你的訊息</strong>：只會收回你傳送的訊息，完全不會動到對方傳送的內容。</li>
-      </ul>
-
-      <h2>安裝步驟說明</h2>
-
-      <h3>步驟一：下載並解壓縮</h3>
-      <ul>
-        <li>點擊上方 <strong>下載連結</strong>，將 IGUnsend.zip 儲存至您的電腦中，並將其解壓縮成一個資料夾（例如 <code>IGUnsend</code>）。</li>
-      </ul>
-
-      <h3>步驟二：開啟 Chrome 擴充功能頁面</h3>
-      <ul>
-        <li>在 Chrome 網址列輸入 <code>chrome://extensions</code> 並按下 Enter。</li>
-        <li>開啟右上角的 <strong>「開發人員模式」</strong> (Developer mode) 開關。</li>
-      </ul>
-
-      <h3>步驟三：載入未封裝擴充功能</h3>
-      <ul>
-        <li>點擊左上角 <strong>「載入未封裝功能」</strong> (Load unpacked) 按鈕。</li>
-        <li>選擇剛才解壓縮出來的 <code>IGUnsend</code> 資料夾，即可完成安裝。</li>
-        <li>安裝完成後，瀏覽器工具列會出現 🐑 小羊圖示。</li>
-      </ul>
-
-      <h2>使用方式</h2>
-      <ul>
-        <li>先開啟 Instagram 的 <strong>私訊聊天室</strong>。</li>
-        <li>點擊工具列的小羊圖示，開啟擴充視窗。</li>
-        <li>設定每則訊息的 <strong>收回間隔</strong>（建議維持預設 3–7 秒）。</li>
-        <li>點擊 <strong>「開始收回」</strong>，擴充就會批次收回你在這個聊天室傳送的訊息。</li>
-      </ul>
-      <p class="audit-tip">提醒：收回訊息後，雙方都看不到這則訊息，也無法還原，請確定真的要收回再執行！</p>
+      <p class="audit-note">下載後請先「解壓縮」，再到 Chrome 的 <code>chrome://extensions</code> 開啟開發人員模式，點「載入未封裝功能」選取資料夾即可安裝。</p>
     `,
   },
   {
