@@ -1,7 +1,7 @@
 <script>
   import quotes from '../data/quotes';
 
-  // 以「當天日期」做種子，讓每日一句在同一天保持一致
+  
   const today = new Date();
   const seed =
     today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();

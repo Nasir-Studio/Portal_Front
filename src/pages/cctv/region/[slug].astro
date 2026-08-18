@@ -15,7 +15,7 @@ export function getStaticPaths() {
 const { regionName, regionInfo } = Astro.props;
 const camCount = regionInfo.count;
 const regionCams = cameras.filter(c => c.region === regionName);
-// 資料無 type 欄位: 依 URL 判定串流類型 (.m3u8 = HLS, 其餘為 MJPEG/圖片)
+
 const typedCams = regionCams.map(c => ({
   ...c,
   type: /\.m3u8/i.test(c.url || '') ? 'hls' : (c.type || 'img')
@@ -146,22 +146,22 @@ const totalPages = Math.ceil(regionCams.length / PAGE_SIZE);
         var cctvSvg = '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>';
         var base = '/cctv';
 
-        // ---------- 裝置偵測 ----------
-        // iOS Safari / iPadOS 不支援 multipart/x-mixed-replace MJPEG 串流,
-        // 需改用 snapshot 端點輪詢。
+        
+        
+        
         function isIOS() {
           return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
                  (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
         }
-        // 公路總局(THB) 串流網址尾端加 /snapshot 可取得單張 JPEG 快照
+        
         function isThbUrl(u) { return u.indexOf('.thb.gov.tw') !== -1; }
         var IOS = isIOS();
         var SNAP_INTERVAL = 3000;
 
-        // ---------- Media Initialization ----------
+        
         var inited = new WeakSet();
         
-        // iOS THB 快照輪詢: 建立 img 並開始 3 秒輪詢; 離開畫面時暫停
+        
         function startSnapshotPoll(img, snapBase) {
           var parent = img.parentNode;
           var tick = function() {
@@ -189,7 +189,7 @@ const totalPages = Math.ceil(regionCams.length / PAGE_SIZE);
             var type = el.dataset.type;
             
             if (type === 'hls') {
-              // HLS 串流由 HlsBudget 內部視口 observer 統一管理 (observeMedia 已註冊), 此處略過
+              
               return;
             }
             var img = el.querySelector('img');
@@ -202,14 +202,14 @@ const totalPages = Math.ceil(regionCams.length / PAGE_SIZE);
                 img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;position:absolute;inset:0';
                 el.appendChild(img);
                 if (IOS && isThbUrl(url)) {
-                  // iOS: multipart MJPEG 無法播放, 改輪詢官方 /snapshot 快照
+                  
                   startSnapshotPoll(img, url + '/snapshot');
                 } else {
                   img.onerror = function() { img.remove(); showNoSignal(el); };
                   img.src = url;
                 }
               } else if (img && img.dataset.snap && !img._timer) {
-                // 回到畫面: 恢復輪詢
+                
                 var snap = img.dataset.snap;
                 img.src = snap + '?_=' + Date.now();
                 img._timer = setInterval(function() {
@@ -218,7 +218,7 @@ const totalPages = Math.ceil(regionCams.length / PAGE_SIZE);
                 }, SNAP_INTERVAL);
               }
             } else if (img && img._timer) {
-              // 離開畫面: 暫停輪詢
+              
               stopSnapshotPoll(img);
             }
           });
@@ -227,7 +227,7 @@ const totalPages = Math.ceil(regionCams.length / PAGE_SIZE);
         function observeMedia() {
           document.querySelectorAll('#camGrid .cam-media[data-url]').forEach(function(v) {
             if (v.dataset.type === 'hls') {
-              // HLS: 交由 HlsBudget 內部視口 observer 管理 (進入自動啟動, 離開自動定格)
+              
               HlsBudget.observe(v, v.dataset.url);
             } else if (!inited.has(v)) {
               observer.observe(v);
@@ -235,7 +235,7 @@ const totalPages = Math.ceil(regionCams.length / PAGE_SIZE);
           });
         }
         
-        // ---------- Pagination ----------
+        
         var remaining = [];
         try {
           var scriptTag = document.getElementById('camDataRemaining');
@@ -281,7 +281,7 @@ const totalPages = Math.ceil(regionCams.length / PAGE_SIZE);
             html += createCardHtml(batch[i]);
           }
           
-          // Insert before the load-more button
+          
           var temp = document.createElement('div');
           temp.innerHTML = html;
           var fragment = document.createDocumentFragment();
@@ -289,13 +289,13 @@ const totalPages = Math.ceil(regionCams.length / PAGE_SIZE);
             fragment.appendChild(temp.firstChild);
           }
           
-          // Get reference node: the load-more-wrap
+          
           var loadMoreWrap = document.getElementById('loadMoreWrap');
           camGrid.insertBefore(fragment, loadMoreWrap);
           
           shownCount += batch.length;
           
-          // Observe new media elements
+          
           var newMedia = camGrid.querySelectorAll('.cam-media[data-url]');
           newMedia.forEach(function(v) {
             if (v.dataset.type === 'hls') {
@@ -305,7 +305,7 @@ const totalPages = Math.ceil(regionCams.length / PAGE_SIZE);
             }
           });
           
-          // Update info text
+          
           var total = shownCount;
           var remainingCount = remaining.length;
           if (pageInfo) {
@@ -338,7 +338,7 @@ const totalPages = Math.ceil(regionCams.length / PAGE_SIZE);
           }
         }
         
-        // Observe initial media
+        
         observeMedia();
       });
     })();

@@ -20,7 +20,7 @@
   }
 </script>
 
-<!-- 黑 topbar：與主站 Nav.astro 相同 -->
+
 <div class="app-topbar">
   <div class="app-topbar__inner">
     <span class="app-topbar__left">OviNas</span>
@@ -32,7 +32,7 @@
   </div>
 </div>
 
-<!-- 白 header：SheepLogo + OviNas -->
+
 <div class="app-header-main">
   <a class="app-brand" href="/">
     <SheepLogo size={58} />
@@ -79,7 +79,7 @@
   {/if}
 </div>
 
-<!-- menubar：黑 2px 底線 -->
+
 <div class="app-menubar-wrap">
   <nav class="app-menubar" aria-label="主導覽">
     <a class="app-menu-link" href="/">首頁</a>
@@ -89,7 +89,7 @@
     <a class="app-menu-link app-menu-cta" href="/reserve/">預約系統</a>
   </nav>
 
-  <!-- 集章進度列 -->
+  
   <div class="app-progress">
     <div class="app-progress__row">
       <span class="app-progress__label">已集章</span>
@@ -109,7 +109,7 @@
 </div>
 
 <style>
-  /* ===== 與主站 global.css 一致的設計變數 ===== */
+  
   .app-topbar,
   .app-header-main,
   .app-menubar-wrap,
@@ -130,7 +130,7 @@
     --t: 200ms var(--ease);
   }
 
-  /* ===== 黑 topbar ===== */
+  
   .app-topbar {
     background: var(--ink);
     color: rgba(255, 255, 255, 0.72);
@@ -163,7 +163,7 @@
     color: rgba(255, 255, 255, 0.3);
   }
 
-  /* ===== 白 header ===== */
+  
   .app-header-main {
     width: min(1080px, 100% - 2.5rem);
     margin-inline: auto;
@@ -199,7 +199,7 @@
     letter-spacing: 0.16em;
   }
 
-  /* ===== user menu（主站 topbar-user 風） ===== */
+  
   .app-user {
     position: relative;
     font-family: var(--font-sans);
@@ -316,7 +316,7 @@
     color: var(--ink);
   }
 
-  /* ===== menubar ===== */
+  
   .app-menubar-wrap {
     border-top: 1px solid var(--border);
     border-bottom: 2px solid var(--ink);
@@ -366,7 +366,7 @@
     color: var(--white);
   }
 
-  /* ===== 集章進度列 ===== */
+  
   .app-progress {
     width: min(1080px, 100% - 2.5rem);
     margin-inline: auto;
@@ -415,12 +415,12 @@
   }
 
   @media (max-width: 900px) {
-    /* 手機：隱藏 topbar 連結列 */
+    
     .app-topbar {
       display: none;
     }
 
-    /* 手機：隱藏 menubar 連結列（保留集章進度列） */
+    
     .app-menubar {
       display: none;
     }

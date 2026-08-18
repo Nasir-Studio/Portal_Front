@@ -1,6 +1,6 @@
 import type { Program } from '$ntub/types';
 
-/** 社群媒體行銷微學程 */
+
 export const socialMediaMarketing: Program = {
 	id: 'social-media-marketing',
 	name: '社群媒體行銷微學程',
@@ -26,9 +26,9 @@ export const socialMediaMarketing: Program = {
 		detail: '欲取得本學程證明之學生，應至少修畢 12 學分（含核心課程），進階課程應至少跨系修習一門課程，且課程名稱及內容相同之科目，不得重複計算。'
 	},
 	courses: [
-		// 核心課程
+		
 		{ id: 'sm-1', name: '設計思考', group: null, groupNote: null, category: 'core', required: true, credits: 3, hours: 3, unit: '創新設計與經營學院' },
-		// 進階課程
+		
 		{ id: 'sm-2', name: '行銷策略規劃', group: null, groupNote: null, category: 'advanced', required: false, credits: 3, hours: 3, unit: '商業設計管理系' },
 		{ id: 'sm-3', name: '數位增長', group: null, groupNote: null, category: 'advanced', required: false, credits: 3, hours: 3, unit: '商業設計管理系' },
 		{ id: 'sm-4', name: '品牌整合實務設計', group: null, groupNote: null, category: 'advanced', required: false, credits: 3, hours: 3, unit: '商業設計管理系' },

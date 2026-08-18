@@ -37,7 +37,7 @@ const {
   <link rel="dns-prefetch" href="https://api.nsir.uk" />
   <link rel="preconnect" href="https://open.er-api.com" />
 
-  <!-- Google tag (gtag.js) -->
+  
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y3XYZ3RKPZ"></script>
   <script is:inline>
     window.dataLayer = window.dataLayer || [];
@@ -59,7 +59,7 @@ const {
           if (u.role === 'admin') document.documentElement.classList.add('auth-admin');
         } catch(e) {}
       }
-      // PWA 獨立模式啟動時，管理員自動前往 /shop/admin（僅一次，避免循環）
+      
       if (!sessionStorage.getItem('pwa_admin_redirected')) {
         if (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) {
           var u2 = null;
@@ -103,7 +103,7 @@ const {
 
       var STORAGE_KEY = 'shop_currency_code';
       var RATES_KEY = 'shop_exchange_rates';
-      var RATES_TTL = 3600000; // 1 小時
+      var RATES_TTL = 3600000; 
 
       var CURRENCIES = {
         TWD: { symbol: 'NT$', label: '台幣', decimals: 0 },
@@ -247,7 +247,7 @@ const {
 
   <script is:inline>
     (function() {
-      // 網域綁定：僅允許我們的網域
+      
       var allowed = ['ovis.nsir.uk', 'lamb.nsir.uk', 'localhost', '127.0.0.1', 'nsir-studio.github.io'];
       var host = window.location.hostname;
       var ok = allowed.some(function(d) { return host === d || host.endsWith('.' + d); });
@@ -259,16 +259,16 @@ const {
         return;
       }
 
-      // 正式環境停用 console
+      
       if (host === 'ovis.nsir.uk' || host === 'lamb.nsir.uk') {
         var noop = function() {};
         ['log','warn','info','debug','dir','table','trace','group','groupCollapsed','groupEnd','time','timeEnd','profile','profileEnd'].forEach(function(m) {
           if (window.console) window.console[m] = noop;
         });
-        // 週期性覆寫以封鎖 debugger
+        
         var blockDebugger = function() {
           var start = Date.now();
-          debugger; // devtools 開啟時會在此暫停，後續程式碼無法及時執行
+          debugger; 
           var diff = Date.now() - start;
           if (diff > 5) {
             document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;min-height:100vh;font-family:sans-serif;background:#111;color:#fff;margin:0"><p>DevTools 已禁用</p></div>';
@@ -278,7 +278,7 @@ const {
         try {
           Object.defineProperty(document, 'domain', { get: function() { return 'ovis.nsir.uk'; } });
         } catch(e) {}
-        // 凍結部分全域物件以防竄改
+        
         if (Object.freeze) {
           try { Object.freeze(window.console); } catch(e) {}
         }
@@ -290,7 +290,7 @@ const {
   <script is:inline>
     (function() {
       var CACHE_PREFIX = 'shop_cache_';
-      var CACHE_TTL = 10000; // 快取 10 秒，過期即重新抓取
+      var CACHE_TTL = 10000; 
       window.__apiCache = {
         get: function(key) {
           try {
@@ -306,12 +306,12 @@ const {
             localStorage.setItem(CACHE_PREFIX + key, JSON.stringify({ data: data, ts: Date.now() }));
           } catch(e) {}
         },
-        // stale-while-revalidate：先回傳快取，背景更新
+        
         fetch: async function(url, key, options) {
           var cached = window.__apiCache.get(key || url);
-          if (cached && !cached.stale) return cached.data; // 新鮮
+          if (cached && !cached.stale) return cached.data; 
           if (cached) {
-            // 過期：重新抓取等新資料，網路失敗才退回舊快取
+            
             try {
               var res = await fetch(url, options || {});
               if (!res.ok) throw new Error();
@@ -342,7 +342,7 @@ const {
       window.dispatchEvent(new Event('shop:loaded'));
     })();
 
-    // 全站註冊 Service Worker（PWA — 無推播）
+    
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', function() {
         navigator.serviceWorker.register('/sw.js', { updateViaCache: 'none' }).catch(function(err) {
@@ -351,7 +351,7 @@ const {
       });
     }
 
-    // 全站背景訪客計數
+    
     var hc = new Image();
     hc.src = 'https://www.hitwebcounter.com/counter/counter.php?page=21514902&style=0001&nbdigits=8&type=page';
   </script>

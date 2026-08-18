@@ -25,3 +25,8 @@ bun.lockb
 
 # 獨立 repo（Badges_Front 有自己 .git）
 Badges_Front/
+
+# 隱藏 /metroexam 頁面與數據（不提交至 Git）
+src/pages/metroexam.astro
+src/metroexam/
+public/stations.json

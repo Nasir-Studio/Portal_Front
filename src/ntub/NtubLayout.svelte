@@ -27,7 +27,7 @@
   }
 </script>
 
-<!-- ===== 黑 topbar：與主站 Nav.astro 相同 ===== -->
+
 <div class="ntub-topbar">
   <div class="ntub-topbar__inner">
     <span class="ntub-topbar__left">OviNas</span>
@@ -41,7 +41,7 @@
   </div>
 </div>
 
-<!-- ===== 白 header：SheepLogo + OviNas ===== -->
+
 <div class="ntub-header-main">
   <a class="ntub-brand" href="/">
     <SheepLogo size={58} />
@@ -51,7 +51,7 @@
   </a>
 </div>
 
-<!-- ===== menubar：黑 2px 底線 ===== -->
+
 <div class="ntub-menubar-wrap">
   <nav class="ntub-menubar" aria-label="主導覽">
     <a class="ntub-menu-link" href="/">首頁</a>
@@ -63,7 +63,7 @@
   </nav>
 </div>
 
-<!-- ===== NTUB 子導覽 ===== -->
+
 <header class="ntub-site-header">
   <div class="ntub-header-inner">
     <button class="ntub-brand" onclick={() => (window.location.href = `${BASE}/`)} aria-label="回首頁">
@@ -107,7 +107,7 @@
 </footer>
 
 <style>
-  /* ===== 與主站 global.css 一致的設計變數 ===== */
+  
   .ntub-topbar,
   .ntub-header-main,
   .ntub-menubar-wrap,
@@ -130,7 +130,7 @@
     --t: 200ms var(--ease);
   }
 
-  /* ===== 黑 topbar ===== */
+  
   .ntub-topbar {
     background: var(--ink);
     color: rgba(255, 255, 255, 0.72);
@@ -163,7 +163,7 @@
     color: rgba(255, 255, 255, 0.3);
   }
 
-  /* ===== 白 header ===== */
+  
   .ntub-header-main {
     width: min(1080px, 100% - 2.5rem);
     margin-inline: auto;
@@ -199,7 +199,7 @@
     letter-spacing: 0.16em;
   }
 
-  /* ===== menubar ===== */
+  
   .ntub-menubar-wrap {
     border-top: 1px solid var(--border);
     border-bottom: 2px solid var(--ink);
@@ -249,7 +249,7 @@
     color: var(--white);
   }
 
-  /* ===== NTUB 子導覽（sticky） ===== */
+  
   .ntub-site-header {
     position: sticky;
     top: 0;

@@ -1,6 +1,6 @@
 import type { Program } from '$ntub/types';
 
-/** 數據分析與視覺化微學程 */
+
 export const dataAnalysisVisualization: Program = {
 	id: 'data-analysis-visualization',
 	name: '數據分析與視覺化微學程',
@@ -25,28 +25,28 @@ export const dataAnalysisVisualization: Program = {
 		detail: '欲取得本學程證明之學生，應至少修畢 8 學分。課程名稱及內容相同之科目，不得重複修習。'
 	},
 	courses: [
-		// 必修（資料處理/Python 等，三擇一）
+		
 		{ id: 'da-1', name: '資料處理 / 數位化資料處理', group: '資料處理必修', groupNote: '必修：三類課程擇一（最少 3 學分）', category: null, required: true, credits: 3, hours: 3, unit: '本校各系' },
 		{ id: 'da-2', name: '商業套裝軟體 / 商業軟體應用', group: '資料處理必修', groupNote: '必修：三類課程擇一（最少 3 學分）', category: null, required: true, credits: 3, hours: 3, unit: '本校各系' },
 		{ id: 'da-3', name: 'Python 程式設計（內容需為 Python 或 R 語言或 excel 應用或統計軟體）', group: '資料處理必修', groupNote: '必修：三類課程擇一（最少 3 學分）', category: null, required: true, credits: 3, hours: 3, unit: '本校各系' },
-		// 選修（資料庫類，最少 2 學分）
+		
 		{ id: 'da-4', name: '資料庫基礎應用', group: '資料庫類', groupNote: '選修：最少 2 學分', category: null, required: false, credits: 2, hours: 2, unit: '本校各系' },
 		{ id: 'da-5', name: '資料庫管理', group: '資料庫類', groupNote: '選修：最少 2 學分', category: null, required: false, credits: 2, hours: 2, unit: '本校各系' },
 		{ id: 'da-6', name: '資料庫管理系統實作', group: '資料庫類', groupNote: '選修：最少 2 學分', category: null, required: false, credits: 2, hours: 2, unit: '本校各系' },
 		{ id: 'da-7', name: '資料庫管理系統', group: '資料庫類', groupNote: '選修：最少 2 學分', category: null, required: false, credits: 2, hours: 2, unit: '本校各系' },
 		{ id: 'da-8', name: '資料庫概論', group: '資料庫類', groupNote: '選修：最少 2 學分', category: null, required: false, credits: 2, hours: 2, unit: '本校各系' },
 		{ id: 'da-9', name: '高等資料庫', group: '資料庫類', groupNote: '選修：最少 2 學分', category: null, required: false, credits: 2, hours: 2, unit: '本校各系' },
-		// 社群大數據分析（最少 3 學分）
+		
 		{ id: 'da-10', name: '社群大數據分析', group: null, groupNote: null, category: null, required: false, credits: 3, hours: 3, unit: '本校各系' },
-		// 商業數據分析類（最少 3 學分）
+		
 		{ id: 'da-11', name: '商業數據分析', group: '商業數據分析類', groupNote: '選修：最少 3 學分', category: null, required: false, credits: 3, hours: 3, unit: '資訊管理系 / 會計資訊系 / 財務金融系 / 資訊與決策科學研究所' },
 		{ id: 'da-12', name: '資料探勘與大數據分析', group: '商業數據分析類', groupNote: '選修：最少 3 學分', category: null, required: false, credits: 3, hours: 3, unit: '資訊管理系 / 會計資訊系 / 財務金融系 / 資訊與決策科學研究所' },
-		// 資料探勘類（最少 3 學分）
+		
 		{ id: 'da-13', name: '資料探勘', group: '資料探勘類', groupNote: '選修：最少 3 學分', category: null, required: false, credits: 3, hours: 3, unit: '資訊管理系 / 會計資訊系 / 創意科技與產品設計系' },
 		{ id: 'da-14', name: '大數據分析與應用', group: '資料探勘類', groupNote: '選修：最少 3 學分', category: null, required: false, credits: 3, hours: 3, unit: '資訊管理系 / 會計資訊系 / 創意科技與產品設計系' },
 		{ id: 'da-15', name: '資產管理大數據應用', group: '資料探勘類', groupNote: '選修：最少 3 學分', category: null, required: false, credits: 3, hours: 3, unit: '資訊管理系 / 會計資訊系 / 創意科技與產品設計系' },
 		{ id: 'da-16', name: '資料可視化', group: '資料探勘類', groupNote: '選修：最少 3 學分', category: null, required: false, credits: 3, hours: 3, unit: '資訊管理系 / 會計資訊系 / 創意科技與產品設計系' },
-		// 視覺化類（最少 3 學分）
+		
 		{ id: 'da-17', name: '視覺化資料分析', group: '視覺化類', groupNote: '選修：最少 3 學分', category: null, required: false, credits: 3, hours: 3, unit: '資訊管理系 / 會計資訊系' },
 		{ id: 'da-18', name: '資訊視覺化方法', group: '視覺化類', groupNote: '選修：最少 3 學分', category: null, required: false, credits: 3, hours: 3, unit: '資訊管理系 / 會計資訊系' },
 		{ id: 'da-19', name: '資訊視覺化設計', group: '視覺化類', groupNote: '選修：最少 3 學分', category: null, required: false, credits: 3, hours: 3, unit: '資訊管理系 / 會計資訊系' },

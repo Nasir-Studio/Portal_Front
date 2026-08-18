@@ -1,6 +1,6 @@
 import type { Program } from '$ntub/types';
 
-/** 創新與創業管理學分學程 */
+
 export const innovationEntrepreneurship: Program = {
 	id: 'innovation-entrepreneurship',
 	name: '創新與創業管理學分學程',

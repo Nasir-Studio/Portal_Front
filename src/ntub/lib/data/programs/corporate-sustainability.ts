@@ -1,6 +1,6 @@
 import type { Program } from '$ntub/types';
 
-/** 企業永續經營管理學分學程 */
+
 export const corporateSustainability: Program = {
 	id: 'corporate-sustainability',
 	name: '企業永續經營管理學分學程',

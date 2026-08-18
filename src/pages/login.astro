@@ -134,7 +134,17 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   }
 
   async function redirectByRole(role: 'admin' | 'member'): Promise<void> {
-    window.location.href = role === 'admin' ? '/admin/' : '/reserve/';
+    if (role === 'admin') {
+      window.location.href = '/admin/';
+      return;
+    }
+    const params = new URLSearchParams(window.location.search);
+    const redirect = params.get('redirect');
+    if (redirect && redirect.startsWith('/')) {
+      window.location.href = redirect;
+    } else {
+      window.location.href = '/vip/';
+    }
   }
 
   form.addEventListener('submit', async (event) => {
@@ -166,7 +176,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     }
   });
 
-  // 已登入 → 直接跳轉
   if (currentUser() !== null) {
     const user = currentUser();
     if (user !== null) {

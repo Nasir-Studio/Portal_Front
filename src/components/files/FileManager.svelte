@@ -1,12 +1,12 @@
 <script>
   import { onMount } from 'svelte';
 
-  // 私人檔案管理（Files_System 前端）
-  // 網址固定不變，所有檔案操作皆由 JS 狀態管理 + fetch 後端。
-  // API 基底：PUBLIC_API_URL 設定時指向該網域（如 https://api.nsir.uk），
-  // 未設定時同源（/files）→ 與 Portal 同域部署時 cookie 自動帶上。
+  
+  
+  
+  
   const API_BASE = (import.meta.env.PUBLIC_API_URL || '').replace(/\/+$/, '') + '/files';
-  // Turnstile site key：PUBLIC_TURNSTILE_SITE_KEY 設定時啟用機器人驗證
+  
   const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
 
   let bucket = $state('');
@@ -224,7 +224,7 @@
 
   const breadcrumbs = $derived(prefix.split('/').filter(Boolean));
 
-  // data-callback 需為全域函式名稱字串，不能是行內箭頭函式；須在 client 端（onMount）註冊
+  
   function registerTurnstileCallbacks() {
     window.fsTurnstileCallback = (token) => {
       turnstileToken = token;

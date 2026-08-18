@@ -1,11 +1,7 @@
 ---
 ---
-<!--
-  小羊農場 Header — SheepHome 樣式
-  保留：公告、購物車、貨幣切換、會員下拉（登入/帳號/管理後台/登出）、行動選單
-  移除：推播通知鈴鐺
-  導覽：只留「回首頁」與「回OviNas」
--->
+
+
 
 <header class="header">
   <div id="announcement-banner" class="announcement-bar">
@@ -114,7 +110,7 @@
 </header>
 
 <script is:inline>
-  // XSS 防護：跳脫使用者資料中的 HTML
+  
   window.escHtml = function(s) {
     if (!s) return '';
     return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
@@ -181,7 +177,7 @@
       } catch(e) {}
     }
 
-    // 管理後台連結
+    
     var adminLink = document.getElementById('admin-link');
     if (adminLink) {
       adminLink.addEventListener('click', function(e) {
@@ -303,7 +299,7 @@
     background: var(--c-bg);
   }
 
-  /* 公告列 */
+  
   .announcement-bar {
     background: var(--c-bg-dark);
     color: var(--c-text-inverse);
@@ -345,7 +341,7 @@
     .announcement-text { font-size: var(--text-xs); }
   }
 
-  /* SheepHome 風格 topbar */
+  
   .topbar {
     background: var(--c-bg-dark);
     color: rgba(255, 255, 255, 0.72);
@@ -362,7 +358,7 @@
   .topbar a:hover { color: #fff; }
   .topbar-sep { margin: 0 0.5rem; color: rgba(255,255,255,0.3); }
 
-  /* header-main：品牌 + 動作區 */
+  
   .header-main {
     display: flex;
     align-items: center;
@@ -392,7 +388,7 @@
     color: var(--c-text-light);
   }
 
-  /* menubar */
+  
   .menubar-wrap {
     border-top: 1px solid var(--c-border);
     border-bottom: 2px solid var(--c-bg-dark);
@@ -428,7 +424,7 @@
   }
   .menu-cta:hover { background: #000; color: #fff; }
 
-  /* 動作區 */
+  
   .header-actions {
     display: flex;
     align-items: center;
@@ -602,7 +598,7 @@
     color: var(--c-text);
   }
 
-  /* 行動選單 */
+  
   .mobile-nav {
     display: none;
     flex-direction: column;

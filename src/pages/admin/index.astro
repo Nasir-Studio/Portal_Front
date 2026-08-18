@@ -3,13 +3,11 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout title="管理後台 — OviNas">
-  <div class="container">
+  <div class="container" id="page-shell" hidden>
     <h1 class="page-title">管理後台</h1>
     <p class="page-sub">VIP 問題專區管理</p>
 
-    <div id="admin-app">
-      <p class="slot-empty">檢查權限中…</p>
-    </div>
+    <div id="admin-app"></div>
   </div>
 </BaseLayout>
 
@@ -575,8 +573,13 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
 <script>
   import { api, ApiError } from '../../scripts/api';
-  import { currentUser, isAdmin, logout } from '../../scripts/auth';
+  import { currentUser, isAdmin, logout, requireAdmin } from '../../scripts/auth';
   import { connectTicketSocket } from '../../scripts/ticket-socket';
+
+  // 非 admin 立即 redirect，不顯示任何內容
+  requireAdmin('/admin/');
+  const shell = document.getElementById('page-shell');
+  if (shell) shell.hidden = false;
 
   type TicketSummary = {
     id: number;
@@ -649,28 +652,9 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     return el;
   }
 
-  function renderForbidden(): void {
-    const user = currentUser();
-    const wrap = document.createElement('div');
-    wrap.className = 'forbidden';
-    const code = document.createElement('div');
-    code.className = 'forbidden-code';
-    code.textContent = '403';
-    const msg = document.createElement('p');
-    msg.className = 'forbidden-msg';
-    msg.textContent = user === null ? '請先登入管理員帳號' : '此頁面僅限管理員存取';
-    const btn = document.createElement('a');
-    btn.className = 'btn';
-    btn.textContent = '前往登入';
-    btn.href = '/login/';
-    wrap.append(code, msg, btn);
-    app.replaceChildren(wrap);
-  }
-
-  if (!isAdmin()) {
-    renderForbidden();
-  } else {
-    const user = currentUser();
+  // requireAdmin() 在頂部已確保是 admin，直接進入 admin UI
+  {
+    const user = currentUser()!;
     const wrap = document.createElement('div');
     wrap.className = 'view-list';
 
@@ -1338,8 +1322,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
     void loadTickets();
 
-    // 即時同步：會員回覆/新工單/狀態變更/刪除時自動重抓目前 view
-    // 去抖 400ms：短時間內多個事件合併成一次重抓，避免連續回覆時頻繁重抓
+    
+    
     let refreshTimer: ReturnType<typeof setTimeout> | null = null;
     const refreshView = (): void => {
       if (refreshTimer !== null) clearTimeout(refreshTimer);

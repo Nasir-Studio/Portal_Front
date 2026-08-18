@@ -151,9 +151,9 @@ const base = '/cctv';
       function renderCam(c) {
         var city = c.city || c.region || '';
         var media;
-        // 資料無 type 欄位: 依 URL 判定 (.m3u8 = HLS)
+        
         if (c.type === 'hls' || /\.m3u8/i.test(c.url || '')) {
-          // HLS: 交由 HlsBudget 建立 video 並管理 (視口門控 + 預算上限 + 定格牆)
+          
           media = '<div class="cam-media" data-url="' + escHtml(c.url || '') + '" data-type="hls"></div>';
         } else {
           media = '<img class="cam-img" data-src="' + escHtml(c.url || '') + '" alt="" loading="lazy" />';
@@ -207,7 +207,7 @@ const base = '/cctv';
             html += '<div class="no-result">顯示前 100 筆（共 ' + filtered.length + ' 筆）</div>';
           }
 
-          // 重渲前先釋放舊的 HLS 串流 (避免 worker/解碼器洩漏)
+          
           HlsBudget.clearAll();
           results.innerHTML = html;
           initSearchMedia();
@@ -223,7 +223,7 @@ const base = '/cctv';
       loadCameras();
       input.focus();
 
-      // iOS Safari / iPadOS 不支援 multipart/x-mixed-replace MJPEG
+      
       function isIOS() {
         return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
                (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
@@ -236,7 +236,7 @@ const base = '/cctv';
           var src = img.dataset.src || '';
           var parent = img.parentNode;
           if (searchIOS && isThbUrl(src)) {
-            // iOS: MJPEG 無法播放, 改輪詢官方 /snapshot 快照
+            
             var snapBase = src + '/snapshot';
             var tick = function() {
               if (!img.isConnected) { clearInterval(img._timer); return; }
@@ -251,7 +251,7 @@ const base = '/cctv';
           }
         });
 
-        // HLS: 交由 HlsBudget 建立 video 並以視口 observer 管理 (進入自動啟動, 離開自動定格)
+        
         document.querySelectorAll('#searchResults .cam-media[data-type="hls"]').forEach(function(box) {
           HlsBudget.observe(box, box.dataset.url);
         });

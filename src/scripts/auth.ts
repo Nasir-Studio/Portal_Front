@@ -18,7 +18,7 @@ export async function logout(): Promise<void> {
   try {
     await api<void>('/auth/logout', { method: 'POST', auth: true });
   } catch {
-    // 即使伺服器失敗也要清除本機 session
+    
   }
   clearSession();
 }
@@ -44,4 +44,26 @@ export function isLoggedIn(): boolean {
 
 export function isAdmin(): boolean {
   return getStoredUser()?.role === 'admin';
+}
+
+/**
+ * 如果尚未登入，立即 redirect 到登入頁（帶 redirect 參數）。
+ * 呼叫後若未登入，函式會執行 window.location.replace 並拋出例外中斷後續程式。
+ */
+export function requireAuth(currentPath?: string): void {
+  if (getStoredUser() !== null) return;
+  const redirect = currentPath ?? window.location.pathname;
+  window.location.replace(`/login/?redirect=${encodeURIComponent(redirect)}`);
+  throw new Error('unauthenticated');
+}
+
+/**
+ * 如果尚未登入或非 admin，立即 redirect 到登入頁。
+ */
+export function requireAdmin(currentPath?: string): void {
+  const user = getStoredUser();
+  if (user !== null && user.role === 'admin') return;
+  const redirect = currentPath ?? window.location.pathname;
+  window.location.replace(`/login/?redirect=${encodeURIComponent(redirect)}`);
+  throw new Error('unauthorized');
 }

@@ -179,7 +179,7 @@ const base = '/cctv';
       var retryTimer = null;
       var safetyTimer = null;
 
-      // 已渲染卡片: id -> { el, dist, cam }
+      
       var cardEls = {};
 
       function isIOS() {
@@ -224,9 +224,9 @@ const base = '/cctv';
         return d < 1000 ? Math.round(d) + 'm' : (d/1000).toFixed(1) + 'km';
       }
 
-      // HLS 串流統一由 HlsBudget 管理 (視口門控 + 預算上限 9/4 + LRU 逐出 + 定格牆)
+      
 
-      // 停止卡片內的 iOS 快照輪詢
+      
       function stopSnapPollForCard(cardEl) {
         var img = cardEl.querySelector('img.cam-snap');
         if (img && img._timer) { clearInterval(img._timer); img._timer = null; }
@@ -239,7 +239,7 @@ const base = '/cctv';
         var isHls = cam.type === 'hls' || (url && url.indexOf('.m3u8') !== -1);
 
         if (isHls) {
-          // HlsBudget 內部會建立 video 並以視口 observer 決定何時啟動串流
+          
           HlsBudget.observe(mediaBox, url);
         } else {
           var img = document.createElement('img');
@@ -248,7 +248,7 @@ const base = '/cctv';
           img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;position:absolute;inset:0';
           mediaBox.appendChild(img);
           if (IOS && isThbUrl(url)) {
-            // iOS: multipart MJPEG 無法播放, 改輪詢官方 /snapshot 快照
+            
             img.className = 'cam-snap';
             var snapBase = url + '/snapshot';
             var tick = function() {
@@ -286,7 +286,7 @@ const base = '/cctv';
         return div;
       }
 
-      // 原地更新距離, 不重建卡片(保留 HLS 串流)
+      
       function updateDistInPlace(cam) {
         var card = cardEls[String(cam.id)];
         if (!card) return;
@@ -315,12 +315,12 @@ const base = '/cctv';
 
         nearbyCount.textContent = nearby.length;
 
-        // 1) 原地更新既有卡片的距離(不重渲染, 不中斷串流)
+        
         nearby.forEach(function(cam) {
           updateDistInPlace(cam);
         });
 
-        // 2) 接近提醒: 只針對新進入範圍的攝影機
+        
         nearby.forEach(function(cam) {
           var key = String(cam.id);
           if (!lastNotified[key]) {
@@ -329,7 +329,7 @@ const base = '/cctv';
           }
         });
 
-        // 3) 差集渲染: 新增進入範圍的卡片, 移除離開範圍的卡片
+        
         var nearbyIds = {};
         nearby.forEach(function(cam) { nearbyIds[String(cam.id)] = true; });
 
@@ -349,10 +349,10 @@ const base = '/cctv';
         var added = 0;
         nearby.forEach(function(cam) {
           if (cardEls[String(cam.id)]) return;
-          if (added >= 100) return; // 上限 100 張卡片
+          if (added >= 100) return; 
           var card = createCard(cam);
           cardEls[String(cam.id)] = { el: card, dist: cam.dist };
-          // 依距離排序插入
+          
           var insertBefore = null;
           var els = nearbyList.querySelectorAll('.cam-card');
           for (var i = 0; i < els.length; i++) {
@@ -363,7 +363,7 @@ const base = '/cctv';
           added++;
         });
 
-        // 更新 "其他 N 台" 提示
+        
         var moreNote = nearbyList.querySelector('.cam-more-note');
         if (nearby.length > 100) {
           if (!moreNote) {
@@ -377,7 +377,7 @@ const base = '/cctv';
         }
       }
 
-      // ---------- 定位: watchPosition + 錯誤恢復 + 定期後備 ----------
+      
       function setStatus(cls, text) {
         gpsDot.className = 'gps-dot ' + cls;
         gpsText.textContent = text;
@@ -392,7 +392,7 @@ const base = '/cctv';
 
       function handlePositionError(err) {
         setStatus('error', err.code === 1 ? '請允許位置權限' : '取得失敗，重試中...');
-        // 錯誤後自動重試, 避免 watchPosition 靜默停止
+        
         scheduleRetry();
       }
 
@@ -408,7 +408,7 @@ const base = '/cctv';
       }
 
       function startSafetyFallback() {
-        // 每 20 秒檢查: 若最後一次定位超過 30 秒沒更新, 主動抓一次
+        
         if (safetyTimer) clearInterval(safetyTimer);
         safetyTimer = setInterval(function() {
           if (currentPos && Date.now() - lastFixTime > 30000) {
@@ -438,7 +438,7 @@ const base = '/cctv';
         startSafetyFallback();
       }
 
-      // 載入全部攝影機資料 (cameras_thumb.json)
+      
       function loadAllCameras() {
         fetch(BASE + '/cameras_thumb.json')
           .then(function(r) { return r.json(); })
@@ -452,7 +452,7 @@ const base = '/cctv';
           });
       }
 
-      // 分頁回到前景時, 若定位停滯則重新啟動 watch
+      
       document.addEventListener('visibilitychange', function() {
         if (document.visibilityState === 'visible' && currentPos) {
           if (Date.now() - lastFixTime > 30000) {

@@ -3,7 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout title="問題專區 — OviNas">
-  <div class="container">
+  <div class="container" id="page-shell" hidden>
     <h1 class="page-title">問題專區</h1>
     <p class="page-sub">提出問題或回報狀況，我們會儘快回覆</p>
 
@@ -445,8 +445,13 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
 <script>
   import { api, ApiError } from '../../scripts/api';
-  import { currentUser } from '../../scripts/auth';
+  import { currentUser, requireAuth } from '../../scripts/auth';
   import { connectTicketSocket } from '../../scripts/ticket-socket';
+
+  // 未登入立即跳走，不顯示任何頁面內容
+  requireAuth('/tickets/');
+  const shell = document.getElementById('page-shell');
+  if (shell) shell.hidden = false;
 
   type TicketSummary = {
     id: number;
@@ -517,13 +522,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     return el;
   }
 
-  function requireLogin(): void {
-    if (user !== null) return;
-    if (viewList !== null) {
-      viewList.innerHTML =
-        '<div class="module"><div class="slot-empty">請先登入後使用問題專區 — <a class="back-link" href="/login/">前往登入</a></div></div>';
-    }
-  }
+  // requireLogin 已由 requireAuth() 在 script 頂部統一處理
 
   function showView(name: 'list' | 'detail'): void {
     viewName = name;
@@ -659,7 +658,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     const actions = document.createElement('div');
     actions.className = 'detail-actions';
 
-    // 回覆表單
+    
     const replyForm = document.createElement('form');
     replyForm.className = 'reply-form';
     const replyTextarea = document.createElement('textarea');
@@ -696,7 +695,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     });
     actions.append(replyForm);
 
-    // 圖片上傳（選完自動上傳，一次最多 10 張、單檔 ≤10MB）
+    
     const uploadRow = document.createElement('div');
     uploadRow.className = 'upload-row';
     const fileInput = document.createElement('input');
@@ -756,7 +755,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     detailCard.replaceChildren(head, body, images, replies, actions);
   }
 
-  // 新工單表單
+  
   newTicketBtn?.addEventListener('click', () => {
     if (newTicketWrap === null) return;
     newTicketWrap.hidden = !newTicketWrap.hidden;
@@ -833,7 +832,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     }
   });
 
-  // back 鍵處理 query param
+  
   window.addEventListener('popstate', () => {
     const params = new URLSearchParams(window.location.search);
     const id = params.get('id');
@@ -847,20 +846,19 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     }
   });
 
-  // 初始化
+  
   const params = new URLSearchParams(window.location.search);
   const id = params.get('id');
-  if (user === null) {
-    requireLogin();
-  } else if (id !== null && Number.isInteger(Number(id)) && Number(id) > 0) {
+  // user 一定存在（requireAuth() 在頂部已保證）
+  if (id !== null && Number.isInteger(Number(id)) && Number(id) > 0) {
     void openDetail(Number(id));
   } else {
     showView('list');
     void loadList();
   }
 
-  // 即時同步：其他端（管理員或會員）回覆/改狀態/刪除時自動重抓
-  // 去抖 400ms：短時間內多個事件（例如管理員連回覆數次）合併成一次重抓
+  
+  
   if (user !== null) {
     let refreshTimer: ReturnType<typeof setTimeout> | null = null;
     const refreshView = (): void => {

@@ -110,7 +110,7 @@ const base = '/cctv';
             var isThb = url.indexOf('.thb.gov.tw') !== -1;
 
             if (isYt) {
-              // YouTube 直播: 直接嵌入官方播放器
+              
               var ytId = (url.match(/\/vi\/([^/]+)\//) || [])[1] || '';
               if (!ytId) { showNoSignal(camPreview); }
               else {
@@ -144,7 +144,7 @@ const base = '/cctv';
                   if (data.fatal) {
                     hlsRetries++;
                     if (hlsRetries <= MAX_HLS_RETRIES) {
-                      // Retry with a short delay
+                      
                       setTimeout(function() {
                         try { hls.startLoad(); } catch(e) {}
                       }, 2000);
@@ -160,7 +160,7 @@ const base = '/cctv';
                 showNoSignal(camPreview);
               }
             } else if (IOS && isThb) {
-              // iOS: multipart MJPEG 無法播放, 改輪詢官方 /snapshot 快照
+              
               var snapImg = document.createElement('img');
               snapImg.alt = cam.name || '';
               snapImg.style.cssText = 'width:100%;height:100%;object-fit:contain;display:block;background:#1a1a1a';
@@ -177,8 +177,8 @@ const base = '/cctv';
               var liveImg = document.createElement('img');
               liveImg.alt = cam.name || '';
               liveImg.style.cssText = 'width:100%;height:100%;object-fit:contain;display:block;background:#1a1a1a';
-              // 桌面/Android: MJPEG 由瀏覽器原生播放 (multipart/x-mixed-replace)。
-              // iOS 上的其他 MJPEG 來源無快照端點, 顯示單一影格或 NO SIGNAL。
+              
+              
               liveImg.onerror = function() { liveImg.remove(); showNoSignal(camPreview); };
               liveImg.src = url;
               camPreview.appendChild(liveImg);

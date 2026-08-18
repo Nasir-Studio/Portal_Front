@@ -420,7 +420,7 @@ const API_URL = import.meta.env.PUBLIC_API_URL || 'https://api.nsir.uk';
 
     function compressImage(file) {
       return new Promise(function(resolve, reject) {
-        // 小檔案（200KB 以下）跳過壓縮
+        
         if (file.size < 200 * 1024) {
           resolve({ blob: file, name: file.name });
           return;
@@ -506,7 +506,7 @@ const API_URL = import.meta.env.PUBLIC_API_URL || 'https://api.nsir.uk';
       }
     });
 
-    // "免費" button: set sale_price to 0
+    
     document.getElementById('btn-free').addEventListener('click', function() {
       document.getElementById('form-sale-price').value = '0';
     });

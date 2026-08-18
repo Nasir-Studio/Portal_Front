@@ -19,7 +19,7 @@ const totalRegions = [...new Set(cameras.filter(c => c.region).map(c => c.region
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
-  <!-- is:inline 保留 classic script 順序: leaflet 先載入, markercluster 才能用全域 L -->
+  
   <script is:inline src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script is:inline src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
 
@@ -70,7 +70,7 @@ const totalRegions = [...new Set(cameras.filter(c => c.region).map(c => c.region
         return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
       }
 
-      // Fetch camera data from JSON file (not inlined - too large)
+      
       fetch(base + '/cameras_thumb.json')
         .then(function(r) { return r.json(); })
         .then(function(cameras) {

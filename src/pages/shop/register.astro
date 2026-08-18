@@ -3,6 +3,7 @@ import BaseLayout from '../../shop/layouts/BaseLayout.astro';
 import Header from '../../shop/components/Header.astro';
 import Footer from '../../shop/components/Footer.astro';
 const API_URL = import.meta.env.PUBLIC_API_URL || 'https://api.nsir.uk';
+const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
 ---
 
 <BaseLayout title="註冊 — 小羊農場">
@@ -34,6 +35,8 @@ const API_URL = import.meta.env.PUBLIC_API_URL || 'https://api.nsir.uk';
               <input type="password" class="form-input" name="confirm_password" required placeholder="再次輸入密碼" minlength="6" autocomplete="new-password" />
             </div>
 
+            <div class="form-group turnstile-wrap" id="register-turnstile" data-sitekey={TURNSTILE_SITE_KEY} style="display:none"></div>
+
             <div id="register-error" class="error-msg" style="display:none"></div>
 
             <button type="submit" class="btn btn-primary btn-block btn-lg" id="register-submit">
@@ -54,9 +57,33 @@ const API_URL = import.meta.env.PUBLIC_API_URL || 'https://api.nsir.uk';
 
 <script is:inline>
   var API_URL = 'https://api.nsir.uk';
+  var turnstileToken = '';
+
+  window.fsRegisterTurnstileCallback = function(token) {
+    turnstileToken = token;
+    try {
+      document.getElementById('register-turnstile').setAttribute('style', 'display:block');
+    } catch (e) {}
+  };
+  window.fsRegisterTurnstileExpired = function() {
+    turnstileToken = '';
+  };
+
   document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('register-form');
     const errorEl = document.getElementById('register-error');
+
+    var widgetEl = document.getElementById('register-turnstile');
+    var siteKey = widgetEl ? widgetEl.getAttribute('data-sitekey') : '';
+
+    if (siteKey) {
+      try {
+        widgetEl.style.display = 'block';
+        widgetEl.className = 'cf-turnstile turnstile-wrap';
+        widgetEl.setAttribute('data-callback', 'fsRegisterTurnstileCallback');
+        widgetEl.setAttribute('data-expired-callback', 'fsRegisterTurnstileExpired');
+      } catch (e) {}
+    }
 
     if (form) {
       form.addEventListener('submit', async function(e) {
@@ -73,6 +100,12 @@ const API_URL = import.meta.env.PUBLIC_API_URL || 'https://api.nsir.uk';
           return;
         }
 
+        if (siteKey && !turnstileToken) {
+          errorEl.textContent = '請先完成機器人驗證';
+          errorEl.style.display = 'block';
+          return;
+        }
+
         const submitBtn = document.getElementById('register-submit');
         submitBtn.disabled = true;
         submitBtn.textContent = '註冊中...';
@@ -82,7 +115,7 @@ const API_URL = import.meta.env.PUBLIC_API_URL || 'https://api.nsir.uk';
           const res = await fetch(`${API_URL}/api/auth/register`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name, email, password }),
+            body: JSON.stringify({ name, email, password, turnstileToken }),
           });
 
           if (!res.ok) {
@@ -159,5 +192,11 @@ const API_URL = import.meta.env.PUBLIC_API_URL || 'https://api.nsir.uk';
     font-weight: 500;
     text-decoration: underline;
     text-underline-offset: 2px;
+  }
+
+  .turnstile-wrap {
+    display: flex;
+    justify-content: center;
+    min-height: 65px;
   }
 </style>

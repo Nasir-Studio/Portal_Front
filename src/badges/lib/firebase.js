@@ -8,8 +8,8 @@ import {
 } from 'firebase/auth'
 import { getDatabase, ref, get, set } from 'firebase/database'
 
-// Firebase Web App 設定 — 公開資訊，設計上就是放前端用的
-// （會進 bundle 讓瀏覽器下載，資料安全靠 Firebase Security Rules 把關）
+
+
 const firebaseConfig = {
   apiKey: 'AIzaSyB59k0o7gtNJLJryq0CTXIgwYrk3DlcCiE',
   authDomain: 'nasircyl.firebaseapp.com',

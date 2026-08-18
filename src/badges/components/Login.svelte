@@ -20,7 +20,7 @@
 </script>
 
 <div class="login">
-  <!-- 黑 topbar：與主站 Nav.astro 相同 -->
+  
   <div class="login__topbar">
     <div class="login__topbar-inner">
       <span class="login__topbar-left">OviNas</span>
@@ -32,7 +32,7 @@
     </div>
   </div>
 
-  <!-- 白 header：SheepLogo + OviNas -->
+  
   <div class="login__header-main">
     <div class="login__brand">
       <SheepLogo size={58} />
@@ -42,7 +42,7 @@
     </div>
   </div>
 
-  <!-- menubar：只留「回入口」 -->
+  
   <div class="login__menubar-wrap">
     <nav class="login__menubar" aria-label="主導覽">
       <a class="login__menu-link login__menu-link--back" href="/">
@@ -52,7 +52,7 @@
     </nav>
   </div>
 
-  <!-- Hero banner：複刻主站 Banner.astro 的設計語言 -->
+  
   <div class="login__hero">
     <div class="login__hero-frame">
       <span class="login__hero-square login__hero-square--l" aria-hidden="true"></span>
@@ -63,10 +63,10 @@
     </div>
   </div>
 
-  <!-- 兩欄內容：登入 + 收集目標 -->
+  
   <main class="login__main">
     <div class="login__cols">
-      <!-- 左欄：登入卡 -->
+      
       <main class="login__col login__col--center">
         <section class="login__module login__card" aria-label="羊集章登入">
           <h2 class="login__module-title">
@@ -107,7 +107,7 @@
         </section>
       </main>
 
-      <!-- 右欄：收集目標 -->
+      
       <aside class="login__col">
         <section class="login__module" aria-label="收集目標">
           <h2 class="login__module-title">
@@ -139,7 +139,7 @@
 </div>
 
 <style>
-  /* ===== 全站共用的羊家設計變數（與主站 global.css 一致） ===== */
+  
   .login {
     --ink: #1c1c1c;
     --ink-2: #4c4b47;
@@ -164,7 +164,7 @@
     color: var(--ink);
   }
 
-  /* ===== 黑 topbar（與 Nav.astro .topbar 相同） ===== */
+  
   .login__topbar {
     background: var(--ink);
     color: rgba(255, 255, 255, 0.72);
@@ -196,7 +196,7 @@
     color: rgba(255, 255, 255, 0.3);
   }
 
-  /* ===== 白 header（與 Nav.astro .header-main/.brand 相同） ===== */
+  
   .login__header-main {
     width: min(1080px, 100% - 2.5rem);
     margin-inline: auto;
@@ -230,7 +230,7 @@
     letter-spacing: 0.16em;
   }
 
-  /* ===== menubar（與 Nav.astro .menubar 相同） ===== */
+  
   .login__menubar-wrap {
     border-top: 1px solid var(--border);
     border-bottom: 2px solid var(--ink);
@@ -269,7 +269,7 @@
     line-height: 1;
   }
 
-  /* ===== Hero banner（複刻主站 Banner.astro） ===== */
+  
   .login__hero {
     width: min(1080px, 100% - 2.5rem);
     margin-inline: auto;
@@ -336,7 +336,7 @@
     }
   }
 
-  /* ===== 兩欄內容 ===== */
+  
   .login__main {
     flex: 1;
     padding: 1.4rem 0 3.5rem;
@@ -359,7 +359,7 @@
     animation-delay: 0.12s;
   }
 
-  /* module（與主站 .module 相同） */
+  
   .login__module {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -394,7 +394,7 @@
     transform: rotate(45deg);
   }
 
-  /* 中欄登入卡 */
+  
   .login__card-body {
     padding: 2.2rem 2rem 2.2rem;
     text-align: center;
@@ -477,7 +477,7 @@
     color: var(--danger, #c0452a);
   }
 
-  /* 右欄收集目標 */
+  
   .login__goal {
     padding: 1.4rem 1rem 1.2rem;
     text-align: center;
@@ -532,7 +532,7 @@
     color: var(--ink-3);
   }
 
-  /* 響應式（與主站一致） */
+  
   @media (max-width: 900px) {
     .login__cols {
       grid-template-columns: 1fr;

@@ -1,0 +1,6 @@
+# Cloudflare Pages / Netlify SPA Rewrites for /life/ subroutes
+/life/*  /life/index.html  200
+/life/bus/*  /life/index.html  200
+/life/trash/*  /life/index.html  200
+/life/track/*  /life/index.html  200
+/life/schedule/*  /life/index.html  200

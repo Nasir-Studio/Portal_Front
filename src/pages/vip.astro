@@ -1,0 +1,272 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="VIP 專區 — OviNas">
+  <div class="container">
+    <h1 class="page-title">VIP 專區</h1>
+    <p class="page-sub">VIP會員專屬權限與獨家內容</p>
+
+    <!-- 所有 VIP 內容區塊預設隱藏，未登入直接 redirect -->
+    <section class="module" id="vip-module" hidden>
+      <h2 class="module-title">
+        <span>VIP會員</span>
+      </h2>
+      <div class="vip-body" id="vip-body"></div>
+    </section>
+
+  </div>
+</BaseLayout>
+
+<style is:global>
+  .page-title {
+    font-family: var(--font-serif);
+    font-size: 2rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    padding: 3rem 0 0.4rem;
+  }
+
+  .page-sub {
+    margin-bottom: 1.6rem;
+    font-size: 0.9rem;
+    color: var(--ink-3);
+    letter-spacing: 0.08em;
+  }
+
+  .news-head-left {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .news-square {
+    width: 8px;
+    height: 8px;
+    background: var(--ink);
+    transform: rotate(45deg);
+  }
+
+  .vip-body {
+    padding: 1.2rem 1.4rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .vip-desc {
+    font-size: 0.9rem;
+    color: var(--ink-2);
+    letter-spacing: 0.05em;
+  }
+
+  .vip-user {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+  }
+
+  .vip-user-detail {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .vip-field {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-size: 0.92rem;
+  }
+
+  .vip-field-label {
+    font-size: 0.82rem;
+    color: var(--ink-3);
+    width: 90px;
+    letter-spacing: 0.08em;
+  }
+
+  .vip-field-val {
+    font-weight: 500;
+    color: var(--ink);
+  }
+
+  .vip-actions {
+    width: 100%;
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  /* 首頁風格新聞與文章清單樣式 */
+  .news-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .vip-news-item {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid var(--border);
+    transition: background var(--t);
+    text-decoration: none;
+    color: var(--ink);
+    cursor: pointer;
+  }
+
+  .vip-news-item:last-child {
+    border-bottom: none;
+  }
+
+  .vip-news-row {
+    display: flex;
+    align-items: center;
+    gap: 1.1rem;
+    min-width: 0;
+    padding: 1.1rem 1.4rem;
+  }
+
+  .vip-news-row:hover {
+    background: var(--bg-soft);
+  }
+
+  .vip-news-title {
+    flex: 1;
+    min-width: 0;
+    font-size: 0.98rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .vip-news-tag {
+    font-size: 0.72rem;
+    font-weight: 600;
+    background: var(--ink);
+    color: var(--white);
+    padding: 0.15rem 0.45rem;
+    align-self: flex-start;
+  }
+
+  .vip-news-summary {
+    font-size: 0.82rem;
+    color: var(--ink-3);
+    letter-spacing: 0.04em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .vip-news-date {
+    flex-shrink: 0;
+    font-size: 0.82rem;
+    letter-spacing: 0.12em;
+    color: var(--ink-3);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .vip-news-arrow {
+    font-size: 0.85rem;
+    color: var(--ink-3);
+    transition: transform 0.2s ease;
+  }
+
+  .vip-news-item.is-open .vip-news-arrow {
+    transform: rotate(90deg);
+  }
+
+  .vip-article-detail {
+    padding: 1.2rem 1.4rem 1.6rem;
+    background: var(--bg-soft);
+    border-top: 1px solid var(--border);
+    font-size: 0.92rem;
+    line-height: 1.75;
+    color: var(--ink-2);
+    display: none;
+  }
+
+  .vip-news-item.is-open .vip-article-detail {
+    display: block;
+  }
+
+  .slot-empty {
+    color: var(--ink-3);
+    font-size: 0.92rem;
+    letter-spacing: 0.06em;
+    text-align: center;
+    padding: 1.4rem 0;
+  }
+
+  .game-wrap {
+    padding: 1rem;
+  }
+</style>
+
+<script>
+  import { currentUser } from '../scripts/auth';
+
+  const vipBody = document.querySelector('#vip-body');
+
+  const user = currentUser();
+  if (user === null) {
+    // 未登入：直接跳轉到登入頁（帶 redirect 參數），不停留在 VIP 頁面
+    window.location.replace('/login/?redirect=/vip/');
+  } else {
+    const vipModule = document.querySelector('#vip-module');
+    if (vipModule !== null) vipModule.hidden = false;
+    renderVipUser();
+  }
+
+  function renderVipUser(): void {
+    if (vipBody === null) return;
+    const u = currentUser();
+    if (u === null) return;
+
+    vipBody.replaceChildren();
+    const wrap = document.createElement('div');
+    wrap.className = 'vip-user';
+
+    const detail = document.createElement('div');
+    detail.className = 'vip-user-detail';
+    detail.innerHTML = `
+      <div class="vip-field">
+        <span class="vip-field-label">會員姓名</span>
+        <span class="vip-field-val">${u.displayName || '未設定'}</span>
+      </div>
+      <div class="vip-field">
+        <span class="vip-field-label">電子郵件</span>
+        <span class="vip-field-val">${u.email}</span>
+      </div>
+      <div class="vip-field">
+        <span class="vip-field-label">會員編號</span>
+        <span class="vip-field-val">#${u.id}</span>
+      </div>
+      <div class="vip-field">
+        <span class="vip-field-label">會員身份</span>
+        <span class="vip-field-val">${u.role === 'admin' ? '系統管理員' : 'VIP 會員'}</span>
+      </div>
+    `;
+
+    const actions = document.createElement('div');
+    actions.className = 'vip-actions';
+    const reserveLink = document.createElement('a');
+    reserveLink.className = 'btn';
+    reserveLink.href = '/reserve/';
+    reserveLink.textContent = '預約紀錄';
+
+    const ticketsLink = document.createElement('a');
+    ticketsLink.className = 'btn btn--ghost';
+    ticketsLink.href = '/tickets/';
+    ticketsLink.textContent = '問題專區（工單）';
+
+    actions.append(reserveLink, ticketsLink);
+    wrap.append(detail, actions);
+    vipBody.append(wrap);
+  }
+</script>

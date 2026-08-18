@@ -1,6 +1,6 @@
 import type { Program } from '$ntub/types';
 
-/** 數位行銷學分學程 */
+
 export const digitalMarketing: Program = {
 	id: 'digital-marketing',
 	name: '數位行銷學分學程',

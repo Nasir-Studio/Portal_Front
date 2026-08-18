@@ -13,7 +13,7 @@ const description = '羊-集章 — 捷運紀念章電子集章冊：收集台�
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-  <!-- Google tag (gtag.js) -->
+  
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y3XYZ3RKPZ"></script>
   <script is:inline>
     window.dataLayer = window.dataLayer || [];
@@ -43,7 +43,7 @@ const description = '羊-集章 — 捷運紀念章電子集章冊：收集台�
       <App client:only="svelte" />
     </div>
     <script>
-      // PWA：註冊 badges 專屬 service worker（scope: /badges/）
+      
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', function () {
           navigator.serviceWorker
@@ -55,13 +55,13 @@ const description = '羊-集章 — 捷運紀念章電子集章冊：收集台�
       }
     </script>
     <style is:global>
-      /* body 背景與主站 lamb.nsir.uk 一致（舊集章內容區仍用 badges app.css 的 --bg） */
+      
       body {
         background: #f5f4f1;
       }
     </style>
   <script is:inline>
-    // 全站背景訪客計數
+    
     var hc = new Image();
     hc.src = "https://www.hitwebcounter.com/counter/counter.php?page=21514902&style=0001&nbdigits=8&type=page";
   </script>

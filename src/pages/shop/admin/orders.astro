@@ -44,7 +44,7 @@ const API_URL = import.meta.env.PUBLIC_API_URL || 'https://api.nsir.uk';
         </table>
       </div>
 
-      <!-- 明細面板：獨立於表格之外，避免被表格寬度限制 -->
+      
       <div id="detail-panels"></div>
     </div>
   </main>
@@ -103,7 +103,7 @@ const API_URL = import.meta.env.PUBLIC_API_URL || 'https://api.nsir.uk';
             '</tr>';
         }).join('');
 
-        // 明細面板：一個訂單一個，全部先隱藏
+        
         panels.innerHTML = orders.map(function(o) {
           return '<div class="detail-panel" id="detail-' + o.id + '" style="display:none" data-order="' + o.id + '">' + detailBody(o) + '</div>';
         }).join('');
@@ -114,7 +114,7 @@ const API_URL = import.meta.env.PUBLIC_API_URL || 'https://api.nsir.uk';
     }
 
     function detailBody(o) {
-          // 收件資訊欄位
+          
           var infoFields = '';
           infoFields += '<div class="detail-field"><span class="field-label">收件人</span><span class="field-value">' + escHtml(o.shipping_name) + (o.shipping_phone ? ' · ' + escHtml(o.shipping_phone) : '') + '</span></div>';
           if (o.shipping_method === 'store_pickup') {
@@ -134,7 +134,7 @@ const API_URL = import.meta.env.PUBLIC_API_URL || 'https://api.nsir.uk';
           }
           infoFields += '<div class="detail-field"><span class="field-label">訂單金額</span><span class="field-value field-total">NT$' + (o.total || 0).toLocaleString() + '</span></div>';
 
-          // 追蹤代碼（出貨/完成才顯示）
+          
           var trackingBlock = (o.status === 'shipped' || o.status === 'completed')
             ? '<div class="detail-field"><span class="field-label">追蹤代碼</span>' +
               '<div class="field-inline">' +
@@ -143,7 +143,7 @@ const API_URL = import.meta.env.PUBLIC_API_URL || 'https://api.nsir.uk';
               '</div></div>'
             : '';
 
-          // 商品項目（後端列表已內嵌 items）
+          
           var itemsHtml = (o.items && o.items.length)
             ? o.items.map(function(item) {
                 var thumb = item.product_image
@@ -236,7 +236,7 @@ const API_URL = import.meta.env.PUBLIC_API_URL || 'https://api.nsir.uk';
 
     window.updateStatus = async function(id, newStatus) {
       try {
-        // 出貨時確認填寫追蹤代碼
+        
         if (newStatus === 'shipped') {
           const input = document.getElementById('tracking-' + id);
           const code = input ? input.value.trim() : '';

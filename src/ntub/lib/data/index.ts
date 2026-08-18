@@ -9,7 +9,7 @@ import { dataAnalysisVisualization } from './programs/data-analysis-visualizatio
 import { socialMediaMarketing } from './programs/social-media-marketing';
 import { eastAsiaLanguageBusiness } from './programs/east-asia-language-business';
 
-/** 全部學分學程清單 */
+
 export const programs: Program[] = [
 	corporateSustainability,
 	innovationEntrepreneurship,
@@ -22,7 +22,7 @@ export const programs: Program[] = [
 	eastAsiaLanguageBusiness
 ];
 
-/** 依 id 查找學程 */
+
 export function getProgram(id: string): Program | undefined {
 	return programs.find((p) => p.id === id);
 }

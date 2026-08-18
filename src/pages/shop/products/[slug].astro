@@ -5,11 +5,11 @@ import Footer from '../../../shop/components/Footer.astro';
 const API_URL = import.meta.env.PUBLIC_API_URL || 'https://api.nsir.uk';
 
 export async function getStaticPaths() {
-  // 建置時以正式 API 作為 fallback，CI（GitHub Pages）未設定 PUBLIC_API_URL secret 時仍能產出真實商品頁。
+  
   const apiUrl = import.meta.env.PUBLIC_API_URL || 'https://api.nsir.uk';
   const fallbackPaths = [{ params: { slug: '_placeholder' } }];
   try {
-    // API 的 page_size 上限為 48，分頁抓取所有頁面以預建靜態頁，避免 GitHub Pages 的 404 閃現。
+    
     const pageSize = 48;
     const paths: { params: { slug: string } }[] = [];
     let page = 1;

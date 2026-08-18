@@ -1,8 +1,8 @@
 ---
 export interface Props {
-  /** 要預載的圖片 CSS 選擇器，例如 ".product-card img" */
+  
   preloadSelector?: string;
-  /** 額外要預載的圖片 URL */
+  
   preloadUrls?: string[];
 }
 const { preloadSelector, preloadUrls } = Astro.props;
@@ -33,11 +33,11 @@ const { preloadSelector, preloadUrls } = Astro.props;
     if (!screen || !bar || !pctEl) return;
 
     var running = true;
-    var ready = false;    // 頁面完全載入時為 true
-    var SIM_DURATION = 1400; // 模擬約 90% 所需毫秒數
+    var ready = false;    
+    var SIM_DURATION = 1400; 
     var FADE_DELAY = 300;
 
-    // 全域 API：頁面可推入圖片 URL 進行背景預載
+    
     var preloadUrls = [];
     window.__loadingPreload = function(urls) {
       urls.forEach(function(url) {
@@ -87,7 +87,7 @@ const { preloadSelector, preloadUrls } = Astro.props;
       var t = Math.min(elapsed / SIM_DURATION, 1);
 
       var eased = 1 - Math.pow(1 - t, 3);
-      // 映射到 1% → 92%，留空間給最後跳轉
+      
       var pct = 1 + eased * 91;
       pct = Math.min(pct, 100);
 
@@ -101,7 +101,7 @@ const { preloadSelector, preloadUrls } = Astro.props;
         return;
       }
 
-      // 模擬接近完成（~92%）時，檢查能否直接跳 100
+      
       if (pct >= 92 && !completed) {
         if (ready) {
           bar.style.width = '100%';
@@ -110,7 +110,7 @@ const { preloadSelector, preloadUrls } = Astro.props;
           done();
           return;
         }
-        // 否則放慢補足剩餘 8%
+        
         requestAnimationFrame(animate);
       } else {
         requestAnimationFrame(animate);
@@ -119,7 +119,7 @@ const { preloadSelector, preloadUrls } = Astro.props;
 
     window.addEventListener('load', function() { ready = true; });
 
-    // 保險：4 秒強制完成
+    
     setTimeout(function() { if (running) { ready = true; } }, 4000);
 
     requestAnimationFrame(animate);

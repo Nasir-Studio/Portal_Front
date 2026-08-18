@@ -1,2 +1,6 @@
 User-agent: *
-Disallow: /
+Disallow: /life
+Disallow: /life/
+Disallow: /life/*
+Disallow: /metroexam
+Disallow: /metroexam/

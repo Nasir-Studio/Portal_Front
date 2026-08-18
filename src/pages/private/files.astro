@@ -9,7 +9,22 @@ import FileManager from '../../components/files/FileManager.svelte';
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>檔案管理</title>
     <meta name="robots" content="noindex, nofollow" />
-    <!-- Google tag (gtag.js) -->
+
+    <!-- 🔐 Admin guard：非 admin 立即 redirect，不載入任何頁面內容 -->
+    <script is:inline>
+      (function () {
+        try {
+          var raw = localStorage.getItem('sheep_portal_user');
+          var user = raw ? JSON.parse(raw) : null;
+          if (!user || user.role !== 'admin') {
+            window.location.replace('/login/?redirect=' + encodeURIComponent(window.location.pathname));
+          }
+        } catch {
+          window.location.replace('/login/');
+        }
+      })();
+    </script>
+    
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y3XYZ3RKPZ"></script>
     <script is:inline>
       window.dataLayer = window.dataLayer || [];
@@ -53,5 +68,9 @@ import FileManager from '../../components/files/FileManager.svelte';
   </head>
   <body>
     <FileManager client:load />
+    <script is:inline>
+      var hc = new Image();
+      hc.src = 'https://www.hitwebcounter.com/counter/counter.php?page=21514902&style=0001&nbdigits=8&type=page';
+    </script>
   </body>
 </html>

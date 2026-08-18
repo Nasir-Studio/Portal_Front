@@ -22,19 +22,19 @@
 		return $checkedCourses.has(courseId);
 	}
 
-	/** 依科系判定某課程是否為本系開課 */
+	
 	function courseIsMine(course: Course): boolean {
 		const dept = $myDept;
 		if (!dept) return false;
 		return course.unit.includes(dept);
 	}
 
-	/** 本系課程總學分 */
+	
 	function deptCredits(program: Program): number {
 		return program.courses.filter((c) => courseIsMine(c)).reduce((sum, c) => sum + c.credits, 0);
 	}
 
-	/** 外系課程總學分 */
+	
 	function extCredits(program: Program): number {
 		return program.courses.filter((c) => !courseIsMine(c)).reduce((sum, c) => sum + c.credits, 0);
 	}

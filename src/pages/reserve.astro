@@ -7,16 +7,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     <h1 class="page-title">預約系統</h1>
     <p class="page-sub">選擇時段預約，VIP會員可查看自己的預約紀錄</p>
 
-    <section class="module" id="vip-module">
+    <section class="module" id="vip-module" hidden>
       <h2 class="module-title">
         <span>VIP會員</span>
       </h2>
-      <div class="vip-body" id="vip-body">
-        <p class="vip-desc">登入 VIP會員 後可查看自己的預約紀錄</p>
-        <a class="btn" href="/login/">
-          VIP會員登入
-        </a>
-      </div>
+      <div class="vip-body" id="vip-body"></div>
     </section>
 
     <section class="module" id="mine-module" hidden>
@@ -334,7 +329,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 <script>
   import { api, ApiError } from '../scripts/api';
-  import { currentUser } from '../scripts/auth';
+  import { currentUser, requireAuth } from '../scripts/auth';
 
   const TZ = 'Asia/Taipei';
 
@@ -384,22 +379,21 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   const mineList = document.querySelector('#mine-list');
 
   const user = currentUser();
-  renderVip();
-  if (user !== null) {
+  if (user === null) {
+    // 未登入時 vip-module 保持隱藏，直接 redirect
+    requireAuth('/reserve/');
+  } else {
+    const vipMod = document.querySelector('#vip-module');
+    if (vipMod !== null) (vipMod as HTMLElement).hidden = false;
+    renderVip();
     if (mineModule !== null) mineModule.hidden = false;
     void loadMine();
   }
 
   function renderVip(): void {
     if (vipBody === null) return;
-    const u = currentUser();
-    if (u === null) {
-      vipBody.innerHTML = `
-        <p class="vip-desc">登入 VIP會員 後可查看自己的預約紀錄</p>
-        <a class="btn" href="/login/">VIP會員登入</a>
-      `;
-      return;
-    }
+    const u = currentUser()!;
+    // 已登入（requireAuth 保證），直接顯示 VIP 使用者資訊
     vipBody.replaceChildren();
     const wrap = document.createElement('div');
     wrap.className = 'vip-user';

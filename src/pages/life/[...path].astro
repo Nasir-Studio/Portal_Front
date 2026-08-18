@@ -1,0 +1,62 @@
+---
+import LifeApp from '../../components/life/App.svelte';
+import '../../components/life/globals.css';
+
+export function getStaticPaths() {
+  return [
+    { params: { path: undefined } },
+    { params: { path: 'trash' } },
+    { params: { path: 'track' } },
+    { params: { path: 'schedule' } },
+    { params: { path: 'bus' } },
+    { params: { path: 'bus/search' } },
+    { params: { path: 'bus/map' } },
+    { params: { path: 'bus/plan' } },
+  ];
+}
+---
+
+<!doctype html>
+<html lang="zh-TW" class="h-full antialiased">
+  <head>
+    
+    <meta name="robots" content="noindex, nofollow, noarchive, nosnippet" />
+    <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet" />
+    <meta name="bingbot" content="noindex, nofollow, noarchive, nosnippet" />
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <meta name="theme-color" content="#fafafa" />
+    <title>活這真好 🚛🚌</title>
+    <meta name="description" content="雙北公車即時到站資訊、台灣垃圾車即時追蹤" />
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <link rel="manifest" href="/manifest.json" />
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.4.1/dist/fonts/geist-sans/style.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.4.1/dist/fonts/geist-mono/style.css" />
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y3XYZ3RKPZ"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+      gtag('config', 'G-Y3XYZ3RKPZ');
+    </script>
+  </head>
+  <body class="min-h-full flex flex-col bg-[#fafafa] text-[#171717]">
+    <LifeApp client:only="svelte" />
+
+    <script is:inline>
+      var hc = new Image();
+      hc.src = 'https://www.hitwebcounter.com/counter/counter.php?page=21514902&style=0001&nbdigits=8&type=page';
+    </script>
+  </body>
+</html>

@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     return;
   }
 
-  // 先讀 localStorage 顯示，避免白畫面閃爍
+  
   document.getElementById('profile-name').value = user.name || '';
   document.getElementById('profile-email').value = user.email || '';
   document.getElementById('profile-phone').value = user.phone || '';
@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
   document.getElementById('account-content').style.display = 'grid';
 
-  // 背景再向 API 抓取最新資料
+  
   try {
     var profileRes = await fetch(API_URL + '/api/auth/me', {
       headers: { 'Authorization': 'Bearer ' + token },
@@ -246,7 +246,7 @@ document.addEventListener('DOMContentLoaded', async function() {
           '</div>';
       }).join('');
 
-      // 先前展開過的訂單，重新載入明細
+      
       if (expandedOrderId) {
         loadOrderDetail(expandedOrderId);
       }
@@ -471,7 +471,7 @@ document.addEventListener('DOMContentLoaded', async function() {
   .detail-loading { text-align: center; padding: var(--sp-6); font-size: var(--text-sm); color: var(--c-text-light); }
   .detail-loading.error { color: var(--c-error); }
 
-  /* 狀態步驟：flex-wrap 避免小螢幕溢出 */
+  
   .status-steps { display: flex; flex-wrap: wrap; align-items: center; gap: 0; padding: var(--sp-3) 0; }
   .status-step { display: flex; flex-direction: column; align-items: center; gap: var(--sp-1); }
   .step-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--c-border); transition: background var(--duration) var(--ease); }
