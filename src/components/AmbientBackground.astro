@@ -10,77 +10,74 @@
   <!-- 手稿幾何微點座標格網 -->
   <div class="ambient-grid"></div>
 
-  <!-- 🌌 牡羊座與天文星盤 SVG 藝術手稿 (慢速旋轉) -->
-  <div class="celestial-wrap celestial-top-right">
-    <svg class="celestial-astrolabe" viewBox="0 0 500 500" width="460" height="460" fill="none">
-      <!-- 外部同心軌道環 -->
-      <circle cx="250" cy="250" r="230" stroke="#1c1c1c" stroke-width="1" stroke-dasharray="4 8" opacity="0.18" />
-      <circle cx="250" cy="250" r="190" stroke="#deb86d" stroke-width="1" stroke-dasharray="2 6" opacity="0.3" />
-      <circle cx="250" cy="250" r="140" stroke="#1c1c1c" stroke-width="1" opacity="0.12" />
-      <circle cx="250" cy="250" r="90" stroke="#deb86d" stroke-width="1.2" stroke-dasharray="6 4" opacity="0.35" />
-
-      <!-- 經緯十字軸線 -->
-      <line x1="250" y1="10" x2="250" y2="490" stroke="#1c1c1c" stroke-width="0.8" stroke-dasharray="3 3" opacity="0.15" />
-      <line x1="10" y1="250" x2="490" y2="250" stroke="#1c1c1c" stroke-width="0.8" stroke-dasharray="3 3" opacity="0.15" />
-
-      <!-- 牡羊星座 (Ovis / Aries) 連線 -->
-      <g class="constellation-aries" stroke="#deb86d" stroke-width="1.5" opacity="0.65">
-        <line x1="160" y1="210" x2="230" y2="225" />
-        <line x1="230" y1="225" x2="310" y2="270" />
-        <line x1="310" y1="270" x2="345" y2="295" />
-
-        <!-- 主星群星芒 -->
-        <circle cx="160" cy="210" r="3.5" fill="#deb86d" />
-        <circle cx="230" cy="225" r="4.5" fill="#deb86d" />
-        <circle cx="310" cy="270" r="3" fill="#deb86d" />
-        <circle cx="345" cy="295" r="2.5" fill="#deb86d" />
-
-        <!-- 星星微光外環 -->
-        <circle cx="230" cy="225" r="9" stroke="#deb86d" stroke-width="0.8" stroke-dasharray="2 2" />
-      </g>
-
-      <!-- 幾何刻度標記 -->
-      <text x="250" y="32" font-size="9" fill="#1c1c1c" opacity="0.3" text-anchor="middle" font-family="monospace">N 00°</text>
-      <text x="468" y="253" font-size="9" fill="#1c1c1c" opacity="0.3" text-anchor="middle" font-family="monospace">E 90°</text>
-      <text x="250" y="475" font-size="9" fill="#1c1c1c" opacity="0.3" text-anchor="middle" font-family="monospace">S 180°</text>
-      <text x="32" y="253" font-size="9" fill="#1c1c1c" opacity="0.3" text-anchor="middle" font-family="monospace">W 270°</text>
+  <!-- 🌊 慢速流動極簡絲帶波紋 (Flowing Topographic Waves) -->
+  <div class="waves-wrap waves-top">
+    <svg class="flow-wave wave-svg-1" viewBox="0 0 1440 380" fill="none">
+      <path
+        d="M-40 180 C 320 280, 540 60, 880 180 C 1180 280, 1360 100, 1500 200"
+        stroke="#1c1c1c"
+        stroke-width="1.2"
+        stroke-dasharray="4 8"
+        opacity="0.16"
+      />
+      <path
+        d="M-60 140 C 280 240, 580 40, 920 150 C 1220 250, 1380 70, 1520 170"
+        stroke="#deb86d"
+        stroke-width="1.5"
+        opacity="0.32"
+      />
+      <path
+        d="M-20 220 C 360 310, 500 80, 840 210 C 1140 320, 1340 130, 1480 230"
+        stroke="#1c1c1c"
+        stroke-width="0.9"
+        opacity="0.12"
+      />
     </svg>
   </div>
 
-  <!-- 幾何座標標籤 (手稿紀錄感) -->
+  <div class="waves-wrap waves-bottom">
+    <svg class="flow-wave wave-svg-2" viewBox="0 0 1440 380" fill="none">
+      <path
+        d="M-50 200 C 300 90, 600 290, 950 160 C 1250 50, 1390 240, 1500 130"
+        stroke="#deb86d"
+        stroke-width="1.4"
+        stroke-dasharray="6 6"
+        opacity="0.28"
+      />
+      <path
+        d="M-30 240 C 340 130, 560 330, 910 200 C 1210 90, 1350 280, 1470 170"
+        stroke="#1c1c1c"
+        stroke-width="1"
+        opacity="0.14"
+      />
+    </svg>
+  </div>
+
+  <!-- ⭕ 極簡幾何立體光影光環 (Floating Kinetic Rings) -->
+  <div class="geometric-shape geo-ring-1">
+    <svg viewBox="0 0 200 200" width="180" height="180" fill="none">
+      <circle cx="100" cy="100" r="85" stroke="#deb86d" stroke-width="1.5" stroke-dasharray="8 6" opacity="0.45" />
+      <circle cx="100" cy="100" r="65" stroke="#1c1c1c" stroke-width="1" opacity="0.16" />
+      <circle cx="100" cy="15" r="4" fill="#deb86d" opacity="0.6" />
+      <circle cx="185" cy="100" r="3" fill="#1c1c1c" opacity="0.3" />
+    </svg>
+  </div>
+
+  <div class="geometric-shape geo-ring-2">
+    <svg viewBox="0 0 180 180" width="140" height="140" fill="none">
+      <circle cx="90" cy="90" r="75" stroke="#1c1c1c" stroke-width="1.2" stroke-dasharray="3 7" opacity="0.22" />
+      <circle cx="90" cy="90" r="50" stroke="#deb86d" stroke-width="1.2" opacity="0.35" />
+      <line x1="90" y1="5" x2="90" y2="175" stroke="#1c1c1c" stroke-width="0.8" stroke-dasharray="2 4" opacity="0.15" />
+    </svg>
+  </div>
+
+  <!-- 📐 經緯座標標籤 -->
   <div class="blueprint-tag tag-left">
     <span>LAT 25°02' N // LONG 121°31' E</span>
     <span class="tag-sub">TAIPEI // CHRONICLE REPO</span>
   </div>
 
-  <!-- 💎 慢速旋轉 3D 純 CSS 幾何多面體水晶 (GPU 加速) -->
-  <div class="poly-3d-scene scene-1">
-    <div class="poly-octahedron">
-      <div class="face f1"></div>
-      <div class="face f2"></div>
-      <div class="face f3"></div>
-      <div class="face f4"></div>
-      <div class="face f5"></div>
-      <div class="face f6"></div>
-      <div class="face f7"></div>
-      <div class="face f8"></div>
-    </div>
-  </div>
-
-  <div class="poly-3d-scene scene-2">
-    <div class="poly-octahedron poly-small">
-      <div class="face f1"></div>
-      <div class="face f2"></div>
-      <div class="face f3"></div>
-      <div class="face f4"></div>
-      <div class="face f5"></div>
-      <div class="face f6"></div>
-      <div class="face f7"></div>
-      <div class="face f8"></div>
-    </div>
-  </div>
-
-  <!-- 漂浮星芒與星塵 -->
+  <!-- ✨ 微光星芒與星塵 -->
   <div class="sparkle sparkle-1">✦</div>
   <div class="sparkle sparkle-2">✦</div>
   <div class="sparkle sparkle-3">✦</div>
@@ -169,28 +166,90 @@
     opacity: 0.85;
   }
 
-  /* 🌌 天文星盤與牡羊座 */
-  .celestial-wrap {
+  /* 🌊 流動波紋絲帶 */
+  .waves-wrap {
+    position: absolute;
+    left: 0;
+    right: 0;
+    width: 100%;
+    pointer-events: none;
+  }
+
+  .waves-top {
+    top: 5%;
+    opacity: 0.8;
+  }
+
+  .waves-bottom {
+    bottom: 8%;
+    opacity: 0.7;
+  }
+
+  .flow-wave {
+    width: 120%;
+    height: auto;
+    display: block;
+    margin-left: -10%;
+    will-change: transform;
+  }
+
+  .wave-svg-1 {
+    animation: wave-float-1 20s ease-in-out infinite alternate;
+  }
+
+  .wave-svg-2 {
+    animation: wave-float-2 25s ease-in-out infinite alternate;
+  }
+
+  @keyframes wave-float-1 {
+    0% { transform: translate3d(0, 0, 0) scaleY(1); }
+    50% { transform: translate3d(-3%, 15px, 0) scaleY(1.1); }
+    100% { transform: translate3d(2%, -10px, 0) scaleY(0.95); }
+  }
+
+  @keyframes wave-float-2 {
+    0% { transform: translate3d(0, 0, 0) scaleY(1); }
+    50% { transform: translate3d(3%, -18px, 0) scaleY(1.15); }
+    100% { transform: translate3d(-2%, 12px, 0) scaleY(0.9); }
+  }
+
+  /* ⭕ 極簡幾何立體光環 */
+  .geometric-shape {
     position: absolute;
     pointer-events: none;
-    z-index: 0;
+    will-change: transform;
   }
 
-  .celestial-top-right {
-    top: 3%;
-    right: -80px;
-    opacity: 0.75;
+  .geo-ring-1 {
+    top: 15%;
+    right: 5%;
+    animation: spin-ring-1 90s linear infinite, float-shape-1 16s ease-in-out infinite alternate;
   }
 
-  .celestial-astrolabe {
-    display: block;
-    animation: rotate-astrolabe 160s linear infinite;
-    transform-origin: center center;
+  .geo-ring-2 {
+    bottom: 25%;
+    left: 4%;
+    animation: spin-ring-2 110s linear infinite reverse, float-shape-2 20s ease-in-out infinite alternate;
   }
 
-  @keyframes rotate-astrolabe {
+  @keyframes spin-ring-1 {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
+  }
+
+  @keyframes spin-ring-2 {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  @keyframes float-shape-1 {
+    0% { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(-15px, 25px, 0); }
+  }
+
+  @keyframes float-shape-2 {
+    0% { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(20px, -30px, 0); }
   }
 
   /* 📐 經緯座標標籤 */
@@ -216,89 +275,6 @@
     color: #deb86d;
     font-weight: 600;
   }
-
-  /* 💎 3D 正八面體水晶 (純 CSS 3D 渲染，0% CPU 負荷) */
-  .poly-3d-scene {
-    position: absolute;
-    perspective: 800px;
-    width: 60px;
-    height: 60px;
-  }
-
-  .scene-1 {
-    top: 28%;
-    left: 4%;
-    opacity: 0.55;
-    animation: float-poly-1 18s ease-in-out infinite alternate;
-  }
-
-  .scene-2 {
-    bottom: 22%;
-    right: 5%;
-    opacity: 0.45;
-    animation: float-poly-2 24s ease-in-out infinite alternate;
-  }
-
-  .poly-octahedron {
-    width: 60px;
-    height: 60px;
-    position: relative;
-    transform-style: preserve-3d;
-    animation: spin-poly 20s linear infinite;
-  }
-
-  .poly-small {
-    transform: scale(0.65);
-    animation: spin-poly 28s linear infinite reverse;
-  }
-
-  @keyframes spin-poly {
-    0% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
-    100% { transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg); }
-  }
-
-  @keyframes float-poly-1 {
-    0% { transform: translate3d(0, 0, 0); }
-    100% { transform: translate3d(20px, 35px, 0); }
-  }
-
-  @keyframes float-poly-2 {
-    0% { transform: translate3d(0, 0, 0); }
-    100% { transform: translate3d(-25px, -40px, 0); }
-  }
-
-  .face {
-    position: absolute;
-    width: 0;
-    height: 0;
-    border-left: 22px solid transparent;
-    border-right: 22px solid transparent;
-    border-bottom: 38px solid rgba(222, 184, 109, 0.18);
-    transform-origin: 50% 100%;
-    filter: drop-shadow(0 0 1px rgba(28, 28, 28, 0.2));
-  }
-
-  .face::after {
-    content: '';
-    position: absolute;
-    left: -22px;
-    top: 0;
-    width: 0;
-    height: 0;
-    border-left: 22px solid transparent;
-    border-right: 22px solid transparent;
-    border-bottom: 38px solid transparent;
-    border-bottom-color: rgba(28, 28, 28, 0.08);
-  }
-
-  .f1 { transform: rotateY(0deg) translateZ(18px) rotateX(35deg); }
-  .f2 { transform: rotateY(90deg) translateZ(18px) rotateX(35deg); }
-  .f3 { transform: rotateY(180deg) translateZ(18px) rotateX(35deg); }
-  .f4 { transform: rotateY(270deg) translateZ(18px) rotateX(35deg); }
-  .f5 { transform: rotateY(0deg) translateZ(18px) rotateX(-35deg) scaleY(-1); }
-  .f6 { transform: rotateY(90deg) translateZ(18px) rotateX(-35deg) scaleY(-1); }
-  .f7 { transform: rotateY(180deg) translateZ(18px) rotateX(-35deg) scaleY(-1); }
-  .f8 { transform: rotateY(270deg) translateZ(18px) rotateX(-35deg) scaleY(-1); }
 
   /* ✨ 閃爍星芒 */
   .sparkle {
@@ -344,12 +320,7 @@
   }
 
   @media (max-width: 768px) {
-    .celestial-top-right {
-      right: -140px;
-      top: 1%;
-      opacity: 0.45;
-    }
-    .poly-3d-scene {
+    .geometric-shape {
       display: none;
     }
   }
@@ -357,9 +328,8 @@
   @media (prefers-reduced-motion: reduce) {
     .ambient-orb,
     .ambient-dust,
-    .celestial-astrolabe,
-    .poly-octahedron,
-    .poly-3d-scene,
+    .flow-wave,
+    .geometric-shape,
     .sparkle {
       animation: none !important;
     }
