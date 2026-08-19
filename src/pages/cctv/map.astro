@@ -179,7 +179,6 @@ const base = '/cctv';
       var retryTimer = null;
       var safetyTimer = null;
 
-      
       var cardEls = {};
 
       function isIOS() {
@@ -224,9 +223,6 @@ const base = '/cctv';
         return d < 1000 ? Math.round(d) + 'm' : (d/1000).toFixed(1) + 'km';
       }
 
-      
-
-      
       function stopSnapPollForCard(cardEl) {
         var img = cardEl.querySelector('img.cam-snap');
         if (img && img._timer) { clearInterval(img._timer); img._timer = null; }
@@ -239,7 +235,7 @@ const base = '/cctv';
         var isHls = cam.type === 'hls' || (url && url.indexOf('.m3u8') !== -1);
 
         if (isHls) {
-          
+
           HlsBudget.observe(mediaBox, url);
         } else {
           var img = document.createElement('img');
@@ -248,7 +244,7 @@ const base = '/cctv';
           img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;position:absolute;inset:0';
           mediaBox.appendChild(img);
           if (IOS && isThbUrl(url)) {
-            
+
             img.className = 'cam-snap';
             var snapBase = url + '/snapshot';
             var tick = function() {
@@ -286,7 +282,6 @@ const base = '/cctv';
         return div;
       }
 
-      
       function updateDistInPlace(cam) {
         var card = cardEls[String(cam.id)];
         if (!card) return;
@@ -315,12 +310,10 @@ const base = '/cctv';
 
         nearbyCount.textContent = nearby.length;
 
-        
         nearby.forEach(function(cam) {
           updateDistInPlace(cam);
         });
 
-        
         nearby.forEach(function(cam) {
           var key = String(cam.id);
           if (!lastNotified[key]) {
@@ -329,7 +322,6 @@ const base = '/cctv';
           }
         });
 
-        
         var nearbyIds = {};
         nearby.forEach(function(cam) { nearbyIds[String(cam.id)] = true; });
 
@@ -349,10 +341,10 @@ const base = '/cctv';
         var added = 0;
         nearby.forEach(function(cam) {
           if (cardEls[String(cam.id)]) return;
-          if (added >= 100) return; 
+          if (added >= 100) return;
           var card = createCard(cam);
           cardEls[String(cam.id)] = { el: card, dist: cam.dist };
-          
+
           var insertBefore = null;
           var els = nearbyList.querySelectorAll('.cam-card');
           for (var i = 0; i < els.length; i++) {
@@ -363,7 +355,6 @@ const base = '/cctv';
           added++;
         });
 
-        
         var moreNote = nearbyList.querySelector('.cam-more-note');
         if (nearby.length > 100) {
           if (!moreNote) {
@@ -377,7 +368,6 @@ const base = '/cctv';
         }
       }
 
-      
       function setStatus(cls, text) {
         gpsDot.className = 'gps-dot ' + cls;
         gpsText.textContent = text;
@@ -392,7 +382,7 @@ const base = '/cctv';
 
       function handlePositionError(err) {
         setStatus('error', err.code === 1 ? '請允許位置權限' : '取得失敗，重試中...');
-        
+
         scheduleRetry();
       }
 
@@ -408,12 +398,12 @@ const base = '/cctv';
       }
 
       function startSafetyFallback() {
-        
+
         if (safetyTimer) clearInterval(safetyTimer);
         safetyTimer = setInterval(function() {
           if (currentPos && Date.now() - lastFixTime > 30000) {
             setStatus('searching', '位置更新中...');
-            navigator.geolocation.getCurrentPosition(handlePosition, function(){}, 
+            navigator.geolocation.getCurrentPosition(handlePosition, function(){},
               { enableHighAccuracy: true, maximumAge: 10000, timeout: 12000 });
           }
         }, 20000);
@@ -438,7 +428,6 @@ const base = '/cctv';
         startSafetyFallback();
       }
 
-      
       function loadAllCameras() {
         fetch(BASE + '/cameras_thumb.json')
           .then(function(r) { return r.json(); })
@@ -452,7 +441,6 @@ const base = '/cctv';
           });
       }
 
-      
       document.addEventListener('visibilitychange', function() {
         if (document.visibilityState === 'visible' && currentPos) {
           if (Date.now() - lastFixTime > 30000) {

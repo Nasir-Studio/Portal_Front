@@ -8,14 +8,11 @@ import { doc, onSnapshot, setDoc, serverTimestamp } from 'firebase/firestore';
 
 const STORAGE_KEY = 'ntub-cource-checked';
 
-
 export const checkedCourses = writable<Set<string>>(new Set());
-
 
 export const myDept = writable<string>('');
 
 const DEPT_KEY = 'ntub-cource-dept';
-
 
 export const ALL_DEPTS = [
 	'企業管理系',
@@ -46,8 +43,6 @@ function persist() {
 	localStorage.setItem(STORAGE_KEY, JSON.stringify([...get(checkedCourses)]));
 }
 
-
-
 let unsubCloud: (() => void) | null = null;
 let writeTimer: ReturnType<typeof setTimeout> | null = null;
 
@@ -60,7 +55,7 @@ function subscribeCloud(uid: string) {
 	unsubCloud = onSnapshot(
 		ref,
 		(snap) => {
-			if (!snap.exists()) return; 
+			if (!snap.exists()) return;
 			const data = snap.data();
 			const checked = data?.checked;
 			if (!Array.isArray(checked)) return;
@@ -70,7 +65,7 @@ function subscribeCloud(uid: string) {
 			applyingCloud = false;
 		},
 		(err) => {
-			
+
 			console.error('credit_checks 同步失敗', err.message);
 		}
 	);
@@ -96,7 +91,7 @@ function scheduleCloudWrite() {
 			dept: get(myDept),
 			updatedAt: serverTimestamp()
 		}).catch((err) => console.error('credit_checks 寫入失敗', err.message));
-	}, 400); 
+	}, 400);
 }
 
 if (browser) {
@@ -113,15 +108,11 @@ if (browser) {
 		scheduleCloudWrite();
 	});
 
-	
 	currentUser.subscribe((u) => {
 		if (u) subscribeCloud(u.uid);
 		else unsubscribeCloud();
 	});
 }
-
-
-
 
 export function toggleCourse(courseId: string) {
 	checkedCourses.update((set) => {
@@ -135,12 +126,11 @@ export function toggleCourse(courseId: string) {
 	});
 }
 
-
 export function earnedCredits(checked: Set<string>, program: Program): number {
 	const earned = program.courses
 		.filter((c) => checked.has(c.id))
 		.reduce((sum, c) => sum + c.credits, 0);
-	
+
 	const groupCap = new Map<string, number>();
 	for (const c of program.courses) {
 		if (!checked.has(c.id) || !c.group) continue;
@@ -154,7 +144,6 @@ export function earnedCredits(checked: Set<string>, program: Program): number {
 	return nonGroupEarned + groupTotal;
 }
 
-
 export function breakdown(checked: Set<string>, program: Program) {
 	let required = 0;
 	let elective = 0;
@@ -165,7 +154,6 @@ export function breakdown(checked: Set<string>, program: Program) {
 	}
 	return { required, elective };
 }
-
 
 export function isCrossDept(program: Program, courseUnit: string): boolean {
 	const dept = get(myDept);

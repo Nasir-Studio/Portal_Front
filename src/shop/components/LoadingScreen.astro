@@ -1,8 +1,8 @@
 ---
 export interface Props {
-  
+
   preloadSelector?: string;
-  
+
   preloadUrls?: string[];
 }
 const { preloadSelector, preloadUrls } = Astro.props;
@@ -33,11 +33,10 @@ const { preloadSelector, preloadUrls } = Astro.props;
     if (!screen || !bar || !pctEl) return;
 
     var running = true;
-    var ready = false;    
-    var SIM_DURATION = 1400; 
+    var ready = false;
+    var SIM_DURATION = 1400;
     var FADE_DELAY = 300;
 
-    
     var preloadUrls = [];
     window.__loadingPreload = function(urls) {
       urls.forEach(function(url) {
@@ -87,7 +86,7 @@ const { preloadSelector, preloadUrls } = Astro.props;
       var t = Math.min(elapsed / SIM_DURATION, 1);
 
       var eased = 1 - Math.pow(1 - t, 3);
-      
+
       var pct = 1 + eased * 91;
       pct = Math.min(pct, 100);
 
@@ -101,7 +100,6 @@ const { preloadSelector, preloadUrls } = Astro.props;
         return;
       }
 
-      
       if (pct >= 92 && !completed) {
         if (ready) {
           bar.style.width = '100%';
@@ -110,7 +108,7 @@ const { preloadSelector, preloadUrls } = Astro.props;
           done();
           return;
         }
-        
+
         requestAnimationFrame(animate);
       } else {
         requestAnimationFrame(animate);
@@ -119,7 +117,6 @@ const { preloadSelector, preloadUrls } = Astro.props;
 
     window.addEventListener('load', function() { ready = true; });
 
-    
     setTimeout(function() { if (running) { ready = true; } }, 4000);
 
     requestAnimationFrame(animate);

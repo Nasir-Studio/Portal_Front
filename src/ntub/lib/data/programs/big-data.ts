@@ -1,6 +1,5 @@
 import type { Program } from '$ntub/types';
 
-
 export const bigData: Program = {
 	id: 'big-data',
 	name: '大數據微學程',
@@ -26,12 +25,12 @@ export const bigData: Program = {
 		detail: '欲取得大數據微學程證明之學生，應至少修畢 8 學分，核心課程應修習至少一門（1學期）、進階課程應修習至少二門，惟課程名稱及內容相同之科目，不得重複修習。'
 	},
 	courses: [
-		
+
 		{ id: 'bd-1', name: '程式設計', group: '程式設計', groupNote: '核心課程：各系開設之程式設計擇一修習', category: 'core', required: true, credits: 3, hours: 3, unit: '會計資訊系', semester: '三上' },
 		{ id: 'bd-2', name: '程式設計', group: '程式設計', groupNote: '核心課程：各系開設之程式設計擇一修習', category: 'core', required: true, credits: 3, hours: 3, unit: '財政稅務系', semester: '二下' },
 		{ id: 'bd-3', name: '程式設計', group: '程式設計', groupNote: '核心課程：各系開設之程式設計擇一修習', category: 'core', required: true, credits: 3, hours: 3, unit: '財務金融系', semester: '二下' },
 		{ id: 'bd-4', name: '程式設計', group: '程式設計', groupNote: '核心課程：各系開設之程式設計擇一修習', category: 'core', required: true, credits: 3, hours: 3, unit: '資訊管理系', semester: '一上' },
-		
+
 		{ id: 'bd-5', name: '機器學習概論與應用', group: null, groupNote: null, category: 'advanced', required: false, credits: 3, hours: 3, unit: '財務金融系', semester: '四下' },
 		{ id: 'bd-6', name: '多語言與財經程式應用', group: null, groupNote: null, category: 'advanced', required: false, credits: 3, hours: 3, unit: '財務金融系', semester: '三下' },
 		{ id: 'bd-7', name: '大數據金融', group: null, groupNote: null, category: 'advanced', required: false, credits: 3, hours: 3, unit: '財務金融系', semester: '三上' },

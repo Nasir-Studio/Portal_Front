@@ -176,7 +176,6 @@ const API_URL = import.meta.env.PUBLIC_API_URL || 'https://api.nsir.uk';
             '</div></a>';
         }).join('');
 
-        
         if (window.__loadingPreload) {
           var urls = data.items.filter(function(p) { return p.image_url; }).map(function(p) { return p.image_url; });
           window.__loadingPreload(urls);

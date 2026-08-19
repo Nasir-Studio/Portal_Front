@@ -5,11 +5,11 @@ import Footer from '../../../shop/components/Footer.astro';
 const API_URL = import.meta.env.PUBLIC_API_URL || 'https://api.nsir.uk';
 
 export async function getStaticPaths() {
-  
+
   const apiUrl = import.meta.env.PUBLIC_API_URL || 'https://api.nsir.uk';
   const fallbackPaths = [{ params: { slug: '_placeholder' } }];
   try {
-    
+
     const pageSize = 48;
     const paths: { params: { slug: string } }[] = [];
     let page = 1;

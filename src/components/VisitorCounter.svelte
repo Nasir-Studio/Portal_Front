@@ -36,4 +36,3 @@
     image-rendering: auto;
   }
 </style>
-

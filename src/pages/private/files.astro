@@ -10,7 +10,6 @@ import FileManager from '../../components/files/FileManager.svelte';
     <title>檔案管理</title>
     <meta name="robots" content="noindex, nofollow" />
 
-    <!-- 🔐 Admin guard：非 admin 立即 redirect，不載入任何頁面內容 -->
     <script is:inline>
       (function () {
         try {
@@ -24,7 +23,7 @@ import FileManager from '../../components/files/FileManager.svelte';
         }
       })();
     </script>
-    
+
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y3XYZ3RKPZ"></script>
     <script is:inline>
       window.dataLayer = window.dataLayer || [];

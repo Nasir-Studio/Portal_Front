@@ -8,8 +8,6 @@ import {
 } from 'firebase/auth'
 import { getDatabase, ref, get, set } from 'firebase/database'
 
-
-
 const firebaseConfig = {
   apiKey: 'AIzaSyB59k0o7gtNJLJryq0CTXIgwYrk3DlcCiE',
   authDomain: 'nasircyl.firebaseapp.com',

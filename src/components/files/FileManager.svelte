@@ -1,12 +1,8 @@
 <script>
   import { onMount } from 'svelte';
 
-  
-  
-  
-  
   const API_BASE = (import.meta.env.PUBLIC_API_URL || '').replace(/\/+$/, '') + '/files';
-  
+
   const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
 
   let bucket = $state('');
@@ -224,7 +220,6 @@
 
   const breadcrumbs = $derived(prefix.split('/').filter(Boolean));
 
-  
   function registerTurnstileCallbacks() {
     window.fsTurnstileCallback = (token) => {
       turnstileToken = token;

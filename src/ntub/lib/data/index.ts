@@ -9,7 +9,6 @@ import { dataAnalysisVisualization } from './programs/data-analysis-visualizatio
 import { socialMediaMarketing } from './programs/social-media-marketing';
 import { eastAsiaLanguageBusiness } from './programs/east-asia-language-business';
 
-
 export const programs: Program[] = [
 	corporateSustainability,
 	innovationEntrepreneurship,
@@ -21,7 +20,6 @@ export const programs: Program[] = [
 	socialMediaMarketing,
 	eastAsiaLanguageBusiness
 ];
-
 
 export function getProgram(id: string): Program | undefined {
 	return programs.find((p) => p.id === id);

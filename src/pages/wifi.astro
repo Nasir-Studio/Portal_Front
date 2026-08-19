@@ -651,34 +651,31 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 (function () {
   'use strict';
 
-  // ===================== 常數 =====================
   var HOST_ID = 'owifi-host';
-  var CHUNK_SIZE = 64 * 1024;            // 64KB，低於各瀏覽器 WebRTC 訊息上限
-  var MAX_BUFFER = 8 * 1024 * 1024;      // 發送緩衝上限 8MB（backpressure）
-  var MAX_FILE = 2 * 1024 * 1024 * 1024; // 建議上限 2GB（瀏覽器記憶體限制）
+  var CHUNK_SIZE = 64 * 1024;
+  var MAX_BUFFER = 8 * 1024 * 1024;
+  var MAX_FILE = 2 * 1024 * 1024 * 1024;
 
-  // ===================== 狀態 =====================
-  var peer = null;          // 主要的 presence peer
+  var peer = null;
   var isHost = false;
-  var hostConn = null;      // member → host 的連線
-  var memberConns = {};     // host 端：member peerId → conn
-  var users = {};           // peerId → { peerId, name, device, icon, isHost, self }
+  var hostConn = null;
+  var memberConns = {};
+  var users = {};
   var myPeerId = '';
   var myName = defaultName();
   var myDevice = detectDevice();
   var reconnecting = false;
-  var noLan = false;        // 此網路上沒有其他裝置（跨網段，停止自動重連）
-  var hostRetries = 0;      // 外來房主占用時的搶房重試次數上限
-  var hostHandshakeDone = false; // 成員端：是否已完成 hello 握手
-  var transfers = {};       // fileId → outbound 傳輸狀態
-  var incoming = {};        // fileId → inbound 傳輸狀態
-  var outQueue = [];        // 待傳送的檔案佇列（同一個目標）
-  var outTarget = null;     // 目前佇列的目標使用者
+  var noLan = false;
+  var hostRetries = 0;
+  var hostHandshakeDone = false;
+  var transfers = {};
+  var incoming = {};
+  var outQueue = [];
+  var outTarget = null;
   var fileInput = null;
 
   function $(id) { return document.getElementById(id); }
 
-  // ===================== 工具函式 =====================
   function rand(n) {
     var s = '';
     var chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
@@ -733,11 +730,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
   function isSelf(id) { return id === myPeerId; }
 
-  // ===================== 同網段驗證（ICE candidate） =====================
-  // 只允許「同一個區域網路」的裝置互見與互傳。不同 Wi-Fi 的裝置只能靠
-  // STUN（srflx 公網位址）或 TURN（relay）連上，因此檢查 ICE 實際選中的
-  // candidate pair：兩端位址都是私有／迴圈／mDNS 位址才視為同一個網路。
-
   function sleep(ms) {
     return new Promise(function (r) { setTimeout(r, ms); });
   }
@@ -745,7 +737,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   function isPrivateIp(addr) {
     if (!addr) return false;
     var a = String(addr);
-    if (a.indexOf('.local') >= 0) return true;          // mDNS 遮蔽的內網位址
+    if (a.indexOf('.local') >= 0) return true;
     if (/^127\./.test(a) || /^10\./.test(a) || /^192\.168\./.test(a)) return true;
     if (/^172\.(1[6-9]|2\d|3[01])\./.test(a)) return true;
     if (a === '::1' || /^fe80:/i.test(a) || /^fc/i.test(a) || /^fd/i.test(a)) return true;
@@ -755,29 +747,20 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
   function pairIsLan(local, remote, mySrflx) {
     if (!local || !remote) return false;
-    // RTCIceCandidateStats 的 .type 是 'local-candidate'（.candidateType 才是候選型別）；
-    // RTCIceCandidate 物件則用 .type。因此優先取 candidateType。
     var lt = local.candidateType || local.type;
     var rt = remote.candidateType || remote.type;
-    if (lt === 'relay' || rt === 'relay') return false;  // TURN 中繼 → 跨網段
-    // 型別判斷：host-host ＝ 區域網路直連（某些瀏覽器的統計不帶位址，型別最可靠）
+    if (lt === 'relay' || rt === 'relay') return false;
     if (lt === 'host' && rt === 'host') return true;
-    // 位址判斷：srflx／prflx 等但兩端位址都是私有／迴圈／mDNS → 同一個網路
     var la = local.address || local.ip;
     var ra = remote.address || remote.ip;
     if (la && ra && isPrivateIp(la) && isPrivateIp(ra)) return true;
-    // 手機分享熱點：手機同時是基地台與上網出口，常常挑不到 host-host 直連，
-    // ICE 會改選「兩端都是同一個公網位址」的 srflx 對（NAT 髮夾通道）。
-    // 兩端共用同一個 egress 位址＝在同一個網路後方，視為同網段。
     if (la && ra && la === ra) return true;
-    // 非對稱情形：一端是私有位址、另一端等於我的 NAT 出口位址 → 同一網路。
     if (mySrflx) {
       if (la === mySrflx || ra === mySrflx) return true;
     }
     return false;
   }
 
-  // 除錯：URL 加 #dbg 會記錄每條連線的 ICE 判定結果（正式使用不受影響）
   var DBG = (location.hash + location.search).indexOf('dbg') >= 0;
   var dbgLogs = [];
   function dbgLog(tag, verdict, pair, state) {
@@ -798,7 +781,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     }).join('');
   }
 
-  // 除錯鉤子：只在 #dbg 開啟時暴露，供單元驗證與現場排查
   if (DBG) {
     window.__owifiDbg = {
       pairIsLan: pairIsLan,
@@ -810,7 +792,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   async function isLanConnection(conn, tag) {
     var pc = conn && conn.peerConnection;
     if (!pc) return false;
-    var mySrflx = null;   // 我的 NAT 出口位址（供非對稱判斷）
+    var mySrflx = null;
     var lastPair = null;
     var deadline = Date.now() + 12000;
     while (Date.now() < deadline) {
@@ -847,14 +829,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           if (state === 'failed' || state === 'disconnected' || state === 'closed') { dbgLog(tag, 'REJECT', lastPair, state); return false; }
           if ((state === 'connected' || state === 'completed') && Date.now() > deadline - 1200) { dbgLog(tag, 'WAN', lastPair, state); return false; }
         }
-      } catch (e) { /* 忽略，繼續輪詢 */ }
+      } catch (e) {  }
       await sleep(150);
     }
     dbgLog(tag, 'TIMEOUT', lastPair, pc.iceConnectionState);
     return false;
   }
 
-  // ===================== UI：使用者網格 =====================
   function userList() {
     return Object.keys(users)
       .map(function (k) { return users[k]; })
@@ -919,7 +900,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     });
   }
 
-  // ===================== UI：傳輸面板 =====================
   function upsertTxItem(fid, arrow, fname, targetLabel) {
     var panel = $('transferPanel');
     var el = document.querySelector('.tx-item[data-fid="' + fid + '"]');
@@ -958,8 +938,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     }, 3000);
   }
 
-  // ===================== UI：接收清單 =====================
-  // item: { name, url, from, meta, download:boolean, preview:boolean }
   function addReceivedItem(item) {
     var list = $('receivedList');
     var empty = list.querySelector('.empty-hint');
@@ -989,13 +967,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
     list.insertBefore(el, list.firstChild);
 
-    // 可預覽的檔案 / 文字訊息：自動嘗試開新分頁（部分瀏覽器會擋非手勢彈出，被擋不影響下載與清單）
     if (item.preview && window.open(item.url, '_blank') === null) {
-      /* 彈出被擋，使用者可從清單手動開啟 */
     }
   }
 
-  // ===================== Presence：PeerJS 啟動 =====================
   function bootstrap() {
     if (reconnecting) return;
     reconnecting = true;
@@ -1005,7 +980,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     users = {};
     renderUsers();
 
-    // 先嘗試成為房主（固定 ID），被占用代表房主存在 → 以成員身分連入
     var my = new Peer(HOST_ID, { debug: 1 });
     my.on('open', function (pid) {
       reconnecting = false;
@@ -1023,7 +997,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         setStatus('busy', '無法連線到 PeerJS 伺服器，3 秒後重試…');
         setTimeout(bootstrap, 3000);
       } else {
-        // server-error / browser-incompatible 等：嘗試以成員身分加入
         my.destroy();
         joinAsMember();
       }
@@ -1054,7 +1027,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     });
   }
 
-  // ===================== Presence：成為房主 =====================
   function becomeHost() {
     isHost = true;
     noLan = false;
@@ -1079,7 +1051,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   function broadcast(msg, exceptPeerId) {
     Object.keys(memberConns).forEach(function (pid) {
       if (pid === exceptPeerId) return;
-      try { memberConns[pid].send(msg); } catch (e) { /* ignore */ }
+      try { memberConns[pid].send(msg); } catch (e) {  }
     });
   }
 
@@ -1087,7 +1059,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     var pid = msg.peerId || conn.peer;
     if (!pid || pid === myPeerId) return;
 
-    // 成員改名
     if (msg.type === 'rename') {
       if (users[pid]) {
         users[pid].name = msg.name || users[pid].name;
@@ -1107,7 +1078,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       self: false
     };
     memberConns[pid] = conn;
-    // 新成員：完整名單；其他成員：告知有人加入
     if (!existed) {
       broadcast({ type: 'join', user: users[pid] }, pid);
       toast(msg.name + ' 已上線');
@@ -1126,7 +1096,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     renderUsers();
   }
 
-  // ===================== Presence：成為成員 =====================
   function becomeMember() {
     isHost = false;
     hostHandshakeDone = false;
@@ -1145,16 +1114,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
     hostConn = peer.connect(HOST_ID, { reliable: true, metadata: { kind: 'presence' } });
 
-    // 連線一建立就開始同網段檢查（不等 open；跨網段或已失聯的房主可能永遠不觸發 open）
     var hostCheck = isLanConnection(hostConn, 'member');
     hostCheck.then(function (ok) {
       if (ok || noLan) return;
-      // 確認與房主不同網段：可能是舊房主在其他網路占用房間。
-      // 先顯示空狀態，稍後重試搶房（同一網路的裝置就能聚到新房主下）。
       noLan = true;
       setStatus('off', '此網路上沒有其他裝置');
       renderUsers();
-      try { hostConn.close(); } catch (e) { /* ignore */ }
+      try { hostConn.close(); } catch (e) {  }
       scheduleHostRetry();
     });
 
@@ -1182,9 +1148,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     });
   }
 
-  // 成員端：與房主的連線被關閉／出錯時的處置
-  // 外來房主占用（例如別的網路上的舊分頁）：驗證失敗不等於「本網路沒人」，
-  // 可能是房主在別的網路。延遲重試搶房一次；舊房主關閉後就能接管成為新房主。
   function scheduleHostRetry() {
     if (hostRetries >= 2) return;
     hostRetries++;
@@ -1198,12 +1161,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   function handleHostDrop(hostCheck) {
     if (reconnecting || noLan) return;
     if (hostHandshakeDone) {
-      // 已建立連線後斷開 → 房主離線，重新連線（嘗試成為新房主）
       setStatus('busy', '房主已離線，重新連線中…');
       bootstrap();
       return;
     }
-    // 握手未完成就被關閉：等我們對同一條連線的檢查結果再決定
     hostCheck.then(function (ok) {
       if (noLan || hostHandshakeDone) return;
       if (!ok) {
@@ -1256,11 +1217,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     }
   }
 
-  // ===================== Presence：共用連線入口 =====================
   function handleIncomingConn(conn) {
     var kind = conn.metadata && conn.metadata.kind;
     var verified = false;
-    var pending = [];   // 同網段驗證前暫存的訊息
+    var pending = [];
 
     conn.on('data', function (d) {
       if (!verified) { pending.push(d); return; }
@@ -1277,12 +1237,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       if (kind === 'presence' && isHost) onMemberLeave(conn.peer);
     });
 
-    // 先確認連線走的是區域網路直連（host-host），才允許加入／收檔
     isLanConnection(conn, 'incoming').then(function (ok) {
       if (!ok) {
-        // 跨網段：presence 靜默忽略；transfer 中止接收
         if (kind === 'transfer') abortIncomingTransfer(conn);
-        try { conn.close(); } catch (e) { /* ignore */ }
+        try { conn.close(); } catch (e) {  }
         return;
       }
       verified = true;
@@ -1301,7 +1259,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
   function destroyPeer() {
     if (peer) {
-      try { peer.destroy(); } catch (e) { /* ignore */ }
+      try { peer.destroy(); } catch (e) {  }
       peer = null;
     }
     hostConn = null;
@@ -1309,7 +1267,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     isHost = false;
   }
 
-  // ===================== 改名 =====================
   function renameMe() {
     var next = prompt('輸入你的顯示名稱：', myName);
     if (next === null) return;
@@ -1329,9 +1286,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     }
   }
 
-  // ===================== 傳輸：文字訊息 =====================
   var textTarget = null;
-  var textSends = {};   // textId → { conn, peer }
+  var textSends = {};
 
   function openTextModal(peerId) {
     var u = users[peerId];
@@ -1401,8 +1357,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     finishTxItem(tid, true);
     updateTxProgress(tid, 100, '已送達');
     toast('訊息已送達');
-    try { t.conn && t.conn.close(); } catch (e) { /* ignore */ }
-    try { t.peer.destroy(); } catch (e) { /* ignore */ }
+    try { t.conn && t.conn.close(); } catch (e) {  }
+    try { t.peer.destroy(); } catch (e) {  }
   }
 
   function abortTextSend(tid, reason) {
@@ -1412,11 +1368,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     finishTxItem(tid, false);
     updateTxProgress(tid, 0, reason);
     toast('訊息傳送失敗：' + reason, 'bad');
-    try { t.conn && t.conn.close(); } catch (e) { /* ignore */ }
-    try { t.peer.destroy(); } catch (e) { /* ignore */ }
+    try { t.conn && t.conn.close(); } catch (e) {  }
+    try { t.peer.destroy(); } catch (e) {  }
   }
 
-  // ===================== 傳輸：發送端 =====================
   function selectTarget(peerId) {
     var u = users[peerId];
     if (!u || u.peerId === myPeerId) return;
@@ -1557,7 +1512,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         t.sentBytes += buf.byteLength;
         i++;
 
-        // 速度計算（每秒更新）
         var now = performance.now();
         var dt = now - t.lastTick;
         if (dt >= 800) {
@@ -1584,8 +1538,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     finishTxItem(fid, false);
     updateTxProgress(fid, 0, reason);
     toast('傳送失敗：' + reason, 'bad');
-    try { t.conn && t.conn.close(); } catch (e) { /* ignore */ }
-    try { t.peer.destroy(); } catch (e) { /* ignore */ }
+    try { t.conn && t.conn.close(); } catch (e) {  }
+    try { t.peer.destroy(); } catch (e) {  }
     delete transfers[fid];
   }
 
@@ -1593,20 +1547,18 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     var t = transfers[fid];
     if (!t) return;
     t.aborted = true;
-    delete transfers[fid];  // 先移除狀態，避免 conn.close 觸發 abort
+    delete transfers[fid];
     finishTxItem(fid, true);
     updateTxProgress(fid, 100, '\u2192 ' + t.target.name + ' · 完成');
     toast('已傳送給 ' + t.target.name);
-    try { t.conn && t.conn.close(); } catch (e) { /* ignore */ }
-    try { t.peer.destroy(); } catch (e) { /* ignore */ }
+    try { t.conn && t.conn.close(); } catch (e) {  }
+    try { t.peer.destroy(); } catch (e) {  }
     if (outQueue.length > 0) startOutboundTransfer();
   }
 
-  // ===================== 傳輸：接收端 =====================
   function handleIncomingTransfer(conn, msg) {
     if (!msg || !msg.type) return;
 
-    // 文字訊息
     if (msg.type === 'text') {
       var senderName = '未知使用者';
       if (msg.from) senderName = msg.from;
@@ -1627,7 +1579,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         preview: true
       });
       toast('收到來自 ' + senderName + ' 的訊息', 'good');
-      try { conn.send({ type: 'text-ack', textId: msg.textId }); } catch (e) { /* ignore */ }
+      try { conn.send({ type: 'text-ack', textId: msg.textId }); } catch (e) {  }
       return;
     }
 
@@ -1636,7 +1588,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     if (msg.type === 'meta') {
       if (incoming[fid]) return;
       if (msg.size > MAX_FILE) {
-        try { conn.send({ type: 'error', fileId: fid, message: '檔案太大' }); } catch (e) { /* ignore */ }
+        try { conn.send({ type: 'error', fileId: fid, message: '檔案太大' }); } catch (e) {  }
         return;
       }
       var senderName = '未知使用者';
@@ -1660,7 +1612,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         from: conn.peer
       };
       upsertTxItem(fid, '\u2193', msg.name, '來自 ' + senderName + ' · 接收中');
-      try { conn.send({ type: 'ack', fileId: fid }); } catch (e) { /* ignore */ }
+      try { conn.send({ type: 'ack', fileId: fid }); } catch (e) {  }
 
     } else if (msg.type === 'chunk') {
       var inc = incoming[fid];
@@ -1673,11 +1625,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       var p = Math.round((inc.received / inc.size) * 100);
       updateTxProgress(fid, p, '來自 ' + inc.senderName + ' · ' + p + '%');
       if (inc.received >= inc.size) {
-        try { conn.send({ type: 'done-ack', fileId: fid }); } catch (e) { /* ignore */ }
+        try { conn.send({ type: 'done-ack', fileId: fid }); } catch (e) {  }
         finalizeIncoming(fid);
       }
     } else if (msg.type === 'done') {
-      // 保險：done 到達但尚未收滿（理論上不會）
     }
   }
 
@@ -1698,7 +1649,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     updateTxProgress(fid, 100, '來自 ' + inc.senderName + ' · 完成');
     toast('收到 ' + inc.name + '（來自 ' + inc.senderName + '）', 'good');
 
-    // 自動觸發下載（某些瀏覽器會改為預覽，清單仍可重新下載）
     var a = document.createElement('a');
     a.href = url;
     a.download = inc.name;
@@ -1719,7 +1669,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     });
   }
 
-  // ===================== 啟動 =====================
   window.addEventListener('DOMContentLoaded', function () {
     $('myName').textContent = myName;
     $('myName').addEventListener('click', renameMe);
@@ -1742,7 +1691,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       fileInput.value = '';
     });
 
-    // 文字訊息 modal
     $('textSend').addEventListener('click', submitText);
     $('textCancel').addEventListener('click', closeTextModal);
     $('textField').addEventListener('keydown', function (e) {
@@ -1765,12 +1713,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     ta.style.opacity = '0';
     document.body.appendChild(ta);
     ta.select();
-    try { document.execCommand('copy'); } catch (e) { /* ignore */ }
+    try { document.execCommand('copy'); } catch (e) {  }
     ta.remove();
     done();
   }
 
-  // 頁面回到前景時，若與房主失聯則重連
   document.addEventListener('visibilitychange', function () {
     if (!document.hidden && peer && !isHost && hostConn && !hostConn.open && !reconnecting && !noLan) {
       bootstrap();

@@ -146,22 +146,17 @@ const totalPages = Math.ceil(regionCams.length / PAGE_SIZE);
         var cctvSvg = '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>';
         var base = '/cctv';
 
-        
-        
-        
         function isIOS() {
           return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
                  (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
         }
-        
+
         function isThbUrl(u) { return u.indexOf('.thb.gov.tw') !== -1; }
         var IOS = isIOS();
         var SNAP_INTERVAL = 3000;
 
-        
         var inited = new WeakSet();
-        
-        
+
         function startSnapshotPoll(img, snapBase) {
           var parent = img.parentNode;
           var tick = function() {
@@ -177,19 +172,19 @@ const totalPages = Math.ceil(regionCams.length / PAGE_SIZE);
           tick();
           img._timer = setInterval(tick, SNAP_INTERVAL);
         }
-        
+
         function stopSnapshotPoll(img) {
           if (img && img._timer) { clearInterval(img._timer); img._timer = null; }
         }
-        
+
         var observer = new IntersectionObserver(function(entries) {
           entries.forEach(function(entry) {
             var el = entry.target;
             var url = el.dataset.url;
             var type = el.dataset.type;
-            
+
             if (type === 'hls') {
-              
+
               return;
             }
             var img = el.querySelector('img');
@@ -202,14 +197,14 @@ const totalPages = Math.ceil(regionCams.length / PAGE_SIZE);
                 img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;position:absolute;inset:0';
                 el.appendChild(img);
                 if (IOS && isThbUrl(url)) {
-                  
+
                   startSnapshotPoll(img, url + '/snapshot');
                 } else {
                   img.onerror = function() { img.remove(); showNoSignal(el); };
                   img.src = url;
                 }
               } else if (img && img.dataset.snap && !img._timer) {
-                
+
                 var snap = img.dataset.snap;
                 img.src = snap + '?_=' + Date.now();
                 img._timer = setInterval(function() {
@@ -218,24 +213,23 @@ const totalPages = Math.ceil(regionCams.length / PAGE_SIZE);
                 }, SNAP_INTERVAL);
               }
             } else if (img && img._timer) {
-              
+
               stopSnapshotPoll(img);
             }
           });
         }, { rootMargin: '200px' });
-        
+
         function observeMedia() {
           document.querySelectorAll('#camGrid .cam-media[data-url]').forEach(function(v) {
             if (v.dataset.type === 'hls') {
-              
+
               HlsBudget.observe(v, v.dataset.url);
             } else if (!inited.has(v)) {
               observer.observe(v);
             }
           });
         }
-        
-        
+
         var remaining = [];
         try {
           var scriptTag = document.getElementById('camDataRemaining');
@@ -243,18 +237,18 @@ const totalPages = Math.ceil(regionCams.length / PAGE_SIZE);
             remaining = JSON.parse(scriptTag.textContent);
           }
         } catch(e) {}
-        
+
         var pageSize = 50;
         var loadMoreBtn = document.getElementById('loadMoreBtn');
         var pageInfo = document.getElementById('pageInfo');
         var camGrid = document.getElementById('camGrid');
         var totalCamCount = parseInt((document.getElementById('camCount') || {}).textContent) || 0;
         var shownCount = 0;
-        
+
         function escHtml(s) {
           return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
         }
-        
+
         function createCardHtml(cam) {
           var city = cam.city || cam.region || '';
           return '<div class="cam-card">' +
@@ -271,31 +265,28 @@ const totalPages = Math.ceil(regionCams.length / PAGE_SIZE);
             '</div>' +
           '</div>';
         }
-        
+
         function loadMore() {
           if (remaining.length === 0) return;
-          
+
           var batch = remaining.splice(0, pageSize);
           var html = '';
           for (var i = 0; i < batch.length; i++) {
             html += createCardHtml(batch[i]);
           }
-          
-          
+
           var temp = document.createElement('div');
           temp.innerHTML = html;
           var fragment = document.createDocumentFragment();
           while (temp.firstChild) {
             fragment.appendChild(temp.firstChild);
           }
-          
-          
+
           var loadMoreWrap = document.getElementById('loadMoreWrap');
           camGrid.insertBefore(fragment, loadMoreWrap);
-          
+
           shownCount += batch.length;
-          
-          
+
           var newMedia = camGrid.querySelectorAll('.cam-media[data-url]');
           newMedia.forEach(function(v) {
             if (v.dataset.type === 'hls') {
@@ -304,8 +295,7 @@ const totalPages = Math.ceil(regionCams.length / PAGE_SIZE);
               observer.observe(v);
             }
           });
-          
-          
+
           var total = shownCount;
           var remainingCount = remaining.length;
           if (pageInfo) {
@@ -315,7 +305,7 @@ const totalPages = Math.ceil(regionCams.length / PAGE_SIZE);
               pageInfo.textContent = '（共' + total + '台）';
             }
           }
-          
+
           if (remaining.length === 0) {
             loadMoreBtn.disabled = true;
             loadMoreBtn.textContent = '已全部載入';
@@ -323,7 +313,7 @@ const totalPages = Math.ceil(regionCams.length / PAGE_SIZE);
             loadMoreBtn.textContent = '載入更多（+' + Math.min(pageSize, remaining.length) + '）';
           }
         }
-        
+
         if (loadMoreBtn) {
           loadMoreBtn.addEventListener('click', loadMore);
           shownCount = document.querySelectorAll('#camGrid .cam-card').length;
@@ -337,8 +327,7 @@ const totalPages = Math.ceil(regionCams.length / PAGE_SIZE);
             if (pageInfo) pageInfo.textContent = '（共' + shownCount + '台）';
           }
         }
-        
-        
+
         observeMedia();
       });
     })();

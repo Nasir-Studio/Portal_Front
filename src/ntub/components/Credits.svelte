@@ -22,19 +22,16 @@
 		return $checkedCourses.has(courseId);
 	}
 
-	
 	function courseIsMine(course: Course): boolean {
 		const dept = $myDept;
 		if (!dept) return false;
 		return course.unit.includes(dept);
 	}
 
-	
 	function deptCredits(program: Program): number {
 		return program.courses.filter((c) => courseIsMine(c)).reduce((sum, c) => sum + c.credits, 0);
 	}
 
-	
 	function extCredits(program: Program): number {
 		return program.courses.filter((c) => !courseIsMine(c)).reduce((sum, c) => sum + c.credits, 0);
 	}

@@ -28,7 +28,6 @@ body {
   color: #ffffff;
 }
 
-/* Leaflet overrides - light theme */
 .leaflet-container {
   background: #f0f0f0 !important;
   font-family: inherit;
@@ -55,7 +54,6 @@ body {
   color: #737373 !important;
 }
 
-/* Scrollbar */
 ::-webkit-scrollbar {
   width: 4px;
 }
@@ -73,7 +71,6 @@ body {
   background: #a3a3a3;
 }
 
-/* Opening animation */
 @keyframes fade-up {
   from {
     opacity: 0;
@@ -143,7 +140,6 @@ body {
   animation: rec-dot 1.5s ease-in-out infinite;
 }
 
-/* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .animate-fade-up,
   .animate-fade-in,
@@ -157,14 +153,12 @@ body {
   }
 }
 
-/* Panel */
 .panel {
   background: rgba(255, 255, 255, 0.95);
   border: 1px solid rgba(0, 0, 0, 0.06);
   border-radius: 12px;
 }
 
-/* Status dot */
 .status-dot {
   width: 6px;
   height: 6px;

@@ -84,7 +84,6 @@ document.addEventListener('DOMContentLoaded', async function() {
     return;
   }
 
-  
   document.getElementById('profile-name').value = user.name || '';
   document.getElementById('profile-email').value = user.email || '';
   document.getElementById('profile-phone').value = user.phone || '';
@@ -92,7 +91,6 @@ document.addEventListener('DOMContentLoaded', async function() {
 
   document.getElementById('account-content').style.display = 'grid';
 
-  
   try {
     var profileRes = await fetch(API_URL + '/api/auth/me', {
       headers: { 'Authorization': 'Bearer ' + token },
@@ -246,7 +244,6 @@ document.addEventListener('DOMContentLoaded', async function() {
           '</div>';
       }).join('');
 
-      
       if (expandedOrderId) {
         loadOrderDetail(expandedOrderId);
       }
@@ -471,7 +468,6 @@ document.addEventListener('DOMContentLoaded', async function() {
   .detail-loading { text-align: center; padding: var(--sp-6); font-size: var(--text-sm); color: var(--c-text-light); }
   .detail-loading.error { color: var(--c-error); }
 
-  
   .status-steps { display: flex; flex-wrap: wrap; align-items: center; gap: 0; padding: var(--sp-3) 0; }
   .status-step { display: flex; flex-direction: column; align-items: center; gap: var(--sp-1); }
   .step-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--c-border); transition: background var(--duration) var(--ease); }

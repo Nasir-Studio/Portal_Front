@@ -110,7 +110,7 @@ const base = '/cctv';
             var isThb = url.indexOf('.thb.gov.tw') !== -1;
 
             if (isYt) {
-              
+
               var ytId = (url.match(/\/vi\/([^/]+)\//) || [])[1] || '';
               if (!ytId) { showNoSignal(camPreview); }
               else {
@@ -144,7 +144,7 @@ const base = '/cctv';
                   if (data.fatal) {
                     hlsRetries++;
                     if (hlsRetries <= MAX_HLS_RETRIES) {
-                      
+
                       setTimeout(function() {
                         try { hls.startLoad(); } catch(e) {}
                       }, 2000);
@@ -160,7 +160,7 @@ const base = '/cctv';
                 showNoSignal(camPreview);
               }
             } else if (IOS && isThb) {
-              
+
               var snapImg = document.createElement('img');
               snapImg.alt = cam.name || '';
               snapImg.style.cssText = 'width:100%;height:100%;object-fit:contain;display:block;background:#1a1a1a';
@@ -177,8 +177,7 @@ const base = '/cctv';
               var liveImg = document.createElement('img');
               liveImg.alt = cam.name || '';
               liveImg.style.cssText = 'width:100%;height:100%;object-fit:contain;display:block;background:#1a1a1a';
-              
-              
+
               liveImg.onerror = function() { liveImg.remove(); showNoSignal(camPreview); };
               liveImg.src = url;
               camPreview.appendChild(liveImg);

@@ -380,7 +380,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
   const user = currentUser();
   if (user === null) {
-    // 未登入時 vip-module 保持隱藏，直接 redirect
     requireAuth('/reserve/');
   } else {
     const vipMod = document.querySelector('#vip-module');
@@ -393,7 +392,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   function renderVip(): void {
     if (vipBody === null) return;
     const u = currentUser()!;
-    // 已登入（requireAuth 保證），直接顯示 VIP 使用者資訊
     vipBody.replaceChildren();
     const wrap = document.createElement('div');
     wrap.className = 'vip-user';

@@ -1,8 +1,6 @@
 ---
 ---
 
-
-
 <header class="header">
   <div id="announcement-banner" class="announcement-bar">
     <div class="announcement-inner">
@@ -110,7 +108,7 @@
 </header>
 
 <script is:inline>
-  
+
   window.escHtml = function(s) {
     if (!s) return '';
     return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
@@ -177,7 +175,6 @@
       } catch(e) {}
     }
 
-    
     var adminLink = document.getElementById('admin-link');
     if (adminLink) {
       adminLink.addEventListener('click', function(e) {
@@ -299,7 +296,6 @@
     background: var(--c-bg);
   }
 
-  
   .announcement-bar {
     background: var(--c-bg-dark);
     color: var(--c-text-inverse);
@@ -341,7 +337,6 @@
     .announcement-text { font-size: var(--text-xs); }
   }
 
-  
   .topbar {
     background: var(--c-bg-dark);
     color: rgba(255, 255, 255, 0.72);
@@ -358,7 +353,6 @@
   .topbar a:hover { color: #fff; }
   .topbar-sep { margin: 0 0.5rem; color: rgba(255,255,255,0.3); }
 
-  
   .header-main {
     display: flex;
     align-items: center;
@@ -388,7 +382,6 @@
     color: var(--c-text-light);
   }
 
-  
   .menubar-wrap {
     border-top: 1px solid var(--c-border);
     border-bottom: 2px solid var(--c-bg-dark);
@@ -424,7 +417,6 @@
   }
   .menu-cta:hover { background: #000; color: #fff; }
 
-  
   .header-actions {
     display: flex;
     align-items: center;
@@ -598,7 +590,6 @@
     color: var(--c-text);
   }
 
-  
   .mobile-nav {
     display: none;
     flex-direction: column;

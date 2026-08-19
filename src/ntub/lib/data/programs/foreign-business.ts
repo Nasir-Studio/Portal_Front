@@ -1,6 +1,5 @@
 import type { Program } from '$ntub/types';
 
-
 export const foreignBusiness: Program = {
 	id: 'foreign-business',
 	name: '外語與商務學分學程',
@@ -26,7 +25,7 @@ export const foreignBusiness: Program = {
 		detail: '欲取得本學分學程證明之學生，應至少修畢 15 學分（含核心課程應修習至少三門、進階課程至少四門）。惟課程名稱及內容相同之科目，不得重複修習。'
 	},
 	courses: [
-		
+
 		{ id: 'fb-1', name: '日語(一)(二)(三)(四)', group: '日語', groupNote: '核心課程語言類', category: 'core', required: false, credits: 2, hours: 2, unit: '國際商務系 / 應用外語系', note: '2/2 或 3/3' },
 		{ id: 'fb-2', name: '日語字彙與會話', group: '日語', groupNote: '核心課程語言類', category: 'core', required: false, credits: 2, hours: 2, unit: '應用外語系' },
 		{ id: 'fb-3', name: '日語閱讀與文法', group: '日語', groupNote: '核心課程語言類', category: 'core', required: false, credits: 2, hours: 2, unit: '應用外語系' },
@@ -44,7 +43,7 @@ export const foreignBusiness: Program = {
 		{ id: 'fb-15', name: '德語字彙與會話', group: '德語', groupNote: '核心課程語言類', category: 'core', required: false, credits: 2, hours: 2, unit: '應用外語系' },
 		{ id: 'fb-16', name: '德語閱讀與文法', group: '德語', groupNote: '核心課程語言類', category: 'core', required: false, credits: 2, hours: 2, unit: '應用外語系' },
 		{ id: 'fb-17', name: '德語(一)(二)', group: '德語', groupNote: '核心課程語言類', category: 'core', required: false, credits: 3, hours: 3, unit: '應用外語系' },
-		
+
 		{ id: 'fb-18', name: '現代商業導論與學習方法', group: null, groupNote: null, category: 'advanced', required: false, credits: 2, hours: 2, unit: '國際商務系 / 應用外語系' },
 		{ id: 'fb-19', name: '國際行銷', group: null, groupNote: null, category: 'advanced', required: false, credits: 2, hours: 2, unit: '國際商務系 / 應用外語系' },
 		{ id: 'fb-20', name: '全球運籌管理', group: null, groupNote: null, category: 'advanced', required: false, credits: 2, hours: 2, unit: '國際商務系' },

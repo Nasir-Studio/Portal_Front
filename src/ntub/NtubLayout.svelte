@@ -27,7 +27,6 @@
   }
 </script>
 
-
 <div class="ntub-topbar">
   <div class="ntub-topbar__inner">
     <span class="ntub-topbar__left">OviNas</span>
@@ -41,7 +40,6 @@
   </div>
 </div>
 
-
 <div class="ntub-header-main">
   <a class="ntub-brand" href="/">
     <SheepLogo size={58} />
@@ -50,7 +48,6 @@
     </span>
   </a>
 </div>
-
 
 <div class="ntub-menubar-wrap">
   <nav class="ntub-menubar" aria-label="主導覽">
@@ -62,7 +59,6 @@
     <a class="ntub-menu-link ntub-menu-cta" href="/reserve/">預約系統</a>
   </nav>
 </div>
-
 
 <header class="ntub-site-header">
   <div class="ntub-header-inner">
@@ -107,7 +103,7 @@
 </footer>
 
 <style>
-  
+
   .ntub-topbar,
   .ntub-header-main,
   .ntub-menubar-wrap,
@@ -130,7 +126,6 @@
     --t: 200ms var(--ease);
   }
 
-  
   .ntub-topbar {
     background: var(--ink);
     color: rgba(255, 255, 255, 0.72);
@@ -163,7 +158,6 @@
     color: rgba(255, 255, 255, 0.3);
   }
 
-  
   .ntub-header-main {
     width: min(1080px, 100% - 2.5rem);
     margin-inline: auto;
@@ -199,7 +193,6 @@
     letter-spacing: 0.16em;
   }
 
-  
   .ntub-menubar-wrap {
     border-top: 1px solid var(--border);
     border-bottom: 2px solid var(--ink);
@@ -249,7 +242,6 @@
     color: var(--white);
   }
 
-  
   .ntub-site-header {
     position: sticky;
     top: 0;

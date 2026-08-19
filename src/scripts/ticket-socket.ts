@@ -75,7 +75,7 @@ async function connectTicketSocketInternal(): Promise<void> {
         const data = JSON.parse(String(event.data)) as TicketEvent;
         if (data.type === 'ticket_event' && activeHandler !== null) activeHandler(data);
       } catch {
-        
+
       }
     });
     socket.addEventListener('close', () => {

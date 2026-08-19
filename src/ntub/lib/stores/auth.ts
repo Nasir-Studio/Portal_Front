@@ -18,30 +18,25 @@ export interface AppUser {
 	name: string;
 }
 
-
 export const currentUser = writable<AppUser | null>(null);
 
 export const authReady = writable(false);
-
 
 export async function loginWithEmail(email: string, password: string): Promise<void> {
 	const auth = getAuthInstance();
 	await signInWithEmailAndPassword(auth, email, password);
 }
 
-
 export async function registerWithEmail(email: string, password: string): Promise<void> {
 	const auth = getAuthInstance();
 	await createUserWithEmailAndPassword(auth, email, password);
 }
-
 
 export async function loginWithGoogle(): Promise<void> {
 	const auth = getAuthInstance();
 	const provider = new GoogleAuthProvider();
 	await signInWithPopup(auth, provider);
 }
-
 
 export async function logout(): Promise<void> {
 	await fbSignOut(getAuthInstance());

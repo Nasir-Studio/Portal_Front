@@ -448,7 +448,6 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   import { currentUser, requireAuth } from '../../scripts/auth';
   import { connectTicketSocket } from '../../scripts/ticket-socket';
 
-  // 未登入立即跳走，不顯示任何頁面內容
   requireAuth('/tickets/');
   const shell = document.getElementById('page-shell');
   if (shell) shell.hidden = false;
@@ -521,8 +520,6 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     el.textContent = STATUS_LABEL[status];
     return el;
   }
-
-  // requireLogin 已由 requireAuth() 在 script 頂部統一處理
 
   function showView(name: 'list' | 'detail'): void {
     viewName = name;
@@ -658,7 +655,6 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     const actions = document.createElement('div');
     actions.className = 'detail-actions';
 
-    
     const replyForm = document.createElement('form');
     replyForm.className = 'reply-form';
     const replyTextarea = document.createElement('textarea');
@@ -695,7 +691,6 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     });
     actions.append(replyForm);
 
-    
     const uploadRow = document.createElement('div');
     uploadRow.className = 'upload-row';
     const fileInput = document.createElement('input');
@@ -755,7 +750,6 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     detailCard.replaceChildren(head, body, images, replies, actions);
   }
 
-  
   newTicketBtn?.addEventListener('click', () => {
     if (newTicketWrap === null) return;
     newTicketWrap.hidden = !newTicketWrap.hidden;
@@ -832,7 +826,6 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     }
   });
 
-  
   window.addEventListener('popstate', () => {
     const params = new URLSearchParams(window.location.search);
     const id = params.get('id');
@@ -846,10 +839,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     }
   });
 
-  
   const params = new URLSearchParams(window.location.search);
   const id = params.get('id');
-  // user 一定存在（requireAuth() 在頂部已保證）
   if (id !== null && Number.isInteger(Number(id)) && Number(id) > 0) {
     void openDetail(Number(id));
   } else {
@@ -857,8 +848,6 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     void loadList();
   }
 
-  
-  
   if (user !== null) {
     let refreshTimer: ReturnType<typeof setTimeout> | null = null;
     const refreshView = (): void => {

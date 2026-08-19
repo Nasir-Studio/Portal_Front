@@ -131,7 +131,7 @@
 </script>
 
 <div class="life-wrap">
-  
+
   <div class="control-panel module">
     <div class="panel-left">
       <span class="panel-label">選擇縣市：</span>

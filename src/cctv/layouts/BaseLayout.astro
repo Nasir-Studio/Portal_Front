@@ -18,7 +18,7 @@ const base = '/cctv';
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="羊在偷看你" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-  
+
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y3XYZ3RKPZ"></script>
   <script is:inline>
     window.dataLayer = window.dataLayer || [];
@@ -159,7 +159,6 @@ const base = '/cctv';
 
   <script>
     (function() {
-      // PWA：註冊 /cctv service worker（放在最前，避免 loader 早退時被跳過）
       if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('/cctv/sw.js', { updateViaCache: 'none' }).catch(function() {});
       }
@@ -217,7 +216,7 @@ const base = '/cctv';
   </script>
 
   <script is:inline>
-    
+
     var hc = new Image();
     hc.src = 'https://www.hitwebcounter.com/counter/counter.php?page=21514902&style=0001&nbdigits=8&type=page';
   </script>

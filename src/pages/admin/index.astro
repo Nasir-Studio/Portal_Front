@@ -576,7 +576,6 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   import { currentUser, isAdmin, logout, requireAdmin } from '../../scripts/auth';
   import { connectTicketSocket } from '../../scripts/ticket-socket';
 
-  // 非 admin 立即 redirect，不顯示任何內容
   requireAdmin('/admin/');
   const shell = document.getElementById('page-shell');
   if (shell) shell.hidden = false;
@@ -652,7 +651,6 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     return el;
   }
 
-  // requireAdmin() 在頂部已確保是 admin，直接進入 admin UI
   {
     const user = currentUser()!;
     const wrap = document.createElement('div');
@@ -1322,8 +1320,6 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
     void loadTickets();
 
-    
-    
     let refreshTimer: ReturnType<typeof setTimeout> | null = null;
     const refreshView = (): void => {
       if (refreshTimer !== null) clearTimeout(refreshTimer);

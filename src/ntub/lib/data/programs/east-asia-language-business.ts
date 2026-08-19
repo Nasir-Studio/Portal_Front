@@ -1,6 +1,5 @@
 import type { Program } from '$ntub/types';
 
-
 export const eastAsiaLanguageBusiness: Program = {
 	id: 'east-asia-language-business',
 	name: '東亞語言與商務微學程',
@@ -26,7 +25,7 @@ export const eastAsiaLanguageBusiness: Program = {
 		detail: '欲取得本學程證明之學生，應至少修畢 8 學分（含核心必修課程：4 學分、專業選修課程：至少 4 學分）。課程名稱及內容相同之科目，不得重複修習。'
 	},
 	courses: [
-		
+
 		{ id: 'ea-1', name: '日語(一)(二)(三)(四)', group: '核心語言擇一', groupNote: '核心課程為四種語言課程擇一種修習，至少修習 4 學分，採認 4 學分', category: 'core', required: false, credits: 2, hours: 2, unit: '國際商務系 / 應用外語系', note: '2/2 或 3/3' },
 		{ id: 'ea-2', name: '日語字彙與會話', group: '日語', groupNote: '核心課程語言類', category: 'core', required: false, credits: 2, hours: 2, unit: '應用外語系' },
 		{ id: 'ea-3', name: '日語閱讀與文法', group: '日語', groupNote: '核心課程語言類', category: 'core', required: false, credits: 2, hours: 2, unit: '應用外語系' },
@@ -35,7 +34,7 @@ export const eastAsiaLanguageBusiness: Program = {
 		{ id: 'ea-6', name: '實用韓語', group: '韓語', groupNote: '核心課程語言類', category: 'core', required: false, credits: 2, hours: 2, unit: '應用外語系' },
 		{ id: 'ea-7', name: '越南語(一)(二)', group: '越南語', groupNote: '核心課程語言類', category: 'core', required: false, credits: 2, hours: 2, unit: '國際商務系' },
 		{ id: 'ea-8', name: '泰國語(一)(二)', group: '泰國語', groupNote: '核心課程語言類', category: 'core', required: false, credits: 2, hours: 2, unit: '國際商務系' },
-		
+
 		{ id: 'ea-9', name: '現代商業導論與學習方法', group: null, groupNote: null, category: 'advanced', required: false, credits: 2, hours: 2, unit: '國際商務系 / 應用外語系' },
 		{ id: 'ea-10', name: '國際行銷', group: null, groupNote: null, category: 'advanced', required: false, credits: 2, hours: 2, unit: '國際商務系 / 應用外語系' },
 		{ id: 'ea-11', name: '全球運籌管理', group: null, groupNote: null, category: 'advanced', required: false, credits: 2, hours: 2, unit: '國際商務系' },

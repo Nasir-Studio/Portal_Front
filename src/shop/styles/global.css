@@ -1,7 +1,5 @@
-/* 小羊農場設計系統：極簡黑·白·灰 */
 
 :root {
-  /* Colors */
   --c-bg: #ffffff;
   --c-bg-alt: #f7f7f7;
   --c-bg-dark: #1a1a1a;
@@ -19,7 +17,6 @@
   --c-danger: #c53030;
   --c-bg-light: #f7f7f7;
 
-  /* Typography */
   --font-sans: 'Noto Sans TC', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-mono: 'SF Mono', 'Fira Code', monospace;
 
@@ -37,7 +34,6 @@
   --leading-normal: 1.6;
   --leading-relaxed: 1.8;
 
-  /* Spacing */
   --sp-1: 0.25rem;
   --sp-2: 0.5rem;
   --sp-3: 0.75rem;
@@ -51,27 +47,22 @@
   --sp-20: 5rem;
   --sp-24: 6rem;
 
-  /* Layout */
   --max-w: 1200px;
   --max-w-sm: 640px;
   --max-w-md: 768px;
   --max-w-lg: 1024px;
 
-  /* Borders */
   --radius: 2px;
   --radius-sm: 1px;
 
-  /* Transitions */
   --ease: cubic-bezier(0.4, 0, 0.2, 1);
   --duration: 0.2s;
 
-  /* Shadows */
   --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
   --shadow: 0 2px 8px rgba(0,0,0,0.06);
   --shadow-lg: 0 8px 24px rgba(0,0,0,0.08);
 }
 
-/* Reset */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 html {
@@ -104,12 +95,10 @@ input, textarea, select { font: inherit; color: inherit; }
 
 ::selection { background: var(--c-bg-dark); color: var(--c-text-inverse); }
 
-/* Scrollbar */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--c-border-dark); border-radius: 3px; }
 
-/* Container */
 .container {
   width: 100%;
   max-width: var(--max-w);
@@ -117,7 +106,6 @@ input, textarea, select { font: inherit; color: inherit; }
   padding: 0 var(--sp-6);
 }
 
-/* Typography */
 h1, h2, h3, h4, h5, h6 {
   font-weight: 500;
   line-height: var(--leading-tight);
@@ -134,7 +122,6 @@ h4 { font-size: var(--text-xl); }
 .text-sm { font-size: var(--text-sm); }
 .text-xs { font-size: var(--text-xs); }
 
-/* Buttons */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -193,7 +180,6 @@ h4 { font-size: var(--text-xl); }
   pointer-events: none;
 }
 
-/* Forms */
 .form-group {
   display: flex;
   flex-direction: column;
@@ -237,7 +223,6 @@ select.form-input {
   padding-right: 36px;
 }
 
-/* Cards */
 .card {
   background: var(--c-bg);
   border: 1px solid var(--c-border);
@@ -250,7 +235,6 @@ select.form-input {
   box-shadow: var(--shadow);
 }
 
-/* Grid */
 .grid {
   display: grid;
   gap: var(--sp-6);
@@ -260,7 +244,6 @@ select.form-input {
 .grid-3 { grid-template-columns: repeat(3, 1fr); }
 .grid-4 { grid-template-columns: repeat(4, 1fr); }
 
-/* Flex */
 .flex { display: flex; }
 .flex-col { flex-direction: column; }
 .flex-wrap { flex-wrap: wrap; }
@@ -275,7 +258,6 @@ select.form-input {
 .gap-6 { gap: var(--sp-6); }
 .gap-8 { gap: var(--sp-8); }
 
-/* Spacing */
 .mt-4 { margin-top: var(--sp-4); }
 .mt-8 { margin-top: var(--sp-8); }
 .mt-16 { margin-top: var(--sp-16); }
@@ -285,7 +267,6 @@ select.form-input {
 .py-16 { padding-top: var(--sp-16); padding-bottom: var(--sp-16); }
 .pt-header { padding-top: var(--header-h, 120px); }
 
-/* Badges */
 .badge {
   display: inline-flex;
   align-items: center;
@@ -304,7 +285,6 @@ select.form-input {
   border-color: var(--c-bg-dark);
 }
 
-/* Tables */
 .table-wrap {
   overflow-x: auto;
   border: 1px solid var(--c-border);
@@ -334,7 +314,6 @@ td {
 tr:last-child td { border-bottom: none; }
 tr:hover td { background: var(--c-bg-alt); }
 
-/* Status */
 .status {
   display: inline-flex;
   align-items: center;
@@ -356,14 +335,12 @@ tr:hover td { background: var(--c-bg-alt); }
 .status-completed .status-dot { background: var(--c-success); }
 .status-cancelled .status-dot { background: var(--c-error); }
 
-/* Divider */
 .divider {
   border: none;
   border-top: 1px solid var(--c-border);
   margin: var(--sp-8) 0;
 }
 
-/* Empty State */
 .empty-state {
   display: flex;
   flex-direction: column;
@@ -381,7 +358,6 @@ tr:hover td { background: var(--c-bg-alt); }
   opacity: 0.3;
 }
 
-/* Loading */
 .spinner {
   width: 20px;
   height: 20px;
@@ -395,7 +371,6 @@ tr:hover td { background: var(--c-bg-alt); }
   to { transform: rotate(360deg); }
 }
 
-/* Responsive */
 @media (max-width: 768px) {
   .container { padding: 0 var(--sp-4); }
   h1 { font-size: var(--text-3xl); }

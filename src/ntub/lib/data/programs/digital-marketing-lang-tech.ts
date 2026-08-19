@@ -1,6 +1,5 @@
 import type { Program } from '$ntub/types';
 
-
 export const digitalMarketingLangTech: Program = {
 	id: 'digital-marketing-lang-tech',
 	name: '數位行銷與語言科技應用微學程',
@@ -26,10 +25,10 @@ export const digitalMarketingLangTech: Program = {
 		detail: '欲取得本學程證明之學生，應至少修畢 8 學分，核心課程二擇一，至少修習 2 學分，採認 2 學分；進階課程至少修習 6 學分，採認 6 學分。課程名稱及內容相同之科目，不得重複修習，應至少修習跨系一門課程。'
 	},
 	courses: [
-		
+
 		{ id: 'dl-1', name: '數位行銷', group: '核心二擇一', groupNote: '核心課程二擇一，至少修習 2 學分', category: 'core', required: false, credits: 2, hours: 2, unit: '國際商務系' },
 		{ id: 'dl-2', name: '網路行銷', group: '核心二擇一', groupNote: '核心課程二擇一，至少修習 2 學分', category: 'core', required: false, credits: 2, hours: 2, unit: '應用外語系' },
-		
+
 		{ id: 'dl-3', name: '基礎程式設計', group: null, groupNote: null, category: 'advanced', required: false, credits: 2, hours: 2, unit: '應用外語系' },
 		{ id: 'dl-4', name: '程式設計', group: null, groupNote: null, category: 'advanced', required: false, credits: 3, hours: 3, unit: '國際商務系' },
 		{ id: 'dl-5', name: '數位教材與教法', group: null, groupNote: null, category: 'advanced', required: false, credits: 2, hours: 2, unit: '應用外語系' },

@@ -7,7 +7,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     <h1 class="page-title">VIP 專區</h1>
     <p class="page-sub">VIP會員專屬權限與獨家內容</p>
 
-    <!-- 所有 VIP 內容區塊預設隱藏，未登入直接 redirect -->
     <section class="module" id="vip-module" hidden>
       <h2 class="module-title">
         <span>VIP會員</span>
@@ -102,7 +101,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     flex-wrap: wrap;
   }
 
-  /* 首頁風格新聞與文章清單樣式 */
   .news-list {
     display: flex;
     flex-direction: column;
@@ -215,7 +213,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
   const user = currentUser();
   if (user === null) {
-    // 未登入：直接跳轉到登入頁（帶 redirect 參數），不停留在 VIP 頁面
     window.location.replace('/login/?redirect=/vip/');
   } else {
     const vipModule = document.querySelector('#vip-module');

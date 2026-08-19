@@ -151,9 +151,9 @@ const base = '/cctv';
       function renderCam(c) {
         var city = c.city || c.region || '';
         var media;
-        
+
         if (c.type === 'hls' || /\.m3u8/i.test(c.url || '')) {
-          
+
           media = '<div class="cam-media" data-url="' + escHtml(c.url || '') + '" data-type="hls"></div>';
         } else {
           media = '<img class="cam-img" data-src="' + escHtml(c.url || '') + '" alt="" loading="lazy" />';
@@ -207,7 +207,6 @@ const base = '/cctv';
             html += '<div class="no-result">顯示前 100 筆（共 ' + filtered.length + ' 筆）</div>';
           }
 
-          
           HlsBudget.clearAll();
           results.innerHTML = html;
           initSearchMedia();
@@ -223,7 +222,6 @@ const base = '/cctv';
       loadCameras();
       input.focus();
 
-      
       function isIOS() {
         return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
                (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
@@ -236,7 +234,7 @@ const base = '/cctv';
           var src = img.dataset.src || '';
           var parent = img.parentNode;
           if (searchIOS && isThbUrl(src)) {
-            
+
             var snapBase = src + '/snapshot';
             var tick = function() {
               if (!img.isConnected) { clearInterval(img._timer); return; }
@@ -251,7 +249,6 @@ const base = '/cctv';
           }
         });
 
-        
         document.querySelectorAll('#searchResults .cam-media[data-type="hls"]').forEach(function(box) {
           HlsBudget.observe(box, box.dataset.url);
         });
