@@ -24,14 +24,23 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     text-decoration: none;
   }
 
+  .tools-app {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    box-shadow: 0 14px 44px -20px rgba(28, 28, 28, 0.28);
+    margin-top: 2.4rem;
+    margin-bottom: 3.5rem;
+    overflow: hidden;
+  }
+
   .tools-nav {
     display: flex;
     align-items: center;
     gap: 0.5rem;
     padding: 1rem 1.6rem;
     background: var(--bg-soft);
-    border: 1px solid var(--border);
-    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
     font-size: 0.85rem;
     letter-spacing: 0.1em;
   }
@@ -55,9 +64,38 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     color: var(--ink-3);
   }
 
+  .tools-body {
+    padding: 2.2rem 1.8rem;
+  }
+
   .page-header {
     margin-bottom: 2rem;
     animation: fadeIn 0.5s ease-out;
+  }
+
+  .page-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    margin-bottom: 1.1rem;
+  }
+
+  .page-badge svg {
+    width: 22px;
+    height: 22px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 1.9;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .icon-wifi {
+    background: #0b8a4d;
+    color: #ffffff;
   }
 
   .page-header h1 {
@@ -75,6 +113,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     padding: 0.75rem 1rem;
     background: var(--surface);
     border: 1px solid var(--border);
+    border-radius: 12px;
     margin-bottom: 1rem;
     font-size: 0.85rem;
     color: var(--ink-2);
@@ -82,6 +121,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     align-items: center;
     gap: 0.5rem;
     flex-wrap: wrap;
+    box-shadow: 0 4px 16px -14px rgba(28, 28, 28, 0.18);
   }
 
   .status-dot {
@@ -108,7 +148,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   .status-btn {
     background: transparent;
     border: 1px solid var(--border);
-    border-radius: 0;
+    border-radius: 10px;
     font-family: var(--font-sans);
     font-size: 0.8rem;
     padding: 0.3rem 0.8rem;
@@ -143,8 +183,17 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     color: var(--ink);
     letter-spacing: 0.08em;
     display: flex;
-    align-items: baseline;
+    align-items: center;
     gap: 0.5rem;
+  }
+
+  .section-title::before {
+    content: '';
+    width: 3px;
+    height: 1em;
+    background: #0b8a4d;
+    border-radius: 2px;
+    flex-shrink: 0;
   }
 
   .section-title .count {
@@ -156,9 +205,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   .online-section {
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 0px;
+    border-radius: 16px;
     padding: 1.5rem;
     margin-bottom: 2rem;
+    box-shadow: 0 6px 24px -18px rgba(28, 28, 28, 0.22);
     animation: fadeIn 0.5s ease-out 0.1s both;
   }
 
@@ -172,6 +222,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     position: relative;
     border: 1px solid var(--border);
     background: var(--bg-soft);
+    border-radius: 14px;
     padding: 1.25rem 1rem 1rem;
     text-align: center;
     cursor: pointer;
@@ -181,11 +232,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     align-items: center;
     gap: 0.35rem;
     user-select: none;
+    box-shadow: 0 4px 16px -16px rgba(28, 28, 28, 0.18);
   }
 
   .user-card:hover {
-    border-color: var(--ink);
-    transform: translateY(-2px);
+    border-color: #0b8a4d;
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px -18px rgba(28, 28, 28, 0.28);
     background: var(--surface);
   }
 
@@ -217,7 +270,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     font-size: 0.65rem;
     color: var(--ink-3);
     border: 1px solid var(--border);
-    padding: 0.05rem 0.4rem;
+    padding: 0.05rem 0.5rem;
+    border-radius: 999px;
     letter-spacing: 0.08em;
   }
 
@@ -251,7 +305,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     color: var(--ink-3);
     font-size: 0.9rem;
     line-height: 1.9;
-    border: 1px dashed var(--border);
+    border: 1px dashed var(--border-strong);
+    border-radius: 14px;
+    background: var(--surface);
   }
 
   .empty-hint .big {
@@ -268,8 +324,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   .tx-item {
     background: var(--surface);
     border: 1px solid var(--border);
+    border-radius: 12px;
     padding: 1rem;
     margin-bottom: 0.75rem;
+    box-shadow: 0 4px 16px -16px rgba(28, 28, 28, 0.18);
   }
 
   .tx-head {
@@ -303,16 +361,18 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   }
 
   .tx-bar-bg {
-    height: 6px;
+    height: 8px;
     background: var(--bg-soft);
     border: 1px solid var(--border);
+    border-radius: 999px;
     overflow: hidden;
   }
 
   .tx-bar {
     height: 100%;
     width: 0%;
-    background: var(--ink);
+    background: #0b8a4d;
+    border-radius: 999px;
     transition: width 0.25s ease;
   }
 
@@ -327,12 +387,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   .tx-accept {
     margin-left: auto;
     background: transparent;
-    border: 1px solid var(--ink);
-    border-radius: 0;
+    border: 1px solid #0b8a4d;
+    border-radius: 10px;
     font-family: var(--font-sans);
     font-size: 0.78rem;
     padding: 0.3rem 0.9rem;
-    color: var(--ink);
+    color: #0b8a4d;
     cursor: pointer;
     transition: border-color var(--t), color var(--t), background var(--t);
     letter-spacing: 0.05em;
@@ -340,7 +400,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   }
 
   .tx-accept:hover {
-    background: var(--ink);
+    background: #0b8a4d;
     color: var(--white);
   }
 
@@ -367,15 +427,18 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     padding: 0.5rem 1rem;
     background: var(--surface);
     border: 1px solid var(--border);
+    border-radius: 999px;
     font-size: 0.85rem;
     color: var(--ink);
     text-decoration: none;
     transition: all 0.2s;
     max-width: 100%;
+    box-shadow: 0 4px 16px -16px rgba(28, 28, 28, 0.18);
   }
 
   .received-file:hover {
-    border-color: var(--ink);
+    border-color: #0b8a4d;
+    background: var(--bg-soft);
   }
 
   .received-file .r-name {
@@ -414,10 +477,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     margin-left: 0.4rem;
     background: transparent;
     border: 1px solid var(--border);
+    border-radius: 999px;
     color: var(--ink-2);
     font-family: var(--font-sans);
     font-size: 0.72rem;
-    padding: 0.2rem 0.5rem;
+    padding: 0.2rem 0.6rem;
     cursor: pointer;
     flex-shrink: 0;
     transition: border-color var(--t), color var(--t);
@@ -440,8 +504,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     position: absolute;
     top: 0.4rem;
     left: 0.4rem;
-    background: transparent;
+    background: var(--surface);
     border: 1px solid var(--border);
+    border-radius: 999px;
     color: var(--ink-3);
     font-size: 0.75rem;
     padding: 0.1rem 0.4rem;
@@ -452,8 +517,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   }
 
   .u-send-text:hover {
-    border-color: var(--ink);
-    color: var(--ink);
+    border-color: #0b8a4d;
+    color: #0b8a4d;
   }
 
   .text-modal {
@@ -473,6 +538,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   .text-modal-box {
     background: var(--surface);
     border: 1px solid var(--ink);
+    border-radius: 16px;
     width: min(480px, calc(100vw - 2rem));
     padding: 1.5rem;
     box-shadow: var(--shadow-lift);
@@ -495,7 +561,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   .text-modal-box textarea {
     width: 100%;
     border: 1px solid var(--border-strong);
-    border-radius: 0;
+    border-radius: 10px;
     background: var(--surface);
     color: var(--ink);
     font-family: var(--font-sans);
@@ -506,9 +572,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   }
 
   .text-modal-box textarea:focus {
-    outline: 2px solid var(--ink);
-    outline-offset: 0;
-    border-color: var(--ink);
+    outline: none;
+    border-color: #0b8a4d;
+    box-shadow: 0 0 0 3px rgba(11, 138, 77, 0.12);
   }
 
   .text-modal-actions {
@@ -530,22 +596,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     color: var(--white);
   }
 
-  .how-note {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    padding: 1.2rem 1.4rem;
-    margin-bottom: 2rem;
-    font-size: 0.82rem;
-    color: var(--ink-3);
-    line-height: 1.9;
-    animation: fadeIn 0.5s ease-out 0.25s both;
-  }
-
-  .how-note strong {
-    color: var(--ink-2);
-    font-weight: 500;
-  }
-
   .toast-stack {
     position: fixed;
     bottom: 1.25rem;
@@ -562,7 +612,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     color: var(--white);
     padding: 0.7rem 1rem;
     font-size: 0.82rem;
-    border-radius: 0;
+    border-radius: 10px;
     box-shadow: var(--shadow-lift);
     animation: fadeIn 0.25s ease-out;
     letter-spacing: 0.02em;
@@ -578,9 +628,17 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   }
 
   @media (max-width: 640px) {
+    .tools-app {
+      margin-top: 1.2rem;
+      margin-bottom: 2.5rem;
+    }
+
     .tools-nav {
       padding: 0.8rem 1rem;
-      margin-bottom: 1.2rem;
+    }
+
+    .tools-body {
+      padding: 1.2rem 0.9rem;
     }
 
     .page-header h1 {
@@ -599,59 +657,58 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 <BaseLayout title="NY WIFI DROP ｜ OviNas">
   <div class="container">
-    <nav class="tools-nav" aria-label="麵包屑">
-      <a href="/">首頁</a>
-      <span class="tools-nav-sep" aria-hidden="true">/</span>
-      <a href="/nytools">NYTools</a>
-      <span class="tools-nav-sep" aria-hidden="true">/</span>
-      <span class="tools-nav-current" aria-current="page">NY WIFI DROP</span>
-    </nav>
+    <div class="tools-app">
+      <nav class="tools-nav" aria-label="麵包屑">
+        <a href="/">首頁</a>
+        <span class="tools-nav-sep" aria-hidden="true">/</span>
+        <a href="/nytools">NYTools</a>
+        <span class="tools-nav-sep" aria-hidden="true">/</span>
+        <span class="tools-nav-current" aria-current="page">NY WIFI DROP</span>
+      </nav>
+      <div class="tools-body">
+        <div class="page-header">
+          <span class="page-badge icon-wifi">
+            <svg viewBox="0 0 24 24">
+              <path d="M5 12.55a11 11 0 0 1 14.08 0" />
+              <path d="M1.42 9a16 16 0 0 1 21.16 0" />
+              <path d="M8.53 16.11a6 6 0 0 1 6.95 0" />
+              <line x1="12" y1="20" x2="12.01" y2="20" />
+            </svg>
+          </span>
+          <h1>NY WIFI DROP</h1>
+        </div>
 
-    <div class="page-header">
-      <h1>NY WIFI DROP</h1>
-    </div>
+        <div class="status-bar">
+          <span class="status-dot" id="statusDot"></span>
+          <span id="statusText">連線中…</span>
+          <span class="status-spacer"></span>
+          <span>你的名稱：</span>
+          <span class="my-name" id="myName" title="點擊改名">…</span>
+          <button class="status-btn" id="copyLinkBtn" type="button">複製連結</button>
+        </div>
 
-    <div class="status-bar">
-      <span class="status-dot" id="statusDot"></span>
-      <span id="statusText">連線中…</span>
-      <span class="status-spacer"></span>
-      <span>你的名稱：</span>
-      <span class="my-name" id="myName" title="點擊改名">…</span>
-      <button class="status-btn" id="copyLinkBtn" type="button">複製連結</button>
-    </div>
+        <div class="online-section">
+          <h3 class="section-title">線上使用者 <span class="count" id="userCount">0</span></h3>
+          <div class="user-grid" id="userGrid">
+            <div class="empty-hint">
+              <div class="big">連線中，請稍候…</div>
+              <div>正在尋找同一個 Wi-Fi 上的其他使用者</div>
+            </div>
+          </div>
+        </div>
 
-    <div class="online-section">
-      <h3 class="section-title">線上使用者 <span class="count" id="userCount">0</span></h3>
-      <div class="user-grid" id="userGrid">
-        <div class="empty-hint">
-          <div class="big">連線中，請稍候…</div>
-          <div>正在尋找同一個 Wi-Fi 上的其他使用者</div>
+        <div class="transfer-section">
+          <h3 class="section-title">傳輸中</h3>
+          <div id="transferPanel"></div>
+        </div>
+
+        <div class="received-section">
+          <h3 class="section-title">收到的檔案</h3>
+          <div class="received-files" id="receivedList">
+            <div class="empty-hint">還沒有收到任何檔案</div>
+          </div>
         </div>
       </div>
-    </div>
-
-    <div class="transfer-section">
-      <h3 class="section-title">傳輸中</h3>
-      <div id="transferPanel"></div>
-    </div>
-
-    <div class="received-section">
-      <h3 class="section-title">收到的檔案</h3>
-      <div class="received-files" id="receivedList">
-        <div class="empty-hint">還沒有收到任何檔案</div>
-      </div>
-    </div>
-
-    <div class="how-note">
-      <strong>怎麼運作：</strong>
-      只有連到「同一個 Wi-Fi（或同一個手機熱點）」的裝置會顯示在線上清單，不同網路的裝置不會出現。
-      手機分享的熱點也算同一個網路（手機本機與連上熱點的裝置可以互見）。
-      點擊任一使用者即可選擇檔案傳送，點卡片左上角的
-      <strong>✉</strong> 可傳送文字訊息；點擊任一使用者即可選擇檔案傳送。
-      收到檔案會自動下載，文字訊息與可預覽的檔案（圖片／影片／PDF）會嘗試開新分頁，清單上的「⧉ 開啟」隨時可再開啟。
-      超過 1GB 的檔案會先詢問儲存位置，再邊收邊直接寫入磁碟（不佔記憶體）；需瀏覽器支援「另存新檔」功能。
-      兩台裝置會依各自的「出口 IP」自動分房。
-      若還是看不到對方，請確認兩台裝置連的是同一個網路，並避免同時重新整理頁面。
     </div>
   </div>
 
