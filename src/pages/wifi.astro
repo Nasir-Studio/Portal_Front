@@ -609,7 +609,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
     <div class="page-header">
       <h1>NY WIFI DROP</h1>
-      <p>同一個 Wi-Fi / 手機熱點的使用者自動出現在線上，點擊即可互傳大檔案 — 優先點對點直連，無法直連時自動經中繼轉送</p>
     </div>
 
     <div class="status-bar">
@@ -648,10 +647,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       只有連到「同一個 Wi-Fi（或同一個手機熱點）」的裝置會顯示在線上清單，不同網路的裝置不會出現。
       手機分享的熱點也算同一個網路（手機本機與連上熱點的裝置可以互見）。
       點擊任一使用者即可選擇檔案傳送，點卡片左上角的
-      <strong>✉</strong> 可傳送文字訊息；檔案透過 WebRTC 傳輸，優先點對點直連，無法直連時會自動經中繼伺服器轉送。
+      <strong>✉</strong> 可傳送文字訊息；點擊任一使用者即可選擇檔案傳送。
       收到檔案會自動下載，文字訊息與可預覽的檔案（圖片／影片／PDF）會嘗試開新分頁，清單上的「⧉ 開啟」隨時可再開啟。
       超過 1GB 的檔案會先詢問儲存位置，再邊收邊直接寫入磁碟（不佔記憶體）；需瀏覽器支援「另存新檔」功能。
-      兩台裝置會依各自的「出口 IP」自動分房（狀態列的 房間 xxxxxxxx 需相同才會互見）。
+      兩台裝置會依各自的「出口 IP」自動分房。
       若還是看不到對方，請確認兩台裝置連的是同一個網路，並避免同時重新整理頁面。
     </div>
   </div>
@@ -882,7 +881,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     if (list.length === 0) {
       grid.innerHTML = noLan
         ? '<div class="empty-hint"><div class="big">此網路上沒有其他裝置</div>' +
-          '<div>確認兩台裝置的房間代碼相同（你的房間：<b>' + escapeHtml(roomId) + '</b>）</div></div>'
+          '<div>請確認兩台裝置連的是同一個 Wi-Fi 或同一手機熱點</div></div>'
         : '<div class="empty-hint"><div class="big">等待其他使用者加入…</div>' +
           '<div>在另一台裝置（同一 Wi-Fi 或同一手機熱點）開啟此頁面就會出現在這裡</div></div>';
       return;
@@ -1094,9 +1093,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       self: true
     };
     renderUsers();
-    setStatus('on', '已連線 · 你是房主 · 房間 ' + roomId);
+    setStatus('on', '已連線 · 你是房主');
     $('myName').textContent = myName;
-    toast('你已成為房主（房間 ' + roomId + '），等待其他使用者加入…');
+    toast('你已成為房主，等待其他使用者加入…');
   }
 
   function broadcast(msg, exceptPeerId) {
@@ -1179,7 +1178,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     hostConn.on('open', function () {
       clearTimeout(hostConnTimer);
       hostRetries = 0;
-      setStatus('on', '已連線到 Wi-Fi Drop · 房間 ' + roomId);
+      setStatus('on', '已連線到 Wi-Fi Drop');
       hostConn.send({
         type: 'hello',
         peerId: myPeerId,
