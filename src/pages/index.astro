@@ -3,7 +3,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Banner from '../components/Banner.astro';
 import Announcements from '../components/Announcements.astro';
 import QuoteOfTheDay from '../components/QuoteOfTheDay.svelte';
-import ContactForm from '../components/ContactForm.svelte';
 
 const badges = [
   {
@@ -56,11 +55,6 @@ const badges = [
       <section class="module" aria-label="每日一句">
         <h2 class="module-title">每日一句</h2>
         <QuoteOfTheDay client:load />
-      </section>
-
-      <section class="module contact-module" aria-label="聯絡表單">
-        <h2 class="module-title">聯絡表單</h2>
-        <ContactForm client:load />
       </section>
     </aside>
 
@@ -159,11 +153,6 @@ const badges = [
       opacity: 1;
       transform: translateY(0);
     }
-  }
-
-  .contact-module {
-    border-radius: 10px;
-    overflow: hidden;
   }
 
   .badge-grid {
