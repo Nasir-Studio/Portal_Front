@@ -7,13 +7,13 @@
 
   onMount(() => {
     const startTime = performance.now();
-    const duration = 800; // 毫秒，平滑慢慢走
+    const duration = 1200; // 毫秒 (稍微放慢至1.2秒，讓小羊漫步過程清晰生動)
 
     function updateProgress(now) {
       const elapsed = now - startTime;
-      // 使用平滑 ease-out 推進進度
       const t = Math.min(1, elapsed / duration);
-      const easeT = 1 - Math.pow(1 - t, 2.5); // easeOut
+      // 柔和的前進曲線
+      const easeT = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
       progress = Math.min(100, Math.floor(easeT * 100));
 
       if (t < 1) {
@@ -25,7 +25,7 @@
           setTimeout(() => {
             isHidden = true;
           }, 380);
-        }, 100);
+        }, 120);
       }
     }
 
@@ -35,17 +35,21 @@
 
 {#if !isHidden}
   <div class="page-loader" class:is-done={isDone} aria-hidden={isDone}>
-    <div class="loader-box">
-      <!-- 🐑 純羊 Icon 高清無損，可愛微跳動 (放大尺寸) -->
-      <img
-        class="loader-sheep"
-        src="/sheep-hd.png"
-        alt="OviNas"
-        width="78"
-        height="78"
-      />
+    <div class="loader-stage">
+      <!-- 🐑 小羊漫步軌道 (隨進度條 0% -> 100% 同步行走，無上下浮動) -->
+      <div class="sheep-track">
+        <div class="sheep-walker" style="left: {progress}%;">
+          <img
+            class="loader-sheep"
+            src="/sheep-hd.png"
+            alt="OviNas"
+            width="58"
+            height="58"
+          />
+        </div>
+      </div>
 
-      <!-- 慢慢前進的精緻進度條 (0-100，適度放大) -->
+      <!-- 慢慢前進的精緻進度條 (0-100) -->
       <div class="loader-bar-wrap">
         <div class="loader-bar-fill" style="width: {progress}%;"></div>
       </div>
@@ -78,19 +82,21 @@
     visibility: hidden;
   }
 
-  .loader-box {
+  /* 舞台容器 (220px 寬度) */
+  .loader-stage {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 0.85rem;
+    width: 220px;
+    gap: 0.5rem;
     animation: pop-in 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
 
   @keyframes pop-in {
     from {
       opacity: 0;
-      transform: scale(0.92);
+      transform: scale(0.94);
     }
     to {
       opacity: 1;
@@ -98,28 +104,37 @@
     }
   }
 
-  /* 可愛小羊微彈跳 (78px 放大呈現清晰細節) */
+  /* 🐑 小羊行走軌道 */
+  .sheep-track {
+    position: relative;
+    width: 100%;
+    height: 60px;
+  }
+
+  .sheep-walker {
+    position: absolute;
+    top: 0;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: left 0.05s linear;
+    will-change: left;
+  }
+
+  /* 靜止行走的小羊 (無上下浮動，純高清平移) */
   .loader-sheep {
-    width: 78px;
-    height: 78px;
+    width: 58px;
+    height: 58px;
     object-fit: contain;
-    filter: drop-shadow(0 4px 10px rgba(28, 28, 28, 0.1));
-    animation: sheep-cute-bounce 0.85s ease-in-out infinite alternate;
+    filter: drop-shadow(0 4px 8px rgba(28, 28, 28, 0.12));
+    display: block;
   }
 
-  @keyframes sheep-cute-bounce {
-    0% {
-      transform: translateY(0) scale(1);
-    }
-    100% {
-      transform: translateY(-6px) scale(1.05);
-    }
-  }
-
-  /* 圓角進度條軌道 (156px 寬度, 8px 高度) */
+  /* 圓角進度條軌道 (220px 寬度, 7px 高度) */
   .loader-bar-wrap {
-    width: 156px;
-    height: 8px;
+    width: 100%;
+    height: 7px;
     background: rgba(28, 28, 28, 0.08);
     border-radius: 999px;
     padding: 1.5px;
@@ -131,13 +146,14 @@
     height: 100%;
     background: var(--ink);
     border-radius: 999px;
-    transition: width 0.04s linear;
+    transition: width 0.05s linear;
   }
 
   /* 可愛 Klee One 手寫手感百分比字體 */
   .loader-pct {
+    margin-top: 0.35rem;
     font-family: 'Klee One', 'Iansui', var(--font-serif), cursive, sans-serif;
-    font-size: 0.96rem;
+    font-size: 0.98rem;
     font-weight: 600;
     letter-spacing: 0.08em;
     color: var(--ink);
@@ -148,12 +164,12 @@
 
   .pct-num {
     font-variant-numeric: tabular-nums;
-    font-size: 1.05rem;
+    font-size: 1.1rem;
   }
 
   .pct-symbol {
-    font-size: 0.82rem;
-    margin-left: 1.5px;
+    font-size: 0.85rem;
+    margin-left: 2px;
     color: var(--ink-2);
   }
 </style>
