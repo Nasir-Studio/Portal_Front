@@ -2,7 +2,7 @@
 ---
 
 <div class="ambient-bg" aria-hidden="true">
-  <!-- 柔和呼吸流動光暈 -->
+  <!-- 柔和呼吸流動光暈 (溫潤象牙金 + 晨曦微藍 + 柔粉) -->
   <div class="ambient-orb orb-1"></div>
   <div class="ambient-orb orb-2"></div>
   <div class="ambient-orb orb-3"></div>
@@ -18,19 +18,19 @@
         stroke="#1c1c1c"
         stroke-width="1.2"
         stroke-dasharray="4 8"
-        opacity="0.16"
+        opacity="0.22"
       />
       <path
         d="M-60 140 C 280 240, 580 40, 920 150 C 1220 250, 1380 70, 1520 170"
         stroke="#deb86d"
-        stroke-width="1.5"
-        opacity="0.32"
+        stroke-width="1.8"
+        opacity="0.45"
       />
       <path
         d="M-20 220 C 360 310, 500 80, 840 210 C 1140 320, 1340 130, 1480 230"
         stroke="#1c1c1c"
-        stroke-width="0.9"
-        opacity="0.12"
+        stroke-width="1"
+        opacity="0.18"
       />
     </svg>
   </div>
@@ -40,15 +40,15 @@
       <path
         d="M-50 200 C 300 90, 600 290, 950 160 C 1250 50, 1390 240, 1500 130"
         stroke="#deb86d"
-        stroke-width="1.4"
+        stroke-width="1.6"
         stroke-dasharray="6 6"
-        opacity="0.28"
+        opacity="0.4"
       />
       <path
         d="M-30 240 C 340 130, 560 330, 910 200 C 1210 90, 1350 280, 1470 170"
         stroke="#1c1c1c"
-        stroke-width="1"
-        opacity="0.14"
+        stroke-width="1.2"
+        opacity="0.2"
       />
     </svg>
   </div>
@@ -56,25 +56,19 @@
   <!-- ⭕ 極簡幾何立體光影光環 (Floating Kinetic Rings) -->
   <div class="geometric-shape geo-ring-1">
     <svg viewBox="0 0 200 200" width="180" height="180" fill="none">
-      <circle cx="100" cy="100" r="85" stroke="#deb86d" stroke-width="1.5" stroke-dasharray="8 6" opacity="0.45" />
-      <circle cx="100" cy="100" r="65" stroke="#1c1c1c" stroke-width="1" opacity="0.16" />
-      <circle cx="100" cy="15" r="4" fill="#deb86d" opacity="0.6" />
-      <circle cx="185" cy="100" r="3" fill="#1c1c1c" opacity="0.3" />
+      <circle cx="100" cy="100" r="85" stroke="#deb86d" stroke-width="1.5" stroke-dasharray="8 6" opacity="0.55" />
+      <circle cx="100" cy="100" r="65" stroke="#1c1c1c" stroke-width="1.2" opacity="0.25" />
+      <circle cx="100" cy="15" r="4.5" fill="#deb86d" opacity="0.75" />
+      <circle cx="185" cy="100" r="3.5" fill="#1c1c1c" opacity="0.4" />
     </svg>
   </div>
 
   <div class="geometric-shape geo-ring-2">
     <svg viewBox="0 0 180 180" width="140" height="140" fill="none">
-      <circle cx="90" cy="90" r="75" stroke="#1c1c1c" stroke-width="1.2" stroke-dasharray="3 7" opacity="0.22" />
-      <circle cx="90" cy="90" r="50" stroke="#deb86d" stroke-width="1.2" opacity="0.35" />
-      <line x1="90" y1="5" x2="90" y2="175" stroke="#1c1c1c" stroke-width="0.8" stroke-dasharray="2 4" opacity="0.15" />
+      <circle cx="90" cy="90" r="75" stroke="#1c1c1c" stroke-width="1.4" stroke-dasharray="3 7" opacity="0.3" />
+      <circle cx="90" cy="90" r="50" stroke="#deb86d" stroke-width="1.4" opacity="0.48" />
+      <line x1="90" y1="5" x2="90" y2="175" stroke="#1c1c1c" stroke-width="1" stroke-dasharray="2 4" opacity="0.22" />
     </svg>
-  </div>
-
-  <!-- 📐 經緯座標標籤 -->
-  <div class="blueprint-tag tag-left">
-    <span>LAT 25°02' N // LONG 121°31' E</span>
-    <span class="tag-sub">TAIPEI // CHRONICLE REPO</span>
   </div>
 
   <!-- ✨ 微光星芒與星塵 -->
@@ -91,17 +85,16 @@
   .ambient-bg {
     position: fixed;
     inset: 0;
-    z-index: -1;
+    z-index: 0;
     pointer-events: none;
     overflow: hidden;
-    background: var(--bg);
   }
 
   .ambient-orb {
     position: absolute;
     border-radius: 50%;
     filter: blur(75px);
-    opacity: 0.55;
+    opacity: 0.65;
     will-change: transform;
   }
 
@@ -112,7 +105,7 @@
     height: 55vw;
     max-width: 680px;
     max-height: 680px;
-    background: radial-gradient(circle, rgba(243, 228, 196, 0.52) 0%, rgba(243, 228, 196, 0) 70%);
+    background: radial-gradient(circle, rgba(243, 228, 196, 0.65) 0%, rgba(243, 228, 196, 0) 70%);
     animation: drift-1 26s ease-in-out infinite alternate;
   }
 
@@ -123,7 +116,7 @@
     height: 60vw;
     max-width: 720px;
     max-height: 720px;
-    background: radial-gradient(circle, rgba(218, 229, 244, 0.48) 0%, rgba(218, 229, 244, 0) 70%);
+    background: radial-gradient(circle, rgba(218, 229, 244, 0.6) 0%, rgba(218, 229, 244, 0) 70%);
     animation: drift-2 32s ease-in-out infinite alternate;
   }
 
@@ -134,7 +127,7 @@
     height: 45vw;
     max-width: 550px;
     max-height: 550px;
-    background: radial-gradient(circle, rgba(245, 234, 226, 0.45) 0%, rgba(245, 234, 226, 0) 70%);
+    background: radial-gradient(circle, rgba(245, 234, 226, 0.55) 0%, rgba(245, 234, 226, 0) 70%);
     animation: drift-3 22s ease-in-out infinite alternate;
   }
 
@@ -151,19 +144,19 @@
   }
 
   @keyframes drift-3 {
-    0% { transform: translate3d(0, 0, 0) scale(0.95); opacity: 0.35; }
-    50% { transform: translate3d(-8vw, 10vh, 0) scale(1.1); opacity: 0.6; }
-    100% { transform: translate3d(6vw, -8vh, 0) scale(1); opacity: 0.4; }
+    0% { transform: translate3d(0, 0, 0) scale(0.95); opacity: 0.45; }
+    50% { transform: translate3d(-8vw, 10vh, 0) scale(1.1); opacity: 0.7; }
+    100% { transform: translate3d(6vw, -8vh, 0) scale(1); opacity: 0.5; }
   }
 
   .ambient-grid {
     position: absolute;
     inset: 0;
-    background-image: radial-gradient(rgba(28, 28, 28, 0.055) 1px, transparent 1px);
+    background-image: radial-gradient(rgba(28, 28, 28, 0.065) 1px, transparent 1px);
     background-size: 26px 26px;
-    mask-image: radial-gradient(ellipse at 50% 50%, black 40%, transparent 95%);
-    -webkit-mask-image: radial-gradient(ellipse at 50% 50%, black 40%, transparent 95%);
-    opacity: 0.85;
+    mask-image: radial-gradient(ellipse at 50% 50%, black 50%, transparent 95%);
+    -webkit-mask-image: radial-gradient(ellipse at 50% 50%, black 50%, transparent 95%);
+    opacity: 0.9;
   }
 
   /* 🌊 流動波紋絲帶 */
@@ -177,12 +170,12 @@
 
   .waves-top {
     top: 5%;
-    opacity: 0.8;
+    opacity: 0.85;
   }
 
   .waves-bottom {
     bottom: 8%;
-    opacity: 0.7;
+    opacity: 0.75;
   }
 
   .flow-wave {
@@ -252,30 +245,6 @@
     100% { transform: translate3d(20px, -30px, 0); }
   }
 
-  /* 📐 經緯座標標籤 */
-  .blueprint-tag {
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    gap: 0.15rem;
-    font-family: monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.16em;
-    color: var(--ink-3);
-    opacity: 0.55;
-  }
-
-  .blueprint-tag.tag-left {
-    bottom: 4%;
-    left: 2.5%;
-  }
-
-  .tag-sub {
-    font-size: 0.55rem;
-    color: #deb86d;
-    font-weight: 600;
-  }
-
   /* ✨ 閃爍星芒 */
   .sparkle {
     position: absolute;
@@ -292,7 +261,7 @@
 
   @keyframes twinkle {
     0%, 100% { opacity: 0; transform: scale(0.6) rotate(0deg); }
-    50% { opacity: 0.75; transform: scale(1.15) rotate(45deg); }
+    50% { opacity: 0.85; transform: scale(1.2) rotate(45deg); }
   }
 
   /* 漂浮星塵 */
@@ -314,8 +283,8 @@
 
   @keyframes float-dust {
     0% { transform: translate3d(0, 20px, 0) scale(0.6); opacity: 0; }
-    30% { opacity: 0.75; }
-    70% { opacity: 0.6; }
+    30% { opacity: 0.85; }
+    70% { opacity: 0.7; }
     100% { transform: translate3d(-20px, -60px, 0) scale(1); opacity: 0; }
   }
 

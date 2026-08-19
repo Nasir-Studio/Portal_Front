@@ -109,15 +109,6 @@
       </div>
     </div>
   </div>
-
-  <!-- 城市座標與地圖雷達 -->
-  <div class="location-bar">
-    <div class="status-indicator">
-      <span class="status-dot"></span>
-      <span class="status-text">TAIPEI // 北漂進行中</span>
-    </div>
-    <span class="coord-tag">25.04°N 121.52°E</span>
-  </div>
 </div>
 
 <style>
