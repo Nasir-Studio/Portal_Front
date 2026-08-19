@@ -194,9 +194,9 @@
     justify-content: center;
   }
 
-  /* 迷你聯絡視窗 */
+  /* 細長迷你聯絡視窗 (Slender & Narrow) */
   .contact-window {
-    width: 268px;
+    width: 236px;
     background: var(--surface);
     border: 1.5px solid var(--ink);
     border-radius: 10px;
