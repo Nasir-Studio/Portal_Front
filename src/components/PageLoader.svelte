@@ -36,13 +36,13 @@
 {#if !isHidden}
   <div class="page-loader" class:is-done={isDone} aria-hidden={isDone}>
     <div class="loader-box">
-      <!-- 🐑 純羊 Icon，直接呈現可愛微跳動 -->
+      <!-- 🐑 純羊 Icon 高清無損，可愛微跳動 -->
       <img
         class="loader-sheep"
-        src="/favicon.png"
+        src="/sheep-hd.png"
         alt="OviNas"
-        width="46"
-        height="46"
+        width="52"
+        height="52"
       />
 
       <!-- 慢慢前進的精緻進度條 (0-100) -->
