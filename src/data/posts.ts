@@ -8,6 +8,42 @@ export interface Post {
 
 const posts: Post[] = [
   {
+    slug: 'cf-pages-pwa-webpush',
+    date: '2026.08.19',
+    title: '【CF Page 】PWA WebPush 設計原理',
+    excerpt: 'PWA 網頁推播三招設計原理：Service Worker 資料回拉、Web Crypto 原生加密、靜默推播，讓推播在 Cloudflare Pages 上穩定又快速！',
+    content: `
+      <p class="post-intro">
+        這篇記錄我架設 PWA WebPush（網頁推播）時的設計原理，三招讓推播在 Cloudflare 邊緣環境跑得又快又穩！
+      </p>
+
+      <h2>1. Service Worker 資料回拉（Fetch on Push）</h2>
+      <p>當你的手機（Service Worker）收到那個「信號」後，並不會直接把通知彈出來，而是會在背景立刻執行以下動作：</p>
+      <ul>
+        <li>醒過來，收到 push 事件。</li>
+        <li>主動連回你的伺服器（<code>/api/notifications</code>），問：「剛才發生了什麼事？」</li>
+        <li>從資料庫（D1）抓取最新的一則通知內容。</li>
+        <li>最後才把通知框彈出來給你。</li>
+      </ul>
+      <p class="audit-tip">這樣的好處是：通知內容永遠是即時從伺服器拉取的最新狀態，不會有推播出去才發現內容過期的問題。</p>
+
+      <h2>2. Web Crypto API（原生加密）</h2>
+      <p>原本使用的 <code>web-push</code> 套件是為了 Node.js 設計的，依賴很多 Node.js 底層的加密模組，在 Cloudflare Workers 這種「邊緣運算（Edge Computing）」環境中常常會出錯。</p>
+      <p>解法是改用 Cloudflare 原生支援的 <strong>Web Crypto API</strong>，手動簽署你的 VAPID 數位憑證。白話來說，就像是直接用 Cloudflare 的母語跟它溝通，所以速度極快而且不會出錯。</p>
+
+      <h2>3. 靜默推播（Silent Push）</h2>
+      <p>這是這套架構最聰明的地方！</p>
+      <ul>
+        <li><strong>傳統方式：</strong>要把通知內容（標題、文字）在伺服器端加密，然後塞進推播封包。這部分加密規格極度複雜，而且容易跟手機瀏覽器不相容。</li>
+        <li><strong>現在方式：</strong>伺服器只發送一個「信號」給手機（不帶內容）。就像是伺服器對手機說：「嘿！你有新消息了，快回來拿！」因為不帶內容，就不需要複雜的加密，成功率是 100%。</li>
+      </ul>
+
+      <p class="post-outro">
+        總結：資料回拉拿最新內容、Web Crypto 原生簽署零出錯、靜默推播直接繞過複雜加密——三招合起來，就是一套穩定又快速的 PWA WebPush 架構！
+      </p>
+    `,
+  },
+  {
     slug: 'presentation-design-logic',
     date: '2026.08.19',
     title: '【文章】簡報的設計方式跟邏輯：',
