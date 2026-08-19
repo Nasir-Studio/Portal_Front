@@ -2,83 +2,105 @@
 ---
 
 <div class="ambient-bg" aria-hidden="true">
-  <!-- 柔和呼吸流動光暈 (溫潤象牙金 + 晨曦微藍 + 柔粉) -->
-  <div class="ambient-orb orb-1"></div>
-  <div class="ambient-orb orb-2"></div>
-  <div class="ambient-orb orb-3"></div>
-
-  <!-- 手稿幾何微點座標格網 -->
+  <!-- 📜 復古手稿細緻點陣 (Vintage Halftone / Drafting Matrix) -->
   <div class="ambient-grid"></div>
 
-  <!-- 🌊 慢速流動極簡絲帶波紋 (Flowing Topographic Waves) -->
-  <div class="waves-wrap waves-top">
-    <svg class="flow-wave wave-svg-1" viewBox="0 0 1440 380" fill="none">
+  <!-- 🖋️ 復古深色古典銅版畫與等高線波紋 (Vintage Dark Engraving Waves) -->
+  <div class="engraving-wrap wrap-top">
+    <svg class="engraving-svg wave-1" viewBox="0 0 1440 380" fill="none">
       <path
-        d="M-40 180 C 320 280, 540 60, 880 180 C 1180 280, 1360 100, 1500 200"
+        d="M-50 160 C 260 280, 520 40, 890 170 C 1190 270, 1370 80, 1510 190"
         stroke="#1c1c1c"
-        stroke-width="1.2"
-        stroke-dasharray="4 8"
-        opacity="0.22"
-      />
-      <path
-        d="M-60 140 C 280 240, 580 40, 920 150 C 1220 250, 1380 70, 1520 170"
-        stroke="#deb86d"
         stroke-width="1.8"
-        opacity="0.45"
+        opacity="0.35"
       />
       <path
-        d="M-20 220 C 360 310, 500 80, 840 210 C 1140 320, 1340 130, 1480 230"
-        stroke="#1c1c1c"
-        stroke-width="1"
-        opacity="0.18"
-      />
-    </svg>
-  </div>
-
-  <div class="waves-wrap waves-bottom">
-    <svg class="flow-wave wave-svg-2" viewBox="0 0 1440 380" fill="none">
-      <path
-        d="M-50 200 C 300 90, 600 290, 950 160 C 1250 50, 1390 240, 1500 130"
-        stroke="#deb86d"
-        stroke-width="1.6"
-        stroke-dasharray="6 6"
-        opacity="0.4"
-      />
-      <path
-        d="M-30 240 C 340 130, 560 330, 910 200 C 1210 90, 1350 280, 1470 170"
+        d="M-50 180 C 260 300, 520 60, 890 190 C 1190 290, 1370 100, 1510 210"
         stroke="#1c1c1c"
         stroke-width="1.2"
+        stroke-dasharray="6 6"
+        opacity="0.25"
+      />
+      <path
+        d="M-50 200 C 260 320, 520 80, 890 210 C 1190 310, 1370 120, 1510 230"
+        stroke="#3d332a"
+        stroke-width="1.4"
+        opacity="0.28"
+      />
+      <path
+        d="M-50 220 C 260 340, 520 100, 890 230 C 1190 330, 1370 140, 1510 250"
+        stroke="#1c1c1c"
+        stroke-width="0.8"
+        stroke-dasharray="2 4"
         opacity="0.2"
       />
     </svg>
   </div>
 
-  <!-- ⭕ 極簡幾何立體光影光環 (Floating Kinetic Rings) -->
-  <div class="geometric-shape geo-ring-1">
-    <svg viewBox="0 0 200 200" width="180" height="180" fill="none">
-      <circle cx="100" cy="100" r="85" stroke="#deb86d" stroke-width="1.5" stroke-dasharray="8 6" opacity="0.55" />
-      <circle cx="100" cy="100" r="65" stroke="#1c1c1c" stroke-width="1.2" opacity="0.25" />
-      <circle cx="100" cy="15" r="4.5" fill="#deb86d" opacity="0.75" />
-      <circle cx="185" cy="100" r="3.5" fill="#1c1c1c" opacity="0.4" />
+  <div class="engraving-wrap wrap-bottom">
+    <svg class="engraving-svg wave-2" viewBox="0 0 1440 380" fill="none">
+      <path
+        d="M-40 220 C 310 90, 620 310, 960 170 C 1260 50, 1390 260, 1500 140"
+        stroke="#1c1c1c"
+        stroke-width="1.8"
+        opacity="0.32"
+      />
+      <path
+        d="M-40 200 C 310 70, 620 290, 960 150 C 1260 30, 1390 240, 1500 120"
+        stroke="#3d332a"
+        stroke-width="1.2"
+        stroke-dasharray="5 5"
+        opacity="0.24"
+      />
+      <path
+        d="M-40 180 C 310 50, 620 270, 960 130 C 1260 10, 1390 220, 1500 100"
+        stroke="#1c1c1c"
+        stroke-width="1.4"
+        opacity="0.26"
+      />
     </svg>
   </div>
 
-  <div class="geometric-shape geo-ring-2">
-    <svg viewBox="0 0 180 180" width="140" height="140" fill="none">
-      <circle cx="90" cy="90" r="75" stroke="#1c1c1c" stroke-width="1.4" stroke-dasharray="3 7" opacity="0.3" />
-      <circle cx="90" cy="90" r="50" stroke="#deb86d" stroke-width="1.4" opacity="0.48" />
-      <line x1="90" y1="5" x2="90" y2="175" stroke="#1c1c1c" stroke-width="1" stroke-dasharray="2 4" opacity="0.22" />
+  <!-- 🧭 復古古典對位印刷圓環與羅盤刻度 (Vintage Register & Compass Art) -->
+  <div class="vintage-glyph glyph-right">
+    <svg viewBox="0 0 240 240" width="220" height="220" fill="none">
+      <!-- 外部刻度環 -->
+      <circle cx="120" cy="120" r="105" stroke="#1c1c1c" stroke-width="1.5" stroke-dasharray="4 8" opacity="0.4" />
+      <circle cx="120" cy="120" r="90" stroke="#3d332a" stroke-width="1.2" opacity="0.3" />
+      <circle cx="120" cy="120" r="70" stroke="#1c1c1c" stroke-width="1" stroke-dasharray="8 4" opacity="0.25" />
+
+      <!-- 十字對位標線 -->
+      <line x1="120" y1="5" x2="120" y2="235" stroke="#1c1c1c" stroke-width="1" stroke-dasharray="4 4" opacity="0.35" />
+      <line x1="5" y1="120" x2="235" y2="120" stroke="#1c1c1c" stroke-width="1" stroke-dasharray="4 4" opacity="0.35" />
+
+      <!-- 復古核心圓點 -->
+      <circle cx="120" cy="120" r="5" fill="#1c1c1c" opacity="0.6" />
+      <circle cx="120" cy="15" r="3.5" fill="#1c1c1c" opacity="0.5" />
+      <circle cx="225" cy="120" r="3.5" fill="#1c1c1c" opacity="0.5" />
+      <circle cx="120" cy="225" r="3.5" fill="#1c1c1c" opacity="0.5" />
+      <circle cx="15" cy="120" r="3.5" fill="#1c1c1c" opacity="0.5" />
     </svg>
   </div>
 
-  <!-- ✨ 微光星芒與星塵 -->
-  <div class="sparkle sparkle-1">✦</div>
-  <div class="sparkle sparkle-2">✦</div>
-  <div class="sparkle sparkle-3">✦</div>
-  <div class="ambient-dust dust-1"></div>
-  <div class="ambient-dust dust-2"></div>
-  <div class="ambient-dust dust-3"></div>
-  <div class="ambient-dust dust-4"></div>
+  <div class="vintage-glyph glyph-left">
+    <svg viewBox="0 0 180 180" width="160" height="160" fill="none">
+      <circle cx="90" cy="90" r="75" stroke="#1c1c1c" stroke-width="1.4" stroke-dasharray="6 6" opacity="0.32" />
+      <circle cx="90" cy="90" r="50" stroke="#3d332a" stroke-width="1" opacity="0.22" />
+      <circle cx="90" cy="90" r="28" stroke="#1c1c1c" stroke-width="1.2" stroke-dasharray="2 4" opacity="0.35" />
+      <circle cx="90" cy="90" r="4" fill="#1c1c1c" opacity="0.5" />
+    </svg>
+  </div>
+
+  <!-- ⌜ ⌝ 四周古典直角對位角標 (Corner Registration Marks) -->
+  <div class="corner-mark top-left"></div>
+  <div class="corner-mark top-right"></div>
+  <div class="corner-mark bottom-left"></div>
+  <div class="corner-mark bottom-right"></div>
+
+  <!-- ❖ 深色復古菱形印記漂浮 (Vintage Diamond Floats) -->
+  <div class="diamond-drift d1">❖</div>
+  <div class="diamond-drift d2">❖</div>
+  <div class="diamond-drift d3">❖</div>
 </div>
 
 <style>
@@ -88,79 +110,22 @@
     z-index: 0;
     pointer-events: none;
     overflow: hidden;
+    background: #ffffff;
   }
 
-  .ambient-orb {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(75px);
-    opacity: 0.65;
-    will-change: transform;
-  }
-
-  .orb-1 {
-    top: -10%;
-    left: -5%;
-    width: 55vw;
-    height: 55vw;
-    max-width: 680px;
-    max-height: 680px;
-    background: radial-gradient(circle, rgba(243, 228, 196, 0.65) 0%, rgba(243, 228, 196, 0) 70%);
-    animation: drift-1 26s ease-in-out infinite alternate;
-  }
-
-  .orb-2 {
-    bottom: -15%;
-    right: -8%;
-    width: 60vw;
-    height: 60vw;
-    max-width: 720px;
-    max-height: 720px;
-    background: radial-gradient(circle, rgba(218, 229, 244, 0.6) 0%, rgba(218, 229, 244, 0) 70%);
-    animation: drift-2 32s ease-in-out infinite alternate;
-  }
-
-  .orb-3 {
-    top: 40%;
-    left: 45%;
-    width: 45vw;
-    height: 45vw;
-    max-width: 550px;
-    max-height: 550px;
-    background: radial-gradient(circle, rgba(245, 234, 226, 0.55) 0%, rgba(245, 234, 226, 0) 70%);
-    animation: drift-3 22s ease-in-out infinite alternate;
-  }
-
-  @keyframes drift-1 {
-    0% { transform: translate3d(0, 0, 0) scale(1); }
-    50% { transform: translate3d(8vw, 12vh, 0) scale(1.15); }
-    100% { transform: translate3d(14vw, 4vh, 0) scale(0.95); }
-  }
-
-  @keyframes drift-2 {
-    0% { transform: translate3d(0, 0, 0) scale(1); }
-    50% { transform: translate3d(-10vw, -14vh, 0) scale(1.12); }
-    100% { transform: translate3d(-16vw, -6vh, 0) scale(0.9); }
-  }
-
-  @keyframes drift-3 {
-    0% { transform: translate3d(0, 0, 0) scale(0.95); opacity: 0.45; }
-    50% { transform: translate3d(-8vw, 10vh, 0) scale(1.1); opacity: 0.7; }
-    100% { transform: translate3d(6vw, -8vh, 0) scale(1); opacity: 0.5; }
-  }
-
+  /* 手稿點陣 */
   .ambient-grid {
     position: absolute;
     inset: 0;
-    background-image: radial-gradient(rgba(28, 28, 28, 0.065) 1px, transparent 1px);
-    background-size: 26px 26px;
+    background-image: radial-gradient(rgba(28, 28, 28, 0.08) 1.2px, transparent 1.2px);
+    background-size: 24px 24px;
     mask-image: radial-gradient(ellipse at 50% 50%, black 50%, transparent 95%);
     -webkit-mask-image: radial-gradient(ellipse at 50% 50%, black 50%, transparent 95%);
-    opacity: 0.9;
+    opacity: 0.85;
   }
 
-  /* 🌊 流動波紋絲帶 */
-  .waves-wrap {
+  /* 🖋️ 復古銅版畫波紋 */
+  .engraving-wrap {
     position: absolute;
     left: 0;
     right: 0;
@@ -168,17 +133,17 @@
     pointer-events: none;
   }
 
-  .waves-top {
-    top: 5%;
+  .wrap-top {
+    top: 4%;
+    opacity: 0.9;
+  }
+
+  .wrap-bottom {
+    bottom: 6%;
     opacity: 0.85;
   }
 
-  .waves-bottom {
-    bottom: 8%;
-    opacity: 0.75;
-  }
-
-  .flow-wave {
+  .engraving-svg {
     width: 120%;
     height: auto;
     display: block;
@@ -186,120 +151,131 @@
     will-change: transform;
   }
 
-  .wave-svg-1 {
-    animation: wave-float-1 20s ease-in-out infinite alternate;
+  .wave-1 {
+    animation: wave-float-1 22s ease-in-out infinite alternate;
   }
 
-  .wave-svg-2 {
-    animation: wave-float-2 25s ease-in-out infinite alternate;
+  .wave-2 {
+    animation: wave-float-2 26s ease-in-out infinite alternate;
   }
 
   @keyframes wave-float-1 {
     0% { transform: translate3d(0, 0, 0) scaleY(1); }
-    50% { transform: translate3d(-3%, 15px, 0) scaleY(1.1); }
-    100% { transform: translate3d(2%, -10px, 0) scaleY(0.95); }
+    50% { transform: translate3d(-3%, 16px, 0) scaleY(1.1); }
+    100% { transform: translate3d(2%, -12px, 0) scaleY(0.95); }
   }
 
   @keyframes wave-float-2 {
     0% { transform: translate3d(0, 0, 0) scaleY(1); }
-    50% { transform: translate3d(3%, -18px, 0) scaleY(1.15); }
-    100% { transform: translate3d(-2%, 12px, 0) scaleY(0.9); }
+    50% { transform: translate3d(3%, -18px, 0) scaleY(1.12); }
+    100% { transform: translate3d(-2%, 14px, 0) scaleY(0.92); }
   }
 
-  /* ⭕ 極簡幾何立體光環 */
-  .geometric-shape {
+  /* 🧭 復古印刷刻度圓環 */
+  .vintage-glyph {
     position: absolute;
     pointer-events: none;
     will-change: transform;
   }
 
-  .geo-ring-1 {
-    top: 15%;
-    right: 5%;
-    animation: spin-ring-1 90s linear infinite, float-shape-1 16s ease-in-out infinite alternate;
+  .glyph-right {
+    top: 14%;
+    right: 4%;
+    animation: rotate-glyph-1 120s linear infinite, float-glyph-1 18s ease-in-out infinite alternate;
   }
 
-  .geo-ring-2 {
-    bottom: 25%;
-    left: 4%;
-    animation: spin-ring-2 110s linear infinite reverse, float-shape-2 20s ease-in-out infinite alternate;
+  .glyph-left {
+    bottom: 20%;
+    left: 3%;
+    animation: rotate-glyph-2 140s linear infinite reverse, float-glyph-2 22s ease-in-out infinite alternate;
   }
 
-  @keyframes spin-ring-1 {
+  @keyframes rotate-glyph-1 {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
   }
 
-  @keyframes spin-ring-2 {
+  @keyframes rotate-glyph-2 {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
   }
 
-  @keyframes float-shape-1 {
+  @keyframes float-glyph-1 {
     0% { transform: translate3d(0, 0, 0); }
-    100% { transform: translate3d(-15px, 25px, 0); }
+    100% { transform: translate3d(-15px, 20px, 0); }
   }
 
-  @keyframes float-shape-2 {
+  @keyframes float-glyph-2 {
     0% { transform: translate3d(0, 0, 0); }
-    100% { transform: translate3d(20px, -30px, 0); }
+    100% { transform: translate3d(18px, -24px, 0); }
   }
 
-  /* ✨ 閃爍星芒 */
-  .sparkle {
+  /* ⌜ ⌝ 四周角標 */
+  .corner-mark {
     position: absolute;
-    color: #deb86d;
-    font-size: 13px;
-    line-height: 1;
-    opacity: 0;
-    animation: twinkle 6s ease-in-out infinite;
+    width: 20px;
+    height: 20px;
+    border-color: rgba(28, 28, 28, 0.35);
+    border-style: solid;
+    pointer-events: none;
   }
 
-  .sparkle-1 { top: 18%; left: 8%; animation-delay: 0s; }
-  .sparkle-2 { top: 68%; left: 88%; animation-delay: 2.5s; }
-  .sparkle-3 { top: 82%; left: 18%; animation-delay: 4.2s; }
-
-  @keyframes twinkle {
-    0%, 100% { opacity: 0; transform: scale(0.6) rotate(0deg); }
-    50% { opacity: 0.85; transform: scale(1.2) rotate(45deg); }
+  .top-left {
+    top: 18px;
+    left: 18px;
+    border-width: 1.5px 0 0 1.5px;
   }
 
-  /* 漂浮星塵 */
-  .ambient-dust {
+  .top-right {
+    top: 18px;
+    right: 18px;
+    border-width: 1.5px 1.5px 0 0;
+  }
+
+  .bottom-left {
+    bottom: 18px;
+    left: 18px;
+    border-width: 0 0 1.5px 1.5px;
+  }
+
+  .bottom-right {
+    bottom: 18px;
+    right: 18px;
+    border-width: 0 1.5px 1.5px 0;
+  }
+
+  /* ❖ 漂浮深色菱形 */
+  .diamond-drift {
     position: absolute;
-    width: 3px;
-    height: 3px;
-    background: #deb86d;
-    border-radius: 50%;
-    box-shadow: 0 0 6px #deb86d;
+    font-size: 11px;
+    color: #1c1c1c;
     opacity: 0;
     will-change: transform, opacity;
+    animation: float-diamond 12s ease-in-out infinite;
   }
 
-  .dust-1 { top: 20%; left: 15%; animation: float-dust 14s ease-in-out infinite 0s; }
-  .dust-2 { top: 60%; left: 80%; animation: float-dust 18s ease-in-out infinite 3s; }
-  .dust-3 { top: 75%; left: 25%; animation: float-dust 16s ease-in-out infinite 6s; }
-  .dust-4 { top: 35%; left: 70%; animation: float-dust 20s ease-in-out infinite 9s; }
+  .d1 { top: 22%; left: 10%; animation-delay: 0s; }
+  .d2 { top: 65%; left: 86%; animation-delay: 4s; }
+  .d3 { top: 78%; left: 20%; animation-delay: 8s; }
 
-  @keyframes float-dust {
-    0% { transform: translate3d(0, 20px, 0) scale(0.6); opacity: 0; }
-    30% { opacity: 0.85; }
-    70% { opacity: 0.7; }
-    100% { transform: translate3d(-20px, -60px, 0) scale(1); opacity: 0; }
+  @keyframes float-diamond {
+    0% { transform: scale(0.6) rotate(0deg); opacity: 0; }
+    40% { opacity: 0.45; transform: scale(1.1) rotate(45deg); }
+    80% { opacity: 0.35; transform: scale(0.9) rotate(90deg); }
+    100% { transform: scale(0.6) rotate(135deg); opacity: 0; }
   }
 
   @media (max-width: 768px) {
-    .geometric-shape {
+    .vintage-glyph,
+    .corner-mark {
       display: none;
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .ambient-orb,
-    .ambient-dust,
-    .flow-wave,
-    .geometric-shape,
-    .sparkle {
+    .engraving-svg,
+    .vintage-glyph,
+    .diamond-drift {
       animation: none !important;
     }
   }
