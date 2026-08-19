@@ -3,12 +3,20 @@ import announcements from '../data/announcements';
 import posts, { type Post } from '../data/posts';
 
 const POSTS_PER_PAGE = 5;
-const postsPages = posts.reduce<Post[][]>((pages, post, index) => {
-  const pageIndex = Math.floor(index / POSTS_PER_PAGE);
-  if (!pages[pageIndex]) pages[pageIndex] = [];
-  pages[pageIndex].push(post);
-  return pages;
-}, []);
+
+function paginatePosts(list: Post[]): Post[][] {
+  return list.reduce<Post[][]>((pages, post, index) => {
+    const pageIndex = Math.floor(index / POSTS_PER_PAGE);
+    if (!pages[pageIndex]) pages[pageIndex] = [];
+    pages[pageIndex].push(post);
+    return pages;
+  }, []);
+}
+
+const generalPosts = posts.filter((post) => post.category === 'general');
+const techPosts = posts.filter((post) => post.category === 'tech');
+const generalPages = paginatePosts(generalPosts);
+const techPages = paginatePosts(techPosts);
 ---
 
 <section class="module" id="news" aria-label="最新消息">
@@ -40,6 +48,16 @@ const postsPages = posts.reduce<Post[][]>((pages, post, index) => {
     >
        其他文章
     </button>
+    <button
+      class="news-tab"
+      id="tab-tech"
+      role="tab"
+      aria-selected="false"
+      aria-controls="panel-tech"
+      type="button"
+    >
+       技術文章
+    </button>
   </div>
 
   <div class="news-panel is-active" id="panel-announce" role="tabpanel" aria-labelledby="tab-announce">
@@ -58,7 +76,7 @@ const postsPages = posts.reduce<Post[][]>((pages, post, index) => {
   <div class="news-panel" id="panel-posts" role="tabpanel" aria-labelledby="tab-posts" hidden>
     <div class="news-pages">
       {
-        postsPages.map((pageItems, pageIndex) => (
+        generalPages.map((pageItems, pageIndex) => (
           <div class="news-page" data-page={pageIndex} hidden={pageIndex !== 0}>
             {pageItems.map((item) => (
               <a class="news-item" href={`/posts/${item.slug}/`}>
@@ -74,11 +92,40 @@ const postsPages = posts.reduce<Post[][]>((pages, post, index) => {
       }
     </div>
     {
-      postsPages.length > 1 && (
+      generalPages.length > 1 && (
         <div class="news-pager" aria-label="其他文章分頁">
-          <button class="pager-btn" id="posts-prev" type="button" disabled>← 上一頁</button>
-          <span class="pager-indicator" id="posts-indicator">1 / {postsPages.length}</span>
-          <button class="pager-btn" id="posts-next" type="button">下一頁 →</button>
+          <button class="pager-btn pager-prev" type="button" disabled>← 上一頁</button>
+          <span class="pager-indicator">1 / {generalPages.length}</span>
+          <button class="pager-btn pager-next" type="button">下一頁 →</button>
+        </div>
+      )
+    }
+  </div>
+
+  <div class="news-panel" id="panel-tech" role="tabpanel" aria-labelledby="tab-tech" hidden>
+    <div class="news-pages">
+      {
+        techPages.map((pageItems, pageIndex) => (
+          <div class="news-page" data-page={pageIndex} hidden={pageIndex !== 0}>
+            {pageItems.map((item) => (
+              <a class="news-item" href={`/posts/${item.slug}/`}>
+                <span class="news-item-title">
+                  {item.title}
+                  <span class="news-item-excerpt">{item.excerpt}</span>
+                </span>
+                <span class="news-date">{item.date}</span>
+              </a>
+            ))}
+          </div>
+        ))
+      }
+    </div>
+    {
+      techPages.length > 1 && (
+        <div class="news-pager" aria-label="技術文章分頁">
+          <button class="pager-btn pager-prev" type="button" disabled>← 上一頁</button>
+          <span class="pager-indicator">1 / {techPages.length}</span>
+          <button class="pager-btn pager-next" type="button">下一頁 →</button>
         </div>
       )
     }
@@ -271,27 +318,30 @@ const postsPages = posts.reduce<Post[][]>((pages, post, index) => {
     tab.addEventListener('click', () => activate(tab));
   });
 
-  // 其他文章分頁（每頁 5 篇）
-  const pageEls = Array.from(document.querySelectorAll<HTMLElement>('.news-page'));
-  const prevBtn = document.getElementById('posts-prev') as HTMLButtonElement | null;
-  const nextBtn = document.getElementById('posts-next') as HTMLButtonElement | null;
-  const indicator = document.getElementById('posts-indicator');
-  let currentPage = 0;
+  // 分頁（每頁 5 篇）——每個有 .news-pager 的 panel 各自獨立分頁
+  panels.forEach((panel) => {
+    const pageEls = Array.from(panel.querySelectorAll<HTMLElement>('.news-page'));
+    const pager = panel.querySelector<HTMLElement>('.news-pager');
+    if (!pager || pageEls.length <= 1) return;
 
-  function showPage(page: number) {
-    currentPage = page;
-    pageEls.forEach((el, i) => {
-      el.hidden = i !== page;
-    });
-    if (prevBtn) prevBtn.disabled = page === 0;
-    if (nextBtn) nextBtn.disabled = page === pageEls.length - 1;
-    if (indicator) indicator.textContent = `${page + 1} / ${pageEls.length}`;
-  }
+    const prevBtn = pager.querySelector<HTMLButtonElement>('.pager-prev');
+    const nextBtn = pager.querySelector<HTMLButtonElement>('.pager-next');
+    const indicator = pager.querySelector<HTMLElement>('.pager-indicator');
+    let currentPage = 0;
 
-  if (pageEls.length > 1) {
+    function showPage(page: number) {
+      currentPage = page;
+      pageEls.forEach((el, i) => {
+        el.hidden = i !== page;
+      });
+      if (prevBtn) prevBtn.disabled = page === 0;
+      if (nextBtn) nextBtn.disabled = page === pageEls.length - 1;
+      if (indicator) indicator.textContent = `${page + 1} / ${pageEls.length}`;
+    }
+
     prevBtn?.addEventListener('click', () => showPage(Math.max(0, currentPage - 1)));
     nextBtn?.addEventListener('click', () =>
       showPage(Math.min(pageEls.length - 1, currentPage + 1))
     );
-  }
+  });
 </script>
