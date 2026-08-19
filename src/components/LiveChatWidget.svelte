@@ -160,15 +160,17 @@
 <style>
   .contact-widget-root {
     position: fixed;
-    bottom: 18px;
-    right: 18px;
+    bottom: 20px;
+    right: 20px;
     z-index: 9999;
   }
 
-  /* 懸浮純圖示按鈕 (加大圓形尺寸) */
+  /* 懸浮純圖示按鈕 (半透明毛玻璃與彈動動態) */
   .contact-launcher {
     appearance: none;
-    background: var(--ink);
+    background: rgba(28, 28, 28, 0.92);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     color: var(--white);
     border: 1.5px solid var(--ink);
     border-radius: 50%;
@@ -179,52 +181,66 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: 3px 3px 0px rgba(28, 28, 28, 0.16);
-    transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), background var(--t);
+    box-shadow: 3px 4px 12px rgba(28, 28, 28, 0.2), 2px 2px 0px rgba(28, 28, 28, 0.15);
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s, box-shadow 0.2s;
   }
 
   .contact-launcher:hover {
-    transform: translateY(-2px);
-    background: #000;
+    transform: translateY(-3px) scale(1.06);
+    background: #000000;
+    box-shadow: 4px 6px 16px rgba(28, 28, 28, 0.28);
+  }
+
+  .contact-launcher:active {
+    transform: translateY(0) scale(0.96);
   }
 
   .launcher-icon {
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: transform 0.2s ease;
   }
 
-  /* 細長迷你聯絡視窗 (Slender & Narrow) */
+  .contact-launcher:hover .launcher-icon {
+    transform: scale(1.1);
+  }
+
+  /* 細長半透明毛玻璃聯絡視窗 (Translucent Glassmorphism & Spring Popup) */
   .contact-window {
-    width: 236px;
-    background: var(--surface);
+    width: 238px;
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(14px) saturate(180%);
+    -webkit-backdrop-filter: blur(14px) saturate(180%);
     border: 1.5px solid var(--ink);
-    border-radius: 10px;
-    box-shadow: 3px 3px 0px rgba(28, 28, 28, 0.14);
+    border-radius: 12px;
+    box-shadow: 4px 6px 18px rgba(28, 28, 28, 0.14), 3px 3px 0px rgba(28, 28, 28, 0.16);
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    animation: contact-popup 0.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation: contact-popup 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
 
   @keyframes contact-popup {
-    from {
+    0% {
       opacity: 0;
-      transform: translateY(10px) scale(0.97);
+      transform: translateY(18px) scale(0.92);
     }
-    to {
+    100% {
       opacity: 1;
       transform: translateY(0) scale(1);
     }
   }
 
-  /* 標題列 */
+  /* 標題列 (宋體 & 柔和黑色毛玻璃) */
   .contact-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0.5rem 0.75rem;
-    background: var(--ink);
+    padding: 0.55rem 0.8rem;
+    background: rgba(28, 28, 28, 0.94);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     color: var(--white);
     border-bottom: 1px solid var(--ink);
   }
@@ -232,7 +248,7 @@
   .contact-header-info {
     display: flex;
     align-items: center;
-    gap: 0.45rem;
+    gap: 0.5rem;
   }
 
   .header-avatar {
@@ -244,6 +260,7 @@
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
   }
 
   .header-avatar img {
@@ -252,32 +269,49 @@
     object-fit: contain;
   }
 
+  /* 宋體標題 */
   .header-title {
-    font-size: 0.82rem;
-    font-weight: 600;
-    letter-spacing: 0.06em;
+    font-family: var(--font-serif);
+    font-size: 0.88rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: #ffffff;
   }
 
+  /* 叉叉旋轉與縮放動畫 (Interactive Rotate Close Button) */
   .contact-close-btn {
     appearance: none;
     background: none;
     border: none;
     color: var(--white);
-    font-size: 0.95rem;
+    font-size: 1rem;
     cursor: pointer;
-    padding: 0.1rem 0.2rem;
+    padding: 0;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
     line-height: 1;
-    opacity: 0.8;
+    opacity: 0.75;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s, background 0.2s;
   }
 
   .contact-close-btn:hover {
     opacity: 1;
+    transform: rotate(90deg) scale(1.18);
+    background: rgba(255, 255, 255, 0.18);
   }
 
-  /* 表單內容區 */
+  .contact-close-btn:active {
+    transform: rotate(180deg) scale(0.9);
+  }
+
+  /* 表單內容區 (半透明底色) */
   .contact-body {
-    padding: 0.75rem 0.8rem;
-    background: var(--surface);
+    padding: 0.8rem 0.85rem;
+    background: transparent;
   }
 
   .contact-form {
@@ -289,35 +323,37 @@
   .field-group {
     display: flex;
     flex-direction: column;
-    gap: 0.18rem;
+    gap: 0.2rem;
   }
 
   .field-group label {
-    font-size: 0.7rem;
-    font-weight: 500;
+    font-family: var(--font-serif);
+    font-size: 0.72rem;
+    font-weight: 600;
     color: var(--ink-2);
-    letter-spacing: 0.06em;
+    letter-spacing: 0.08em;
   }
 
   .field-group input,
   .field-group textarea {
     width: 100%;
-    background: var(--bg-soft);
-    border: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.82);
+    border: 1px solid rgba(28, 28, 28, 0.18);
     border-radius: 6px;
-    padding: 0.38rem 0.55rem;
-    font-family: inherit;
+    padding: 0.4rem 0.55rem;
+    font-family: var(--font-sans);
     font-size: 0.78rem;
     color: var(--ink);
     outline: none;
     box-sizing: border-box;
-    transition: border-color var(--t), background var(--t);
+    transition: border-color var(--t), background var(--t), box-shadow var(--t);
   }
 
   .field-group input:focus,
   .field-group textarea:focus {
     border-color: var(--ink);
-    background: var(--surface);
+    background: #ffffff;
+    box-shadow: 0 0 0 2px rgba(28, 28, 28, 0.08);
   }
 
   .contact-submit-btn {
@@ -326,34 +362,41 @@
     color: var(--white);
     border: 1px solid var(--ink);
     border-radius: 6px;
-    padding: 0.42rem 0.6rem;
-    font-family: inherit;
-    font-size: 0.78rem;
-    font-weight: 500;
-    letter-spacing: 0.12em;
+    padding: 0.45rem 0.6rem;
+    font-family: var(--font-serif);
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
     cursor: pointer;
-    transition: all var(--t);
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     margin-top: 0.15rem;
+    box-shadow: 2px 2px 0px rgba(28, 28, 28, 0.12);
   }
 
   .contact-submit-btn:hover:not(:disabled) {
-    background: var(--surface);
-    color: var(--ink);
+    background: #000000;
+    transform: translateY(-1px);
+    box-shadow: 2px 3px 6px rgba(28, 28, 28, 0.2);
+  }
+
+  .contact-submit-btn:active:not(:disabled) {
+    transform: translateY(0);
   }
 
   .contact-feedback {
     padding: 1.2rem 0.6rem;
     text-align: center;
-    background: var(--bg-soft);
+    background: rgba(255, 255, 255, 0.75);
     border: 1px solid var(--border);
-    border-radius: 6px;
+    border-radius: 8px;
+    animation: contact-popup 0.25s ease-out;
   }
 
   .success-icon-wrap {
-    width: 34px;
-    height: 34px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
-    background: var(--surface);
+    background: #ffffff;
     border: 1px solid var(--border);
     display: flex;
     align-items: center;
@@ -363,8 +406,9 @@
   }
 
   .feedback-title {
-    font-size: 0.82rem;
-    font-weight: 600;
+    font-family: var(--font-serif);
+    font-size: 0.84rem;
+    font-weight: 700;
     color: var(--ink);
     margin: 0;
   }
