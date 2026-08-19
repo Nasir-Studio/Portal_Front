@@ -91,21 +91,11 @@ svg {
 
 .module {
   background: var(--surface);
-  border: 1px solid rgba(28, 28, 28, 0.16);
-  border-radius: 12px;
-  overflow: hidden;
+  border: 1px solid var(--ink);
+  border-radius: 0;
   margin-bottom: 1.5rem;
-  box-shadow: 0 4px 18px -4px rgba(28, 28, 28, 0.06), 0 1px 3px rgba(28, 28, 28, 0.04);
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-              box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-              border-color 0.25s ease;
+  box-shadow: 0 4px 14px -6px rgba(28, 28, 28, 0.08);
   animation: module-in 0.45s var(--ease) both;
-}
-
-.module:hover {
-  transform: translateY(-2px);
-  border-color: rgba(28, 28, 28, 0.32);
-  box-shadow: 0 12px 32px -8px rgba(28, 28, 28, 0.12), 0 2px 6px rgba(28, 28, 28, 0.05);
 }
 
 @keyframes module-in {
@@ -124,14 +114,15 @@ svg {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.78rem 1.15rem;
-  background: linear-gradient(180deg, #fafaf8 0%, #f3f2ee 100%);
-  border-bottom: 1px solid rgba(28, 28, 28, 0.1);
+  padding: 0.72rem 1.1rem;
+  background: var(--bg-soft);
+  border-bottom: 1px solid var(--ink);
   font-family: var(--font-serif);
-  font-size: 0.94rem;
+  font-size: 0.95rem;
   font-weight: 600;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.2em;
   color: var(--ink);
+  border-radius: 0;
 }
 
 .btn {
