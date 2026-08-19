@@ -12,309 +12,181 @@ const posts: Post[] = [
     slug: 'security-research-report',
     category: 'tech',
     date: '2026.08.19',
-    title: '【系統資安】資安研究報告',
-    excerpt: '整理三份資安規範檔：CVSS v4.0 滲透分級、OWASP/CWE 標準、九種攻擊手法特徵矩陣、風險日誌 Schema 與 AI 自動化防禦，附白話解說與檢查重點！',
+    title: '【系統資安】全端資安防禦與風險日誌實踐',
+    excerpt: '整理全端系統資安規範：包含 CVSS 滲透分級、OWASP 與 CWE 常見威脅應對、結構化日誌格式與自動化防禦機制。',
     content: `
       <p class="post-intro">
-        這篇是「系統資安」系列的第一份研究報告：我把下載資料夾裡的三份資安規範檔——<strong>企業級全端資安規範、巨型架構資安規範、資安系統滲透指數與風險日誌標準規範</strong>——全部濃縮成一份白話文筆記。三份其實是同一套主題（滲透指數分級 + 風險日誌標準）的不同版本，重點全部併在一起，每一段都附上<strong>檢查重點</strong>！
+        這篇整理了近期研讀企業全端資安架構、滲透指數分級與風險日誌標準後的心得筆記。核心目標只有一個：當系統遭遇異常流量或攻擊嘗試時，該如何準確評估危害等級、留存關鍵證據，並在最短時間內啟動自動化應變。
       </p>
 
-      <h2>起：這三份文件到底在講什麼？</h2>
+      <h2>為什麼需要統一的資安標準？</h2>
       <p>
-        簡單說，這三份文件在回答一個問題：<strong>「當駭客打你的網站時，你怎麼知道事情有多嚴重？要記錄什麼？又要怎麼自動反應？」</strong>
+        在前後端分離與微服務架構普及的今天，單純看「伺服器有沒有壞」已經遠遠不夠。完整的防護體系需要回答三件事：
       </p>
       <p>
-        答案分三步：先用 <strong>CVSS v4.0</strong> 算嚴重度分級，再用 <strong>OWASP / CWE</strong> 幫漏洞貼上「身分證標籤」，最後把所有線索寫成<strong>結構化風險日誌</strong>，交給 AI Agent 自動處置。下面一節一節講。
+        第一是<strong>危害程度量化</strong>（透過 CVSS v4.0 計算客觀分數）；第二是<strong>漏洞精準分類</strong>（對照 OWASP Top 10 與 CWE 標準名稱）；第三是<strong>線索結構化留存</strong>（產出標準格式的風險日誌供自動化處置與追蹤）。
       </p>
 
-      <h2>一、滲透指數分級：先算「事情有多嚴重」（CVSS v4.0）</h2>
+      <h2>CVSS 嚴重度分級邏輯</h2>
       <p>
-        CVSS 是國際通用的漏洞評分系統，分數 <code>0.0 ~ 10.0</code>，越高越嚴重。分級邏輯白話版：
+        CVSS 評分範圍為 0.0 到 10.0 分，實務上通常劃分為四個等級：
       </p>
       <ul>
-        <li><strong>CRITICAL 嚴重（9.0 – 10.0）：</strong>最慘的情況。例如後端被遠端代碼執行（RCE）、SQL 注入直接拿到 <code>superuser</code> 最高權限、或伺服器端環境變數（資料庫密碼、AWS 金鑰）被整包偷走。<br><strong>✅ 檢查重點：</strong>看到這級立刻斷線、封 IP 網段、銷毀 token/session，觸發 P1 特急告警（簡訊 + 即時通訊 + Email 群發）。</li>
-        <li><strong>HIGH 高（7.0 – 8.9）：</strong>很嚴重。例如沒登入就能直接呼叫改資料的 API（Server Actions 越權）、儲存型 XSS 偷走管理員 Session。<br><strong>✅ 檢查重點：</strong>24 小時內必修：凍結攻擊帳號、強制登出所有裝置、API 閘道加臨時 Rate Limiting、自動開修補工單（附 Payload 證據）。</li>
-        <li><strong>MEDIUM 中（4.0 – 6.9）：</strong>有風險但還能撐。例如後端 <code>DEBUG=False</code> 沒設好、把完整 Python 報錯 Traceback 噴給外人看；或 CORS Policy 沒設好，別人的網站能讀你的敏感資料。<br><strong>✅ 檢查重點：</strong>排進下一個 Sprint 修，並對該路徑做長期行為分析，看有沒有進一步提權的嘗試。</li>
-        <li><strong>LOW 低（0.1 – 3.9）：</strong>小擦傷。例如靜態頁面原始碼不小心暴露了內部測試網址、回應標頭洩漏 <code>Server: WSGI / gunicorn</code> 版本資訊。<br><strong>✅ 檢查重點：</strong>記到月度資安健檢報告，下次 CI/CD 部署順手修掉。</li>
+        <li><strong>CRITICAL 嚴重（9.0 – 10.0）：</strong>例如遠端代碼執行（RCE）、資料庫提權注入，或伺服器環境變數外洩。處置策略為立即阻斷連線、封鎖來源 IP 網段、銷毀快取 Token/Session，並同步發送特急通報。</li>
+        <li><strong>HIGH 高（7.0 – 8.9）：</strong>例如未授權存取敏感 API（Server Actions 越權）、儲存型 XSS 攻擊等。需在 24 小時內凍結惡意帳號、限制端點請求頻率並提交修補工單。</li>
+        <li><strong>MEDIUM 中（4.0 – 6.9）：</strong>例如除錯資訊外洩、CORS 設定不夠嚴謹等。可排入下個開發週期修正，同時對相關存取路徑持續進行異常行為觀測。</li>
+        <li><strong>LOW 低（0.1 – 3.9）：</strong>例如非敏感的回應標頭版本洩漏、靜態測試路徑暴露等。列入例行維護清單於後續部署時一併優化。</li>
       </ul>
 
-      <h2>二、漏洞身分證：OWASP 跟 CWE 是幹嘛的？</h2>
+      <h2>常見全端攻擊手法與防禦重點</h2>
+      <p>現代全端系統的威脅來源可以按架構層級來拆解：</p>
+
+      <h3>前端與瀏覽器層</h3>
       <ul>
-        <li><strong>OWASP Top 10：</strong>網頁應用程式最常見的十種風險排行榜，是網頁端防禦的主幹標準。</li>
-        <li><strong>OWASP Top 10 API Security：</strong>前後端分離架構專用，專門防 API 等級的漏洞（例如物件層級越權 BOLA / IDOR）。</li>
-        <li><strong>CWE（通用弱點列舉）：</strong>弱點的「身分證字號」——<code>CWE-89</code> = SQL 注入、<code>CWE-79</code> = XSS，一目瞭然。<br><strong>✅ 檢查重點：</strong>每一筆風險日誌都要寫上 OWASP 代碼 + CWE 編號，AI 才能精準判斷漏洞根因。</li>
+        <li><strong>跨站指令碼（XSS, CWE-79）：</strong>惡意 JavaScript 被注入前端渲染流程。防禦重點在於嚴格的 CSP 內容安全政策（監聽腳本載入違規日誌），並對所有使用者輸入實施強制編碼與消毒。</li>
+        <li><strong>客戶端 Token 劫持：</strong>存放在 Storage 中的敏感金鑰遭惡意腳本讀取。應優先使用 HttpOnly / Secure Cookie 存放驗證憑證，並監控異常的 Token 存取模式。</li>
       </ul>
 
-      <h2>三、全端攻擊特徵矩陣：常見攻擊手法白話總覽（含檢查重點）</h2>
-      <p>三份文件加起來共整理出九種常見攻擊手法，分成三個層面來看：</p>
-
-      <h3>🎯 前端層（瀏覽器 / SSR）</h3>
+      <h3>後端 API 與資料庫層</h3>
       <ul>
-        <li><strong>XSS 跨站指令碼（CWE-79）：</strong>駭客把惡意 JavaScript 塞進你的網頁，讓瀏覽器幫他執行。分「儲存型」（留言存進資料庫，之後每個人看都中獎）、「反射型」跟「DOM 型」。<br><strong>✅ 檢查重點：</strong>監聽 <code>window.onerror</code> 報出非白名單網域的 Script 載入路徑，或 CSP 日誌出現 <code>violated-directive: script-src</code>。</li>
-        <li><strong>客戶端 Session 劫持（A07）：</strong>存在 <code>localStorage</code> / <code>sessionStorage</code> 的 Token，被異常的編碼腳本讀走。<br><strong>✅ 檢查重點：</strong>偵測敏感 Token 在短時間內被非預期腳本讀取的行為。</li>
+        <li><strong>SQL 注入（SQL Injection, CWE-89）：</strong>利用拼接語法篡改查詢邏輯。防禦核心是全面採用 ORM 參數化查詢，並監控後端資料庫拋出的異常語法錯誤。</li>
+        <li><strong>物件層級越權與大量賦值（BOLA / Mass Assignment, CWE-915）：</strong>修改請求欄位試圖提升權限或存取他人資源。後端須嚴格驗證 Payload 欄位白名單，並對 Resource ID 進行持有者權限比對。</li>
+        <li><strong>伺服器端請求偽造（SSRF）：</strong>伺服器被誘導向內網發起請求。對外發送 HTTP 請求的服務需建立目標網段白名單，嚴禁存取內部迴圈位址與私有 IP。</li>
       </ul>
 
-      <h3>⚙️ 後端層（API / 資料庫）</h3>
+      <h3>全端跨層通訊</h3>
       <ul>
-        <li><strong>SQL Injection（CWE-89）：</strong>在輸入框塞 SQL 語法，讓資料庫執行壞人的指令，盲注跟報錯注入都算。<br><strong>✅ 檢查重點：</strong>請求參數出現 <code>'</code>、<code>--</code>、<code>UNION SELECT</code> 等特徵字串，加上 Django 噴出 <code>ProgrammingError</code> / <code>OperationalError</code>。</li>
-        <li><strong>BOLA / Mass Assignment（CWE-915）：</strong>改 API 請求的欄位來「大量指派」權限，例如 Payload 塞 <code>"is_superuser": true</code> 或 <code>"role": "admin"</code>。<br><strong>✅ 檢查重點：</strong>PATCH/PUT 請求的 Payload 出現未對外開放的權限欄位，或改了 Object ID（<code>?user_id=99</code>）但 Token 身分不符（IDOR）。</li>
-        <li><strong>SSRF 伺服器端請求偽造（A10）：</strong>後端程式被騙去連「不該連的地方」，例如內部迴圈位址 <code>127.0.0.1</code> 或內網網段 <code>10.0.0.0/8</code>。<br><strong>✅ 檢查重點：</strong>後端對外請求模組（如 cURL）的目標出現內網 IP。</li>
+        <li><strong>Server Actions 邏輯越權（CWE-285）：</strong>直接呼叫未設防的內部 RPC 路由。所有寫入端點均須在後端實作 Session 驗證與 CSRF 防護。</li>
+        <li><strong>HTTP 請求走私（HTTP Request Smuggling, CWE-444）：</strong>前端代理與後端解析 Content-Length / Transfer-Encoding 不一致。反向代理層應強制統一規範並拒絕畸形 Header。</li>
+        <li><strong>JWT 簽章偽造（CWE-347）：</strong>攻擊者嘗試將演算法改為 None 或替換金鑰。驗證時必須明確限定簽章演算法與過期機制。</li>
       </ul>
 
-      <h3>🌐 全端混合層（Node.js ↔ Django 跨層攻擊）</h3>
+      <h2>結構化風險日誌（Security Log Schema）</h2>
+      <p>統一的日誌格式是日後自動化分析的基石，關鍵欄位包含：</p>
       <ul>
-        <li><strong>Next.js Server Actions 越權邏輯繞過（CWE-285）：</strong>沒登入的人直接 POST 呼叫內部路由去改資料。<br><strong>✅ 檢查重點：</strong>POST 直接打 <code>_next/data</code> 內部路由、Headers 缺 CSRF Token、或 JWT 權限跟呼叫的函數不符。</li>
-        <li><strong>WebFolding（HTTP 請求走私，CWE-444）：</strong>利用 <code>Transfer-Encoding: chunked</code> 跟 <code>Content-Length</code> 同時出現（TE.CL / CL.TE 衝突），把惡意請求「折疊」在正常請求後面，繞過前面的代理直接打後端。<br><strong>✅ 檢查重點：</strong>單一 TCP 連線中兩個 Header 同時出現、或收到非預期的 <code>\\r\\n\\r\\n</code> 折疊斷行符。</li>
-        <li><strong>GraphQL Batch Folding（CWE-770）：</strong>單一個請求裡塞數千個巢狀查詢（Batching 或大量重複 <code>alias</code>），把後端 API 癱瘓並暴力枚舉。<br><strong>✅ 檢查重點：</strong>單一請求含大量重複 <code>alias</code> 欄位或 JSON 陣列形式的複數查詢。</li>
-        <li><strong>JWT 簽章偽造 / Key 混淆（CWE-347）：</strong>把 JWT 的 <code>alg</code> 改成 <code>"none"</code> 騙過驗證，或拿公開金鑰當對稱 HMAC 密鑰簽章。<br><strong>✅ 檢查重點：</strong>收到 <code>"alg": "none"</code> 的 Token、或簽章算法被換成非預期類型。</li>
+        <li><strong>trace_id：</strong>貫穿前後端的全局唯一追蹤識別碼，確保分散式呼叫鏈路可完整串聯。</li>
+        <li><strong>timestamp 與 environment：</strong>記錄事件發生的精確時間戳（ISO 8601）與運行環境標籤。</li>
+        <li><strong>architecture_layer：</strong>標註發生異常的具體層級（邊緣網路、SSR、後端 API 或資料庫）與對應程式檔案。</li>
+        <li><strong>vulnerability_metadata：</strong>記錄 OWASP 分類代碼與 CWE 編號。</li>
+        <li><strong>penetration_index：</strong>包含 CVSS 分數、嚴重等級與攻擊難易度評估。</li>
+        <li><strong>http_context：</strong>記錄請求 URL、HTTP 方法、來源 IP、User-Agent 以及過濾後的關鍵 Payload。</li>
+        <li><strong>execution_status：</strong>記錄最終結果（已被阻擋、引發異常、攻擊成功或探測被拒）。</li>
       </ul>
 
-      <h2>四、風險日誌長什麼樣？標準欄位白話解說（JSON Schema）</h2>
-      <p>不管哪一層出事，日誌都要寫成同一種「標準格式」，AI 才能自動分析。白話版欄位解說：</p>
-      <ul>
-        <li><strong>trace_id：</strong>全系統唯一追蹤碼，前端、後端的日誌靠它串成一條線（分散式追蹤）。<br><strong>✅ 檢查重點：</strong>一筆請求從頭到尾 trace_id 要一致，缺了它線索就斷了。</li>
-        <li><strong>timestamp / environment：</strong>事件時間（ISO 8601）+ 環境標籤：<code>PRODUCTION</code> / <code>STAGING</code> / <code>DEVELOPMENT</code> / <code>PEN_TEST_SANDBOX</code>。</li>
-        <li><strong>architecture_layer / framework_context：</strong>出事在哪一層（邊緣網路 / 瀏覽器 / SSR / 後端 API / 資料庫）+ 哪個框架（Next.js / Astro / Django…）跟哪個檔案（<code>views.py</code>、<code>SubmitButton.astro</code>…）。</li>
-        <li><strong>vulnerability_metadata：</strong>漏洞身分證：OWASP 代碼 + CWE 編號 + 漏洞名稱。</li>
-        <li><strong>penetration_index：</strong>CVSS v4.0 分數 + 等級（CRITICAL/HIGH/MEDIUM/LOW/INFO）+ 可利用難易度（有沒有現成工具）。</li>
-        <li><strong>http_context：</strong>出事的請求長相：網址、方法、來源 IP、User-Agent、攔截到的 Payload；進階版還會記錄「Header 折疊異常」跟「批次數量 batch_count」。</li>
-        <li><strong>execution_status：</strong>最後結果四選一：<code>VULNERABILITY_EXPLOITED</code>（被打穿了）/ <code>ATTACK_BLOCKED_BY_WAF</code>（被擋下）/ <code>EXCEPTION_THROWN</code>（系統噴錯）/ <code>PROBING_REJECTED</code>（踩點被拒）。</li>
-        <li><strong>evidence_payload：</strong>佐證證據：完整 Stack Trace、被污染的實際 SQL 語法、回應狀態碼。</li>
-      </ul>
-
-      <h2>五、AI Agent 自動化防禦：從「被動記錄」到「主動反擊」</h2>
-      <p>這份規範最特別的地方：不只教你記錄，還設計了「自動處置劇本」——依照嚴重度分級，AI 直接動手處理：</p>
-      <ul>
-        <li><strong>CRITICAL：</strong>自動在 WAF / 邊緣網路封鎖惡意 IP 網段、在快取（Redis）全面銷毀被污染的 Token/Session、觸發 P1 特急告警。</li>
-        <li><strong>HIGH：</strong>自動凍結攻擊帳號並強制登出所有裝置、API 閘道動態加嚴 Rate Limiting、自動開 GitHub / Jira 修補工單（附 Payload 證據）。</li>
-        <li><strong>MEDIUM：</strong>記入漏洞修補清單、AI 提高該路徑的審查權限做長期行為分析，觀察是否有提權嘗試。</li>
-        <li><strong>LOW：</strong>寫進月度健檢報告，下次 CI/CD 部署時自動修正。</li>
-      </ul>
+      <h2>自動化應變處置機制</h2>
+      <p>
+        透過建立自動化處置劇本，系統在偵測到威脅時能即時採取行動：嚴重威脅由 WAF 於邊緣節點自動封鎖 IP 並吊銷 Session；中高風險則觸發帳號暫時凍結與動態頻率限制，大幅縮短人工排查與反應的時間差。
+      </p>
 
       <p class="post-outro">
-        這份研究報告把三份規範的完整重點濃縮成一篇。之後實際拿工具測漏洞、或把日誌接上自動化平台時，再回來補實作筆記。系統資安系列，未完待續！
+        資安是一場動態的攻防過程，後續實際整合漏洞掃描工具與日誌分析平台時，會再持續補充更多實戰細節。
       </p>
     `,
   },
-  {
+    {
     slug: 'tech-notes-architecture',
     category: 'tech',
     date: '2026.08.19',
-    title: '【技術文章】技術筆記本',
-    excerpt: '白話拆解現代網站系統架構：從 Cloudflare 第一道防線、Nginx 到 Django 技術棧，再到模組化設計，一篇看懂所有設計重點！',
+    title: '【技術筆記】現代全端網站系統架構解析',
+    excerpt: '從 Cloudflare 邊緣防線、Nginx 反向代理到 Django 與 Next.js 服務架構，整理完整系統分層與模組化設計經驗。',
     content: `
       <p class="post-intro">
-        這篇是我的「技術筆記本」第一集：把整套系統的架構設計，從外到內、從選型到模組，全部用白話文整理一遍。講給未來的自己聽，也講給正在看這篇的你聽！
+        每次在構建大型全端專案時，架構規劃往往決定了系統未來的穩定性與擴展上限。這篇筆記記錄了我在實際架構系統時的分層設計、技術選型邏輯與模組化拆分原則。
       </p>
 
-      <h2>起：為什麼會有這本筆記？</h2>
+      <h2>系統分層架構</h2>
       <p>
-        每次架系統，最怕的就是「做完就忘」。所以我把一套現代網站系統常見的架構畫成一張圖、拆成一張表，然後用這篇筆記記錄下來。這本筆記不綁定任何特定平台，重點是那些<strong>「不管做什麼專案都用得到」的設計邏輯</strong>。
+        整套系統由外至內可劃分為清晰的四個主要層次，每一層各司其職且具備獨立的防護能力：
       </p>
+
+      <h3>網路入口層（Network Edge）</h3>
+      <p>使用技術：Cloudflare</p>
+      <ul>
+        <li><strong>DNS 與全域路由：</strong>統籌全站網域解析，提供高可用性路由切換。</li>
+        <li><strong>CDN 邊緣快取：</strong>將靜態資源快取於全球邊緣節點，大幅降低源站負載並加速本地與海外存取。</li>
+        <li><strong>WAF 應用防火牆：</strong>在流量抵達伺服器前，過濾自動化掃描工具、惡意 Fuzzing 與異常高頻流量。</li>
+        <li><strong>HTTPS 端到端加密：</strong>全面強制啟用安全傳輸協定，確保通訊隱私。</li>
+      </ul>
+
+      <h3>伺服器反向代理層（Application Gateway）</h3>
+      <p>使用技術：Nginx, GCP VM, GitHub Actions</p>
+      <ul>
+        <li><strong>Nginx 反向代理：</strong>負責 SSL 解密、靜態資源分流，並設置第二層流量漏桶限制（<code>limit_req</code>），平滑突發請求。</li>
+        <li><strong>雲端虛擬主機：</strong>後端核心運算與 API 服務運行的基礎環境。</li>
+        <li><strong>GitHub Actions 自動化部署：</strong>建立 CI/CD 流水線，代碼推送到主分支後自動執行測試與安全部署。</li>
+      </ul>
+
+      <h3>應用服務層（Application Services）</h3>
+      <p>使用技術：Next.js (App Router), Django REST Framework, SSE</p>
+      <ul>
+        <li><strong>前端應用：</strong>採用 Next.js App Router 構建，結合 SSR 伺服器端渲染、SWR 資料快取與 PWA 漸進式網頁應用能力。</li>
+        <li><strong>後端核心 API：</strong>基於 Django REST Framework 實現，負責身分驗證、權限控制、內容管理與資料持久化。</li>
+        <li><strong>即時資料通訊：</strong>前後端之間透過 Server-Sent Events（SSE）建立單向事件推播，即時傳遞系統狀態變化。</li>
+      </ul>
+
+      <h3>資料與資產儲存層（Data & Assets）</h3>
+      <p>使用技術：MySQL, Cloudflare R2, SMTP, WebPush</p>
+      <ul>
+        <li><strong>結構化資料庫：</strong>MySQL 搭配優化索引設計，支撐核心業務資料的 ACID 操作。</li>
+        <li><strong>物件儲存：</strong>相容 S3 API 的 Cloudflare R2，專門託管使用者上傳的圖片與媒體資產。</li>
+        <li><strong>通知服務：</strong>結合 SMTP 電子郵件與基於 VAPID 標準的 Web Push，支援跨裝置主動通知。</li>
+      </ul>
+
+      <h2>關鍵技術選型與設計考量</h2>
+
+      <h3>認證與授權機制</h3>
       <p>
-        打個比方：整套系統就像一棟大樓，<strong>從門口保全、櫃檯接待，到辦公室分工、倉庫管理</strong>，每一層都有各自的任務，而且層層防護。下面我們就從大門口開始，一層一層往裡面逛。
+        內部 API 呼叫採用基於 HS256 的自訂 JWT 簽章，並整合第三方 OAuth 登入。認證層實作了自訂配接器，支援特定組織網域限制與白名單驗證，確保只有授權使用者能存取受保護資源。
       </p>
 
-      <h2>承：系統多層級架構（從外到內五層）</h2>
-
-      <h3>第 2 層：網路入口（Network Entry）＝大樓門口的保全都</h3>
-      <p>使用的技術：<code>Cloudflare</code></p>
-      <ul>
-        <li><strong>DNS 解析：</strong>全站網域路由的總管，別人打網址要怎麼找到你家，由它決定。</li>
-        <li><strong>CDN 靜態加速：</strong>把前端靜態資源快取在世界各地的節點，離使用者近的節點直接送貨，全球/本地存取都變快。</li>
-        <li><strong>WAF（Web Application Firewall）：</strong>第一道防線！專門過濾惡意工具、Web Fuzzing 漏洞攻擊（舉例：有人拿萬用鑰匙一支一支狂試你家門鎖）跟異常高頻流量（舉例：一秒內被敲門一萬次，正常人誰會這樣？）。</li>
-        <li><strong>HTTPS 全面加密：</strong>門口到路上的對話全部加密，強制走安全傳輸協定，不讓別人偷聽。</li>
-      </ul>
-
-      <h3>第 3 層：應用入口（Application Entry）＝櫃檯接待 + 辦公室本體</h3>
-      <p>使用的技術：<code>Nginx Reverse Proxy</code>、<code>GCP VM</code>、<code>GitHub Actions</code></p>
-      <ul>
-        <li><strong>Nginx 反向代理：</strong>站在雲端主機前方的櫃檯。負責 HTTPS 解密、靜態檔案託管分流，還會做<strong>第二層流量限制</strong>（<code>limit_req</code>），客人太多就先排在門外慢慢放行。</li>
-        <li><strong>GCP VM：</strong>整個後端服務住的辦公室，所有 API 都在這台虛擬主機上跑。</li>
-        <li><strong>GitHub Actions（CI/CD）：</strong>自動化的「打卡上班」流程。開發者把代碼推到 GitHub，它就會自動觸發建置，再透過安全通道（Deploy to VM）把新版本部署到 GCP 虛擬機，不用半夜爬起來手動上線。</li>
-      </ul>
-
-      <h3>第 4 層：應用服務層（Application Services）＝真正的辦公室同事們</h3>
-      <p>使用的技術：<code>Next.js (App Router)</code>、<code>Django REST API</code>、<code>SSE</code></p>
-      <ul>
-        <li><strong>Build Frontend（前端構建）：</strong>用 <strong>Next.js App Router</strong> 打造，整合了 <strong>SSR</strong>（伺服器端渲染，搜尋引擎看得懂）、<strong>SWR</strong>（資料請求快取，免一直 reload）、<strong>PWA</strong>（漸進式網頁應用，可以裝成 App）、還有<strong>事件驅動 UI</strong>（Event-Driven UI），頁面會自己「聽」資料變化即時更新。</li>
-        <li><strong>Migrate Backend（後端核心）：</strong>用 <strong>Django REST API</strong>，負責身份驗證（Auth）、內容審查（Moderation）、通知發送（Notification）跟 SQL 查詢優化。</li>
-        <li><strong>即時通訊（SSE）：</strong>Django 跟 Next.js 之間用 <strong>SSE（Server-Sent Events）</strong>建立<strong>單向</strong>即時通道，打個比方就是廣播電台——後端有新消息就直接放送給前端，不用前端一直跑回去問。</li>
-      </ul>
-
-      <h3>第 5 層：資料與資產層（Data & Assets Layer）＝倉庫跟郵務室</h3>
-      <p>使用的技術：<code>MySQL / Cloud SQL</code>、<code>Cloudflare R2</code>、<code>Email SMTP</code>、<code>Web Push / VAPID</code></p>
-      <ul>
-        <li><strong>MySQL / Cloud SQL：</strong>放結構化業務資料的倉庫，搭配優化過的索引查詢（Optimized Indexes），翻東西才快。</li>
-        <li><strong>Cloudflare R2：</strong>相容 S3 的分散式物件儲存，專門放使用者上傳的圖片、檔案這類媒體資產。</li>
-        <li><strong>Email SMTP：</strong>郵務室，負責寄交易型跟通知型郵件。</li>
-        <li><strong>Web Push / VAPID：</strong>瀏覽器主動推送服務，走 VAPID 協議標準，手機關著網頁也能收到通知。</li>
-      </ul>
-
-      <h2>轉：核心技術棧白話對照表</h2>
-      <p>架構看完，來拆技術細節。我把後端跟運維用到的技術分門別類，每一項都用一句白話講「它是誰、幹嘛用的」：</p>
-
-      <h3>1.1 框架核心（Core Framework）</h3>
-      <ul>
-        <li><strong>Django：</strong>後端總指揮，MVC/MTV 框架，所有 API 業務邏輯都由它調度。</li>
-        <li><strong>mysqlclient：</strong>MySQL 的 C 語言驅動，Django 連 MySQL 的「專用快車道」，效能比慢吞吞的 PyMySQL 好，所以捨棄了後者。</li>
-      </ul>
-
-      <h3>1.2 資料庫 / ORM（Database & Cache）</h3>
-      <ul>
-        <li><strong>Django ORM：</strong>在 <code>models.py</code> 用物件導向操作資料庫，不用手寫原生 SQL，寫起來像在填空而不是在背咒語。</li>
-        <li><strong>MySQL：</strong>核心關聯式資料庫，在 <code>settings.py</code> 的 <code>DATABASES</code> 設定為預設引擎。</li>
-        <li><strong>Django Cache：</strong>快取抽象層，實際用於 <code>core/rate_limit.py</code> 等頻率限制模組，專門暫存頻率限制的計數器。</li>
-      </ul>
-
-      <h3>1.3 認證 / 授權（Authentication & Authorization）</h3>
-      <ul>
-        <li><strong>自訂 JWT（HS256）：</strong>核發跟解讀內部 API 呼叫用的 <code>app_token</code>，採用 HS256 安全雜湊演算法簽章。</li>
-        <li><strong>PyJWT + cryptography：</strong>PyJWT 負責 Token 的 Encode/Decode，cryptography 是底層加密庫，確保簽章不會被偽造。</li>
-        <li><strong>django-allauth：</strong>整合第三方登入，這裡專門接 <strong>Google OAuth</strong>。</li>
-        <li><strong>Custom User Model：</strong>自訂使用者模型，擴充欄位存 <code>auth_provider: google_sub</code>（Google 唯一識別碼）跟 <code>identity_type</code>。</li>
-        <li><strong>Custom Auth Adapter：</strong>自訂認證配接器，實作<strong>信箱網域限制</strong>——例如只允許特定組織/學校信箱註冊登入，還加了白名單機制。舉例：不在名單內的信箱想進來？直接被擋在門外。</li>
-        <li><strong>Django Auth Backend：</strong>管理員登入 Django Admin 後台用的認證系統。</li>
-        <li><strong>CSRF Protection + CORS Headers：</strong>一個防跨站請求偽造，保護敏感寫入操作；<code>django-cors-headers</code> 負責跨域設定，讓獨立部署的 Next.js 前端可以合法打 Django API。</li>
-      </ul>
-
-      <h3>1.4 圖片處理 / 儲存（Image Processing & Storage）</h3>
-      <ul>
-        <li><strong>Cloudflare R2（S3-compatible）：</strong>放使用者上傳的圖片跟媒體檔案，自帶 CDN 節點。</li>
-        <li><strong>boto3：</strong>AWS 官方 SDK，但因為 R2 相容 S3 API，直接拿它來上傳、下載、管理 R2 的檔案。</li>
-        <li><strong>opencv-python：</strong>本地端電腦視覺庫，做圖片色彩分析、尺寸處理——全程本地運算，不靠外部 API。</li>
-        <li><strong>TensorFlow：</strong>深度學習框架，本地載入輕量化模型，做<strong>圖片 NSFW（不當內容）自動過濾審查</strong>。舉例：有人上傳奇怪圖片，模型直接幫你攔下來。</li>
-      </ul>
-
-      <h3>1.5 安全 / 防爬蟲（Security & Anti-Bot）</h3>
-      <ul>
-        <li><strong>Google reCAPTCHA v3：</strong>無感人機驗證，後端根據使用者行為給風險評分，0.0 是機器人、1.0 是人類，你根本感覺不到它在考試。</li>
-        <li><strong>Google reCAPTCHA v2：</strong>經典「我不是機器人」勾選式驗證，當 v3 評分太低時當作第二次挑戰。</li>
-        <li><strong>requests：</strong>Python HTTP 函式庫，後端用它打 Google verify endpoint，驗證 reCAPTCHA 是否合法。</li>
-      </ul>
-
-      <h3>1.6 內容審核（Content Moderation）</h3>
-      <ul>
-        <li><strong>文字 Moderation：</strong>基於詞級別（Phrase-level）比對加上古文/歷史詞庫，實作 <strong>BLOCK（直接封鎖）/ REVIEW（人工審核）/ ALLOW（直接通過）</strong> 三級敏感詞控制。</li>
-        <li><strong>敏感詞寬容比對：</strong>演算法支援<strong>拼音、注音</strong>等變體諧音比對。舉例：有人用特殊符號或同音字想繞過審查？照樣被抓出來。</li>
-        <li><strong>🔬 待研究（TensorFlow 內容審核）：</strong>除了圖片 NSFW 過濾，<a href="https://www.tensorflow.org/?hl=zh-tw" target="_blank" rel="noopener noreferrer">TensorFlow</a> 也能用 AI 審核<strong>文字內容</strong>或<strong>影音內容</strong>！先把官方網站收藏起來，等我研究完再補一篇實作筆記。</li>
-      </ul>
-
-      <h3>1.7 多層流量限制與防濫用（Multi-layer Rate Limiting）</h3>
-      <p>防濫用不是只靠一道牆，而是三道關卡層層過濾：</p>
-      <ul>
-        <li><strong>第一層：Cloudflare WAF / Rate Limit —</strong>在網路邊緣直接阻斷自動化黑客工具、惡意 Web Fuzzing 掃描跟異常高頻的 DDoS 流量。</li>
-        <li><strong>第二層：Nginx limit_req —</strong>伺服器入口的漏桶（Leaky Bucket）緩衝（緩衝區大小 425），重點保護 API、Auth（登入驗證）跟 Admin（後台）等高風險端點，防止暴力破解密碼。</li>
-        <li><strong>第三層：DRF / Django Throttling —</strong>應用層的細粒度限制，針對登入、一般查詢、NSFW 圖片檢測、發表文章等不同行為，各自設定獨立的頻率阻斷閥值。</li>
-        <li><strong>快取儲存：Django Cache / LocMemCache —</strong>第三層計數器的高速儲存後端，用本地記憶體快取，數字記得住又讀得快。</li>
-      </ul>
-
-      <h3>1.8 通知系統（Notification System）</h3>
-      <ul>
-        <li><strong>Web Push（pywebpush）：</strong>瀏覽器標準網頁推播，基於 <strong>VAPID 機制</strong>，使用者關掉網頁也收得到通知。</li>
-        <li><strong>Django SMTP Email：</strong>發送結構化的交易式電子郵件。</li>
-        <li><strong>Django Template Emails：</strong>用 Django 模板引擎動態渲染 <strong>HTML + 純文字雙格式</strong>郵件，乾淨又不怕對方信箱不吃 HTML。</li>
-        <li><strong>Django Signals（post_save）：</strong>資料庫一建立 <code>Notification</code> 紀錄（<code>post_save</code> 觸發），就自動在背景非同步呼叫 Web Push 跟 Email 發送邏輯——業務代碼不用自己到處呼叫，事件發生就有人接手。</li>
-      </ul>
-
-      <h3>1.9 基礎設施 / 部署（Infrastructure & Deployment）</h3>
-      <ul>
-        <li><strong>Gunicorn：</strong>高效能 WSGI HTTP 伺服器，負責解析 HTTP 請求並執行 Django 應用程式。</li>
-        <li><strong>systemd：</strong>Linux 服務管理器，管理跟守護 Gunicorn 進程（這裡走 Linux 原生路線，不用 Node.js 圈常看到的 pm2）。</li>
-        <li><strong>nginx：</strong>高效能前端網頁跟反向代理伺服器，處理靜態檔案託管、安全分流跟負載緩衝。</li>
-        <li><strong>django-environ：</strong>管理十二要素（12-Factor App）環境變數，把資料庫密碼、Secret Key、API 密鑰這些敏感資訊跟程式碼徹底分離。</li>
-        <li><strong>Django Logging：</strong>分級日誌系統（DEBUG/INFO/WARNING/ERROR），搭配 <code>RotatingFileHandler</code> 做日誌大小輪替跟自動封存，防止日誌檔把磁碟塞爆。</li>
-        <li><strong>WSGI / ASGI：</strong>生產環境走穩定的 WSGI；ASGI 是「預留技術」，等之後需要非同步功能再切過去。</li>
-      </ul>
-
-      <h3>1.10 後台管理（Admin Dashboard）</h3>
-      <ul>
-        <li><strong>Django Admin：</strong>Django 內建原生管理後台，管理基礎資料。</li>
-        <li><strong>django-simpleui：</strong>基於 Vue.js 和 Element-UI 封裝的後台主題，把陽春後台變成現代化 SPA 管理介面。</li>
-        <li><strong>Custom Admin Views：</strong>自訂管理員視圖，在後台顯示平台營運統計數據跟視覺化圖表。</li>
-        <li><strong>Admin URL：</strong>自訂又隱蔽的後台路由，刻意不用預設的 <code>/admin/</code>，讓惡意自動化腳本掃不到門在哪。</li>
-      </ul>
-
-      <h2>合：模組化設計——把系統拆成能分工的部門</h2>
+      <h3>多層頻率限制（Rate Limiting）</h3>
       <p>
-        最後聊資料模型設計的大原則：大系統最忌諱「一坨程式碼」走到底，所以會把 Django ORM 模型依<strong>業務邊界</strong>拆成多個獨立 App（模組），每個 App 就像公司裡的一個部門——身份驗證一間、內容管理一間、通知一間、聊天一間……各自管各自的事，<strong>改 A 不會炸 B，壞了也好修</strong>。
+        防護機制採用多層漏桶與計數器策略：第一層由 Cloudflare 阻斷惡意掃描；第二層由 Nginx 保護登入與管理端點；第三層由 Django Throttling 依業務行為（如發表內容、查詢資料）設定專屬閥值，計數器儲存於高效能記憶體快取。
       </p>
-      <p>拆模組時有幾條實務原則可以參考：</p>
-      <ul>
-        <li><strong>依業務邊界切：</strong>帳號、內容、交易、通知彼此獨立，不要貪方便全塞進一支大程式，之後維護會哭出來。</li>
-        <li><strong>介面穩定好替換：</strong>每個模組的介面（API）固定下來後，未來想換套件、換服務，都只動一小塊，不會牽一髮動全身。</li>
-        <li><strong>圖拆小張：</strong>模型一多，設計圖就拆成多張子圖，一張圖只畫重點，才不會複雜到沒人看得懂。</li>
-        <li><strong>背景任務集中管理：</strong>清理快取、定時重算這類雜事，統一丟給一個核心模組排程，全系統日誌也集中在這裡查。</li>
-      </ul>
 
-      <h2>📚 附錄：每天多學一點（待研究清單）</h2>
+      <h3>媒體處理與自動化審查</h3>
       <p>
-        看完整篇架構後，其實還有一串「已經用到、但還沒研究透」跟「未來想引入」的主題。我把它們整理成待研究清單，按照對應的章節分門別類，研究完一篇就補一篇筆記：
+        上傳圖片先由本機電腦視覺庫完成規格化與色彩優化，並引入輕量化模型進行內容安全判定，全程於本機環境完成處理，兼顧隱私與處理效能。
       </p>
 
-      <h3>🔐 認證與授權（對應 1.3）</h3>
-      <ul>
-        <li><strong>JWT 是什麼：</strong>專案已經在用自訂 JWT（HS256），但原理還是要徹底搞懂——<a href="https://jwt.io/" target="_blank" rel="noopener noreferrer">JWT.IO</a> 有互動式解說，還可以直接把 token 丟上去轉碼看內容。</li>
-        <li><strong>自訂 JWT：</strong>1.3 提到的 <code>app_token</code> 就是自訂 JWT 的實作，動手之前先用 <a href="https://jwt.io/" target="_blank" rel="noopener noreferrer">JWT.IO</a> 練習編碼/解碼流程。</li>
-      </ul>
-
-      <h3>⚙️ 後端與背景任務（對應 1.1 / core 總務處）</h3>
-      <ul>
-        <li><strong>DRF（Django REST Framework）：</strong>Django 寫 API 的神器，1.7 提到的「DRF / Django Throttling」就是它的一環——官方文件先卡位：<a href="https://www.django-rest-framework.org/" target="_blank" rel="noopener noreferrer">django-rest-framework.org</a>。</li>
-        <li><strong>Celery 排程：</strong>背景任務的進階解法，適合把「寄信、推播通知、清理快取」這種耗時工作丟到佇列排隊慢慢跑——參考：<a href="https://medium.com/@v0220225/backend-%E6%8E%92%E7%A8%8B%E6%8E%92%E8%B5%B7%E4%BE%86-celery-7cd8ca964716" target="_blank" rel="noopener noreferrer">[Backend] 排程排起來 — Celery</a>。</li>
-      </ul>
-
-      <h3>🗄️ 資料庫（對應第 5 層）</h3>
-      <ul>
-        <li><strong>Database Replication（資料庫複寫）：</strong>探討為什麼要做主從複製、優缺點跟實際做法，評估未來讀寫分離的可能性——參考：<a href="https://homuchen.com/posts/what-and-why-database-replication-advantage-and-disadvantage/" target="_blank" rel="noopener noreferrer">[System Design] 淺談 Database Replication</a>。</li>
-      </ul>
-
-      <h3>🎨 前端與設計（對應第 4 層）</h3>
-      <ul>
-        <li><strong>masonry 套件：</strong>瀑布流排版（Pinterest 那種格子牆），之後做圖片牆或相簿頁會用到——官方網站：<a href="https://masonry.desandro.com/" target="_blank" rel="noopener noreferrer">masonry.desandro.com</a>。</li>
-        <li><strong>Aura Build：</strong>主打用 AI 快速生成漂亮 Landing Page 的平台，研究看看能不能拿來做活動頁或行銷頁。</li>
-        <li><strong>名片樣式設計：</strong>收藏的名片排版靈感，之後做個人主頁或電子名片可以參考。</li>
-      </ul>
+      <h2>模組化架構拆分原則</h2>
+      <p>
+        在資料模型設計上，依照業務邊界拆分為獨立模組（如身分認證、內容管理、通知中心等），確保模組之間高內聚、低耦合。各模組透過定義清晰的 API 介面溝通，單一模組的修改不會波及其他系統，利於長期維護與功能擴充。
+      </p>
 
       <p class="post-outro">
-        總結來說，整套架構的哲學就是一句話：<strong>每一層只做自己的事——該擋的擋、該存的存、該推的推</strong>。從 Cloudflare 大門、Nginx 櫃檯、Next.js 前台、Django 後台，到模組化分工的資料設計，重點不是用了多潮的技術，而是每個環節都知道自己為什麼站在這裡。這本技術筆記會持續更新，下次見！
+        系統架構的核心在於「分工明確與防護層層相扣」。隨著專案需求演進，這份筆記將持續記錄更多架構實踐與優化方案。
       </p>
     `,
   },
-  {
+    {
     slug: 'cf-pages-pwa-webpush',
     category: 'tech',
     date: '2026.08.19',
-    title: '【CF Page 】PWA WebPush 設計原理',
-    excerpt: 'PWA 網頁推播三招設計原理：Service Worker 資料回拉、Web Crypto 原生加密、靜默推播，讓推播在 Cloudflare Pages 上穩定又快速！',
+    title: '【CF Pages】PWA WebPush 設計原理',
+    excerpt: '透過 Service Worker 資料回拉、Web Crypto 原生憑證簽署與靜默推播，在 Cloudflare Pages 邊緣環境打造高穩定的 WebPush 機制。',
     content: `
       <p class="post-intro">
-        這篇記錄我架設 PWA WebPush（網頁推播）時的設計原理，三招讓推播在 Cloudflare 邊緣環境跑得又快又穩！
+        這篇記錄在 Cloudflare 邊緣運算環境中實作 PWA 網頁推播（WebPush）的關鍵技術原理與優化策略。
       </p>
 
-      <h2>1. Service Worker 資料回拉（Fetch on Push）</h2>
-      <p>當你的手機（Service Worker）收到那個「信號」後，並不會直接把通知彈出來，而是會在背景立刻執行以下動作：</p>
-      <ul>
-        <li>醒過來，收到 push 事件。</li>
-        <li>主動連回你的伺服器（<code>/api/notifications</code>），問：「剛才發生了什麼事？」</li>
-        <li>從資料庫（D1）抓取最新的一則通知內容。</li>
-        <li>最後才把通知框彈出來給你。</li>
-      </ul>
-      <p class="audit-tip">這樣的好處是：通知內容永遠是即時從伺服器拉取的最新狀態，不會有推播出去才發現內容過期的問題。</p>
+      <h2>Service Worker 資料回拉機制（Fetch on Push）</h2>
+      <p>
+        當使用者裝置收到推播喚醒信號時，Service Worker 在背景被啟動，隨即向伺服器端點發起資料請求，從後端取得最新一筆通知內容後再進行本機渲染顯示。此設計確保通知內容始終為最新狀態，避免推播封包內容與伺服器資料脫節。
+      </p>
 
-      <h2>2. Web Crypto API（原生加密）</h2>
-      <p>原本使用的 <code>web-push</code> 套件是為了 Node.js 設計的，依賴很多 Node.js 底層的加密模組，在 Cloudflare Workers 這種「邊緣運算（Edge Computing）」環境中常常會出錯。</p>
-      <p>解法是改用 Cloudflare 原生支援的 <strong>Web Crypto API</strong>，手動簽署你的 VAPID 數位憑證。白話來說，就像是直接用 Cloudflare 的母語跟它溝通，所以速度極快而且不會出錯。</p>
+      <h2>Web Crypto API 原生憑證簽署</h2>
+      <p>
+        傳統的 Node.js 推播套件依賴原生底層加密模組，在邊緣環境（如 Cloudflare Workers / Pages Functions）中容易發生相容性問題。改採瀏覽器標準 Web Crypto API 手動簽署 VAPID 憑證，能確保在邊緣執行環境中具備最高的相容性與運算效能。
+      </p>
 
-      <h2>3. 靜默推播（Silent Push）</h2>
-      <p>這是這套架構最聰明的地方！</p>
-      <ul>
-        <li><strong>傳統方式：</strong>要把通知內容（標題、文字）在伺服器端加密，然後塞進推播封包。這部分加密規格極度複雜，而且容易跟手機瀏覽器不相容。</li>
-        <li><strong>現在方式：</strong>伺服器只發送一個「信號」給手機（不帶內容）。就像是伺服器對手機說：「嘿！你有新消息了，快回來拿！」因為不帶內容，就不需要複雜的加密，成功率是 100%。</li>
-      </ul>
+      <h2>靜默推播信號設計（Silent Push）</h2>
+      <p>
+        伺服器發送推播時僅傳送觸發信號而不直接夾帶複雜的加密載荷，由終端裝置接收信號後再回拉資料。此方式大幅簡化了伺服器端的封包加密流程，有效提升了跨平台瀏覽器推播的成功率。
+      </p>
 
       <p class="post-outro">
-        總結：資料回拉拿最新內容、Web Crypto 原生簽署零出錯、靜默推播直接繞過複雜加密——三招合起來，就是一套穩定又快速的 PWA WebPush 架構！
+        結合資料回拉、原生加密與靜默信號，即可在邊緣運算環境中建構出一套輕量、穩定且低延遲的 PWA 推播架構。
       </p>
     `,
   },

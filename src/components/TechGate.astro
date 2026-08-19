@@ -54,7 +54,7 @@
               <div class="card-face card-face-front">
                 <div class="card-top-row">
                   <div class="card-chip" aria-hidden="true"></div>
-                  <div class="card-bank-name">OviNas Reserve</div>
+                  <div class="card-bank-name">羊家信用卡</div>
                 </div>
                 <div class="card-number-display" id="display-card-number">•••• •••• •••• ••••</div>
                 <div class="card-bottom-row">
@@ -74,7 +74,7 @@
                 <div class="card-mag-stripe" aria-hidden="true"></div>
                 <div class="card-cvc-strip" id="display-cvc">•••</div>
                 <div class="card-back-disclaimer">
-                  此卡片由 OviNas 發行，僅供展示與測試使用。找到請寄回 OviNas 總部。
+                  此卡片由羊家發行，僅供展示與測試使用。
                 </div>
               </div>
             </div>
@@ -83,7 +83,7 @@
           <div class="status-screen" id="pay-status-screen">
             <div id="status-icon-holder"><div class="spinner-ring"></div></div>
             <div class="status-title" id="status-title">正在與銀行確認中…</div>
-            <div class="status-desc" id="status-desc">模擬卡片 · 金額 NT$3,000</div>
+            <div class="status-desc" id="status-desc">模擬卡片 金額 NT$3,000</div>
             <button class="reset-demo-btn" id="reset-demo-btn" hidden>← 再試一次</button>
           </div>
 
@@ -966,7 +966,7 @@
 
     iconHolder.innerHTML = '<div class="spinner-ring"></div>';
     statusTitle.textContent = '正在與銀行確認中…';
-    statusDesc.textContent = '模擬卡片 · 金額 NT$3,000';
+    statusDesc.textContent = '模擬卡片 金額 NT$3,000';
     resetDemoBtn.hidden = true;
 
     // 立即儲存已解鎖狀態
