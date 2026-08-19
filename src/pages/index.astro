@@ -6,10 +6,14 @@ import QuoteOfTheDay from '../components/QuoteOfTheDay.svelte';
 import VisitorCounter from '../components/VisitorCounter.svelte';
 
 const services = [
-  { name: '羊監視你', desc: '即時監視影像', href: '/cctv', external: false, icon: '/logo.png' },
-  { name: '羊集章', desc: '集章活動紀錄', href: '/badges/', external: false, icon: '/icon素材/icon素材-2.png' },
+  { name: 'NY DROP', desc: '代碼配對點對點傳檔', href: '/nytools/drop', external: false, icon: '/ny-drop.svg' },
+  { name: 'NY WIFI DROP', desc: '同 Wi-Fi 直連互傳', href: '/wifi', external: false, icon: '/ny-wifi.svg' },
+  { name: 'NY Screen', desc: '免安裝網頁投影', href: '/nytools/screen', external: false, icon: '/ny-screen.svg' },
+  { name: '單字測驗', desc: '英文單字測驗', href: '/vocab/', external: false, icon: '/icon素材/icon素材-2.png' },
   { name: '羊愛考試', desc: '線上測驗系統', href: 'https://1ztests.nsir.uk', external: true, icon: '/service-1ztests.png' },
   { name: '羊-短網址', desc: '網址縮短服務', href: 'https://nsir.uk', external: true, icon: '/service-nsir.jpg' },
+  { name: '羊監視你', desc: '即時監視影像', href: '/cctv', external: false, icon: '/icon素材/icon素材-2.png' },
+  { name: '羊集章', desc: '集章活動紀錄', href: '/badges/', external: false, icon: '/icon素材/icon素材-2.png' },
 ];
 
 const badges = [
@@ -237,6 +241,9 @@ const badges = [
     height: 100%;
     object-fit: contain;
     display: block;
+    box-sizing: border-box;
+    padding: 6px;
+    border-radius: 10px;
   }
 
   .tool-badge {
