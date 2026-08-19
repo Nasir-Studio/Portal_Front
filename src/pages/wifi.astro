@@ -280,12 +280,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     border-color: var(--ink);
   }
 
-  .user-card .u-tag.host {
-    color: var(--white);
-    background: var(--ink);
-    border-color: var(--ink);
-  }
-
   .user-card .send-hint {
     font-size: 0.68rem;
     color: var(--ink-3);
@@ -953,7 +947,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
       var tag = '';
       if (me) tag = '<span class="u-tag me">我</span>';
-      else if (u.isHost) tag = '<span class="u-tag host">房主</span>';
 
       card.innerHTML =
         tag +
@@ -1150,9 +1143,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       self: true
     };
     renderUsers();
-    setStatus('on', '已連線 · 你是房主');
+    setStatus('on', '已連線');
     $('myName').textContent = myName;
-    toast('你已成為房主，等待其他使用者加入…');
+    toast('已就緒，等待其他使用者加入…');
   }
 
   function broadcast(msg, exceptPeerId) {
@@ -1278,7 +1271,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     if (reconnecting || noLan) return;
     clearTimeout(hostConnTimer);
     if (hostHandshakeDone) {
-      setStatus('busy', '房主已離線，重新連線中…');
+      setStatus('busy', '連線中斷，重新連線中…');
       bootstrap();
       return;
     }
