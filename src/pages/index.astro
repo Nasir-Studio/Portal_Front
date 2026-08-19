@@ -5,15 +5,6 @@ import Announcements from '../components/Announcements.astro';
 import QuoteOfTheDay from '../components/QuoteOfTheDay.svelte';
 import ContactForm from '../components/ContactForm.svelte';
 
-const services = [
-  { name: 'NYTools', desc: '點對點傳檔、Wi-Fi 互傳、投影', href: '/nytools/', external: false, icon: '/icon素材/icon素材-2.png' },
-  { name: '單字測驗', desc: '英文單字測驗', href: '/vocab/', external: false, icon: '/icon素材/icon素材-2.png' },
-  { name: '羊監視你', desc: '即時監視影像', href: '/cctv', external: false, icon: '/icon素材/icon素材-2.png' },
-  { name: '羊集章', desc: '集章活動紀錄', href: '/badges/', external: false, icon: '/icon素材/icon素材-2.png' },
-  { name: '羊愛考試', desc: '線上測驗系統', href: 'https://1ztests.nsir.uk', external: true, icon: '/service-1ztests.png' },
-  { name: '羊-短網址', desc: '網址縮短服務', href: 'https://nsir.uk', external: true, icon: '/service-nsir.jpg' },
-];
-
 const badges = [
   {
     img: '/certs/adobe-creativity-with-ai.png',
@@ -65,29 +56,6 @@ const badges = [
       <section class="module" aria-label="每日一句">
         <h2 class="module-title">每日一句</h2>
         <QuoteOfTheDay client:load />
-      </section>
-
-      <section class="module tools-module" aria-label="工具服務">
-        <h2 class="module-title">工具服務</h2>
-        <nav class="tools-grid" aria-label="工具服務列表">
-          {
-            services.map((s) => (
-              <a
-                class="tool-item"
-                href={s.href}
-                target={s.external ? '_blank' : undefined}
-                rel={s.external ? 'noopener noreferrer' : undefined}
-              >
-                <span class="tool-icon">
-                  <img src={s.icon} alt={s.name} width="56" height="56" loading="lazy" />
-                  {s.external && <span class="tool-badge" aria-hidden="true">↗</span>}
-                </span>
-                <span class="tool-name">{s.name}</span>
-                <span class="tool-desc">{s.desc}</span>
-              </a>
-            ))
-          }
-        </nav>
       </section>
 
       <section class="module contact-module" aria-label="聯絡表單">
@@ -196,87 +164,6 @@ const badges = [
   .contact-module {
     border-radius: 10px;
     overflow: hidden;
-  }
-
-  .tools-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.8rem;
-    padding: 1.1rem 1rem;
-  }
-
-  .tool-item {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.35rem;
-    padding: 0.9rem 0.3rem 0.8rem;
-    text-align: center;
-    text-decoration: none;
-    border: none;
-    background: transparent;
-    border-radius: 6px;
-    transition: background var(--t), transform var(--t);
-  }
-
-  .tool-item:hover {
-    background: var(--bg-soft);
-    transform: translateY(-2px);
-  }
-
-  .tool-icon {
-    position: relative;
-    width: 54px;
-    height: 54px;
-    border-radius: 14px;
-    border: none;
-    background: var(--surface);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    box-shadow: var(--shadow-soft);
-  }
-
-  .tool-icon img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    display: block;
-    box-sizing: border-box;
-    padding: 6px;
-    border-radius: 10px;
-  }
-
-  .tool-badge {
-    position: absolute;
-    top: -6px;
-    right: -6px;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background: var(--ink);
-    color: var(--white);
-    font-size: 0.62rem;
-    line-height: 18px;
-    text-align: center;
-    border: 2px solid var(--surface);
-  }
-
-  .tool-name {
-    font-size: 0.85rem;
-    font-weight: 500;
-    letter-spacing: 0.04em;
-    color: var(--ink);
-    line-height: 1.3;
-  }
-
-  .tool-desc {
-    font-size: 0.7rem;
-    color: var(--ink-3);
-    letter-spacing: 0.03em;
-    line-height: 1.4;
   }
 
   .badge-grid {
