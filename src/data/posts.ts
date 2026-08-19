@@ -1,5 +1,6 @@
 export interface Post {
   slug: string;
+  category: 'tech' | 'general';
   date: string;
   title: string;
   excerpt: string;
@@ -8,10 +9,99 @@ export interface Post {
 
 const posts: Post[] = [
   {
+    slug: 'security-research-report',
+    category: 'tech',
+    date: '2026.08.19',
+    title: '【系統資安】資安研究報告',
+    excerpt: '整理三份資安規範檔：CVSS v4.0 滲透分級、OWASP/CWE 標準、九種攻擊手法特徵矩陣、風險日誌 Schema 與 AI 自動化防禦，附白話解說與檢查重點！',
+    content: `
+      <p class="post-intro">
+        這篇是「系統資安」系列的第一份研究報告：我把下載資料夾裡的三份資安規範檔——<strong>企業級全端資安規範、巨型架構資安規範、資安系統滲透指數與風險日誌標準規範</strong>——全部濃縮成一份白話文筆記。三份其實是同一套主題（滲透指數分級 + 風險日誌標準）的不同版本，重點全部併在一起，每一段都附上<strong>檢查重點</strong>！
+      </p>
+
+      <h2>起：這三份文件到底在講什麼？</h2>
+      <p>
+        簡單說，這三份文件在回答一個問題：<strong>「當駭客打你的網站時，你怎麼知道事情有多嚴重？要記錄什麼？又要怎麼自動反應？」</strong>
+      </p>
+      <p>
+        答案分三步：先用 <strong>CVSS v4.0</strong> 算嚴重度分級，再用 <strong>OWASP / CWE</strong> 幫漏洞貼上「身分證標籤」，最後把所有線索寫成<strong>結構化風險日誌</strong>，交給 AI Agent 自動處置。下面一節一節講。
+      </p>
+
+      <h2>一、滲透指數分級：先算「事情有多嚴重」（CVSS v4.0）</h2>
+      <p>
+        CVSS 是國際通用的漏洞評分系統，分數 <code>0.0 ~ 10.0</code>，越高越嚴重。分級邏輯白話版：
+      </p>
+      <ul>
+        <li><strong>CRITICAL 嚴重（9.0 – 10.0）：</strong>最慘的情況。例如後端被遠端代碼執行（RCE）、SQL 注入直接拿到 <code>superuser</code> 最高權限、或伺服器端環境變數（資料庫密碼、AWS 金鑰）被整包偷走。<br><strong>✅ 檢查重點：</strong>看到這級立刻斷線、封 IP 網段、銷毀 token/session，觸發 P1 特急告警（簡訊 + 即時通訊 + Email 群發）。</li>
+        <li><strong>HIGH 高（7.0 – 8.9）：</strong>很嚴重。例如沒登入就能直接呼叫改資料的 API（Server Actions 越權）、儲存型 XSS 偷走管理員 Session。<br><strong>✅ 檢查重點：</strong>24 小時內必修：凍結攻擊帳號、強制登出所有裝置、API 閘道加臨時 Rate Limiting、自動開修補工單（附 Payload 證據）。</li>
+        <li><strong>MEDIUM 中（4.0 – 6.9）：</strong>有風險但還能撐。例如後端 <code>DEBUG=False</code> 沒設好、把完整 Python 報錯 Traceback 噴給外人看；或 CORS Policy 沒設好，別人的網站能讀你的敏感資料。<br><strong>✅ 檢查重點：</strong>排進下一個 Sprint 修，並對該路徑做長期行為分析，看有沒有進一步提權的嘗試。</li>
+        <li><strong>LOW 低（0.1 – 3.9）：</strong>小擦傷。例如靜態頁面原始碼不小心暴露了內部測試網址、回應標頭洩漏 <code>Server: WSGI / gunicorn</code> 版本資訊。<br><strong>✅ 檢查重點：</strong>記到月度資安健檢報告，下次 CI/CD 部署順手修掉。</li>
+      </ul>
+
+      <h2>二、漏洞身分證：OWASP 跟 CWE 是幹嘛的？</h2>
+      <ul>
+        <li><strong>OWASP Top 10：</strong>網頁應用程式最常見的十種風險排行榜，是網頁端防禦的主幹標準。</li>
+        <li><strong>OWASP Top 10 API Security：</strong>前後端分離架構專用，專門防 API 等級的漏洞（例如物件層級越權 BOLA / IDOR）。</li>
+        <li><strong>CWE（通用弱點列舉）：</strong>弱點的「身分證字號」——<code>CWE-89</code> = SQL 注入、<code>CWE-79</code> = XSS，一目瞭然。<br><strong>✅ 檢查重點：</strong>每一筆風險日誌都要寫上 OWASP 代碼 + CWE 編號，AI 才能精準判斷漏洞根因。</li>
+      </ul>
+
+      <h2>三、全端攻擊特徵矩陣：常見攻擊手法白話總覽（含檢查重點）</h2>
+      <p>三份文件加起來共整理出九種常見攻擊手法，分成三個層面來看：</p>
+
+      <h3>🎯 前端層（瀏覽器 / SSR）</h3>
+      <ul>
+        <li><strong>XSS 跨站指令碼（CWE-79）：</strong>駭客把惡意 JavaScript 塞進你的網頁，讓瀏覽器幫他執行。分「儲存型」（留言存進資料庫，之後每個人看都中獎）、「反射型」跟「DOM 型」。<br><strong>✅ 檢查重點：</strong>監聽 <code>window.onerror</code> 報出非白名單網域的 Script 載入路徑，或 CSP 日誌出現 <code>violated-directive: script-src</code>。</li>
+        <li><strong>客戶端 Session 劫持（A07）：</strong>存在 <code>localStorage</code> / <code>sessionStorage</code> 的 Token，被異常的編碼腳本讀走。<br><strong>✅ 檢查重點：</strong>偵測敏感 Token 在短時間內被非預期腳本讀取的行為。</li>
+      </ul>
+
+      <h3>⚙️ 後端層（API / 資料庫）</h3>
+      <ul>
+        <li><strong>SQL Injection（CWE-89）：</strong>在輸入框塞 SQL 語法，讓資料庫執行壞人的指令，盲注跟報錯注入都算。<br><strong>✅ 檢查重點：</strong>請求參數出現 <code>'</code>、<code>--</code>、<code>UNION SELECT</code> 等特徵字串，加上 Django 噴出 <code>ProgrammingError</code> / <code>OperationalError</code>。</li>
+        <li><strong>BOLA / Mass Assignment（CWE-915）：</strong>改 API 請求的欄位來「大量指派」權限，例如 Payload 塞 <code>"is_superuser": true</code> 或 <code>"role": "admin"</code>。<br><strong>✅ 檢查重點：</strong>PATCH/PUT 請求的 Payload 出現未對外開放的權限欄位，或改了 Object ID（<code>?user_id=99</code>）但 Token 身分不符（IDOR）。</li>
+        <li><strong>SSRF 伺服器端請求偽造（A10）：</strong>後端程式被騙去連「不該連的地方」，例如內部迴圈位址 <code>127.0.0.1</code> 或內網網段 <code>10.0.0.0/8</code>。<br><strong>✅ 檢查重點：</strong>後端對外請求模組（如 cURL）的目標出現內網 IP。</li>
+      </ul>
+
+      <h3>🌐 全端混合層（Node.js ↔ Django 跨層攻擊）</h3>
+      <ul>
+        <li><strong>Next.js Server Actions 越權邏輯繞過（CWE-285）：</strong>沒登入的人直接 POST 呼叫內部路由去改資料。<br><strong>✅ 檢查重點：</strong>POST 直接打 <code>_next/data</code> 內部路由、Headers 缺 CSRF Token、或 JWT 權限跟呼叫的函數不符。</li>
+        <li><strong>WebFolding（HTTP 請求走私，CWE-444）：</strong>利用 <code>Transfer-Encoding: chunked</code> 跟 <code>Content-Length</code> 同時出現（TE.CL / CL.TE 衝突），把惡意請求「折疊」在正常請求後面，繞過前面的代理直接打後端。<br><strong>✅ 檢查重點：</strong>單一 TCP 連線中兩個 Header 同時出現、或收到非預期的 <code>\\r\\n\\r\\n</code> 折疊斷行符。</li>
+        <li><strong>GraphQL Batch Folding（CWE-770）：</strong>單一個請求裡塞數千個巢狀查詢（Batching 或大量重複 <code>alias</code>），把後端 API 癱瘓並暴力枚舉。<br><strong>✅ 檢查重點：</strong>單一請求含大量重複 <code>alias</code> 欄位或 JSON 陣列形式的複數查詢。</li>
+        <li><strong>JWT 簽章偽造 / Key 混淆（CWE-347）：</strong>把 JWT 的 <code>alg</code> 改成 <code>"none"</code> 騙過驗證，或拿公開金鑰當對稱 HMAC 密鑰簽章。<br><strong>✅ 檢查重點：</strong>收到 <code>"alg": "none"</code> 的 Token、或簽章算法被換成非預期類型。</li>
+      </ul>
+
+      <h2>四、風險日誌長什麼樣？標準欄位白話解說（JSON Schema）</h2>
+      <p>不管哪一層出事，日誌都要寫成同一種「標準格式」，AI 才能自動分析。白話版欄位解說：</p>
+      <ul>
+        <li><strong>trace_id：</strong>全系統唯一追蹤碼，前端、後端的日誌靠它串成一條線（分散式追蹤）。<br><strong>✅ 檢查重點：</strong>一筆請求從頭到尾 trace_id 要一致，缺了它線索就斷了。</li>
+        <li><strong>timestamp / environment：</strong>事件時間（ISO 8601）+ 環境標籤：<code>PRODUCTION</code> / <code>STAGING</code> / <code>DEVELOPMENT</code> / <code>PEN_TEST_SANDBOX</code>。</li>
+        <li><strong>architecture_layer / framework_context：</strong>出事在哪一層（邊緣網路 / 瀏覽器 / SSR / 後端 API / 資料庫）+ 哪個框架（Next.js / Astro / Django…）跟哪個檔案（<code>views.py</code>、<code>SubmitButton.astro</code>…）。</li>
+        <li><strong>vulnerability_metadata：</strong>漏洞身分證：OWASP 代碼 + CWE 編號 + 漏洞名稱。</li>
+        <li><strong>penetration_index：</strong>CVSS v4.0 分數 + 等級（CRITICAL/HIGH/MEDIUM/LOW/INFO）+ 可利用難易度（有沒有現成工具）。</li>
+        <li><strong>http_context：</strong>出事的請求長相：網址、方法、來源 IP、User-Agent、攔截到的 Payload；進階版還會記錄「Header 折疊異常」跟「批次數量 batch_count」。</li>
+        <li><strong>execution_status：</strong>最後結果四選一：<code>VULNERABILITY_EXPLOITED</code>（被打穿了）/ <code>ATTACK_BLOCKED_BY_WAF</code>（被擋下）/ <code>EXCEPTION_THROWN</code>（系統噴錯）/ <code>PROBING_REJECTED</code>（踩點被拒）。</li>
+        <li><strong>evidence_payload：</strong>佐證證據：完整 Stack Trace、被污染的實際 SQL 語法、回應狀態碼。</li>
+      </ul>
+
+      <h2>五、AI Agent 自動化防禦：從「被動記錄」到「主動反擊」</h2>
+      <p>這份規範最特別的地方：不只教你記錄，還設計了「自動處置劇本」——依照嚴重度分級，AI 直接動手處理：</p>
+      <ul>
+        <li><strong>CRITICAL：</strong>自動在 WAF / 邊緣網路封鎖惡意 IP 網段、在快取（Redis）全面銷毀被污染的 Token/Session、觸發 P1 特急告警。</li>
+        <li><strong>HIGH：</strong>自動凍結攻擊帳號並強制登出所有裝置、API 閘道動態加嚴 Rate Limiting、自動開 GitHub / Jira 修補工單（附 Payload 證據）。</li>
+        <li><strong>MEDIUM：</strong>記入漏洞修補清單、AI 提高該路徑的審查權限做長期行為分析，觀察是否有提權嘗試。</li>
+        <li><strong>LOW：</strong>寫進月度健檢報告，下次 CI/CD 部署時自動修正。</li>
+      </ul>
+
+      <p class="post-outro">
+        這份研究報告把三份規範的完整重點濃縮成一篇。之後實際拿工具測漏洞、或把日誌接上自動化平台時，再回來補實作筆記。系統資安系列，未完待續！
+      </p>
+    `,
+  },
+  {
     slug: 'tech-notes-architecture',
+    category: 'tech',
     date: '2026.08.19',
     title: '【技術文章】技術筆記本',
-    excerpt: '白話拆解整套二手書平台的系統架構：從 Cloudflare 第一道防線、Nginx 到 Django 技術棧，再到 10 個 App 模組，一篇看懂所有設計重點！',
+    excerpt: '白話拆解現代網站系統架構：從 Cloudflare 第一道防線、Nginx 到 Django 技術棧，再到模組化設計，一篇看懂所有設計重點！',
     content: `
       <p class="post-intro">
         這篇是我的「技術筆記本」第一集：把整套系統的架構設計，從外到內、從選型到模組，全部用白話文整理一遍。講給未來的自己聽，也講給正在看這篇的你聽！
@@ -19,7 +109,7 @@ const posts: Post[] = [
 
       <h2>起：為什麼會有這本筆記？</h2>
       <p>
-        每次架系統，最怕的就是「做完就忘」。所以我把整套二手書平台的架構畫成一張圖、拆成一張表，然後用這篇筆記記錄下來。
+        每次架系統，最怕的就是「做完就忘」。所以我把一套現代網站系統常見的架構畫成一張圖、拆成一張表，然後用這篇筆記記錄下來。這本筆記不綁定任何特定平台，重點是那些<strong>「不管做什麼專案都用得到」的設計邏輯</strong>。
       </p>
       <p>
         打個比方：整套系統就像一棟大樓，<strong>從門口保全、櫃檯接待，到辦公室分工、倉庫管理</strong>，每一層都有各自的任務，而且層層防護。下面我們就從大門口開始，一層一層往裡面逛。
@@ -56,7 +146,7 @@ const posts: Post[] = [
       <p>使用的技術：<code>MySQL / Cloud SQL</code>、<code>Cloudflare R2</code>、<code>Email SMTP</code>、<code>Web Push / VAPID</code></p>
       <ul>
         <li><strong>MySQL / Cloud SQL：</strong>放結構化業務資料的倉庫，搭配優化過的索引查詢（Optimized Indexes），翻東西才快。</li>
-        <li><strong>Cloudflare R2：</strong>相容 S3 的分散式物件儲存，專門放刊登的商品圖片這類媒體資產。</li>
+        <li><strong>Cloudflare R2：</strong>相容 S3 的分散式物件儲存，專門放使用者上傳的圖片、檔案這類媒體資產。</li>
         <li><strong>Email SMTP：</strong>郵務室，負責寄交易型跟通知型郵件。</li>
         <li><strong>Web Push / VAPID：</strong>瀏覽器主動推送服務，走 VAPID 協議標準，手機關著網頁也能收到通知。</li>
       </ul>
@@ -74,7 +164,7 @@ const posts: Post[] = [
       <ul>
         <li><strong>Django ORM：</strong>在 <code>models.py</code> 用物件導向操作資料庫，不用手寫原生 SQL，寫起來像在填空而不是在背咒語。</li>
         <li><strong>MySQL：</strong>核心關聯式資料庫，在 <code>settings.py</code> 的 <code>DATABASES</code> 設定為預設引擎。</li>
-        <li><strong>Django Cache：</strong>快取抽象層，實際用於 <code>core/rate_limit.py</code> 跟 <code>listings/ratelimit.py</code>，專門暫存頻率限制的計數器。</li>
+        <li><strong>Django Cache：</strong>快取抽象層，實際用於 <code>core/rate_limit.py</code> 等頻率限制模組，專門暫存頻率限制的計數器。</li>
       </ul>
 
       <h3>1.3 認證 / 授權（Authentication & Authorization）</h3>
@@ -83,14 +173,14 @@ const posts: Post[] = [
         <li><strong>PyJWT + cryptography：</strong>PyJWT 負責 Token 的 Encode/Decode，cryptography 是底層加密庫，確保簽章不會被偽造。</li>
         <li><strong>django-allauth：</strong>整合第三方登入，這裡專門接 <strong>Google OAuth</strong>。</li>
         <li><strong>Custom User Model：</strong>自訂使用者模型，擴充欄位存 <code>auth_provider: google_sub</code>（Google 唯一識別碼）跟 <code>identity_type</code>。</li>
-        <li><strong>Custom Auth Adapter：</strong>自訂認證配接器，實作<strong>校園信箱網域限制</strong>——只准 <code>@ntub.edu.tw</code> 結尾的信箱註冊登入，還加了白名單機制。舉例：校外信箱想進來？直接被擋在門外。</li>
+        <li><strong>Custom Auth Adapter：</strong>自訂認證配接器，實作<strong>信箱網域限制</strong>——例如只允許特定組織/學校信箱註冊登入，還加了白名單機制。舉例：不在名單內的信箱想進來？直接被擋在門外。</li>
         <li><strong>Django Auth Backend：</strong>管理員登入 Django Admin 後台用的認證系統。</li>
         <li><strong>CSRF Protection + CORS Headers：</strong>一個防跨站請求偽造，保護敏感寫入操作；<code>django-cors-headers</code> 負責跨域設定，讓獨立部署的 Next.js 前端可以合法打 Django API。</li>
       </ul>
 
       <h3>1.4 圖片處理 / 儲存（Image Processing & Storage）</h3>
       <ul>
-        <li><strong>Cloudflare R2（S3-compatible）：</strong>放使用者上傳的商品圖片跟媒體檔案，自帶 CDN 節點。</li>
+        <li><strong>Cloudflare R2（S3-compatible）：</strong>放使用者上傳的圖片跟媒體檔案，自帶 CDN 節點。</li>
         <li><strong>boto3：</strong>AWS 官方 SDK，但因為 R2 相容 S3 API，直接拿它來上傳、下載、管理 R2 的檔案。</li>
         <li><strong>opencv-python：</strong>本地端電腦視覺庫，做圖片色彩分析、尺寸處理——全程本地運算，不靠外部 API。</li>
         <li><strong>TensorFlow：</strong>深度學習框架，本地載入輕量化模型，做<strong>圖片 NSFW（不當內容）自動過濾審查</strong>。舉例：有人上傳奇怪圖片，模型直接幫你攔下來。</li>
@@ -115,7 +205,7 @@ const posts: Post[] = [
       <ul>
         <li><strong>第一層：Cloudflare WAF / Rate Limit —</strong>在網路邊緣直接阻斷自動化黑客工具、惡意 Web Fuzzing 掃描跟異常高頻的 DDoS 流量。</li>
         <li><strong>第二層：Nginx limit_req —</strong>伺服器入口的漏桶（Leaky Bucket）緩衝（緩衝區大小 425），重點保護 API、Auth（登入驗證）跟 Admin（後台）等高風險端點，防止暴力破解密碼。</li>
-        <li><strong>第三層：DRF / Django Throttling —</strong>應用層的細粒度限制，針對登入、一般查詢、NSFW 圖片檢測、發表文章/刊登等不同行為，各自設定獨立的頻率阻斷閥值。</li>
+        <li><strong>第三層：DRF / Django Throttling —</strong>應用層的細粒度限制，針對登入、一般查詢、NSFW 圖片檢測、發表文章等不同行為，各自設定獨立的頻率阻斷閥值。</li>
         <li><strong>快取儲存：Django Cache / LocMemCache —</strong>第三層計數器的高速儲存後端，用本地記憶體快取，數字記得住又讀得快。</li>
       </ul>
 
@@ -145,21 +235,16 @@ const posts: Post[] = [
         <li><strong>Admin URL：</strong>自訂又隱蔽的後台路由，刻意不用預設的 <code>/admin/</code>，讓惡意自動化腳本掃不到門在哪。</li>
       </ul>
 
-      <h2>合：資料模型——10 個 App 就像一家公司的部門</h2>
+      <h2>合：模組化設計——把系統拆成能分工的部門</h2>
       <p>
-        最後是資料模型設計：系統把 Django ORM 模型拆成 <strong>10 個獨立 App（部門）</strong>、<strong>24 個資料模型（員工）</strong>，並拆成 6 個子圖避免一張圖複雜到看不懂。用部門分工來比喻，一眼就懂：
+        最後聊資料模型設計的大原則：大系統最忌諱「一坨程式碼」走到底，所以會把 Django ORM 模型依<strong>業務邊界</strong>拆成多個獨立 App（模組），每個 App 就像公司裡的一個部門——身份驗證一間、內容管理一間、通知一間、聊天一間……各自管各自的事，<strong>改 A 不會炸 B，壞了也好修</strong>。
       </p>
+      <p>拆模組時有幾條實務原則可以參考：</p>
       <ul>
-        <li><strong>1. accounts（使用者與身份）＝人事部：</strong>管全站使用者（學生/管理員）的核心檔案、Google 認證綁定（<code>google_sub</code>）、登入權限跟身分識別（例如學生證驗證狀態）。</li>
-        <li><strong>2. books（書籍主資料）＝書籍百科：</strong>定義書籍基礎元資料（Metadata）：ISBN、書名、作者、出版社、分類。</li>
-        <li><strong>3. listings（刊登與商品）＝陳列部：</strong>處理使用者上架二手書的業務——書況描述、二手售價、上架狀態，並關聯 <code>Cloudflare R2</code> 的商品圖片路徑。</li>
-        <li><strong>4. cart（購物車）＝暫存區：</strong>暫存使用者想買的二手書清單，處理前端暫存跟後端同步。</li>
-        <li><strong>5. purchase_requests（預約與交易）＝交易部：</strong>管理校園面交或交易的預約請求，追蹤訂單狀態機：已發送 ➔ 雙方同意 ➔ 面交完成／取消。</li>
-        <li><strong>6. moderation（內容審查與檢舉）＝風紀股長：</strong>使用者舉報違規商品、不當言論或不安全行為時建立檢舉單，並對接 TensorFlow（圖片）跟文字 Moderation（文字變體）審查與申訴處置。</li>
-        <li><strong>7. notifications（全站通知）＝廣播室：</strong>存系統主動發送的通知（商品被預約、檢舉結果、即時訊息提醒），靠 <code>Django Signals</code> 觸發多端（Web Push/Email）推送。</li>
-        <li><strong>8. chat（即時聊天室）＝客服線：</strong>買家跟賣家針對特定刊登商品的溝通管道，紀錄對話歷史。</li>
-        <li><strong>9. subscriptions（求書與訂閱）＝許願池：</strong>某本書目前沒人刊登？使用者可以建立訂閱，未來一有人上架，系統自動比對並通知訂閱者。</li>
-        <li><strong>10. core（核心與背景任務）＝總務處：</strong>全站公用基礎功能、非同步背景任務調度（例如定期清理過期快取）、全系統層級的日誌操作紀錄。</li>
+        <li><strong>依業務邊界切：</strong>帳號、內容、交易、通知彼此獨立，不要貪方便全塞進一支大程式，之後維護會哭出來。</li>
+        <li><strong>介面穩定好替換：</strong>每個模組的介面（API）固定下來後，未來想換套件、換服務，都只動一小塊，不會牽一髮動全身。</li>
+        <li><strong>圖拆小張：</strong>模型一多，設計圖就拆成多張子圖，一張圖只畫重點，才不會複雜到沒人看得懂。</li>
+        <li><strong>背景任務集中管理：</strong>清理快取、定時重算這類雜事，統一丟給一個核心模組排程，全系統日誌也集中在這裡查。</li>
       </ul>
 
       <h2>📚 附錄：每天多學一點（待研究清單）</h2>
@@ -186,18 +271,19 @@ const posts: Post[] = [
 
       <h3>🎨 前端與設計（對應第 4 層）</h3>
       <ul>
-        <li><strong>masonry 套件：</strong>瀑布流排版（Pinterest 那種格子牆），之後做商品牆或圖片牆會用到——官方網站：<a href="https://masonry.desandro.com/" target="_blank" rel="noopener noreferrer">masonry.desandro.com</a>。</li>
+        <li><strong>masonry 套件：</strong>瀑布流排版（Pinterest 那種格子牆），之後做圖片牆或相簿頁會用到——官方網站：<a href="https://masonry.desandro.com/" target="_blank" rel="noopener noreferrer">masonry.desandro.com</a>。</li>
         <li><strong>Aura Build：</strong>主打用 AI 快速生成漂亮 Landing Page 的平台，研究看看能不能拿來做活動頁或行銷頁。</li>
         <li><strong>名片樣式設計：</strong>收藏的名片排版靈感，之後做個人主頁或電子名片可以參考。</li>
       </ul>
 
       <p class="post-outro">
-        總結來說，整套架構的哲學就是一句話：<strong>每一層只做自己的事——該擋的擋、該存的存、該推的推</strong>。從 Cloudflare 大門、Nginx 櫃檯、Next.js 前台、Django 後台，到 10 個部門分工的資料模型，重點不是用了多潮的技術，而是每個環節都知道自己為什麼站在這裡。這本技術筆記會持續更新，下次見！
+        總結來說，整套架構的哲學就是一句話：<strong>每一層只做自己的事——該擋的擋、該存的存、該推的推</strong>。從 Cloudflare 大門、Nginx 櫃檯、Next.js 前台、Django 後台，到模組化分工的資料設計，重點不是用了多潮的技術，而是每個環節都知道自己為什麼站在這裡。這本技術筆記會持續更新，下次見！
       </p>
     `,
   },
   {
     slug: 'cf-pages-pwa-webpush',
+    category: 'tech',
     date: '2026.08.19',
     title: '【CF Page 】PWA WebPush 設計原理',
     excerpt: 'PWA 網頁推播三招設計原理：Service Worker 資料回拉、Web Crypto 原生加密、靜默推播，讓推播在 Cloudflare Pages 上穩定又快速！',
@@ -234,6 +320,7 @@ const posts: Post[] = [
   },
   {
     slug: 'presentation-design-logic',
+    category: 'general',
     date: '2026.08.19',
     title: '【文章】簡報的設計方式跟邏輯：',
     excerpt: '簡報設計其實就是 Why → What → How 三步驟！用白話文加例子，教你把簡報講得超有說服力。',
@@ -276,6 +363,7 @@ const posts: Post[] = [
   },
   {
     slug: 'front-end-design',
+    category: 'tech',
     date: '2026.08.19',
     title: '【文章】Front End Design ( 好看的推薦）',
     excerpt: '看到好看的設計前端就要收藏起來',
@@ -298,6 +386,7 @@ const posts: Post[] = [
   },
   {
     slug: 'proxy-list-tools',
+    category: 'tech',
     date: '2026.08.19',
     title: '【文章】Proxy List & Tools 推薦',
     excerpt: '前一陣子在找代理，我的好朋朋364同學大力推薦這些，我還沒來得及研究，等研究完再來寫一篇文章好了！',
@@ -315,6 +404,7 @@ const posts: Post[] = [
   },
   {
     slug: 'ntub-credit-program',
+    category: 'tech',
     date: '2026.08.19',
     title: '【工具】NTUB學分學程查詢及預算學分',
     excerpt: 'NTUB 學分學程簡章與學分勾選，一站查詢各學分學程的設置要點與計畫書內容。',
@@ -330,6 +420,7 @@ const posts: Post[] = [
   },
   {
     slug: 'ig-unsend-tool',
+    category: 'tech',
     date: '2026.08.17',
     title: '【工具】IG 收回工具 Batch',
     excerpt: 'IG 訊息傳錯人？想要一次收回所有你傳送的訊息？「IG自動訊息收回工具 （Nasir）」讓你批次收回 Instagram 私訊！',
@@ -345,6 +436,7 @@ const posts: Post[] = [
   },
   {
     slug: 'ai-planner-past-exam-info',
+    category: 'general',
     date: '2026.08.17',
     title: '【文章】AI應用規劃師考古資訊',
     excerpt: '想要測驗AI應用規劃師的，輸入 hi@nasirlin.net 就可以測驗囉！',
@@ -356,6 +448,7 @@ const posts: Post[] = [
   },
   {
     slug: 'windows-experience-freestyle',
+    category: 'tech',
     date: '2026.07.26',
     title: '【文章】新找到的玩意兒：利用 Win10 重新復刻 WinXP',
     excerpt: '我相信很多人是從 XP 時代過來的，我自己也是，我真的很常懷念 XP 的時代…',
@@ -371,6 +464,7 @@ const posts: Post[] = [
   },
   {
     slug: 'a-new-beginning',
+    category: 'general',
     date: '2026.07.01',
     title: '【文章】新的開始',
     excerpt: '決定用這個 Repo 來記錄自己的每一天，像是一本專屬的日記本。',
@@ -388,6 +482,7 @@ const posts: Post[] = [
   },
   {
     slug: 'github-open-source-tools',
+    category: 'tech',
     date: '2026.06.30',
     title: '【文章】學期結束後，收獲的 github 開源工具',
     excerpt: '暑假即將開始了，同時這兩個學期也收獲很多，總結了一些有趣的工具，打算暑假來好好的研究一下！',
@@ -450,6 +545,7 @@ const posts: Post[] = [
   },
   {
     slug: 'ntub-audit',
+    category: 'tech',
     date: '2026.06.14',
     title: '【文章】NTUB 2026 通識資安稽核一條龍',
     excerpt: '為了符合國家資安稽核的指標，並加速檢測流程的進度，特別做這個一鍵式全自動資安檢測工具！',
