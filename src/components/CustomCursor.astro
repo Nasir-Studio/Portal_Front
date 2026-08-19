@@ -1,0 +1,155 @@
+---
+---
+
+<div class="cursor-dot" id="cursor-dot" aria-hidden="true"></div>
+<div class="cursor-ring" id="cursor-ring" aria-hidden="true"></div>
+
+<style is:global>
+  .cursor-dot,
+  .cursor-ring {
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    border-radius: 50%;
+    z-index: 999999;
+    opacity: 0;
+    transform: translate(-50%, -50%);
+    will-change: transform, width, height, opacity;
+  }
+
+  .cursor-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--ink);
+    transition: transform 0.12s ease-out, background-color 0.2s ease, opacity 0.2s ease;
+  }
+
+  .cursor-ring {
+    width: 32px;
+    height: 32px;
+    border: 1.5px solid rgba(28, 28, 28, 0.35);
+    background: transparent;
+    transition: width 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+                height 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 0.25s ease,
+                background-color 0.25s ease,
+                opacity 0.25s ease,
+                transform 0.1s ease-out;
+  }
+
+  .cursor-ring.is-hover {
+    width: 46px;
+    height: 46px;
+    border-color: #d4af37;
+    background: rgba(212, 175, 55, 0.14);
+    box-shadow: 0 0 14px rgba(212, 175, 55, 0.25);
+  }
+
+  .cursor-dot.is-hover {
+    background: #b8860b;
+    transform: translate(-50%, -50%) scale(1.4);
+  }
+
+  .cursor-ring.is-active {
+    width: 24px;
+    height: 24px;
+    border-color: #996515;
+    background: rgba(184, 134, 11, 0.28);
+  }
+
+  .cursor-dot.is-active {
+    transform: translate(-50%, -50%) scale(0.7);
+  }
+
+  @media (hover: none) or (pointer: coarse) {
+    .cursor-dot,
+    .cursor-ring {
+      display: none !important;
+    }
+  }
+</style>
+
+<script>
+  (() => {
+    if (window.matchMedia('(hover: none) or (pointer: coarse)').matches) return;
+
+    const dot = document.getElementById('cursor-dot');
+    const ring = document.getElementById('cursor-ring');
+    if (!dot || !ring) return;
+
+    let mouseX = -100;
+    let mouseY = -100;
+    let ringX = -100;
+    let ringY = -100;
+    let isVisible = false;
+
+    const render = () => {
+      if (isVisible) {
+        ringX += (mouseX - ringX) * 0.18;
+        ringY += (mouseY - ringY) * 0.18;
+
+        dot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
+        ring.style.transform = `translate3d(${ringX}px, ${ringY}px, 0) translate(-50%, -50%)`;
+      }
+      requestAnimationFrame(render);
+    };
+    requestAnimationFrame(render);
+
+    window.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+
+      if (!isVisible) {
+        isVisible = true;
+        ringX = mouseX;
+        ringY = mouseY;
+        dot.style.opacity = '1';
+        ring.style.opacity = '1';
+      }
+    });
+
+    window.addEventListener('mouseleave', () => {
+      isVisible = false;
+      dot.style.opacity = '0';
+      ring.style.opacity = '0';
+    });
+
+    window.addEventListener('mouseenter', () => {
+      isVisible = true;
+      dot.style.opacity = '1';
+      ring.style.opacity = '1';
+    });
+
+    window.addEventListener('mousedown', () => {
+      ring.classList.add('is-active');
+      dot.classList.add('is-active');
+    });
+
+    window.addEventListener('mouseup', () => {
+      ring.classList.remove('is-active');
+      dot.classList.remove('is-active');
+    });
+
+    const isInteractive = (el: HTMLElement | null) => {
+      if (!el) return false;
+      return !!el.closest(
+        'a, button, input, textarea, select, [role="button"], [role="tab"], .tool-item, .tool-card, .news-item, .banner-dot, .banner-btn, .badge-item, .audit-dl, summary'
+      );
+    };
+
+    document.addEventListener('mouseover', (e) => {
+      if (isInteractive(e.target as HTMLElement)) {
+        ring.classList.add('is-hover');
+        dot.classList.add('is-hover');
+      }
+    });
+
+    document.addEventListener('mouseout', (e) => {
+      if (isInteractive(e.target as HTMLElement)) {
+        ring.classList.remove('is-hover');
+        dot.classList.remove('is-hover');
+      }
+    });
+  })();
+</script>

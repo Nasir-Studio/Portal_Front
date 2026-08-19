@@ -150,7 +150,7 @@ const techPages = paginatePosts(techPosts);
   .news-square {
     width: 8px;
     height: 8px;
-    background: var(--ink);
+    background: linear-gradient(135deg, #e2be67 0%, #cca33f 100%);
     transform: rotate(45deg);
   }
 
@@ -171,18 +171,20 @@ const techPages = paginatePosts(techPosts);
     color: var(--ink-3);
     padding: 0.6rem 1.2rem;
     cursor: pointer;
-    transition: background var(--t), color var(--t);
+    transition: background var(--t), color var(--t), box-shadow var(--t);
     position: relative;
   }
 
-  .news-tab:hover {
+  .news-tab:hover:not(.is-active) {
     color: var(--ink);
-    background: var(--surface);
+    background: rgba(226, 190, 103, 0.12);
   }
 
   .news-tab.is-active {
-    color: var(--ink);
-    background: var(--surface);
+    color: #1a1608;
+    background: linear-gradient(135deg, #f7e7b4 0%, #e2be67 50%, #cca33f 100%);
+    font-weight: 600;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 2px 8px rgba(204, 163, 63, 0.22);
   }
 
   .news-tab.is-active::after {
@@ -192,7 +194,7 @@ const techPages = paginatePosts(techPosts);
     right: 0;
     bottom: -1px;
     height: 2px;
-    background: var(--ink);
+    background: #b58925;
   }
 
   .news-list {
