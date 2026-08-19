@@ -1,3 +1,5 @@
+@import '@fontsource/iansui/400.css';
+
 :root {
   --bg: #f5f4f1;
   --bg-soft: #efeeea;
@@ -18,6 +20,7 @@
 
   --font-serif: "Noto Serif TC", "Songti TC", "STSong", Georgia, "Times New Roman", serif;
   --font-sans: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-iansui: "Iansui", "芫荽", "Klee One", "Noto Serif TC", serif;
 
   --ease: cubic-bezier(0.4, 0, 0.2, 1);
   --t: 200ms var(--ease);

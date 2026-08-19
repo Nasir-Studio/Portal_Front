@@ -325,18 +325,45 @@ const techPages = paginatePosts(techPosts);
 
   function showTechGate() {
     if (!gateWrap) return;
-    if (techPagesEl) techPagesEl.hidden = true;
-    if (techPagerEl) techPagerEl.hidden = true;
+    if (techPagesEl) {
+      techPagesEl.hidden = true;
+      techPagesEl.style.display = 'none';
+    }
+    if (techPagerEl) {
+      techPagerEl.hidden = true;
+      techPagerEl.style.display = 'none';
+    }
     gateWrap.hidden = false;
+    gateWrap.style.display = 'block';
     if (window.openTechGate) window.openTechGate();
   }
 
   function hideTechGate() {
     if (!gateWrap) return;
     gateWrap.hidden = true;
-    if (techPagesEl) techPagesEl.hidden = false;
-    if (techPagerEl) techPagerEl.hidden = false;
+    gateWrap.style.display = 'none';
+    if (techPagesEl) {
+      techPagesEl.hidden = false;
+      techPagesEl.removeAttribute('hidden');
+      techPagesEl.style.display = 'block';
+      const page0 = techPagesEl.querySelector<HTMLElement>('.news-page[data-page="0"]');
+      if (page0) {
+        page0.hidden = false;
+        page0.removeAttribute('hidden');
+        page0.style.display = 'block';
+      }
+    }
+    if (techPagerEl) {
+      techPagerEl.hidden = false;
+      techPagerEl.removeAttribute('hidden');
+      techPagerEl.style.display = 'flex';
+    }
     if (window.closeTechGate) window.closeTechGate();
+  }
+
+  // 初始化：若已解鎖，確保閘門關閉並展開文章清單
+  if (localStorage.getItem('ovinas-tech-unlocked') === '1') {
+    hideTechGate();
   }
 
   tabs.forEach((tab) => {

@@ -164,7 +164,7 @@
   }
 
   #gate-login h2 {
-    font-family: var(--font-serif);
+    font-family: var(--font-iansui);
     font-size: 1.25rem;
     font-weight: 700;
     letter-spacing: 0.06em;
@@ -182,6 +182,7 @@
     color: var(--ink-2);
     letter-spacing: 0.1em;
     margin-bottom: 0.3rem;
+    font-family: var(--font-iansui);
   }
 
   .input-wrap {
@@ -205,7 +206,7 @@
     border: 1px solid var(--border);
     border-radius: 0;
     padding: 0 2.3rem;
-    font-family: var(--font-sans);
+    font-family: var(--font-iansui);
     font-size: 0.88rem;
     color: var(--ink);
     outline: none;
@@ -214,6 +215,7 @@
 
   .input-field::placeholder {
     color: var(--ink-3);
+    font-family: var(--font-iansui);
   }
 
   .input-field:focus {
@@ -275,14 +277,13 @@
     position: absolute;
     width: 100%;
     height: 46px;
-    border: 2px dashed var(--border-strong);
+    border: none;
     border-radius: 0;
     pointer-events: none;
-    transition: border-color 0.3s ease, background 0.3s ease;
+    transition: background 0.3s ease;
   }
 
   .dock.is-docked .dock__socket {
-    border-color: var(--ink);
     background: var(--bg-soft);
   }
 
@@ -294,7 +295,7 @@
     color: var(--white);
     border: 1px solid var(--ink);
     border-radius: 0;
-    font-family: var(--font-sans);
+    font-family: var(--font-iansui);
     font-size: 0.95rem;
     font-weight: 500;
     letter-spacing: 0.25em;
@@ -604,7 +605,7 @@
   }
 
   .status-title {
-    font-family: var(--font-serif);
+    font-family: var(--font-iansui);
     font-size: 1.05rem;
     font-weight: 700;
     letter-spacing: 0.05em;
@@ -613,12 +614,14 @@
   .status-desc {
     font-size: 0.85rem;
     color: var(--ink-3);
+    font-family: var(--font-iansui);
   }
 
   .reset-demo-btn {
     background: var(--bg-soft);
     border: 1px solid var(--border-strong);
     color: var(--ink-2);
+    font-family: var(--font-iansui);
     font-size: 0.78rem;
     font-weight: 500;
     padding: 0.35rem 1rem;
@@ -649,6 +652,7 @@
     font-size: 0.72rem;
     color: var(--ink-3);
     letter-spacing: 0.05em;
+    font-family: var(--font-iansui);
   }
 
   .step-done {
@@ -662,7 +666,7 @@
   }
 
   .pay-right h3 {
-    font-family: var(--font-serif);
+    font-family: var(--font-iansui);
     font-size: 1.1rem;
     font-weight: 700;
     letter-spacing: 0.04em;
@@ -672,6 +676,7 @@
     font-size: 0.78rem;
     color: var(--ink-3);
     line-height: 1.5;
+    font-family: var(--font-iansui);
   }
 
   .pay-form-group {
@@ -686,6 +691,7 @@
     color: var(--ink-2);
     text-transform: uppercase;
     margin-bottom: 0.25rem;
+    font-family: var(--font-iansui);
   }
 
   .pay-input {
@@ -695,11 +701,15 @@
     border: 1px solid var(--border);
     border-radius: 0;
     padding: 0 0.75rem;
-    font-family: var(--font-sans);
+    font-family: var(--font-iansui);
     font-size: 0.85rem;
     color: var(--ink);
     outline: none;
     transition: border-color var(--t), box-shadow var(--t), background var(--t);
+  }
+
+  .pay-input::placeholder {
+    font-family: var(--font-iansui);
   }
 
   .pay-input:focus {
@@ -725,7 +735,7 @@
     color: var(--white);
     border: 1px solid var(--ink);
     border-radius: 0;
-    font-family: var(--font-sans);
+    font-family: var(--font-iansui);
     font-size: 0.95rem;
     font-weight: 500;
     letter-spacing: 0.2em;
@@ -983,6 +993,9 @@
     statusDesc.textContent = '模擬卡片 · 金額 NT$3,000';
     resetDemoBtn.hidden = true;
 
+    // 立即儲存已解鎖狀態
+    localStorage.setItem('ovinas-tech-unlocked', '1');
+
     setTimeout(() => {
       iconHolder.innerHTML = '<div class="success-check-circle">✓</div>';
       statusTitle.textContent = '付款成功 NT$3,000';
@@ -990,15 +1003,12 @@
       resetDemoBtn.hidden = false;
       resetDemoBtn.textContent = '進入技術文章 →';
 
-      // 儲存已解鎖狀態
-      localStorage.setItem('ovinas-tech-unlocked', '1');
-
-      // 1.2 秒後自動進入技術文章
+      // 0.5 秒後自動進入技術文章
       if (autoUnlockTimer) clearTimeout(autoUnlockTimer);
       autoUnlockTimer = setTimeout(() => {
         unlockAndEnter();
-      }, 1200);
-    }, 1400);
+      }, 500);
+    }, 600);
   });
 
   function unlockAndEnter() {
