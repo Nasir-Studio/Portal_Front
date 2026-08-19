@@ -150,7 +150,7 @@
     width: 100%;
     background: var(--bg-soft);
     border: 1px solid var(--border);
-    border-radius: 0;
+    border-radius: 7px;
     padding: 0.45rem 0.65rem;
     font-family: inherit;
     font-size: 0.82rem;
@@ -184,7 +184,7 @@
     background: var(--ink);
     color: var(--white);
     border: 1px solid var(--ink);
-    border-radius: 0;
+    border-radius: 7px;
     padding: 0.5rem 0.8rem;
     font-family: inherit;
     font-size: 0.82rem;
@@ -210,6 +210,7 @@
     text-align: center;
     background: var(--bg-soft);
     border: 1px solid var(--border);
+    border-radius: 8px;
   }
 
   .contact-feedback.is-success {
