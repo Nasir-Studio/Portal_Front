@@ -198,11 +198,14 @@
   </div>
 
   <!-- 🎶 漂浮音樂音符與手稿星芒 (Drifting Musical Notes & Stars) -->
-  <div class="drifting-note note-1">♪</div>
-  <div class="drifting-note note-2">♫</div>
-  <div class="drifting-note note-3">𝄞</div>
-  <div class="drifting-note note-4">𝄢</div>
-  <div class="drifting-note note-5">✦</div>
+  <div class="drifting-note note-1" data-speed="0.4">♪</div>
+  <div class="drifting-note note-2" data-speed="0.6">♫</div>
+  <div class="drifting-note note-3" data-speed="0.45">𝄞</div>
+  <div class="drifting-note note-4" data-speed="0.55">𝄢</div>
+  <div class="drifting-note note-5" data-speed="0.35">✦</div>
+  <div class="drifting-note note-6" data-speed="0.5">♪</div>
+  <div class="drifting-note note-7" data-speed="0.65">♫</div>
+  <div class="drifting-note note-8" data-speed="0.42">♩</div>
 </div>
 
 <style>
@@ -286,7 +289,7 @@
     100% { transform: translate3d(-16px, -15px, 0); }
   }
 
-  /* 🎶 漂浮音樂符號 */
+  /* 🎶 漂浮與滾動跳動音樂符號 */
   .drifting-note {
     position: absolute;
     color: #1c1c1c;
@@ -296,6 +299,12 @@
     opacity: 0;
     will-change: transform, opacity;
     animation: drift-notes 12s ease-in-out infinite;
+    transform: translate3d(0, var(--scroll-hop, 0px), 0) rotate(var(--scroll-rot, 0deg)) scale(var(--scroll-scale, 1));
+    transition: transform 0.18s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.2s;
+  }
+
+  .drifting-note.is-jumping {
+    opacity: 0.88 !important;
   }
 
   .note-1 { top: 20%; left: 18%; animation-delay: 0s; }
@@ -303,6 +312,9 @@
   .note-3 { top: 68%; left: 16%; animation-delay: 5s; font-size: 26px; }
   .note-4 { top: 80%; right: 20%; animation-delay: 7.5s; font-size: 24px; }
   .note-5 { top: 50%; left: 88%; animation-delay: 9.5s; font-size: 14px; }
+  .note-6 { top: 15%; right: 38%; animation-delay: 1.5s; font-size: 20px; }
+  .note-7 { top: 75%; left: 42%; animation-delay: 4s; font-size: 22px; }
+  .note-8 { top: 42%; left: 8%; animation-delay: 6.5s; font-size: 19px; }
 
   @keyframes drift-notes {
     0% { transform: translate3d(0, 20px, 0) scale(0.7); opacity: 0; }
@@ -340,3 +352,56 @@
     }
   }
 </style>
+
+<script>
+  const notes = document.querySelectorAll('.drifting-note');
+  let lastScrollY = window.scrollY;
+  let ticking = false;
+  let resetTimeout: ReturnType<typeof setTimeout>;
+
+  function onScroll() {
+    const currentScrollY = window.scrollY;
+    const scrollDelta = currentScrollY - lastScrollY;
+    lastScrollY = currentScrollY;
+
+    const jump = Math.max(-32, Math.min(32, scrollDelta * 0.55));
+
+    notes.forEach((note, index) => {
+      const el = note as HTMLElement;
+      const speed = parseFloat(el.dataset.speed || '0.4');
+      const dir = index % 2 === 0 ? 1 : -1;
+      const yOffset = -jump * speed * 2.8;
+      const rot = jump * dir * 1.4;
+      const scale = 1 + Math.min(0.35, Math.abs(jump) * 0.018);
+
+      el.style.setProperty('--scroll-hop', `${yOffset}px`);
+      el.style.setProperty('--scroll-rot', `${rot}deg`);
+      el.style.setProperty('--scroll-scale', `${scale}`);
+      el.classList.add('is-jumping');
+    });
+
+    clearTimeout(resetTimeout);
+    resetTimeout = setTimeout(() => {
+      notes.forEach((note) => {
+        const el = note as HTMLElement;
+        el.style.setProperty('--scroll-hop', '0px');
+        el.style.setProperty('--scroll-rot', '0deg');
+        el.style.setProperty('--scroll-scale', '1');
+        el.classList.remove('is-jumping');
+      });
+    }, 200);
+
+    ticking = false;
+  }
+
+  window.addEventListener(
+    'scroll',
+    () => {
+      if (!ticking) {
+        window.requestAnimationFrame(onScroll);
+        ticking = true;
+      }
+    },
+    { passive: true }
+  );
+</script>

@@ -1,9 +1,24 @@
 ---
 import SheepLogo from './SheepLogo.astro';
 
-const links = [
-  { label: '羊-短網址', href: 'https://nsir.uk', external: true },
-  { label: '羊愛考試', href: 'https://1ztests.nsir.uk', external: true },
+const navGroups = [
+  {
+    title: 'Ovis Tools',
+    id: 'ovis-tools',
+    items: [
+      { label: '羊監視你', href: '/cctv', external: false },
+      { label: '羊集章', href: '/badges/', external: false },
+      { label: '單字測驗', href: '/vocab/', external: false },
+    ],
+  },
+  {
+    title: '主要服務',
+    id: 'main-services',
+    items: [
+      { label: '羊愛考試', href: 'https://1ztests.nsir.uk', external: true },
+      { label: '羊-短網址', href: 'https://nsir.uk', external: true },
+    ],
+  },
 ];
 ---
 
@@ -50,18 +65,37 @@ const links = [
   <div class="menubar-wrap" id="nav-menu">
     <nav class="menubar container" aria-label="主導覽">
       <a class="menu-link is-home" href="/">首頁</a>
+
       {
-        links.map((link) => (
-          <a
-            class="menu-link"
-            href={link.href}
-            target={link.external ? '_blank' : undefined}
-            rel={link.external ? 'noopener noreferrer' : undefined}
-          >
-            {link.label}
-          </a>
+        navGroups.map((group) => (
+          <div class="menu-dropdown-group" data-group={group.id}>
+            <button
+              class="menu-dropdown-btn"
+              type="button"
+              aria-expanded="false"
+              aria-haspopup="true"
+            >
+              <span>{group.title}</span>
+              <span class="arrow-desktop" aria-hidden="true">▾</span>
+              <span class="toggle-mobile" aria-hidden="true">+</span>
+            </button>
+            <div class="dropdown-panel">
+              {group.items.map((item) => (
+                <a
+                  class="dropdown-sublink"
+                  href={item.href}
+                  target={item.external ? '_blank' : undefined}
+                  rel={item.external ? 'noopener noreferrer' : undefined}
+                >
+                  <span>{item.label}</span>
+                  {item.external && <span class="ext-icon" aria-hidden="true">↗</span>}
+                </a>
+              ))}
+            </div>
+          </div>
         ))
       }
+
       <a class="menu-link menu-cta" href="/reserve/">
         預約系統
       </a>
@@ -189,10 +223,6 @@ const links = [
     transition: background var(--t), color var(--t);
   }
 
-  .menu-link:first-child {
-    border-left: none;
-  }
-
   .menu-link:hover {
     background: var(--bg-soft);
     color: var(--ink);
@@ -200,6 +230,102 @@ const links = [
 
   .is-home {
     color: var(--ink);
+  }
+
+  /* 下拉群組 (Desktop) */
+  .menu-dropdown-group {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    height: 48px;
+    border-right: 1px solid var(--border);
+  }
+
+  .menu-dropdown-btn {
+    appearance: none;
+    background: none;
+    border: none;
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    color: var(--ink-2);
+    padding: 0 1.35rem;
+    height: 100%;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    cursor: pointer;
+    transition: background var(--t), color var(--t);
+  }
+
+  .menu-dropdown-group:hover .menu-dropdown-btn,
+  .menu-dropdown-group:focus-within .menu-dropdown-btn {
+    background: var(--bg-soft);
+    color: var(--ink);
+  }
+
+  .arrow-desktop {
+    font-size: 0.72rem;
+    transition: transform var(--t);
+  }
+
+  .menu-dropdown-group:hover .arrow-desktop {
+    transform: rotate(180deg);
+  }
+
+  .toggle-mobile {
+    display: none;
+  }
+
+  .dropdown-panel {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 175px;
+    background: var(--surface);
+    border: 1.5px solid var(--ink);
+    box-shadow: 4px 4px 0px rgba(28, 28, 28, 0.12);
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(6px);
+    transition: opacity 0.2s var(--ease), transform 0.2s var(--ease), visibility 0.2s;
+    z-index: 100;
+  }
+
+  .menu-dropdown-group:hover .dropdown-panel,
+  .menu-dropdown-group:focus-within .dropdown-panel {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .dropdown-sublink {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1.1rem;
+    font-size: 0.9rem;
+    color: var(--ink-2);
+    letter-spacing: 0.08em;
+    border-bottom: 1px solid var(--border);
+    transition: background var(--t), color var(--t);
+  }
+
+  .dropdown-sublink:last-child {
+    border-bottom: none;
+  }
+
+  .dropdown-sublink:hover {
+    background: var(--bg-soft);
+    color: var(--ink);
+  }
+
+  .ext-icon {
+    font-size: 0.75rem;
+    color: var(--ink-3);
   }
 
   .menu-cta {
@@ -234,6 +360,7 @@ const links = [
     flex-shrink: 0;
   }
 
+  /* 📱 手機版選單 (含折疊展開 +/-) */
   @media (max-width: 900px) {
     .site-header {
       position: static;
@@ -258,10 +385,6 @@ const links = [
       height: 46px;
     }
 
-    .menu-link {
-      display: none;
-    }
-
     .menubar-wrap {
       display: none;
     }
@@ -271,18 +394,72 @@ const links = [
     }
 
     .menubar {
-      flex-wrap: wrap;
+      flex-direction: column;
+      align-items: stretch;
       padding: 0.5rem 0;
       min-height: 0;
     }
 
-    .menubar-wrap.open .menu-link {
-      display: flex;
+    .menu-link {
       width: 100%;
       height: auto;
       padding: 0.85rem 0.75rem;
       border-right: none;
       border-bottom: 1px solid var(--border);
+    }
+
+    .menu-dropdown-group {
+      width: 100%;
+      height: auto;
+      flex-direction: column;
+      align-items: stretch;
+      border-right: none;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .menu-dropdown-btn {
+      width: 100%;
+      height: auto;
+      padding: 0.85rem 0.75rem;
+      justify-content: space-between;
+    }
+
+    .arrow-desktop {
+      display: none;
+    }
+
+    .toggle-mobile {
+      display: inline-block;
+      font-size: 1.2rem;
+      font-weight: 600;
+      line-height: 1;
+      color: var(--ink);
+      width: 24px;
+      height: 24px;
+      text-align: center;
+      transition: transform var(--t);
+    }
+
+    .dropdown-panel {
+      position: static;
+      display: none;
+      min-width: 0;
+      box-shadow: none;
+      border: none;
+      border-top: 1px solid var(--border);
+      background: var(--bg-soft);
+      transform: none;
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .menu-dropdown-group.is-open .dropdown-panel {
+      display: flex;
+    }
+
+    .dropdown-sublink {
+      padding: 0.75rem 1.4rem;
+      border-bottom: 1px dashed var(--border);
     }
 
     .menubar-wrap.open .menu-cta {
@@ -293,10 +470,6 @@ const links = [
   }
 
   @media (max-width: 480px) {
-    .topbar-left {
-      display: none;
-    }
-
     .topbar-inner {
       justify-content: flex-end;
     }
@@ -315,7 +488,25 @@ const links = [
     wrap?.classList.toggle('open', !open);
   });
 
-  wrap?.querySelectorAll('a').forEach((a) => {
+  // 手機版折疊展開 (+ / -)
+  const dropdownGroups = document.querySelectorAll('.menu-dropdown-group');
+  dropdownGroups.forEach((group) => {
+    const btn = group.querySelector('.menu-dropdown-btn');
+    const toggleIcon = group.querySelector('.toggle-mobile');
+
+    btn?.addEventListener('click', (e) => {
+      if (window.innerWidth <= 900) {
+        e.preventDefault();
+        const isOpen = group.classList.toggle('is-open');
+        btn.setAttribute('aria-expanded', String(isOpen));
+        if (toggleIcon) {
+          toggleIcon.textContent = isOpen ? '−' : '+';
+        }
+      }
+    });
+  });
+
+  wrap?.querySelectorAll('.dropdown-sublink, .menu-link:not(.menu-dropdown-btn)').forEach((a) => {
     a.addEventListener('click', () => {
       toggle?.setAttribute('aria-expanded', 'false');
       wrap?.classList.remove('open');
