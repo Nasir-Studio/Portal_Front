@@ -56,7 +56,7 @@
       aria-label="開啟聯絡表單"
     >
       <span class="launcher-icon" aria-hidden="true">
-        <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
           <rect x="2" y="4" width="20" height="16" rx="2"></rect>
           <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
         </svg>
@@ -165,21 +165,21 @@
     z-index: 9999;
   }
 
-  /* 懸浮小巧純圖示按鈕 */
+  /* 懸浮純圖示按鈕 (加大圓形尺寸) */
   .contact-launcher {
     appearance: none;
     background: var(--ink);
     color: var(--white);
     border: 1.5px solid var(--ink);
     border-radius: 50%;
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     padding: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: 2px 2px 0px rgba(28, 28, 28, 0.14);
+    box-shadow: 3px 3px 0px rgba(28, 28, 28, 0.16);
     transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), background var(--t);
   }
 
