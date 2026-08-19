@@ -324,6 +324,31 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     background: #b03030;
   }
 
+  .tx-accept {
+    margin-left: auto;
+    background: transparent;
+    border: 1px solid var(--ink);
+    border-radius: 0;
+    font-family: var(--font-sans);
+    font-size: 0.78rem;
+    padding: 0.3rem 0.9rem;
+    color: var(--ink);
+    cursor: pointer;
+    transition: border-color var(--t), color var(--t), background var(--t);
+    letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+
+  .tx-accept:hover {
+    background: var(--ink);
+    color: var(--white);
+  }
+
+  .tx-accept:disabled {
+    opacity: 0.55;
+    cursor: default;
+  }
+
   .received-section {
     margin-bottom: 2rem;
     animation: fadeIn 0.5s ease-out 0.2s both;
@@ -402,6 +427,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   .received-file .r-open:hover {
     border-color: var(--ink);
     color: var(--ink);
+  }
+
+  .received-file .r-stored {
+    margin-left: 0.4rem;
+    color: #2e9e4f;
+    font-size: 0.75rem;
+    flex-shrink: 0;
   }
 
   .u-send-text {
@@ -618,6 +650,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       點擊任一使用者即可選擇檔案傳送，點卡片左上角的
       <strong>✉</strong> 可傳送文字訊息；檔案透過 WebRTC 傳輸，優先點對點直連，無法直連時會自動經中繼伺服器轉送。
       收到檔案會自動下載，文字訊息與可預覽的檔案（圖片／影片／PDF）會嘗試開新分頁，清單上的「⧉ 開啟」隨時可再開啟。
+      超過 1GB 的檔案會先詢問儲存位置，再邊收邊直接寫入磁碟（不佔記憶體）；需瀏覽器支援「另存新檔」功能。
       兩台裝置會依各自的「出口 IP」自動分房（狀態列的 房間 xxxxxxxx 需相同才會互見）。
       若還是看不到對方，請確認兩台裝置連的是同一個網路，並避免同時重新整理頁面。
     </div>
@@ -657,9 +690,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   var roomPublicIp = '';
   var hostConnTimer = null;
   var hostRetryTimer = null;
-  var CHUNK_SIZE = 64 * 1024;
-  var MAX_BUFFER = 8 * 1024 * 1024;
-  var MAX_FILE = 2 * 1024 * 1024 * 1024;
+  var CHUNK_SIZE = 256 * 1024;
+  var MAX_BUFFER = 64 * 1024 * 1024;
+  var MAX_FILE = 500 * 1024 * 1024 * 1024;
+  var MEMORY_LIMIT = 1024 * 1024 * 1024;
   var ROOM_IP_ENDPOINTS = [
     'https://api.ipify.org?format=json',
     'https://api64.ipify.org?format=json',
@@ -822,7 +856,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       hashRoom: hashRoom,
       detectNetwork: detectNetwork,
       logPair: logPair,
-      getRoom: function () { return { ip: roomPublicIp, id: roomId, host: HOST_ID }; }
+      getRoom: function () { return { ip: roomPublicIp, id: roomId, host: HOST_ID }; },
+      setMemLimit: function (n) { MEMORY_LIMIT = n; },
+      getMemLimit: function () { return MEMORY_LIMIT; }
     };
   }
 
@@ -938,6 +974,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     var inner =
       '<span class="r-name">' + escapeHtml(item.name) + '</span>' +
       '<span class="r-meta">' + escapeHtml(item.meta) + '</span>';
+
+    if (item.stored) {
+      el.innerHTML = '<span class="r-body">' + inner + '</span>' +
+        '<span class="r-stored">儲存至磁碟</span>';
+      list.insertBefore(el, list.firstChild);
+      return;
+    }
+
     var openBtn = '<button class="r-open" type="button" title="在新分頁開啟">⧉ 開啟</button>';
 
     if (item.download) {
@@ -1383,7 +1427,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     if (list.length === 0) return;
     list.forEach(function (f) {
       if (f.size > MAX_FILE) {
-        toast(f.name + ' 太大（建議 2GB 以下）', 'bad');
+        toast(f.name + ' 太大（超過 500GB 上限）', 'bad');
         return;
       }
       outQueue.push(f);
@@ -1408,6 +1452,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       lastTick: 0,
       lastBytes: 0,
       speed: 0,
+      started: false,
+      ackTimer: null,
       aborted: false
     };
 
@@ -1434,6 +1480,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             chunkCount: chunkCount,
             chunkSize: CHUNK_SIZE
           });
+          if (file.size >= MEMORY_LIMIT && transfers[fid]) {
+            updateTxProgress(fid, 0, '\u2192 ' + target.name + ' · 等待對方接受…');
+            transfers[fid].ackTimer = setTimeout(function () {
+              var t = transfers[fid];
+              if (t && !t.started) abortOutbound(fid, '對方超過 90 秒未接受');
+            }, 90000);
+          }
         } catch (e) {
           abortOutbound(fid, '發送中斷');
         }
@@ -1441,6 +1494,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       conn.on('data', function (d) {
         if (!d || !d.type) return;
         if (d.type === 'ack' && d.fileId === fid) {
+          if (transfers[fid]) {
+            transfers[fid].started = true;
+            if (transfers[fid].ackTimer) {
+              clearTimeout(transfers[fid].ackTimer);
+              transfers[fid].ackTimer = null;
+            }
+          }
           pumpChunks(fid);
         } else if (d.type === 'done-ack' && d.fileId === fid) {
           finishOutbound(fid);
@@ -1528,6 +1588,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     var t = transfers[fid];
     if (!t || t.aborted) return;
     t.aborted = true;
+    if (t.ackTimer) {
+      clearTimeout(t.ackTimer);
+      t.ackTimer = null;
+    }
     finishTxItem(fid, false);
     updateTxProgress(fid, 0, reason);
     toast('傳送失敗：' + reason, 'bad');
@@ -1540,6 +1604,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     var t = transfers[fid];
     if (!t) return;
     t.aborted = true;
+    if (t.ackTimer) {
+      clearTimeout(t.ackTimer);
+      t.ackTimer = null;
+    }
     delete transfers[fid];
     finishTxItem(fid, true);
     updateTxProgress(fid, 100, '\u2192 ' + t.target.name + ' · 完成');
@@ -1592,27 +1660,65 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         });
       }
 
+      var bigFile = msg.size >= MEMORY_LIMIT;
+      var canFs = bigFile && typeof window.showSaveFilePicker === 'function';
+
       incoming[fid] = {
         name: msg.name,
         size: msg.size,
         mime: msg.mime || 'application/octet-stream',
         chunkSize: msg.chunkSize || CHUNK_SIZE,
         chunkCount: msg.chunkCount,
-        buffer: new Uint8Array(msg.size),
+        buffer: bigFile ? null : new Uint8Array(msg.size),
+        fsWritable: null,
+        fsChain: Promise.resolve(),
         received: 0,
         conn: conn,
         senderName: senderName,
         from: conn.peer
       };
-      upsertTxItem(fid, '\u2193', msg.name, '來自 ' + senderName + ' · 接收中');
+
+      if (bigFile && !canFs) {
+        upsertTxItem(fid, '\u2193', msg.name, '來自 ' + senderName + ' · 無法接收');
+        finishTxItem(fid, false);
+        updateTxProgress(fid, 0, '瀏覽器不支援超大檔案');
+        try { conn.send({ type: 'error', fileId: fid, message: '接收端無法儲存超大檔案' }); } catch (e) {  }
+        delete incoming[fid];
+        return;
+      }
+
+      var el = upsertTxItem(fid, '\u2193', msg.name, '來自 ' + senderName + ' · ' + (bigFile ? '等待存檔位置' : '接收中'));
+
+      if (bigFile) {
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'tx-accept';
+        btn.textContent = '接受並存檔';
+        btn.addEventListener('click', function () { startFsAccept(fid); });
+        el.querySelector('.tx-head').appendChild(btn);
+        return;
+      }
+
       try { conn.send({ type: 'ack', fileId: fid }); } catch (e) {  }
 
     } else if (msg.type === 'chunk') {
       var inc = incoming[fid];
       if (!inc) return;
       var start = msg.index * inc.chunkSize;
-      if (start + msg.data.byteLength <= inc.size) {
-        inc.buffer.set(new Uint8Array(msg.data), start);
+      if (inc.fsWritable) {
+        if (start + msg.data.byteLength <= inc.size) {
+          inc.fsChain = inc.fsChain.then(function () {
+            return inc.fsWritable.write({ type: 'write', position: start, data: msg.data });
+          }).catch(function () {
+            finishTxItem(fid, false);
+            updateTxProgress(fid, 0, '寫入磁碟失敗');
+            delete incoming[fid];
+          });
+        }
+      } else if (inc.buffer) {
+        if (start + msg.data.byteLength <= inc.size) {
+          inc.buffer.set(new Uint8Array(msg.data), start);
+        }
       }
       inc.received += msg.data.byteLength;
       var p = Math.round((inc.received / inc.size) * 100);
@@ -1625,9 +1731,53 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     }
   }
 
+  function startFsAccept(fid) {
+    var inc = incoming[fid];
+    if (!inc || inc.fsWritable) return;
+    if (typeof window.showSaveFilePicker !== 'function') {
+      finishTxItem(fid, false);
+      updateTxProgress(fid, 0, '瀏覽器不支援超大檔案');
+      delete incoming[fid];
+      return;
+    }
+    var btn = document.querySelector('.tx-item[data-fid="' + fid + '"] .tx-accept');
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = '選擇儲存位置…';
+    }
+    window.showSaveFilePicker({ suggestedName: inc.name }).then(function (handle) {
+      return handle.createWritable();
+    }).then(function (writable) {
+      if (!incoming[fid]) { try { writable.close(); } catch (e) {  } return; }
+      inc.fsWritable = writable;
+      updateTxProgress(fid, 0, '來自 ' + inc.senderName + ' · 接收中 0%');
+      try { inc.conn.send({ type: 'ack', fileId: fid }); } catch (e) {  }
+    }).catch(function () {
+      if (!incoming[fid]) return;
+      finishTxItem(fid, false);
+      updateTxProgress(fid, 0, '已取消接收');
+      try { inc.conn.send({ type: 'error', fileId: fid, message: '接收端已取消' }); } catch (e) {  }
+      delete incoming[fid];
+    });
+  }
+
   function finalizeIncoming(fid) {
     var inc = incoming[fid];
     if (!inc) return;
+
+    if (inc.fsWritable) {
+      inc.fsChain.then(function () {
+        return inc.fsWritable.close();
+      }).then(function () {
+        finishFsIncoming(fid);
+      }).catch(function () {
+        finishTxItem(fid, false);
+        updateTxProgress(fid, 0, '寫入磁碟失敗');
+        delete incoming[fid];
+      });
+      return;
+    }
+
     var blob = new Blob([inc.buffer], { type: inc.mime || 'application/octet-stream' });
     var url = URL.createObjectURL(blob);
     addReceivedItem({
@@ -1652,11 +1802,31 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     delete incoming[fid];
   }
 
+  function finishFsIncoming(fid) {
+    var inc = incoming[fid];
+    if (!inc) return;
+    addReceivedItem({
+      name: inc.name,
+      url: '',
+      meta: formatSize(inc.size) + ' · 來自 ' + inc.senderName + ' · 已儲存至磁碟',
+      stored: true
+    });
+    finishTxItem(fid, true);
+    updateTxProgress(fid, 100, '來自 ' + inc.senderName + ' · 儲存完成');
+    toast('已接收並儲存 ' + inc.name + '（來自 ' + inc.senderName + '）', 'good');
+    delete incoming[fid];
+  }
+
   function abortIncomingTransfer(conn) {
     Object.keys(incoming).forEach(function (fid) {
-      if (incoming[fid].conn === conn) {
+      var inc = incoming[fid];
+      if (inc.conn === conn) {
         finishTxItem(fid, false);
         updateTxProgress(fid, 0, '傳送中斷');
+        if (inc.fsWritable) {
+          try { inc.fsWritable.abort(); } catch (e) {  }
+          inc.fsWritable = null;
+        }
         delete incoming[fid];
       }
     });
