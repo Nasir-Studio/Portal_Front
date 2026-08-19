@@ -24,11 +24,13 @@ const backLink = '/#news';
 
     <header class="article-header">
       <h1 class="article-title">{item.title}</h1>
-      <p class="article-meta">公告第 {number} 號 ・ {item.date}</p>
+      <p class="article-meta">公告第 {number} 號 / {item.date}</p>
     </header>
 
     <div class="article-body">
-      <p>{item.content}</p>
+      {item.content.split('\n\n').map((p) => (
+        <p>{p}</p>
+      ))}
     </div>
 
     <div class="article-foot">
