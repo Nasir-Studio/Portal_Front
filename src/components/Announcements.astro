@@ -289,6 +289,10 @@ const techPages = paginatePosts(techPosts);
     font-variant-numeric: tabular-nums;
   }
 
+  .news-page[hidden] {
+    display: none !important;
+  }
+
   @media (max-width: 900px) {
     #news {
       scroll-margin-top: 0;
@@ -345,18 +349,31 @@ const techPages = paginatePosts(techPosts);
     if (techPagesEl) {
       techPagesEl.hidden = false;
       techPagesEl.removeAttribute('hidden');
-      techPagesEl.style.display = 'block';
-      const page0 = techPagesEl.querySelector<HTMLElement>('.news-page[data-page="0"]');
-      if (page0) {
-        page0.hidden = false;
-        page0.removeAttribute('hidden');
-        page0.style.display = 'block';
-      }
+      techPagesEl.style.display = '';
+      const pages = techPagesEl.querySelectorAll<HTMLElement>('.news-page');
+      pages.forEach((p, idx) => {
+        if (idx === 0) {
+          p.hidden = false;
+          p.removeAttribute('hidden');
+          p.style.display = '';
+        } else {
+          p.hidden = true;
+          p.setAttribute('hidden', '');
+          p.style.display = 'none';
+        }
+      });
     }
     if (techPagerEl) {
       techPagerEl.hidden = false;
       techPagerEl.removeAttribute('hidden');
       techPagerEl.style.display = 'flex';
+      const prevBtn = techPagerEl.querySelector<HTMLButtonElement>('.pager-prev');
+      const nextBtn = techPagerEl.querySelector<HTMLButtonElement>('.pager-next');
+      const indicator = techPagerEl.querySelector<HTMLElement>('.pager-indicator');
+      const totalPages = techPagesEl ? techPagesEl.querySelectorAll('.news-page').length : 1;
+      if (prevBtn) prevBtn.disabled = true;
+      if (nextBtn) nextBtn.disabled = totalPages <= 1;
+      if (indicator) indicator.textContent = `1 / ${totalPages}`;
     }
     if (window.closeTechGate) window.closeTechGate();
   }
@@ -406,7 +423,15 @@ const techPages = paginatePosts(techPosts);
     function showPage(page: number) {
       currentPage = page;
       pageEls.forEach((el, i) => {
-        el.hidden = i !== page;
+        if (i === page) {
+          el.hidden = false;
+          el.removeAttribute('hidden');
+          el.style.display = '';
+        } else {
+          el.hidden = true;
+          el.setAttribute('hidden', '');
+          el.style.display = 'none';
+        }
       });
       if (prevBtn) prevBtn.disabled = page === 0;
       if (nextBtn) nextBtn.disabled = page === pageEls.length - 1;
