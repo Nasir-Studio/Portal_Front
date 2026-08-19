@@ -577,7 +577,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
     <div class="page-header">
       <h1>NY WIFI DROP</h1>
-      <p>同一個 Wi-Fi 的使用者自動出現在線上，點擊即可互傳大檔案 — 點對點直連，檔案不經過任何伺服器</p>
+      <p>同一個 Wi-Fi / 手機熱點的使用者自動出現在線上，點擊即可互傳大檔案 — 優先點對點直連，無法直連時自動經中繼轉送</p>
     </div>
 
     <div class="status-bar">
@@ -613,12 +613,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
     <div class="how-note">
       <strong>怎麼運作：</strong>
-      只有連到「同一個 Wi-Fi（同一個區域網路）」的裝置會顯示在線上清單，不同網路的裝置不會出現。
+      只有連到「同一個 Wi-Fi（或同一個手機熱點）」的裝置會顯示在線上清單，不同網路的裝置不會出現。
       手機分享的熱點也算同一個網路（手機本機與連上熱點的裝置可以互見）。
       點擊任一使用者即可選擇檔案傳送，點卡片左上角的
-      <strong>✉</strong> 可傳送文字訊息；檔案透過 WebRTC 在同一 Wi-Fi 內點對點直連傳輸，不會經過網際網路。
+      <strong>✉</strong> 可傳送文字訊息；檔案透過 WebRTC 傳輸，優先點對點直連，無法直連時會自動經中繼伺服器轉送。
       收到檔案會自動下載，文字訊息與可預覽的檔案（圖片／影片／PDF）會嘗試開新分頁，清單上的「⧉ 開啟」隨時可再開啟。
-      若路由器開啟「AP 隔離」或「用戶端隔離」則可能無法互連。建議同一時間只有一個人重新整理頁面。
+      兩台裝置會依各自的「出口 IP」自動分房（狀態列的 房間 xxxxxxxx 需相同才會互見）。
+      若還是看不到對方，請確認兩台裝置連的是同一個網路，並避免同時重新整理頁面。
     </div>
   </div>
 
@@ -651,10 +652,19 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 (function () {
   'use strict';
 
-  var HOST_ID = 'owifi-host';
+  var HOST_ID = '';
+  var roomId = '';
+  var roomPublicIp = '';
+  var hostConnTimer = null;
+  var hostRetryTimer = null;
   var CHUNK_SIZE = 64 * 1024;
   var MAX_BUFFER = 8 * 1024 * 1024;
   var MAX_FILE = 2 * 1024 * 1024 * 1024;
+  var ROOM_IP_ENDPOINTS = [
+    'https://api.ipify.org?format=json',
+    'https://api64.ipify.org?format=json',
+    'https://ipinfo.io/json'
+  ];
 
   var peer = null;
   var isHost = false;
@@ -730,35 +740,61 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
   function isSelf(id) { return id === myPeerId; }
 
-  function sleep(ms) {
-    return new Promise(function (r) { setTimeout(r, ms); });
-  }
-
-  function isPrivateIp(addr) {
-    if (!addr) return false;
-    var a = String(addr);
-    if (a.indexOf('.local') >= 0) return true;
-    if (/^127\./.test(a) || /^10\./.test(a) || /^192\.168\./.test(a)) return true;
-    if (/^172\.(1[6-9]|2\d|3[01])\./.test(a)) return true;
-    if (a === '::1' || /^fe80:/i.test(a) || /^fc/i.test(a) || /^fd/i.test(a)) return true;
-    if (a === '0.0.0.0' || a === '::') return true;
-    return false;
-  }
-
-  function pairIsLan(local, remote, mySrflx) {
-    if (!local || !remote) return false;
-    var lt = local.candidateType || local.type;
-    var rt = remote.candidateType || remote.type;
-    if (lt === 'relay' || rt === 'relay') return false;
-    if (lt === 'host' && rt === 'host') return true;
-    var la = local.address || local.ip;
-    var ra = remote.address || remote.ip;
-    if (la && ra && isPrivateIp(la) && isPrivateIp(ra)) return true;
-    if (la && ra && la === ra) return true;
-    if (mySrflx) {
-      if (la === mySrflx || ra === mySrflx) return true;
+  function hashRoom(ip) {
+    var h = 0x811c9dc5;
+    for (var i = 0; i < ip.length; i++) {
+      h ^= ip.charCodeAt(i);
+      h = (h * 0x01000193) >>> 0;
     }
-    return false;
+    return ('00000000' + h.toString(16)).slice(-8);
+  }
+
+  function fetchJson(url, timeoutMs) {
+    return new Promise(function (resolve, reject) {
+      var ctrl = new AbortController();
+      var t = setTimeout(function () { ctrl.abort(); }, timeoutMs || 5000);
+      fetch(url, { signal: ctrl.signal })
+        .then(function (r) {
+          if (!r.ok) throw new Error('http ' + r.status);
+          return r.json();
+        })
+        .then(function (d) { clearTimeout(t); resolve(d); })
+        .catch(function (e) { clearTimeout(t); reject(e); });
+    });
+  }
+
+  function detectNetwork() {
+    var chain = Promise.resolve(null);
+    ROOM_IP_ENDPOINTS.forEach(function (url) {
+      chain = chain.then(function (ip) {
+        if (ip) return ip;
+        return fetchJson(url).then(function (d) {
+          return (d && typeof d.ip === 'string' && d.ip) ? d.ip : null;
+        }).catch(function () { return null; });
+      });
+    });
+    return chain.then(function (ip) {
+      if (!ip) return null;
+      return { ip: ip, id: hashRoom(ip) };
+    });
+  }
+
+  function logPair(conn, tag) {
+    var pc = conn && conn.peerConnection;
+    if (!pc) return;
+    var tryLog = function () {
+      try {
+        var pair = (typeof pc.getSelectedCandidatePair === 'function') ? pc.getSelectedCandidatePair() : null;
+        if (!pair || !pair.local || !pair.remote) return false;
+        dbgLog(tag, 'OK', {
+          l: (pair.local.candidateType || pair.local.type) + ':' + (pair.local.address || pair.local.ip || '?'),
+          r: (pair.remote.candidateType || pair.remote.type) + ':' + (pair.remote.address || pair.remote.ip || '?')
+        }, pc.iceConnectionState);
+        return true;
+      } catch (e) { return false; }
+    };
+    if (tryLog()) return;
+    setTimeout(tryLog, 1500);
   }
 
   var DBG = (location.hash + location.search).indexOf('dbg') >= 0;
@@ -783,57 +819,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
   if (DBG) {
     window.__owifiDbg = {
-      pairIsLan: pairIsLan,
-      isPrivateIp: isPrivateIp,
-      isLanConnection: isLanConnection
+      hashRoom: hashRoom,
+      detectNetwork: detectNetwork,
+      logPair: logPair,
+      getRoom: function () { return { ip: roomPublicIp, id: roomId, host: HOST_ID }; }
     };
-  }
-
-  async function isLanConnection(conn, tag) {
-    var pc = conn && conn.peerConnection;
-    if (!pc) return false;
-    var mySrflx = null;
-    var lastPair = null;
-    var deadline = Date.now() + 12000;
-    while (Date.now() < deadline) {
-      try {
-        var state = pc.iceConnectionState;
-        if (typeof pc.getSelectedCandidatePair === 'function') {
-          var pair = pc.getSelectedCandidatePair();
-          if (pair && pair.local && pair.remote) {
-            lastPair = {
-              l: (pair.local.candidateType || pair.local.type) + ':' + (pair.local.address || pair.local.ip || '?'),
-              r: (pair.remote.candidateType || pair.remote.type) + ':' + (pair.remote.address || pair.remote.ip || '?')
-            };
-            if (pairIsLan(pair.local, pair.remote, mySrflx)) { dbgLog(tag, 'OK', lastPair, state); return true; }
-            if (state === 'failed' || state === 'disconnected' || state === 'closed') { dbgLog(tag, 'REJECT', lastPair, state); return false; }
-            if ((state === 'connected' || state === 'completed') && Date.now() > deadline - 1200) { dbgLog(tag, 'WAN', lastPair, state); return false; }
-          }
-        }
-        var stats = await pc.getStats();
-        var chosen = null;
-        stats.forEach(function (r) {
-          if (r.type === 'local-candidate' && (r.candidateType === 'srflx' || r.candidateType === 'prflx') && !mySrflx) {
-            mySrflx = r.address || r.ip;
-          }
-          if (r.type === 'candidate-pair' && (r.state === 'succeeded' || r.selected || r.nominated) && !chosen) chosen = r;
-        });
-        if (chosen) {
-          var local = stats.get(chosen.localCandidateId);
-          var remote = stats.get(chosen.remoteCandidateId);
-          lastPair = {
-            l: (local ? (local.candidateType + ':' + (local.address || local.ip || '?')) : '?'),
-            r: (remote ? (remote.candidateType + ':' + (remote.address || remote.ip || '?')) : '?')
-          };
-          if (pairIsLan(local, remote, mySrflx)) { dbgLog(tag, 'OK', lastPair, state); return true; }
-          if (state === 'failed' || state === 'disconnected' || state === 'closed') { dbgLog(tag, 'REJECT', lastPair, state); return false; }
-          if ((state === 'connected' || state === 'completed') && Date.now() > deadline - 1200) { dbgLog(tag, 'WAN', lastPair, state); return false; }
-        }
-      } catch (e) {  }
-      await sleep(150);
-    }
-    dbgLog(tag, 'TIMEOUT', lastPair, pc.iceConnectionState);
-    return false;
   }
 
   function userList() {
@@ -856,9 +846,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     if (list.length === 0) {
       grid.innerHTML = noLan
         ? '<div class="empty-hint"><div class="big">此網路上沒有其他裝置</div>' +
-          '<div>確認你與對方連的是同一個 Wi-Fi（同一台分享器）</div></div>'
+          '<div>確認兩台裝置的房間代碼相同（你的房間：<b>' + escapeHtml(roomId) + '</b>）</div></div>'
         : '<div class="empty-hint"><div class="big">等待其他使用者加入…</div>' +
-          '<div>在另一台裝置（同一 Wi-Fi）開啟此頁面就會出現在這裡</div></div>';
+          '<div>在另一台裝置（同一 Wi-Fi 或同一手機熱點）開啟此頁面就會出現在這裡</div></div>';
       return;
     }
 
@@ -975,11 +965,27 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     if (reconnecting) return;
     reconnecting = true;
     noLan = false;
-    setStatus('busy', '連線中…');
+    setStatus('busy', '正在偵測網路位置…');
     destroyPeer();
     users = {};
     renderUsers();
 
+    detectNetwork().then(function (net) {
+      if (!net) {
+        reconnecting = false;
+        setStatus('busy', '無法取得網路位置（需連上網際網路），3 秒後重試…');
+        setTimeout(bootstrap, 3000);
+        return;
+      }
+      roomPublicIp = net.ip;
+      roomId = net.id;
+      HOST_ID = 'owifi-' + net.id;
+      dbgLog('room', 'OK', null, net.ip);
+      startPeer();
+    });
+  }
+
+  function startPeer() {
     var my = new Peer(HOST_ID, { debug: 1 });
     my.on('open', function (pid) {
       reconnecting = false;
@@ -1019,6 +1025,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         setStatus('busy', '無法連線到 PeerJS 伺服器，3 秒後重試…');
         setTimeout(bootstrap, 3000);
       } else {
+        if (noLan) return;
         m.destroy();
         reconnecting = false;
         setStatus('busy', '連線失敗，重新嘗試…');
@@ -1043,9 +1050,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       self: true
     };
     renderUsers();
-    setStatus('on', '已連線 · 你是房主');
+    setStatus('on', '已連線 · 你是房主 · 房間 ' + roomId);
     $('myName').textContent = myName;
-    toast('你已成為房主，等待其他使用者加入…');
+    toast('你已成為房主（房間 ' + roomId + '），等待其他使用者加入…');
   }
 
   function broadcast(msg, exceptPeerId) {
@@ -1068,6 +1075,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       return;
     }
     if (msg.type !== 'hello') return;
+    if (msg.ip && msg.ip !== roomPublicIp) {
+      dbgLog('hello', 'REJECT', null, 'ip ' + msg.ip + ' != ' + roomPublicIp);
+      try { conn.close(); } catch (e) {  }
+      return;
+    }
     var existed = !!users[pid];
     users[pid] = {
       peerId: pid,
@@ -1113,70 +1125,64 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     $('myName').textContent = myName;
 
     hostConn = peer.connect(HOST_ID, { reliable: true, metadata: { kind: 'presence' } });
+    logPair(hostConn, 'member');
 
-    var hostCheck = isLanConnection(hostConn, 'member');
-    hostCheck.then(function (ok) {
-      if (ok || noLan) return;
-      noLan = true;
-      setStatus('off', '此網路上沒有其他裝置');
-      renderUsers();
-      try { hostConn.close(); } catch (e) {  }
-      scheduleHostRetry();
-    });
+    hostConnTimer = setTimeout(function () {
+      if (hostHandshakeDone || noLan) return;
+      markRoomEmpty();
+    }, 10000);
 
     hostConn.on('open', function () {
-      hostCheck.then(function (ok) {
-        if (!ok || noLan) return;
-        hostRetries = 0;
-        setStatus('on', '已連線到 Wi-Fi Drop');
-        hostConn.send({
-          type: 'hello',
-          peerId: myPeerId,
-          name: myName,
-          device: myDevice.label,
-          icon: myDevice.icon
-        });
-        hostHandshakeDone = true;
+      clearTimeout(hostConnTimer);
+      hostRetries = 0;
+      setStatus('on', '已連線到 Wi-Fi Drop · 房間 ' + roomId);
+      hostConn.send({
+        type: 'hello',
+        peerId: myPeerId,
+        name: myName,
+        device: myDevice.label,
+        icon: myDevice.icon,
+        ip: roomPublicIp
       });
+      hostHandshakeDone = true;
     });
     hostConn.on('data', handleHostMessage);
     hostConn.on('close', function () {
-      handleHostDrop(hostCheck);
+      handleHostDrop();
     });
     hostConn.on('error', function () {
-      handleHostDrop(hostCheck);
+      handleHostDrop();
     });
   }
 
   function scheduleHostRetry() {
-    if (hostRetries >= 2) return;
+    if (hostRetries >= 2 || hostRetryTimer) return;
     hostRetries++;
-    setTimeout(function () {
+    hostRetryTimer = setTimeout(function () {
+      hostRetryTimer = null;
       if (!noLan) return;
       setStatus('busy', '正在重新偵測同一個網路的裝置…');
       bootstrap();
     }, 15000);
   }
 
-  function handleHostDrop(hostCheck) {
+  function markRoomEmpty() {
+    noLan = true;
+    clearTimeout(hostConnTimer);
+    setStatus('off', '此網路上沒有其他裝置');
+    renderUsers();
+    scheduleHostRetry();
+  }
+
+  function handleHostDrop() {
     if (reconnecting || noLan) return;
+    clearTimeout(hostConnTimer);
     if (hostHandshakeDone) {
       setStatus('busy', '房主已離線，重新連線中…');
       bootstrap();
       return;
     }
-    hostCheck.then(function (ok) {
-      if (noLan || hostHandshakeDone) return;
-      if (!ok) {
-        noLan = true;
-        setStatus('off', '此網路上沒有其他裝置');
-        renderUsers();
-        scheduleHostRetry();
-        return;
-      }
-      setStatus('busy', '房主已離線，重新連線中…');
-      bootstrap();
-    });
+    markRoomEmpty();
   }
 
   function handleHostMessage(msg) {
@@ -1219,11 +1225,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
   function handleIncomingConn(conn) {
     var kind = conn.metadata && conn.metadata.kind;
-    var verified = false;
-    var pending = [];
+    logPair(conn, 'incoming');
 
     conn.on('data', function (d) {
-      if (!verified) { pending.push(d); return; }
       routeIncomingData(conn, kind, d);
     });
     conn.on('close', function () {
@@ -1236,17 +1240,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     conn.on('error', function () {
       if (kind === 'presence' && isHost) onMemberLeave(conn.peer);
     });
-
-    isLanConnection(conn, 'incoming').then(function (ok) {
-      if (!ok) {
-        if (kind === 'transfer') abortIncomingTransfer(conn);
-        try { conn.close(); } catch (e) {  }
-        return;
-      }
-      verified = true;
-      pending.forEach(function (d) { routeIncomingData(conn, kind, d); });
-      pending = [];
-    });
   }
 
   function routeIncomingData(conn, kind, d) {
@@ -1258,6 +1251,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   }
 
   function destroyPeer() {
+    clearTimeout(hostConnTimer);
+    clearTimeout(hostRetryTimer);
+    hostConnTimer = null;
+    hostRetryTimer = null;
     if (peer) {
       try { peer.destroy(); } catch (e) {  }
       peer = null;
@@ -1328,14 +1325,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       });
       textSends[tid].conn = conn;
       conn.on('open', function () {
-        isLanConnection(conn, 'text-send').then(function (ok) {
-          if (!ok) { abortTextSend(tid, '對方不在同一個網路'); return; }
-          try {
-            conn.send({ type: 'text', textId: tid, text: text });
-          } catch (e) {
-            abortTextSend(tid, '發送中斷');
-          }
-        });
+        logPair(conn, 'text-send');
+        try {
+          conn.send({ type: 'text', textId: tid, text: text });
+        } catch (e) {
+          abortTextSend(tid, '發送中斷');
+        }
       });
       conn.on('data', function (d) {
         if (d && d.type === 'text-ack' && d.textId === tid) {
@@ -1427,23 +1422,21 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       conn.binaryType = 'arraybuffer';
 
       conn.on('open', function () {
-        isLanConnection(conn, 'file-send').then(function (ok) {
-          if (!ok) { abortOutbound(fid, '對方不在同一個網路'); return; }
-          var chunkCount = Math.ceil(file.size / CHUNK_SIZE);
-          try {
-            conn.send({
-              type: 'meta',
-              fileId: fid,
-              name: file.name,
-              size: file.size,
-              mime: file.type || 'application/octet-stream',
-              chunkCount: chunkCount,
-              chunkSize: CHUNK_SIZE
-            });
-          } catch (e) {
-            abortOutbound(fid, '發送中斷');
-          }
-        });
+        logPair(conn, 'file-send');
+        var chunkCount = Math.ceil(file.size / CHUNK_SIZE);
+        try {
+          conn.send({
+            type: 'meta',
+            fileId: fid,
+            name: file.name,
+            size: file.size,
+            mime: file.type || 'application/octet-stream',
+            chunkCount: chunkCount,
+            chunkSize: CHUNK_SIZE
+          });
+        } catch (e) {
+          abortOutbound(fid, '發送中斷');
+        }
       });
       conn.on('data', function (d) {
         if (!d || !d.type) return;
