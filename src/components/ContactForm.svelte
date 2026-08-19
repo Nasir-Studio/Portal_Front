@@ -46,8 +46,23 @@
 <div class="contact-form-wrap">
   {#if status === 'success'}
     <div class="contact-feedback is-success">
+      <div class="success-icon-wrap" aria-hidden="true">
+        <svg
+          class="mail-icon"
+          viewBox="0 0 24 24"
+          width="28"
+          height="28"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.8"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <rect x="2" y="4" width="20" height="16" rx="2" />
+          <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+        </svg>
+      </div>
       <p class="feedback-title">訊息已成功送出</p>
-      <p class="feedback-desc">感謝您的聯繫，我們會盡快回覆您！</p>
     </div>
   {:else if status === 'error'}
     <div class="contact-feedback is-error">
@@ -197,11 +212,50 @@
     border: 1px solid var(--border);
   }
 
+  .contact-feedback.is-success {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.7rem;
+    padding: 1.8rem 1rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    animation: success-pop 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  @keyframes success-pop {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .success-icon-wrap {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink);
+  }
+
+  .mail-icon {
+    display: block;
+  }
+
   .feedback-title {
     font-size: 0.88rem;
     font-weight: 600;
     color: var(--ink);
-    margin: 0 0 0.25rem 0;
+    margin: 0;
     letter-spacing: 0.05em;
   }
 
