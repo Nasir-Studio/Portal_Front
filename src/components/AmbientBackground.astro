@@ -2,20 +2,92 @@
 ---
 
 <div class="ambient-bg" aria-hidden="true">
-  <!-- 柔和呼吸流動光暈 (故事感氛圍) -->
+  <!-- 柔和呼吸流動光暈 -->
   <div class="ambient-orb orb-1"></div>
   <div class="ambient-orb orb-2"></div>
   <div class="ambient-orb orb-3"></div>
 
-  <!-- 手稿幾何微點座標格網 (日記本質感) -->
+  <!-- 手稿幾何微點座標格網 -->
   <div class="ambient-grid"></div>
 
-  <!-- 漂浮微光星塵粒子 -->
+  <!-- 🌌 牡羊座與天文星盤 SVG 藝術手稿 (慢速旋轉) -->
+  <div class="celestial-wrap celestial-top-right">
+    <svg class="celestial-astrolabe" viewBox="0 0 500 500" width="460" height="460" fill="none">
+      <!-- 外部同心軌道環 -->
+      <circle cx="250" cy="250" r="230" stroke="#1c1c1c" stroke-width="1" stroke-dasharray="4 8" opacity="0.18" />
+      <circle cx="250" cy="250" r="190" stroke="#deb86d" stroke-width="1" stroke-dasharray="2 6" opacity="0.3" />
+      <circle cx="250" cy="250" r="140" stroke="#1c1c1c" stroke-width="1" opacity="0.12" />
+      <circle cx="250" cy="250" r="90" stroke="#deb86d" stroke-width="1.2" stroke-dasharray="6 4" opacity="0.35" />
+
+      <!-- 經緯十字軸線 -->
+      <line x1="250" y1="10" x2="250" y2="490" stroke="#1c1c1c" stroke-width="0.8" stroke-dasharray="3 3" opacity="0.15" />
+      <line x1="10" y1="250" x2="490" y2="250" stroke="#1c1c1c" stroke-width="0.8" stroke-dasharray="3 3" opacity="0.15" />
+
+      <!-- 牡羊星座 (Ovis / Aries) 連線 -->
+      <g class="constellation-aries" stroke="#deb86d" stroke-width="1.5" opacity="0.65">
+        <line x1="160" y1="210" x2="230" y2="225" />
+        <line x1="230" y1="225" x2="310" y2="270" />
+        <line x1="310" y1="270" x2="345" y2="295" />
+
+        <!-- 主星群星芒 -->
+        <circle cx="160" cy="210" r="3.5" fill="#deb86d" />
+        <circle cx="230" cy="225" r="4.5" fill="#deb86d" />
+        <circle cx="310" cy="270" r="3" fill="#deb86d" />
+        <circle cx="345" cy="295" r="2.5" fill="#deb86d" />
+
+        <!-- 星星微光外環 -->
+        <circle cx="230" cy="225" r="9" stroke="#deb86d" stroke-width="0.8" stroke-dasharray="2 2" />
+      </g>
+
+      <!-- 幾何刻度標記 -->
+      <text x="250" y="32" font-size="9" fill="#1c1c1c" opacity="0.3" text-anchor="middle" font-family="monospace">N 00°</text>
+      <text x="468" y="253" font-size="9" fill="#1c1c1c" opacity="0.3" text-anchor="middle" font-family="monospace">E 90°</text>
+      <text x="250" y="475" font-size="9" fill="#1c1c1c" opacity="0.3" text-anchor="middle" font-family="monospace">S 180°</text>
+      <text x="32" y="253" font-size="9" fill="#1c1c1c" opacity="0.3" text-anchor="middle" font-family="monospace">W 270°</text>
+    </svg>
+  </div>
+
+  <!-- 幾何座標標籤 (手稿紀錄感) -->
+  <div class="blueprint-tag tag-left">
+    <span>LAT 25°02' N // LONG 121°31' E</span>
+    <span class="tag-sub">TAIPEI // CHRONICLE REPO</span>
+  </div>
+
+  <!-- 💎 慢速旋轉 3D 純 CSS 幾何多面體水晶 (GPU 加速) -->
+  <div class="poly-3d-scene scene-1">
+    <div class="poly-octahedron">
+      <div class="face f1"></div>
+      <div class="face f2"></div>
+      <div class="face f3"></div>
+      <div class="face f4"></div>
+      <div class="face f5"></div>
+      <div class="face f6"></div>
+      <div class="face f7"></div>
+      <div class="face f8"></div>
+    </div>
+  </div>
+
+  <div class="poly-3d-scene scene-2">
+    <div class="poly-octahedron poly-small">
+      <div class="face f1"></div>
+      <div class="face f2"></div>
+      <div class="face f3"></div>
+      <div class="face f4"></div>
+      <div class="face f5"></div>
+      <div class="face f6"></div>
+      <div class="face f7"></div>
+      <div class="face f8"></div>
+    </div>
+  </div>
+
+  <!-- 漂浮星芒與星塵 -->
+  <div class="sparkle sparkle-1">✦</div>
+  <div class="sparkle sparkle-2">✦</div>
+  <div class="sparkle sparkle-3">✦</div>
   <div class="ambient-dust dust-1"></div>
   <div class="ambient-dust dust-2"></div>
   <div class="ambient-dust dust-3"></div>
   <div class="ambient-dust dust-4"></div>
-  <div class="ambient-dust dust-5"></div>
 </div>
 
 <style>
@@ -31,8 +103,8 @@
   .ambient-orb {
     position: absolute;
     border-radius: 50%;
-    filter: blur(70px);
-    opacity: 0.6;
+    filter: blur(75px);
+    opacity: 0.55;
     will-change: transform;
   }
 
@@ -43,7 +115,7 @@
     height: 55vw;
     max-width: 680px;
     max-height: 680px;
-    background: radial-gradient(circle, rgba(243, 228, 196, 0.55) 0%, rgba(243, 228, 196, 0) 70%);
+    background: radial-gradient(circle, rgba(243, 228, 196, 0.52) 0%, rgba(243, 228, 196, 0) 70%);
     animation: drift-1 26s ease-in-out infinite alternate;
   }
 
@@ -54,7 +126,7 @@
     height: 60vw;
     max-width: 720px;
     max-height: 720px;
-    background: radial-gradient(circle, rgba(218, 229, 244, 0.52) 0%, rgba(218, 229, 244, 0) 70%);
+    background: radial-gradient(circle, rgba(218, 229, 244, 0.48) 0%, rgba(218, 229, 244, 0) 70%);
     animation: drift-2 32s ease-in-out infinite alternate;
   }
 
@@ -65,47 +137,26 @@
     height: 45vw;
     max-width: 550px;
     max-height: 550px;
-    background: radial-gradient(circle, rgba(245, 234, 226, 0.48) 0%, rgba(245, 234, 226, 0) 70%);
+    background: radial-gradient(circle, rgba(245, 234, 226, 0.45) 0%, rgba(245, 234, 226, 0) 70%);
     animation: drift-3 22s ease-in-out infinite alternate;
   }
 
   @keyframes drift-1 {
-    0% {
-      transform: translate3d(0, 0, 0) scale(1);
-    }
-    50% {
-      transform: translate3d(8vw, 12vh, 0) scale(1.15);
-    }
-    100% {
-      transform: translate3d(14vw, 4vh, 0) scale(0.95);
-    }
+    0% { transform: translate3d(0, 0, 0) scale(1); }
+    50% { transform: translate3d(8vw, 12vh, 0) scale(1.15); }
+    100% { transform: translate3d(14vw, 4vh, 0) scale(0.95); }
   }
 
   @keyframes drift-2 {
-    0% {
-      transform: translate3d(0, 0, 0) scale(1);
-    }
-    50% {
-      transform: translate3d(-10vw, -14vh, 0) scale(1.12);
-    }
-    100% {
-      transform: translate3d(-16vw, -6vh, 0) scale(0.9);
-    }
+    0% { transform: translate3d(0, 0, 0) scale(1); }
+    50% { transform: translate3d(-10vw, -14vh, 0) scale(1.12); }
+    100% { transform: translate3d(-16vw, -6vh, 0) scale(0.9); }
   }
 
   @keyframes drift-3 {
-    0% {
-      transform: translate3d(0, 0, 0) scale(0.95);
-      opacity: 0.35;
-    }
-    50% {
-      transform: translate3d(-8vw, 10vh, 0) scale(1.1);
-      opacity: 0.6;
-    }
-    100% {
-      transform: translate3d(6vw, -8vh, 0) scale(1);
-      opacity: 0.4;
-    }
+    0% { transform: translate3d(0, 0, 0) scale(0.95); opacity: 0.35; }
+    50% { transform: translate3d(-8vw, 10vh, 0) scale(1.1); opacity: 0.6; }
+    100% { transform: translate3d(6vw, -8vh, 0) scale(1); opacity: 0.4; }
   }
 
   .ambient-grid {
@@ -116,6 +167,156 @@
     mask-image: radial-gradient(ellipse at 50% 50%, black 40%, transparent 95%);
     -webkit-mask-image: radial-gradient(ellipse at 50% 50%, black 40%, transparent 95%);
     opacity: 0.85;
+  }
+
+  /* 🌌 天文星盤與牡羊座 */
+  .celestial-wrap {
+    position: absolute;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .celestial-top-right {
+    top: 3%;
+    right: -80px;
+    opacity: 0.75;
+  }
+
+  .celestial-astrolabe {
+    display: block;
+    animation: rotate-astrolabe 160s linear infinite;
+    transform-origin: center center;
+  }
+
+  @keyframes rotate-astrolabe {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  /* 📐 經緯座標標籤 */
+  .blueprint-tag {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    font-family: monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.16em;
+    color: var(--ink-3);
+    opacity: 0.55;
+  }
+
+  .blueprint-tag.tag-left {
+    bottom: 4%;
+    left: 2.5%;
+  }
+
+  .tag-sub {
+    font-size: 0.55rem;
+    color: #deb86d;
+    font-weight: 600;
+  }
+
+  /* 💎 3D 正八面體水晶 (純 CSS 3D 渲染，0% CPU 負荷) */
+  .poly-3d-scene {
+    position: absolute;
+    perspective: 800px;
+    width: 60px;
+    height: 60px;
+  }
+
+  .scene-1 {
+    top: 28%;
+    left: 4%;
+    opacity: 0.55;
+    animation: float-poly-1 18s ease-in-out infinite alternate;
+  }
+
+  .scene-2 {
+    bottom: 22%;
+    right: 5%;
+    opacity: 0.45;
+    animation: float-poly-2 24s ease-in-out infinite alternate;
+  }
+
+  .poly-octahedron {
+    width: 60px;
+    height: 60px;
+    position: relative;
+    transform-style: preserve-3d;
+    animation: spin-poly 20s linear infinite;
+  }
+
+  .poly-small {
+    transform: scale(0.65);
+    animation: spin-poly 28s linear infinite reverse;
+  }
+
+  @keyframes spin-poly {
+    0% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
+    100% { transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg); }
+  }
+
+  @keyframes float-poly-1 {
+    0% { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(20px, 35px, 0); }
+  }
+
+  @keyframes float-poly-2 {
+    0% { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(-25px, -40px, 0); }
+  }
+
+  .face {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 22px solid transparent;
+    border-right: 22px solid transparent;
+    border-bottom: 38px solid rgba(222, 184, 109, 0.18);
+    transform-origin: 50% 100%;
+    filter: drop-shadow(0 0 1px rgba(28, 28, 28, 0.2));
+  }
+
+  .face::after {
+    content: '';
+    position: absolute;
+    left: -22px;
+    top: 0;
+    width: 0;
+    height: 0;
+    border-left: 22px solid transparent;
+    border-right: 22px solid transparent;
+    border-bottom: 38px solid transparent;
+    border-bottom-color: rgba(28, 28, 28, 0.08);
+  }
+
+  .f1 { transform: rotateY(0deg) translateZ(18px) rotateX(35deg); }
+  .f2 { transform: rotateY(90deg) translateZ(18px) rotateX(35deg); }
+  .f3 { transform: rotateY(180deg) translateZ(18px) rotateX(35deg); }
+  .f4 { transform: rotateY(270deg) translateZ(18px) rotateX(35deg); }
+  .f5 { transform: rotateY(0deg) translateZ(18px) rotateX(-35deg) scaleY(-1); }
+  .f6 { transform: rotateY(90deg) translateZ(18px) rotateX(-35deg) scaleY(-1); }
+  .f7 { transform: rotateY(180deg) translateZ(18px) rotateX(-35deg) scaleY(-1); }
+  .f8 { transform: rotateY(270deg) translateZ(18px) rotateX(-35deg) scaleY(-1); }
+
+  /* ✨ 閃爍星芒 */
+  .sparkle {
+    position: absolute;
+    color: #deb86d;
+    font-size: 13px;
+    line-height: 1;
+    opacity: 0;
+    animation: twinkle 6s ease-in-out infinite;
+  }
+
+  .sparkle-1 { top: 18%; left: 8%; animation-delay: 0s; }
+  .sparkle-2 { top: 68%; left: 88%; animation-delay: 2.5s; }
+  .sparkle-3 { top: 82%; left: 18%; animation-delay: 4.2s; }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0; transform: scale(0.6) rotate(0deg); }
+    50% { opacity: 0.75; transform: scale(1.15) rotate(45deg); }
   }
 
   /* 漂浮星塵 */
@@ -130,56 +331,36 @@
     will-change: transform, opacity;
   }
 
-  .dust-1 {
-    top: 20%;
-    left: 15%;
-    animation: float-dust 14s ease-in-out infinite 0s;
-  }
-
-  .dust-2 {
-    top: 60%;
-    left: 80%;
-    animation: float-dust 18s ease-in-out infinite 3s;
-  }
-
-  .dust-3 {
-    top: 75%;
-    left: 25%;
-    animation: float-dust 16s ease-in-out infinite 6s;
-  }
-
-  .dust-4 {
-    top: 35%;
-    left: 70%;
-    animation: float-dust 20s ease-in-out infinite 9s;
-  }
-
-  .dust-5 {
-    top: 85%;
-    left: 55%;
-    animation: float-dust 15s ease-in-out infinite 1.5s;
-  }
+  .dust-1 { top: 20%; left: 15%; animation: float-dust 14s ease-in-out infinite 0s; }
+  .dust-2 { top: 60%; left: 80%; animation: float-dust 18s ease-in-out infinite 3s; }
+  .dust-3 { top: 75%; left: 25%; animation: float-dust 16s ease-in-out infinite 6s; }
+  .dust-4 { top: 35%; left: 70%; animation: float-dust 20s ease-in-out infinite 9s; }
 
   @keyframes float-dust {
-    0% {
-      transform: translate3d(0, 20px, 0) scale(0.6);
-      opacity: 0;
+    0% { transform: translate3d(0, 20px, 0) scale(0.6); opacity: 0; }
+    30% { opacity: 0.75; }
+    70% { opacity: 0.6; }
+    100% { transform: translate3d(-20px, -60px, 0) scale(1); opacity: 0; }
+  }
+
+  @media (max-width: 768px) {
+    .celestial-top-right {
+      right: -140px;
+      top: 1%;
+      opacity: 0.45;
     }
-    30% {
-      opacity: 0.75;
-    }
-    70% {
-      opacity: 0.6;
-    }
-    100% {
-      transform: translate3d(-20px, -60px, 0) scale(1);
-      opacity: 0;
+    .poly-3d-scene {
+      display: none;
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
     .ambient-orb,
-    .ambient-dust {
+    .ambient-dust,
+    .celestial-astrolabe,
+    .poly-octahedron,
+    .poly-3d-scene,
+    .sparkle {
       animation: none !important;
     }
   }
