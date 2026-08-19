@@ -73,7 +73,7 @@
           <div class="header-avatar">
             <img src="/favicon.png" alt="OviNas" width="18" height="18" />
           </div>
-          <div class="header-title">OviNas</div>
+          <div class="header-title">聯絡表單</div>
         </div>
         <button
           class="contact-close-btn"
