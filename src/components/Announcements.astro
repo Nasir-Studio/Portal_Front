@@ -1,6 +1,7 @@
 ---
 import announcements from '../data/announcements';
 import posts, { type Post } from '../data/posts';
+import TechGate from './TechGate.astro';
 
 const POSTS_PER_PAGE = 5;
 
@@ -131,6 +132,8 @@ const techPages = paginatePosts(techPosts);
     }
   </div>
 </section>
+
+<TechGate />
 
 <style>
   #news {
@@ -315,7 +318,23 @@ const techPages = paginatePosts(techPosts);
   }
 
   tabs.forEach((tab) => {
-    tab.addEventListener('click', () => activate(tab));
+    tab.addEventListener('click', () => {
+      // 技術文章 tab：需先通過閘門（登入 + 假付款）
+      if (tab.id === 'tab-tech') {
+        const unlocked = localStorage.getItem('ovinas-tech-unlocked') === '1';
+        if (!unlocked) {
+          window.openTechGate();
+          return;
+        }
+      }
+      activate(tab);
+    });
+  });
+
+  // 閘門通過後自動展開技術文章面板
+  window.addEventListener('tech-gate:unlocked', () => {
+    const techTab = document.getElementById('tab-tech') as HTMLButtonElement;
+    if (techTab) activate(techTab);
   });
 
   // 分頁（每頁 5 篇）——每個有 .news-pager 的 panel 各自獨立分頁
