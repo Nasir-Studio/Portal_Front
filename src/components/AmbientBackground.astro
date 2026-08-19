@@ -2,105 +2,127 @@
 ---
 
 <div class="ambient-bg" aria-hidden="true">
-  <!-- 📜 復古手稿細緻點陣 (Vintage Halftone / Drafting Matrix) -->
+  <!-- 📜 古典手稿紙質點陣 (Classical Halftone Matrix) -->
   <div class="ambient-grid"></div>
 
-  <!-- 🖋️ 復古深色古典銅版畫與等高線波紋 (Vintage Dark Engraving Waves) -->
-  <div class="engraving-wrap wrap-top">
-    <svg class="engraving-svg wave-1" viewBox="0 0 1440 380" fill="none">
+  <!-- 🏛️ 希臘羅馬古典柱式與拱門手稿 (Greco-Roman Architectural Engraving) -->
+  <div class="arch-monument arch-left">
+    <svg viewBox="0 0 320 480" width="280" height="420" fill="none">
+      <!-- 羅馬凱旋拱門外輪廓 (Roman Arch) -->
       <path
-        d="M-50 160 C 260 280, 520 40, 890 170 C 1190 270, 1370 80, 1510 190"
+        d="M30 460 L30 180 C30 90, 130 30, 160 30 C190 30, 290 90, 290 180 L290 460"
         stroke="#1c1c1c"
-        stroke-width="1.8"
-        opacity="0.35"
-      />
-      <path
-        d="M-50 180 C 260 300, 520 60, 890 190 C 1190 290, 1370 100, 1510 210"
-        stroke="#1c1c1c"
-        stroke-width="1.2"
-        stroke-dasharray="6 6"
-        opacity="0.25"
-      />
-      <path
-        d="M-50 200 C 260 320, 520 80, 890 210 C 1190 310, 1370 120, 1510 230"
-        stroke="#3d332a"
-        stroke-width="1.4"
-        opacity="0.28"
-      />
-      <path
-        d="M-50 220 C 260 340, 520 100, 890 230 C 1190 330, 1370 140, 1510 250"
-        stroke="#1c1c1c"
-        stroke-width="0.8"
-        stroke-dasharray="2 4"
-        opacity="0.2"
-      />
-    </svg>
-  </div>
-
-  <div class="engraving-wrap wrap-bottom">
-    <svg class="engraving-svg wave-2" viewBox="0 0 1440 380" fill="none">
-      <path
-        d="M-40 220 C 310 90, 620 310, 960 170 C 1260 50, 1390 260, 1500 140"
-        stroke="#1c1c1c"
-        stroke-width="1.8"
+        stroke-width="1.6"
         opacity="0.32"
       />
+      <!-- 內拱線 (Inner Arch) -->
       <path
-        d="M-40 200 C 310 70, 620 290, 960 150 C 1260 30, 1390 240, 1500 120"
-        stroke="#3d332a"
+        d="M60 460 L60 200 C60 120, 130 70, 160 70 C190 70, 260 120, 260 200 L260 460"
+        stroke="#4a3728"
+        stroke-width="1.2"
+        stroke-dasharray="4 6"
+        opacity="0.25"
+      />
+      <!-- 拱心石 (Keystone) -->
+      <path d="M150 18 L170 18 L165 42 L155 42 Z" stroke="#1c1c1c" stroke-width="1.4" fill="none" opacity="0.35" />
+
+      <!-- 愛奧尼亞古典柱頭渦卷 (Ionic Volutes) -->
+      <g stroke="#1c1c1c" stroke-width="1.2" opacity="0.38">
+        <!-- 左柱頭渦卷 -->
+        <circle cx="45" cy="180" r="14" stroke-dasharray="2 3" />
+        <circle cx="45" cy="180" r="7" />
+        <line x1="30" y1="180" x2="60" y2="180" stroke-width="1.8" />
+
+        <!-- 右柱頭渦卷 -->
+        <circle cx="275" cy="180" r="14" stroke-dasharray="2 3" />
+        <circle cx="275" cy="180" r="7" />
+        <line x1="260" y1="180" x2="290" y2="180" stroke-width="1.8" />
+      </g>
+
+      <!-- 柱身凹槽直紋 (Fluted Columns) -->
+      <g stroke="#1c1c1c" stroke-width="0.8" opacity="0.2">
+        <line x1="38" y1="200" x2="38" y2="450" />
+        <line x1="45" y1="200" x2="45" y2="450" stroke-dasharray="3 3" />
+        <line x1="52" y1="200" x2="52" y2="450" />
+
+        <line x1="268" y1="200" x2="268" y2="450" />
+        <line x1="275" y1="200" x2="275" y2="450" stroke-dasharray="3 3" />
+        <line x1="282" y1="200" x2="282" y2="450" />
+      </g>
+    </svg>
+  </div>
+
+  <!-- 🌿 巴洛克茛苕葉與洛可可藤蔓雕花 (Baroque Acanthus Ornament - Top Right) -->
+  <div class="baroque-ornament ornament-tr">
+    <svg viewBox="0 0 340 340" width="300" height="300" fill="none">
+      <!-- 主藤蔓旋渦曲線 -->
+      <path
+        d="M330 10 C 230 10, 140 80, 110 170 C 85 240, 110 310, 180 325 C 240 340, 310 280, 310 220 C 310 160, 240 130, 190 150 C 155 165, 145 200, 165 225 C 185 245, 215 235, 220 215"
+        stroke="#1c1c1c"
+        stroke-width="1.6"
+        opacity="0.38"
+      />
+      <!-- 內層輔助葉紋 -->
+      <path
+        d="M310 30 C 240 40, 170 100, 140 170 C 120 220, 140 280, 190 295"
+        stroke="#4a3728"
         stroke-width="1.2"
         stroke-dasharray="5 5"
-        opacity="0.24"
+        opacity="0.28"
       />
+      <!-- 茛苕葉展開花瓣 -->
+      <path d="M120 140 C 90 120, 70 80, 100 50 C 115 70, 130 110, 120 140 Z" stroke="#1c1c1c" stroke-width="1" opacity="0.3" />
+      <path d="M90 210 C 50 200, 30 160, 55 130 C 75 150, 85 185, 90 210 Z" stroke="#1c1c1c" stroke-width="1" opacity="0.3" />
+      <path d="M150 290 C 130 325, 85 330, 70 300 C 95 285, 125 280, 150 290 Z" stroke="#1c1c1c" stroke-width="1" opacity="0.25" />
+
+      <!-- 雕花裝飾珠點 -->
+      <circle cx="220" cy="215" r="3.5" fill="#1c1c1c" opacity="0.5" />
+      <circle cx="330" cy="10" r="4.5" fill="#4a3728" opacity="0.6" />
+      <circle cx="100" cy="50" r="3" fill="#1c1c1c" opacity="0.4" />
+      <circle cx="55" cy="130" r="3" fill="#1c1c1c" opacity="0.4" />
+    </svg>
+  </div>
+
+  <!-- 🏛️ 希臘回紋飾帶 (Greek Meander Frieze) -->
+  <div class="frieze-wrap frieze-top">
+    <svg class="greek-frieze" viewBox="0 0 1200 40" fill="none">
       <path
-        d="M-40 180 C 310 50, 620 270, 960 130 C 1260 10, 1390 220, 1500 100"
+        d="M0 20 H30 V5 H15 V12 H22 M30 20 H60 V5 H45 V12 H52 M60 20 H90 V5 H75 V12 H82 M90 20 H120 V5 H105 V12 H112 M120 20 H150 V5 H135 V12 H142 M150 20 H180 V5 H165 V12 H172 M180 20 H210 V5 H195 V12 H202 M210 20 H240 V5 H225 V12 H232 M240 20 H270 V5 H255 V12 H262 M270 20 H300 V5 H285 V12 H292 M300 20 H330 V5 H315 V12 H322 M330 20 H360 V5 H345 V12 H352 M360 20 H390 V5 H375 V12 H382 M390 20 H420 V5 H405 V12 H412 M420 20 H450 V5 H435 V12 H442 M450 20 H480 V5 H465 V12 H472 M480 20 H510 V5 H495 V12 H502 M510 20 H540 V5 H525 V12 H532 M540 20 H570 V5 H555 V12 H562 M570 20 H600 V5 H585 V12 H592 M600 20 H630 V5 H615 V12 H622 M630 20 H660 V5 H645 V12 H652 M660 20 H690 V5 H675 V12 H682 M690 20 H720 V5 H705 V12 H712 M720 20 H750 V5 H735 V12 H742 M750 20 H780 V5 H765 V12 H772 M780 20 H810 V5 H795 V12 H802 M810 20 H840 V5 H825 V12 H832 M840 20 H870 V5 H855 V12 H862 M870 20 H900 V5 H885 V12 H892 M900 20 H930 V5 H915 V12 H922 M930 20 H960 V5 H945 V12 H952 M960 20 H990 V5 H975 V12 H982 M990 20 H1020 V5 H1005 V12 H1012 M1020 20 H1050 V5 H1035 V12 H1042 M1050 20 H1080 V5 H1065 V12 H1072 M1080 20 H1110 V5 H1095 V12 H1102 M1110 20 H1140 V5 H1125 V12 H1132 M1140 20 H1170 V5 H1155 V12 H1162 M1170 20 H1200"
         stroke="#1c1c1c"
-        stroke-width="1.4"
-        opacity="0.26"
+        stroke-width="1.2"
+        opacity="0.22"
       />
     </svg>
   </div>
 
-  <!-- 🧭 復古古典對位印刷圓環與羅盤刻度 (Vintage Register & Compass Art) -->
-  <div class="vintage-glyph glyph-right">
-    <svg viewBox="0 0 240 240" width="220" height="220" fill="none">
-      <!-- 外部刻度環 -->
-      <circle cx="120" cy="120" r="105" stroke="#1c1c1c" stroke-width="1.5" stroke-dasharray="4 8" opacity="0.4" />
-      <circle cx="120" cy="120" r="90" stroke="#3d332a" stroke-width="1.2" opacity="0.3" />
-      <circle cx="120" cy="120" r="70" stroke="#1c1c1c" stroke-width="1" stroke-dasharray="8 4" opacity="0.25" />
+  <!-- 🌿 文藝復興古典月桂冠勳章 (Renaissance Laurel Medallion) -->
+  <div class="laurel-medallion medallion-br">
+    <svg viewBox="0 0 200 200" width="170" height="170" fill="none">
+      <!-- 外同心環 -->
+      <circle cx="100" cy="100" r="90" stroke="#1c1c1c" stroke-width="1.4" stroke-dasharray="3 5" opacity="0.32" />
+      <circle cx="100" cy="100" r="78" stroke="#4a3728" stroke-width="1" opacity="0.25" />
 
-      <!-- 十字對位標線 -->
-      <line x1="120" y1="5" x2="120" y2="235" stroke="#1c1c1c" stroke-width="1" stroke-dasharray="4 4" opacity="0.35" />
-      <line x1="5" y1="120" x2="235" y2="120" stroke="#1c1c1c" stroke-width="1" stroke-dasharray="4 4" opacity="0.35" />
+      <!-- 左側月桂葉 -->
+      <path d="M98 160 C 50 150, 30 110, 45 60 C 50 85, 70 120, 98 140" stroke="#1c1c1c" stroke-width="1.4" opacity="0.35" />
+      <circle cx="45" cy="75" r="4" stroke="#1c1c1c" stroke-width="1" opacity="0.3" />
+      <circle cx="38" cy="105" r="4" stroke="#1c1c1c" stroke-width="1" opacity="0.3" />
+      <circle cx="48" cy="135" r="4" stroke="#1c1c1c" stroke-width="1" opacity="0.3" />
 
-      <!-- 復古核心圓點 -->
-      <circle cx="120" cy="120" r="5" fill="#1c1c1c" opacity="0.6" />
-      <circle cx="120" cy="15" r="3.5" fill="#1c1c1c" opacity="0.5" />
-      <circle cx="225" cy="120" r="3.5" fill="#1c1c1c" opacity="0.5" />
-      <circle cx="120" cy="225" r="3.5" fill="#1c1c1c" opacity="0.5" />
-      <circle cx="15" cy="120" r="3.5" fill="#1c1c1c" opacity="0.5" />
+      <!-- 右側月桂葉 -->
+      <path d="M102 160 C 150 150, 170 110, 155 60 C 150 85, 130 120, 102 140" stroke="#1c1c1c" stroke-width="1.4" opacity="0.35" />
+      <circle cx="155" cy="75" r="4" stroke="#1c1c1c" stroke-width="1" opacity="0.3" />
+      <circle cx="162" cy="105" r="4" stroke="#1c1c1c" stroke-width="1" opacity="0.3" />
+      <circle cx="152" cy="135" r="4" stroke="#1c1c1c" stroke-width="1" opacity="0.3" />
+
+      <!-- 中心巴洛克八角星芒 -->
+      <path d="M100 65 L104 92 L130 96 L104 100 L100 127 L96 100 L70 96 L96 92 Z" stroke="#4a3728" stroke-width="1.2" fill="none" opacity="0.45" />
     </svg>
   </div>
 
-  <div class="vintage-glyph glyph-left">
-    <svg viewBox="0 0 180 180" width="160" height="160" fill="none">
-      <circle cx="90" cy="90" r="75" stroke="#1c1c1c" stroke-width="1.4" stroke-dasharray="6 6" opacity="0.32" />
-      <circle cx="90" cy="90" r="50" stroke="#3d332a" stroke-width="1" opacity="0.22" />
-      <circle cx="90" cy="90" r="28" stroke="#1c1c1c" stroke-width="1.2" stroke-dasharray="2 4" opacity="0.35" />
-      <circle cx="90" cy="90" r="4" fill="#1c1c1c" opacity="0.5" />
-    </svg>
-  </div>
-
-  <!-- ⌜ ⌝ 四周古典直角對位角標 (Corner Registration Marks) -->
-  <div class="corner-mark top-left"></div>
-  <div class="corner-mark top-right"></div>
-  <div class="corner-mark bottom-left"></div>
-  <div class="corner-mark bottom-right"></div>
-
-  <!-- ❖ 深色復古菱形印記漂浮 (Vintage Diamond Floats) -->
-  <div class="diamond-drift d1">❖</div>
-  <div class="diamond-drift d2">❖</div>
-  <div class="diamond-drift d3">❖</div>
+  <!-- ❖ 深色文藝復興幾何標記漂浮 -->
+  <div class="baroque-dust b1">✦</div>
+  <div class="baroque-dust b2">❖</div>
+  <div class="baroque-dust b3">✦</div>
 </div>
 
 <style>
@@ -113,19 +135,57 @@
     background: #ffffff;
   }
 
-  /* 手稿點陣 */
+  /* 古典手稿紙質點陣 */
   .ambient-grid {
     position: absolute;
     inset: 0;
     background-image: radial-gradient(rgba(28, 28, 28, 0.08) 1.2px, transparent 1.2px);
-    background-size: 24px 24px;
+    background-size: 26px 26px;
     mask-image: radial-gradient(ellipse at 50% 50%, black 50%, transparent 95%);
     -webkit-mask-image: radial-gradient(ellipse at 50% 50%, black 50%, transparent 95%);
     opacity: 0.85;
   }
 
-  /* 🖋️ 復古銅版畫波紋 */
-  .engraving-wrap {
+  /* 🏛️ 希臘羅馬古典拱門與柱式 */
+  .arch-monument {
+    position: absolute;
+    pointer-events: none;
+    will-change: transform;
+  }
+
+  .arch-left {
+    bottom: -30px;
+    left: -20px;
+    opacity: 0.85;
+    animation: float-arch 24s ease-in-out infinite alternate;
+  }
+
+  @keyframes float-arch {
+    0% { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(15px, -20px, 0); }
+  }
+
+  /* 🌿 巴洛克茛苕葉雕花 (右上角) */
+  .baroque-ornament {
+    position: absolute;
+    pointer-events: none;
+    will-change: transform;
+  }
+
+  .ornament-tr {
+    top: -30px;
+    right: -30px;
+    opacity: 0.9;
+    animation: float-ornament 28s ease-in-out infinite alternate;
+  }
+
+  @keyframes float-ornament {
+    0% { transform: translate3d(0, 0, 0) rotate(0deg); }
+    100% { transform: translate3d(-18px, 15px, 0) rotate(4deg); }
+  }
+
+  /* 🏛️ 希臘回紋飾帶 */
+  .frieze-wrap {
     position: absolute;
     left: 0;
     right: 0;
@@ -133,149 +193,75 @@
     pointer-events: none;
   }
 
-  .wrap-top {
-    top: 4%;
-    opacity: 0.9;
+  .frieze-top {
+    top: 15px;
+    opacity: 0.8;
   }
 
-  .wrap-bottom {
-    bottom: 6%;
-    opacity: 0.85;
-  }
-
-  .engraving-svg {
-    width: 120%;
-    height: auto;
+  .greek-frieze {
+    width: 100%;
+    height: 25px;
     display: block;
-    margin-left: -10%;
-    will-change: transform;
   }
 
-  .wave-1 {
-    animation: wave-float-1 22s ease-in-out infinite alternate;
-  }
-
-  .wave-2 {
-    animation: wave-float-2 26s ease-in-out infinite alternate;
-  }
-
-  @keyframes wave-float-1 {
-    0% { transform: translate3d(0, 0, 0) scaleY(1); }
-    50% { transform: translate3d(-3%, 16px, 0) scaleY(1.1); }
-    100% { transform: translate3d(2%, -12px, 0) scaleY(0.95); }
-  }
-
-  @keyframes wave-float-2 {
-    0% { transform: translate3d(0, 0, 0) scaleY(1); }
-    50% { transform: translate3d(3%, -18px, 0) scaleY(1.12); }
-    100% { transform: translate3d(-2%, 14px, 0) scaleY(0.92); }
-  }
-
-  /* 🧭 復古印刷刻度圓環 */
-  .vintage-glyph {
+  /* 🌿 文藝復興月桂冠勳章 (右下角) */
+  .laurel-medallion {
     position: absolute;
     pointer-events: none;
     will-change: transform;
   }
 
-  .glyph-right {
-    top: 14%;
-    right: 4%;
-    animation: rotate-glyph-1 120s linear infinite, float-glyph-1 18s ease-in-out infinite alternate;
+  .medallion-br {
+    bottom: 30px;
+    right: 3%;
+    opacity: 0.85;
+    animation: rotate-medallion 120s linear infinite, float-medallion 20s ease-in-out infinite alternate;
   }
 
-  .glyph-left {
-    bottom: 20%;
-    left: 3%;
-    animation: rotate-glyph-2 140s linear infinite reverse, float-glyph-2 22s ease-in-out infinite alternate;
-  }
-
-  @keyframes rotate-glyph-1 {
+  @keyframes rotate-medallion {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
   }
 
-  @keyframes rotate-glyph-2 {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
-
-  @keyframes float-glyph-1 {
+  @keyframes float-medallion {
     0% { transform: translate3d(0, 0, 0); }
-    100% { transform: translate3d(-15px, 20px, 0); }
+    100% { transform: translate3d(-10px, -25px, 0); }
   }
 
-  @keyframes float-glyph-2 {
-    0% { transform: translate3d(0, 0, 0); }
-    100% { transform: translate3d(18px, -24px, 0); }
-  }
-
-  /* ⌜ ⌝ 四周角標 */
-  .corner-mark {
+  /* ❖ 漂浮古典文藝星芒 */
+  .baroque-dust {
     position: absolute;
-    width: 20px;
-    height: 20px;
-    border-color: rgba(28, 28, 28, 0.35);
-    border-style: solid;
-    pointer-events: none;
-  }
-
-  .top-left {
-    top: 18px;
-    left: 18px;
-    border-width: 1.5px 0 0 1.5px;
-  }
-
-  .top-right {
-    top: 18px;
-    right: 18px;
-    border-width: 1.5px 1.5px 0 0;
-  }
-
-  .bottom-left {
-    bottom: 18px;
-    left: 18px;
-    border-width: 0 0 1.5px 1.5px;
-  }
-
-  .bottom-right {
-    bottom: 18px;
-    right: 18px;
-    border-width: 0 1.5px 1.5px 0;
-  }
-
-  /* ❖ 漂浮深色菱形 */
-  .diamond-drift {
-    position: absolute;
-    font-size: 11px;
+    font-size: 13px;
     color: #1c1c1c;
     opacity: 0;
     will-change: transform, opacity;
-    animation: float-diamond 12s ease-in-out infinite;
+    animation: float-dust-baroque 10s ease-in-out infinite;
   }
 
-  .d1 { top: 22%; left: 10%; animation-delay: 0s; }
-  .d2 { top: 65%; left: 86%; animation-delay: 4s; }
-  .d3 { top: 78%; left: 20%; animation-delay: 8s; }
+  .b1 { top: 25%; left: 12%; animation-delay: 0s; }
+  .b2 { top: 60%; left: 82%; animation-delay: 3.5s; }
+  .b3 { top: 82%; left: 22%; animation-delay: 7s; }
 
-  @keyframes float-diamond {
+  @keyframes float-dust-baroque {
     0% { transform: scale(0.6) rotate(0deg); opacity: 0; }
-    40% { opacity: 0.45; transform: scale(1.1) rotate(45deg); }
-    80% { opacity: 0.35; transform: scale(0.9) rotate(90deg); }
-    100% { transform: scale(0.6) rotate(135deg); opacity: 0; }
+    50% { opacity: 0.55; transform: scale(1.15) rotate(45deg); }
+    100% { transform: scale(0.6) rotate(90deg); opacity: 0; }
   }
 
   @media (max-width: 768px) {
-    .vintage-glyph,
-    .corner-mark {
-      display: none;
+    .arch-monument,
+    .baroque-ornament,
+    .laurel-medallion {
+      opacity: 0.45;
+      transform: scale(0.7);
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .engraving-svg,
-    .vintage-glyph,
-    .diamond-drift {
+    .arch-monument,
+    .baroque-ornament,
+    .laurel-medallion,
+    .baroque-dust {
       animation: none !important;
     }
   }
