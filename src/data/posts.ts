@@ -8,6 +8,165 @@ export interface Post {
 
 const posts: Post[] = [
   {
+    slug: 'tech-notes-architecture',
+    date: '2026.08.19',
+    title: '【技術文章】技術筆記本',
+    excerpt: '白話拆解整套二手書平台的系統架構：從 Cloudflare 第一道防線、Nginx 到 Django 技術棧，再到 10 個 App 模組，一篇看懂所有設計重點！',
+    content: `
+      <p class="post-intro">
+        這篇是我的「技術筆記本」第一集：把整套系統的架構設計，從外到內、從選型到模組，全部用白話文整理一遍。講給未來的自己聽，也講給正在看這篇的你聽！
+      </p>
+
+      <h2>起：為什麼會有這本筆記？</h2>
+      <p>
+        每次架系統，最怕的就是「做完就忘」。所以我把整套二手書平台的架構畫成一張圖、拆成一張表，然後用這篇筆記記錄下來。
+      </p>
+      <p>
+        打個比方：整套系統就像一棟大樓，<strong>從門口保全、櫃檯接待，到辦公室分工、倉庫管理</strong>，每一層都有各自的任務，而且層層防護。下面我們就從大門口開始，一層一層往裡面逛。
+      </p>
+
+      <h2>承：系統多層級架構（從外到內五層）</h2>
+
+      <h3>第 2 層：網路入口（Network Entry）＝大樓門口的保全都</h3>
+      <p>使用的技術：<code>Cloudflare</code></p>
+      <ul>
+        <li><strong>DNS 解析：</strong>全站網域路由的總管，別人打網址要怎麼找到你家，由它決定。</li>
+        <li><strong>CDN 靜態加速：</strong>把前端靜態資源快取在世界各地的節點，離使用者近的節點直接送貨，全球/本地存取都變快。</li>
+        <li><strong>WAF（Web Application Firewall）：</strong>第一道防線！專門過濾惡意工具、Web Fuzzing 漏洞攻擊（舉例：有人拿萬用鑰匙一支一支狂試你家門鎖）跟異常高頻流量（舉例：一秒內被敲門一萬次，正常人誰會這樣？）。</li>
+        <li><strong>HTTPS 全面加密：</strong>門口到路上的對話全部加密，強制走安全傳輸協定，不讓別人偷聽。</li>
+      </ul>
+
+      <h3>第 3 層：應用入口（Application Entry）＝櫃檯接待 + 辦公室本體</h3>
+      <p>使用的技術：<code>Nginx Reverse Proxy</code>、<code>GCP VM</code>、<code>GitHub Actions</code></p>
+      <ul>
+        <li><strong>Nginx 反向代理：</strong>站在雲端主機前方的櫃檯。負責 HTTPS 解密、靜態檔案託管分流，還會做<strong>第二層流量限制</strong>（<code>limit_req</code>），客人太多就先排在門外慢慢放行。</li>
+        <li><strong>GCP VM：</strong>整個後端服務住的辦公室，所有 API 都在這台虛擬主機上跑。</li>
+        <li><strong>GitHub Actions（CI/CD）：</strong>自動化的「打卡上班」流程。開發者把代碼推到 GitHub，它就會自動觸發建置，再透過安全通道（Deploy to VM）把新版本部署到 GCP 虛擬機，不用半夜爬起來手動上線。</li>
+      </ul>
+
+      <h3>第 4 層：應用服務層（Application Services）＝真正的辦公室同事們</h3>
+      <p>使用的技術：<code>Next.js (App Router)</code>、<code>Django REST API</code>、<code>SSE</code></p>
+      <ul>
+        <li><strong>Build Frontend（前端構建）：</strong>用 <strong>Next.js App Router</strong> 打造，整合了 <strong>SSR</strong>（伺服器端渲染，搜尋引擎看得懂）、<strong>SWR</strong>（資料請求快取，免一直 reload）、<strong>PWA</strong>（漸進式網頁應用，可以裝成 App）、還有<strong>事件驅動 UI</strong>（Event-Driven UI），頁面會自己「聽」資料變化即時更新。</li>
+        <li><strong>Migrate Backend（後端核心）：</strong>用 <strong>Django REST API</strong>，負責身份驗證（Auth）、內容審查（Moderation）、通知發送（Notification）跟 SQL 查詢優化。</li>
+        <li><strong>即時通訊（SSE）：</strong>Django 跟 Next.js 之間用 <strong>SSE（Server-Sent Events）</strong>建立<strong>單向</strong>即時通道，打個比方就是廣播電台——後端有新消息就直接放送給前端，不用前端一直跑回去問。</li>
+      </ul>
+
+      <h3>第 5 層：資料與資產層（Data & Assets Layer）＝倉庫跟郵務室</h3>
+      <p>使用的技術：<code>MySQL / Cloud SQL</code>、<code>Cloudflare R2</code>、<code>Email SMTP</code>、<code>Web Push / VAPID</code></p>
+      <ul>
+        <li><strong>MySQL / Cloud SQL：</strong>放結構化業務資料的倉庫，搭配優化過的索引查詢（Optimized Indexes），翻東西才快。</li>
+        <li><strong>Cloudflare R2：</strong>相容 S3 的分散式物件儲存，專門放刊登的商品圖片這類媒體資產。</li>
+        <li><strong>Email SMTP：</strong>郵務室，負責寄交易型跟通知型郵件。</li>
+        <li><strong>Web Push / VAPID：</strong>瀏覽器主動推送服務，走 VAPID 協議標準，手機關著網頁也能收到通知。</li>
+      </ul>
+
+      <h2>轉：核心技術棧白話對照表</h2>
+      <p>架構看完，來拆技術細節。我把後端跟運維用到的技術分門別類，每一項都用一句白話講「它是誰、幹嘛用的」：</p>
+
+      <h3>1.1 框架核心（Core Framework）</h3>
+      <ul>
+        <li><strong>Django：</strong>後端總指揮，MVC/MTV 框架，所有 API 業務邏輯都由它調度。</li>
+        <li><strong>mysqlclient：</strong>MySQL 的 C 語言驅動，Django 連 MySQL 的「專用快車道」，效能比慢吞吞的 PyMySQL 好，所以捨棄了後者。</li>
+      </ul>
+
+      <h3>1.2 資料庫 / ORM（Database & Cache）</h3>
+      <ul>
+        <li><strong>Django ORM：</strong>在 <code>models.py</code> 用物件導向操作資料庫，不用手寫原生 SQL，寫起來像在填空而不是在背咒語。</li>
+        <li><strong>MySQL：</strong>核心關聯式資料庫，在 <code>settings.py</code> 的 <code>DATABASES</code> 設定為預設引擎。</li>
+        <li><strong>Django Cache：</strong>快取抽象層，實際用於 <code>core/rate_limit.py</code> 跟 <code>listings/ratelimit.py</code>，專門暫存頻率限制的計數器。</li>
+      </ul>
+
+      <h3>1.3 認證 / 授權（Authentication & Authorization）</h3>
+      <ul>
+        <li><strong>自訂 JWT（HS256）：</strong>核發跟解讀內部 API 呼叫用的 <code>app_token</code>，採用 HS256 安全雜湊演算法簽章。</li>
+        <li><strong>PyJWT + cryptography：</strong>PyJWT 負責 Token 的 Encode/Decode，cryptography 是底層加密庫，確保簽章不會被偽造。</li>
+        <li><strong>django-allauth：</strong>整合第三方登入，這裡專門接 <strong>Google OAuth</strong>。</li>
+        <li><strong>Custom User Model：</strong>自訂使用者模型，擴充欄位存 <code>auth_provider: google_sub</code>（Google 唯一識別碼）跟 <code>identity_type</code>。</li>
+        <li><strong>Custom Auth Adapter：</strong>自訂認證配接器，實作<strong>校園信箱網域限制</strong>——只准 <code>@ntub.edu.tw</code> 結尾的信箱註冊登入，還加了白名單機制。舉例：校外信箱想進來？直接被擋在門外。</li>
+        <li><strong>Django Auth Backend：</strong>管理員登入 Django Admin 後台用的認證系統。</li>
+        <li><strong>CSRF Protection + CORS Headers：</strong>一個防跨站請求偽造，保護敏感寫入操作；<code>django-cors-headers</code> 負責跨域設定，讓獨立部署的 Next.js 前端可以合法打 Django API。</li>
+      </ul>
+
+      <h3>1.4 圖片處理 / 儲存（Image Processing & Storage）</h3>
+      <ul>
+        <li><strong>Cloudflare R2（S3-compatible）：</strong>放使用者上傳的商品圖片跟媒體檔案，自帶 CDN 節點。</li>
+        <li><strong>boto3：</strong>AWS 官方 SDK，但因為 R2 相容 S3 API，直接拿它來上傳、下載、管理 R2 的檔案。</li>
+        <li><strong>opencv-python：</strong>本地端電腦視覺庫，做圖片色彩分析、尺寸處理——全程本地運算，不靠外部 API。</li>
+        <li><strong>TensorFlow：</strong>深度學習框架，本地載入輕量化模型，做<strong>圖片 NSFW（不當內容）自動過濾審查</strong>。舉例：有人上傳奇怪圖片，模型直接幫你攔下來。</li>
+      </ul>
+
+      <h3>1.5 安全 / 防爬蟲（Security & Anti-Bot）</h3>
+      <ul>
+        <li><strong>Google reCAPTCHA v3：</strong>無感人機驗證，後端根據使用者行為給風險評分，0.0 是機器人、1.0 是人類，你根本感覺不到它在考試。</li>
+        <li><strong>Google reCAPTCHA v2：</strong>經典「我不是機器人」勾選式驗證，當 v3 評分太低時當作第二次挑戰。</li>
+        <li><strong>requests：</strong>Python HTTP 函式庫，後端用它打 Google verify endpoint，驗證 reCAPTCHA 是否合法。</li>
+      </ul>
+
+      <h3>1.6 內容審核（Content Moderation）</h3>
+      <ul>
+        <li><strong>文字 Moderation：</strong>基於詞級別（Phrase-level）比對加上古文/歷史詞庫，實作 <strong>BLOCK（直接封鎖）/ REVIEW（人工審核）/ ALLOW（直接通過）</strong> 三級敏感詞控制。</li>
+        <li><strong>敏感詞寬容比對：</strong>演算法支援<strong>拼音、注音</strong>等變體諧音比對。舉例：有人用特殊符號或同音字想繞過審查？照樣被抓出來。</li>
+      </ul>
+
+      <h3>1.7 多層流量限制與防濫用（Multi-layer Rate Limiting）</h3>
+      <p>防濫用不是只靠一道牆，而是三道關卡層層過濾：</p>
+      <ul>
+        <li><strong>第一層：Cloudflare WAF / Rate Limit —</strong>在網路邊緣直接阻斷自動化黑客工具、惡意 Web Fuzzing 掃描跟異常高頻的 DDoS 流量。</li>
+        <li><strong>第二層：Nginx limit_req —</strong>伺服器入口的漏桶（Leaky Bucket）緩衝（緩衝區大小 425），重點保護 API、Auth（登入驗證）跟 Admin（後台）等高風險端點，防止暴力破解密碼。</li>
+        <li><strong>第三層：DRF / Django Throttling —</strong>應用層的細粒度限制，針對登入、一般查詢、NSFW 圖片檢測、發表文章/刊登等不同行為，各自設定獨立的頻率阻斷閥值。</li>
+        <li><strong>快取儲存：Django Cache / LocMemCache —</strong>第三層計數器的高速儲存後端，用本地記憶體快取，數字記得住又讀得快。</li>
+      </ul>
+
+      <h3>1.8 通知系統（Notification System）</h3>
+      <ul>
+        <li><strong>Web Push（pywebpush）：</strong>瀏覽器標準網頁推播，基於 <strong>VAPID 機制</strong>，使用者關掉網頁也收得到通知。</li>
+        <li><strong>Django SMTP Email：</strong>發送結構化的交易式電子郵件。</li>
+        <li><strong>Django Template Emails：</strong>用 Django 模板引擎動態渲染 <strong>HTML + 純文字雙格式</strong>郵件，乾淨又不怕對方信箱不吃 HTML。</li>
+        <li><strong>Django Signals（post_save）：</strong>資料庫一建立 <code>Notification</code> 紀錄（<code>post_save</code> 觸發），就自動在背景非同步呼叫 Web Push 跟 Email 發送邏輯——業務代碼不用自己到處呼叫，事件發生就有人接手。</li>
+      </ul>
+
+      <h3>1.9 基礎設施 / 部署（Infrastructure & Deployment）</h3>
+      <ul>
+        <li><strong>Gunicorn：</strong>高效能 WSGI HTTP 伺服器，負責解析 HTTP 請求並執行 Django 應用程式。</li>
+        <li><strong>systemd：</strong>Linux 服務管理器，管理跟守護 Gunicorn 進程（這裡走 Linux 原生路線，不用 Node.js 圈常看到的 pm2）。</li>
+        <li><strong>nginx：</strong>高效能前端網頁跟反向代理伺服器，處理靜態檔案託管、安全分流跟負載緩衝。</li>
+        <li><strong>django-environ：</strong>管理十二要素（12-Factor App）環境變數，把資料庫密碼、Secret Key、API 密鑰這些敏感資訊跟程式碼徹底分離。</li>
+        <li><strong>Django Logging：</strong>分級日誌系統（DEBUG/INFO/WARNING/ERROR），搭配 <code>RotatingFileHandler</code> 做日誌大小輪替跟自動封存，防止日誌檔把磁碟塞爆。</li>
+        <li><strong>WSGI / ASGI：</strong>生產環境走穩定的 WSGI；ASGI 是「預留技術」，等之後需要非同步功能再切過去。</li>
+      </ul>
+
+      <h3>1.10 後台管理（Admin Dashboard）</h3>
+      <ul>
+        <li><strong>Django Admin：</strong>Django 內建原生管理後台，管理基礎資料。</li>
+        <li><strong>django-simpleui：</strong>基於 Vue.js 和 Element-UI 封裝的後台主題，把陽春後台變成現代化 SPA 管理介面。</li>
+        <li><strong>Custom Admin Views：</strong>自訂管理員視圖，在後台顯示平台營運統計數據跟視覺化圖表。</li>
+        <li><strong>Admin URL：</strong>自訂又隱蔽的後台路由，刻意不用預設的 <code>/admin/</code>，讓惡意自動化腳本掃不到門在哪。</li>
+      </ul>
+
+      <h2>合：資料模型——10 個 App 就像一家公司的部門</h2>
+      <p>
+        最後是資料模型設計：系統把 Django ORM 模型拆成 <strong>10 個獨立 App（部門）</strong>、<strong>24 個資料模型（員工）</strong>，並拆成 6 個子圖避免一張圖複雜到看不懂。用部門分工來比喻，一眼就懂：
+      </p>
+      <ul>
+        <li><strong>1. accounts（使用者與身份）＝人事部：</strong>管全站使用者（學生/管理員）的核心檔案、Google 認證綁定（<code>google_sub</code>）、登入權限跟身分識別（例如學生證驗證狀態）。</li>
+        <li><strong>2. books（書籍主資料）＝書籍百科：</strong>定義書籍基礎元資料（Metadata）：ISBN、書名、作者、出版社、分類。</li>
+        <li><strong>3. listings（刊登與商品）＝陳列部：</strong>處理使用者上架二手書的業務——書況描述、二手售價、上架狀態，並關聯 <code>Cloudflare R2</code> 的商品圖片路徑。</li>
+        <li><strong>4. cart（購物車）＝暫存區：</strong>暫存使用者想買的二手書清單，處理前端暫存跟後端同步。</li>
+        <li><strong>5. purchase_requests（預約與交易）＝交易部：</strong>管理校園面交或交易的預約請求，追蹤訂單狀態機：已發送 ➔ 雙方同意 ➔ 面交完成／取消。</li>
+        <li><strong>6. moderation（內容審查與檢舉）＝風紀股長：</strong>使用者舉報違規商品、不當言論或不安全行為時建立檢舉單，並對接 TensorFlow（圖片）跟文字 Moderation（文字變體）審查與申訴處置。</li>
+        <li><strong>7. notifications（全站通知）＝廣播室：</strong>存系統主動發送的通知（商品被預約、檢舉結果、即時訊息提醒），靠 <code>Django Signals</code> 觸發多端（Web Push/Email）推送。</li>
+        <li><strong>8. chat（即時聊天室）＝客服線：</strong>買家跟賣家針對特定刊登商品的溝通管道，紀錄對話歷史。</li>
+        <li><strong>9. subscriptions（求書與訂閱）＝許願池：</strong>某本書目前沒人刊登？使用者可以建立訂閱，未來一有人上架，系統自動比對並通知訂閱者。</li>
+        <li><strong>10. core（核心與背景任務）＝總務處：</strong>全站公用基礎功能、非同步背景任務調度（例如定期清理過期快取）、全系統層級的日誌操作紀錄。</li>
+      </ul>
+
+      <p class="post-outro">
+        總結來說，整套架構的哲學就是一句話：<strong>每一層只做自己的事——該擋的擋、該存的存、該推的推</strong>。從 Cloudflare 大門、Nginx 櫃檯、Next.js 前台、Django 後台，到 10 個部門分工的資料模型，重點不是用了多潮的技術，而是每個環節都知道自己為什麼站在這裡。這本技術筆記會持續更新，下次見！
+      </p>
+    `,
+  },
+  {
     slug: 'cf-pages-pwa-webpush',
     date: '2026.08.19',
     title: '【CF Page 】PWA WebPush 設計原理',
