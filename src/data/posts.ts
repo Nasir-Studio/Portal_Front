@@ -8,6 +8,45 @@ export interface Post {
 
 const posts: Post[] = [
   {
+    slug: 'front-end-design',
+    date: '2026.08.19',
+    title: '【文章】Front End Design ( 好看的推薦）',
+    excerpt: '看到好看的設計前端就要收藏起來',
+    content: `
+      <p class="post-intro">
+        看到好看的設計前端就要收藏起來：
+      </p>
+      <ul>
+        <li>Design Prompts <a href="https://www.designprompts.dev/" target="_blank" rel="noopener noreferrer">https://www.designprompts.dev/</a></li>
+        <li>21st.dev Sign-in 元件 <a href="https://21st.dev/community/components/s/sign-in" target="_blank" rel="noopener noreferrer">https://21st.dev/community/components/s/sign-in</a></li>
+        <li>Web Design Clip <a href="https://webdesignclip.com/" target="_blank" rel="noopener noreferrer">https://webdesignclip.com/</a></li>
+        <li>Awwwards 精選：圖片與幻燈片 <a href="https://www.awwwards.com/awwwards/collections/image-gallery-and-slideshows/" target="_blank" rel="noopener noreferrer">https://www.awwwards.com/awwwards/collections/image-gallery-and-slideshows/</a></li>
+        <li>Awwwards 精選：載入頁面 <a href="https://www.awwwards.com/awwwards/collections/loading-page/" target="_blank" rel="noopener noreferrer">https://www.awwwards.com/awwwards/collections/loading-page/</a></li>
+        <li>Awwwards 精選：Hover、游標與可愛互動 <a href="https://www.awwwards.com/awwwards/collections/hovers-cursors-and-cute-interactions/" target="_blank" rel="noopener noreferrer">https://www.awwwards.com/awwwards/collections/hovers-cursors-and-cute-interactions/</a></li>
+        <li>Awwwards 精選：選單 <a href="https://www.awwwards.com/awwwards/collections/menu/" target="_blank" rel="noopener noreferrer">https://www.awwwards.com/awwwards/collections/menu/</a></li>
+        <li>Awwwards <a href="https://www.awwwards.com/" target="_blank" rel="noopener noreferrer">https://www.awwwards.com/</a></li>
+        <li>Best Website Gallery <a href="https://bestwebsite.gallery/" target="_blank" rel="noopener noreferrer">https://bestwebsite.gallery/</a></li>
+      </ul>
+    `,
+  },
+  {
+    slug: 'proxy-list-tools',
+    date: '2026.08.19',
+    title: '【文章】Proxy List & Tools 推薦',
+    excerpt: '前一陣子在找代理，我的好朋朋364同學大力推薦這些，我還沒來得及研究，等研究完再來寫一篇文章好了！',
+    content: `
+      <p class="post-intro">
+        前一陣子在找代理，我的好朋朋 364 同學大力推薦這些，我還沒來得及研究，等研究完再來寫一篇文章好了！
+      </p>
+      <ul>
+        <li>Proxy Seller <a href="https://proxy-seller.com/zh/" target="_blank" rel="noopener noreferrer">https://proxy-seller.com/zh/</a></li>
+        <li>Decodo <a href="https://decodo.com/#gref" target="_blank" rel="noopener noreferrer">https://decodo.com/#gref</a></li>
+        <li>Lumi Proxy <a href="https://www.lumiproxy.com/zh-hant/" target="_blank" rel="noopener noreferrer">https://www.lumiproxy.com/zh-hant/</a></li>
+        <li>AdsPower <a href="https://www.adspower.com/tc/" target="_blank" rel="noopener noreferrer">https://www.adspower.com/tc/</a></li>
+      </ul>
+    `,
+  },
+  {
     slug: 'ntub-credit-program',
     date: '2026.08.19',
     title: '【工具】NTUB學分學程查詢及預算學分',
