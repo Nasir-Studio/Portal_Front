@@ -36,23 +36,23 @@
 {#if !isHidden}
   <div class="page-loader" class:is-done={isDone} aria-hidden={isDone}>
     <div class="loader-box">
-      <!-- 🐑 純羊 Icon 高清無損，可愛微跳動 -->
+      <!-- 🐑 純羊 Icon 高清無損，可愛微跳動 (放大尺寸) -->
       <img
         class="loader-sheep"
         src="/sheep-hd.png"
         alt="OviNas"
-        width="52"
-        height="52"
+        width="78"
+        height="78"
       />
 
-      <!-- 慢慢前進的精緻進度條 (0-100) -->
+      <!-- 慢慢前進的精緻進度條 (0-100，適度放大) -->
       <div class="loader-bar-wrap">
         <div class="loader-bar-fill" style="width: {progress}%;"></div>
       </div>
 
-      <!-- 可愛小巧數字 (0 - 100%) -->
+      <!-- 可愛手寫手感數字 (0 - 100%) -->
       <div class="loader-pct">
-        {progress}%
+        <span class="pct-num">{progress}</span><span class="pct-symbol">%</span>
       </div>
     </div>
   </div>
@@ -83,7 +83,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 0.65rem;
+    gap: 0.85rem;
     animation: pop-in 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
 
@@ -98,12 +98,13 @@
     }
   }
 
-  /* 可愛小羊微彈跳/呼吸 */
+  /* 可愛小羊微彈跳 (78px 放大呈現清晰細節) */
   .loader-sheep {
-    width: 46px;
-    height: 46px;
+    width: 78px;
+    height: 78px;
     object-fit: contain;
-    animation: sheep-cute-bounce 0.8s ease-in-out infinite alternate;
+    filter: drop-shadow(0 4px 10px rgba(28, 28, 28, 0.1));
+    animation: sheep-cute-bounce 0.85s ease-in-out infinite alternate;
   }
 
   @keyframes sheep-cute-bounce {
@@ -111,16 +112,18 @@
       transform: translateY(0) scale(1);
     }
     100% {
-      transform: translateY(-4px) scale(1.04);
+      transform: translateY(-6px) scale(1.05);
     }
   }
 
-  /* 迷你圓角進度條軌道 */
+  /* 圓角進度條軌道 (156px 寬度, 8px 高度) */
   .loader-bar-wrap {
-    width: 108px;
-    height: 4.5px;
+    width: 156px;
+    height: 8px;
     background: rgba(28, 28, 28, 0.08);
     border-radius: 999px;
+    padding: 1.5px;
+    box-sizing: border-box;
     overflow: hidden;
   }
 
@@ -131,13 +134,26 @@
     transition: width 0.04s linear;
   }
 
-  /* 可愛數字百分比 */
+  /* 可愛 Klee One 手寫手感百分比字體 */
   .loader-pct {
-    font-family: var(--font-sans);
-    font-size: 0.72rem;
+    font-family: 'Klee One', 'Iansui', var(--font-serif), cursive, sans-serif;
+    font-size: 0.96rem;
     font-weight: 600;
-    letter-spacing: 0.06em;
-    color: var(--ink-2);
+    letter-spacing: 0.08em;
+    color: var(--ink);
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+  }
+
+  .pct-num {
     font-variant-numeric: tabular-nums;
+    font-size: 1.05rem;
+  }
+
+  .pct-symbol {
+    font-size: 0.82rem;
+    margin-left: 1.5px;
+    color: var(--ink-2);
   }
 </style>
