@@ -1,6 +1,4 @@
 <script>
-  import { onMount } from 'svelte';
-
   let isOpen = false;
   let activeTab = 'chat'; // 'chat' | 'form'
 
@@ -38,7 +36,7 @@
     setTimeout(() => {
       isTyping = false;
       let replyText = '感謝您的訊息！我們已收到您的反饋。若有重要事項，您也可以切換至「聯絡表單」留言，我們會透過 Email 盡快回覆您！';
-      if (userText.includes('工具') || userText.includes('服務')) {
+      if (userText.includes('工具') || userText.includes('服務') || userText.includes('nytools')) {
         replyText = 'OviNas 目前提供 NYTools、單字測驗、羊監視你、羊集章、羊愛考試及短網址等多項實用服務，歡迎在上方導覽列瀏覽體驗！';
       } else if (userText.includes('預約') || userText.includes('時間')) {
         replyText = '您可以點擊導覽列上的「預約系統」前往查看可預約的時間段喔！';
@@ -51,7 +49,7 @@
         { id: Date.now() + 1, sender: 'bot', text: replyText, time: getNowTime() },
       ];
       scrollToBottom();
-    }, 1000);
+    }, 900);
   }
 
   function sendQuickPrompt(prompt) {
@@ -113,7 +111,7 @@
 </script>
 
 <div class="live-chat-root">
-  <!-- 💬 懸浮交談按鈕 -->
+  <!-- 💬 懸浮純圖示按鈕 -->
   {#if !isOpen}
     <button
       class="chat-launcher"
@@ -122,12 +120,10 @@
       aria-label="開啟即時交談"
     >
       <span class="launcher-icon" aria-hidden="true">
-        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+        <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
         </svg>
       </span>
-      <span class="launcher-badge"></span>
-      <span class="launcher-text">Live Chat</span>
     </button>
   {/if}
 
@@ -138,18 +134,9 @@
       <div class="chat-header">
         <div class="chat-header-info">
           <div class="header-avatar">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#f7eed7" stroke-width="2">
-              <circle cx="12" cy="12" r="10"></circle>
-              <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
-              <line x1="9" y1="9" x2="9.01" y2="9"></line>
-              <line x1="15" y1="9" x2="15.01" y2="9"></line>
-            </svg>
-            <span class="online-indicator"></span>
+            <img src="/favicon.png" alt="OviNas" width="24" height="24" />
           </div>
-          <div>
-            <div class="header-title">OviNas 即時客服</div>
-            <div class="header-status">線上回覆中</div>
-          </div>
+          <div class="header-title">OviNas</div>
         </div>
         <button
           class="chat-close-btn"
@@ -184,13 +171,8 @@
       <!-- Tab 1: 即時交談 -->
       {#if activeTab === 'chat'}
         <div class="chat-body" bind:this={chatBodyEl}>
-          <div class="chat-welcome">
-            <span class="welcome-stamp">EST. 2026</span>
-            <p>有任何問題皆可直接輸入，系統將即時為您引導。</p>
-          </div>
-
           <div class="quick-chips">
-            <button class="chip" on:click={() => sendQuickPrompt('本站有哪些工具服務？')}>有哪些工具？</button>
+            <button class="chip" on:click={() => sendQuickPrompt('有哪些工具服務？')}>有哪些工具？</button>
             <button class="chip" on:click={() => sendQuickPrompt('如何預約諮詢？')}>如何預約？</button>
             <button class="chip" on:click={() => sendQuickPrompt('我想聯絡站長')}>聯絡站長</button>
           </div>
@@ -314,17 +296,19 @@
     z-index: 9999;
   }
 
-  /* 懸浮按鈕 */
+  /* 懸浮純圖示按鈕 */
   .chat-launcher {
     appearance: none;
     background: var(--ink);
     color: var(--white);
     border: 1.5px solid var(--ink);
-    border-radius: 30px;
-    padding: 0.65rem 1.15rem;
-    display: inline-flex;
+    border-radius: 50%;
+    width: 54px;
+    height: 54px;
+    padding: 0;
+    display: flex;
     align-items: center;
-    gap: 0.55rem;
+    justify-content: center;
     cursor: pointer;
     box-shadow: 4px 4px 0px rgba(28, 28, 28, 0.16);
     transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background var(--t);
@@ -338,25 +322,13 @@
   .launcher-icon {
     display: flex;
     align-items: center;
-  }
-
-  .launcher-badge {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #10b981;
-  }
-
-  .launcher-text {
-    font-size: 0.88rem;
-    font-weight: 500;
-    letter-spacing: 0.08em;
+    justify-content: center;
   }
 
   /* 聊天視窗主體 */
   .chat-window {
     width: 360px;
-    height: 520px;
+    height: 500px;
     background: var(--surface);
     border: 2px solid var(--ink);
     box-shadow: 6px 6px 0px rgba(28, 28, 28, 0.18);
@@ -382,7 +354,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0.8rem 1rem;
+    padding: 0.75rem 1rem;
     background: var(--ink);
     color: var(--white);
     border-bottom: 1.5px solid var(--ink);
@@ -395,36 +367,26 @@
   }
 
   .header-avatar {
-    position: relative;
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.15);
+    background: #ffffff;
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
   }
 
-  .online-indicator {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #10b981;
-    border: 1.5px solid var(--ink);
+  .header-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
   }
 
   .header-title {
-    font-size: 0.88rem;
+    font-size: 0.92rem;
     font-weight: 600;
-    letter-spacing: 0.08em;
-  }
-
-  .header-status {
-    font-size: 0.7rem;
-    color: rgba(255, 255, 255, 0.7);
+    letter-spacing: 0.1em;
   }
 
   .chat-close-btn {
@@ -480,25 +442,6 @@
     flex-direction: column;
     gap: 0.75rem;
     background: var(--bg-soft);
-  }
-
-  .chat-welcome {
-    text-align: center;
-    padding: 0.6rem 0.8rem;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    font-size: 0.75rem;
-    color: var(--ink-2);
-    display: flex;
-    flex-direction: column;
-    gap: 0.2rem;
-  }
-
-  .welcome-stamp {
-    font-size: 0.65rem;
-    font-family: monospace;
-    color: var(--ink-3);
-    letter-spacing: 0.1em;
   }
 
   .quick-chips {
