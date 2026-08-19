@@ -7,13 +7,7 @@
   <div class="gate-modal" role="dialog" aria-modal="true" aria-labelledby="gate-title">
     <!-- ===== 階段一：登入（runaway 按鈕） ===== -->
     <section class="gate-stage" id="gate-login" data-stage="login">
-      <div class="gate-brand">
-        <span class="gate-logo" aria-hidden="true"></span>
-        <span>OVINAS · TECH</span>
-      </div>
-
       <h2 id="gate-title">技術文章專區</h2>
-      <p class="gate-subtitle">此區為 VIP 限定內容。請先登入，兩個欄位都填上就能繼續。</p>
 
       <form id="gate-login-form" autocomplete="off" novalidate>
         <div class="form-group">
@@ -48,10 +42,6 @@
           </div>
         </div>
 
-        <div class="gate-status-info">
-          <p class="status-text" id="gate-status"><span class="dot-indicator"></span> 兩個欄位都填上，按鈕才會停下來。</p>
-          <p class="keyboard-hint"><kbd>Tab</kbd> 移動欄位 · <kbd>Enter</kbd> 登入</p>
-        </div>
       </form>
     </section>
 
@@ -59,11 +49,6 @@
     <section class="gate-stage" id="gate-payment" data-stage="payment" hidden>
       <div class="pay-grid">
         <div class="pay-left">
-          <div class="gate-brand">
-            <span class="gate-logo" aria-hidden="true"></span>
-            <span>OVINAS · CHECKOUT</span>
-          </div>
-
           <div class="card-slot" id="card-slot">
             <div class="glow-halo" id="glow-halo"></div>
             <div class="card-wrapper" id="card-wrapper">
@@ -115,7 +100,7 @@
         <div class="pay-right">
           <div class="pay-steps"><span class="step-done">✓ 登入完成</span><span>—</span><span class="step-active">付款</span></div>
           <h3>付款資訊</h3>
-          <p class="pay-subtitle">輸入卡片資訊完成付款（此為模擬付款，不會真的扣款）。</p>
+          <p class="pay-subtitle">輸入卡片資訊完成付款。</p>
 
           <form id="gate-pay-form" novalidate>
             <div class="pay-form-group">
@@ -139,12 +124,6 @@
 
             <button type="submit" class="pay-submit-btn" id="pay-submit-btn">🔒 付款 NT$3,000 →</button>
           </form>
-
-          <div class="trust-badges">
-            <span>🛡️ 模擬交易</span>
-            <span>🔒 僅為展示</span>
-            <span>不會真的扣款</span>
-          </div>
         </div>
       </div>
     </section>
@@ -178,37 +157,6 @@
     padding: 1.2rem 1.4rem 1.4rem;
   }
 
-  /* 品牌行 */
-  .gate-brand {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    font-family: var(--font-serif);
-    font-size: 0.78rem;
-    font-weight: 700;
-    letter-spacing: 0.28em;
-    color: var(--ink-2);
-    text-transform: uppercase;
-    margin-bottom: 1.2rem;
-  }
-
-  .gate-logo {
-    width: 1.15rem;
-    height: 1.15rem;
-    border: 2px solid var(--ink);
-    border-radius: 50%;
-    position: relative;
-    display: inline-block;
-  }
-
-  .gate-logo::after {
-    content: '';
-    position: absolute;
-    inset: 0.28rem;
-    background: var(--ink);
-    border-radius: 50%;
-  }
-
   /* ===== 登入階段（緊湊，約 5 篇文章高度） ===== */
   #gate-login {
     max-width: 480px;
@@ -221,13 +169,6 @@
     font-weight: 700;
     letter-spacing: 0.06em;
     margin-bottom: 0.2rem;
-  }
-
-  .gate-subtitle {
-    font-size: 0.82rem;
-    color: var(--ink-3);
-    line-height: 1.55;
-    margin-bottom: 1rem;
   }
 
   .form-group {
@@ -378,49 +319,6 @@
     box-shadow: 0 0 0 1px var(--ink), 0 8px 20px rgba(0, 0, 0, 0.15);
   }
 
-  .gate-status-info {
-    margin-top: 0.8rem;
-    text-align: center;
-  }
-
-  .status-text {
-    font-size: 0.76rem;
-    color: var(--ink-2);
-    margin-bottom: 0.4rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-  }
-
-  .dot-indicator {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: var(--border-strong);
-    display: inline-block;
-  }
-
-  .dot-indicator.is-ready {
-    background: var(--ink);
-    box-shadow: 0 0 8px var(--ink);
-  }
-
-  .keyboard-hint {
-    font-size: 0.72rem;
-    color: var(--ink-3);
-  }
-
-  .keyboard-hint kbd {
-    background: var(--bg-soft);
-    border: 1px solid var(--border);
-    border-radius: 2px;
-    padding: 0 6px;
-    font-family: var(--font-sans);
-    font-size: 0.7rem;
-    color: var(--ink-2);
-  }
-
   /* ===== 付款階段（緊湊雙欄，不超出面板） ===== */
   .pay-grid {
     display: grid;
@@ -490,7 +388,7 @@
     width: 100%;
     height: 100%;
     border-radius: 4px;
-    padding: 1.2rem;
+    padding: 1rem;
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.18), 0 5px 15px rgba(0, 0, 0, 0.1);
@@ -541,12 +439,15 @@
 
   .card-number-display {
     font-family: var(--font-serif);
-    font-size: 1.05rem;
+    font-size: 0.88rem;
     font-weight: 600;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.08em;
     color: #111111;
     margin: 0.5rem 0;
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .card-bottom-row {
@@ -565,14 +466,14 @@
 
   .card-field-val {
     font-family: var(--font-serif);
-    font-size: 0.72rem;
+    font-size: 0.66rem;
     font-weight: 600;
     color: #111111;
   }
 
   .card-brand-logo {
     font-family: var(--font-serif);
-    font-size: 1rem;
+    font-size: 0.8rem;
     font-weight: 800;
     font-style: italic;
     color: #111111;
@@ -845,17 +746,6 @@
   .pay-submit-btn:active {
     transform: translateY(0);
   }
-
-  .trust-badges {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    flex-wrap: wrap;
-    font-size: 0.72rem;
-    color: var(--ink-3);
-    letter-spacing: 0.05em;
-  }
 </style>
 
 <script>
@@ -870,21 +760,12 @@
   const dock = document.getElementById('gate-dock');
   const ctaBtn = document.getElementById('gate-cta');
   const bandLine = document.querySelector('[data-band-line]');
-  const statusText = document.getElementById('gate-status');
-  const dotIndicator = statusText.querySelector('.dot-indicator');
 
   // ===== Runaway 按鈕物理 =====
   let pos = { x: 0, y: 0, rot: 0 };
   let targetPos = { x: 0, y: 0, rot: 0 };
   let mouse = { x: -1000, y: -1000 };
   let validCount = 0;
-
-  function setStatus(msg: string, ready = false) {
-    statusText.replaceChildren();
-    const dot = document.createElement('span');
-    dot.className = 'dot-indicator' + (ready ? ' is-ready' : '');
-    statusText.append(dot, document.createTextNode(' ' + msg));
-  }
 
   function validate() {
     const emailVal = emailInput.value.trim();
@@ -903,17 +784,11 @@
 
     if (validCount === 2) {
       dock.classList.add('is-docked');
-      setStatus('兩欄皆已填寫，按鈕已停好。', true);
       targetPos.x = 0;
       targetPos.y = 0;
       targetPos.rot = 0;
     } else {
       dock.classList.remove('is-docked');
-      if (validCount === 0) {
-        setStatus('兩個欄位都填上，按鈕才會停下來。');
-      } else {
-        setStatus('還差一欄，按鈕還在逃跑。');
-      }
     }
   }
 
