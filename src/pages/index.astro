@@ -209,15 +209,15 @@ const badges = [
     padding: 0.9rem 0.3rem 0.8rem;
     text-align: center;
     text-decoration: none;
-    border: 1px solid var(--border);
-    background: var(--surface);
-    transition: border-color var(--t), transform var(--t), box-shadow var(--t);
+    border: none;
+    background: transparent;
+    border-radius: 6px;
+    transition: background var(--t), transform var(--t);
   }
 
   .tool-item:hover {
-    border-color: var(--ink);
+    background: var(--bg-soft);
     transform: translateY(-2px);
-    box-shadow: var(--shadow-soft);
   }
 
   .tool-icon {
@@ -225,7 +225,7 @@ const badges = [
     width: 54px;
     height: 54px;
     border-radius: 14px;
-    border: 1px solid var(--border);
+    border: none;
     background: var(--surface);
     display: flex;
     align-items: center;
