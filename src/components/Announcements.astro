@@ -318,21 +318,6 @@ const techPages = paginatePosts(techPosts);
     });
   }
 
-  tabs.forEach((tab) => {
-    tab.addEventListener('click', () => {
-      // 技術文章 tab：需先通過閘門（登入 + 假付款）
-      if (tab.id === 'tab-tech') {
-        const unlocked = localStorage.getItem('ovinas-tech-unlocked') === '1';
-        if (!unlocked) {
-          activate(tab);
-          showTechGate();
-          return;
-        }
-      }
-      activate(tab);
-    });
-  });
-
   // 閘門：內嵌於技術文章面板內（不遮畫面），開啟時隱藏文章清單
   const techPagesEl = document.getElementById('tech-pages');
   const techPagerEl = document.querySelector<HTMLElement>('#panel-tech .news-pager');
@@ -343,7 +328,7 @@ const techPages = paginatePosts(techPosts);
     if (techPagesEl) techPagesEl.hidden = true;
     if (techPagerEl) techPagerEl.hidden = true;
     gateWrap.hidden = false;
-    window.openTechGate();
+    if (window.openTechGate) window.openTechGate();
   }
 
   function hideTechGate() {
@@ -353,6 +338,25 @@ const techPages = paginatePosts(techPosts);
     if (techPagerEl) techPagerEl.hidden = false;
     if (window.closeTechGate) window.closeTechGate();
   }
+
+  tabs.forEach((tab) => {
+    tab.addEventListener('click', () => {
+      // 技術文章 tab：需先通過閘門（登入 + 假付款）
+      if (tab.id === 'tab-tech') {
+        const unlocked = localStorage.getItem('ovinas-tech-unlocked') === '1';
+        if (!unlocked) {
+          activate(tab);
+          showTechGate();
+          return;
+        } else {
+          activate(tab);
+          hideTechGate();
+          return;
+        }
+      }
+      activate(tab);
+    });
+  });
 
   // 閘門通過後：隱藏閘門、展開技術文章清單
   window.addEventListener('tech-gate:unlocked', () => {

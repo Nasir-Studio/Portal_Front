@@ -972,6 +972,8 @@
   });
 
   // ===== 付款提交（假的，必定成功） =====
+  let autoUnlockTimer: ReturnType<typeof setTimeout> | null = null;
+
   payForm.addEventListener('submit', (e) => {
     e.preventDefault();
     payStage.classList.add('is-paying');
@@ -984,20 +986,41 @@
     setTimeout(() => {
       iconHolder.innerHTML = '<div class="success-check-circle">✓</div>';
       statusTitle.textContent = '付款成功 NT$3,000';
-      statusDesc.textContent = '技術文章 VIP 已開通，感謝支持！';
+      statusDesc.textContent = '技術文章 VIP 已開通，正在為您開啟文章…';
       resetDemoBtn.hidden = false;
       resetDemoBtn.textContent = '進入技術文章 →';
+
+      // 儲存已解鎖狀態
+      localStorage.setItem('ovinas-tech-unlocked', '1');
+
+      // 1.2 秒後自動進入技術文章
+      if (autoUnlockTimer) clearTimeout(autoUnlockTimer);
+      autoUnlockTimer = setTimeout(() => {
+        unlockAndEnter();
+      }, 1200);
     }, 1400);
   });
 
-  // 付款成功後進入文章
-  resetDemoBtn.addEventListener('click', () => {
+  function unlockAndEnter() {
+    if (autoUnlockTimer) {
+      clearTimeout(autoUnlockTimer);
+      autoUnlockTimer = null;
+    }
     localStorage.setItem('ovinas-tech-unlocked', '1');
     closeGate();
     window.dispatchEvent(new CustomEvent('tech-gate:unlocked'));
+  }
+
+  // 付款成功後點擊立即進入
+  resetDemoBtn.addEventListener('click', () => {
+    unlockAndEnter();
   });
 
   function closeGate() {
+    if (autoUnlockTimer) {
+      clearTimeout(autoUnlockTimer);
+      autoUnlockTimer = null;
+    }
     gate.classList.remove('is-open');
     gate.setAttribute('aria-hidden', 'true');
     loginStage.hidden = false;

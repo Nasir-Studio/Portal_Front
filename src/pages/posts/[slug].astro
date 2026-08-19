@@ -18,7 +18,7 @@ const backLink = '/#news';
     <nav class="article-nav" aria-label="麵包屑">
       <a href="/">首頁</a>
       <span aria-hidden="true">／</span>
-      <a href={backLink}>其他文章</a>
+      <a href={backLink}>{item.category === 'tech' ? '技術文章' : '其他文章'}</a>
     </nav>
 
     <header class="article-header">
@@ -29,7 +29,7 @@ const backLink = '/#news';
     <div class="article-body" set:html={item.content}></div>
 
     <div class="article-foot">
-      <a class="article-back" href={backLink}>← 回其他文章</a>
+      <a class="article-back" href={backLink}>← 回{item.category === 'tech' ? '技術文章' : '其他文章'}</a>
     </div>
   </article>
 </BaseLayout>
