@@ -329,7 +329,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 <script>
   import { api, ApiError } from '../scripts/api';
-  import { currentUser, requireAuth } from '../scripts/auth';
+  import { currentUser } from '../scripts/auth';
 
   const TZ = 'Asia/Taipei';
 
@@ -379,9 +379,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   const mineList = document.querySelector('#mine-list');
 
   const user = currentUser();
-  if (user === null) {
-    requireAuth('/reserve/');
-  } else {
+  if (user !== null) {
     const vipMod = document.querySelector('#vip-module');
     if (vipMod !== null) (vipMod as HTMLElement).hidden = false;
     renderVip();
