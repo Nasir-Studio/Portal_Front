@@ -104,7 +104,7 @@ const techPages = paginatePosts(techPosts);
   </div>
 
   <div class="news-panel" id="panel-tech" role="tabpanel" aria-labelledby="tab-tech" hidden>
-    <div class="news-pages">
+    <div class="news-pages" id="tech-pages">
       {
         techPages.map((pageItems, pageIndex) => (
           <div class="news-page" data-page={pageIndex} hidden={pageIndex !== 0}>
@@ -130,10 +130,11 @@ const techPages = paginatePosts(techPosts);
         </div>
       )
     }
+    <div class="tech-gate-wrap" id="tech-gate-wrap" hidden>
+      <TechGate />
+    </div>
   </div>
 </section>
-
-<TechGate />
 
 <style>
   #news {
@@ -323,7 +324,8 @@ const techPages = paginatePosts(techPosts);
       if (tab.id === 'tab-tech') {
         const unlocked = localStorage.getItem('ovinas-tech-unlocked') === '1';
         if (!unlocked) {
-          window.openTechGate();
+          activate(tab);
+          showTechGate();
           return;
         }
       }
@@ -331,10 +333,32 @@ const techPages = paginatePosts(techPosts);
     });
   });
 
-  // 閘門通過後自動展開技術文章面板
+  // 閘門：內嵌於技術文章面板內（不遮畫面），開啟時隱藏文章清單
+  const techPagesEl = document.getElementById('tech-pages');
+  const techPagerEl = document.querySelector<HTMLElement>('#panel-tech .news-pager');
+  const gateWrap = document.getElementById('tech-gate-wrap');
+
+  function showTechGate() {
+    if (!gateWrap) return;
+    if (techPagesEl) techPagesEl.hidden = true;
+    if (techPagerEl) techPagerEl.hidden = true;
+    gateWrap.hidden = false;
+    window.openTechGate();
+  }
+
+  function hideTechGate() {
+    if (!gateWrap) return;
+    gateWrap.hidden = true;
+    if (techPagesEl) techPagesEl.hidden = false;
+    if (techPagerEl) techPagerEl.hidden = false;
+    if (window.closeTechGate) window.closeTechGate();
+  }
+
+  // 閘門通過後：隱藏閘門、展開技術文章清單
   window.addEventListener('tech-gate:unlocked', () => {
     const techTab = document.getElementById('tab-tech') as HTMLButtonElement;
     if (techTab) activate(techTab);
+    hideTechGate();
   });
 
   // 分頁（每頁 5 篇）——每個有 .news-pager 的 panel 各自獨立分頁
