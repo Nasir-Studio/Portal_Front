@@ -1,0 +1,1563 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<style is:global>
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--ink-3);
+    text-decoration: none;
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
+    transition: color 0.2s;
+  }
+
+  .back-link:hover {
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .tools-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 1.6rem;
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    margin-bottom: 2rem;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+  }
+
+  .tools-nav a {
+    color: var(--ink);
+    border-bottom: 1px solid var(--border-strong);
+    transition: border-color var(--t), color var(--t);
+    text-decoration: none;
+  }
+
+  .tools-nav a:hover {
+    border-color: var(--ink);
+  }
+
+  .tools-nav-sep {
+    color: var(--ink-3);
+  }
+
+  .tools-nav-current {
+    color: var(--ink-3);
+  }
+
+  .page-header {
+    margin-bottom: 2rem;
+    animation: fadeIn 0.5s ease-out;
+  }
+
+  .page-header h1 {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+    font-family: var(--font-serif);
+  }
+
+  .page-header p {
+    color: var(--ink-3);
+    font-size: 0.95rem;
+  }
+
+  .status-bar {
+    padding: 0.75rem 1rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    margin-bottom: 1rem;
+    font-size: 0.85rem;
+    color: var(--ink-2);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--border-strong);
+    flex-shrink: 0;
+    transition: background 0.3s;
+  }
+
+  .status-dot.on {
+    background: #2e9e4f;
+  }
+
+  .status-dot.busy {
+    background: #c9a227;
+  }
+
+  .status-spacer {
+    flex: 1;
+  }
+
+  .status-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 0;
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    padding: 0.3rem 0.8rem;
+    color: var(--ink-2);
+    cursor: pointer;
+    transition: border-color var(--t), color var(--t);
+    letter-spacing: 0.05em;
+  }
+
+  .status-btn:hover {
+    border-color: var(--ink);
+    color: var(--ink);
+  }
+
+  .my-name {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--ink);
+    cursor: pointer;
+    border-bottom: 1px dashed var(--border-strong);
+  }
+
+  .my-name:hover {
+    border-color: var(--ink);
+  }
+
+  .section-title {
+    font-family: var(--font-serif);
+    font-size: 0.95rem;
+    margin: 0 0 0.75rem 0;
+    color: var(--ink);
+    letter-spacing: 0.08em;
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+  }
+
+  .section-title .count {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    color: var(--ink-3);
+  }
+
+  .online-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 0px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    animation: fadeIn 0.5s ease-out 0.1s both;
+  }
+
+  .user-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 1rem;
+  }
+
+  .user-card {
+    position: relative;
+    border: 1px solid var(--border);
+    background: var(--bg-soft);
+    padding: 1.25rem 1rem 1rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+    user-select: none;
+  }
+
+  .user-card:hover {
+    border-color: var(--ink);
+    transform: translateY(-2px);
+    background: var(--surface);
+  }
+
+  .user-card .device-icon {
+    font-size: 2rem;
+    line-height: 1;
+    margin-bottom: 0.25rem;
+  }
+
+  .user-card .u-name {
+    font-size: 0.9rem;
+    color: var(--ink);
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .user-card .u-device {
+    font-size: 0.72rem;
+    color: var(--ink-3);
+    letter-spacing: 0.05em;
+  }
+
+  .user-card .u-tag {
+    position: absolute;
+    top: 0.4rem;
+    right: 0.4rem;
+    font-size: 0.65rem;
+    color: var(--ink-3);
+    border: 1px solid var(--border);
+    padding: 0.05rem 0.4rem;
+    letter-spacing: 0.08em;
+  }
+
+  .user-card .u-tag.me {
+    color: var(--ink);
+    border-color: var(--ink);
+  }
+
+  .user-card .u-tag.host {
+    color: var(--white);
+    background: var(--ink);
+    border-color: var(--ink);
+  }
+
+  .user-card .send-hint {
+    font-size: 0.68rem;
+    color: var(--ink-3);
+    opacity: 0;
+    transition: opacity 0.2s;
+    letter-spacing: 0.05em;
+  }
+
+  .user-card:hover .send-hint {
+    opacity: 1;
+  }
+
+  .empty-hint {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 2.5rem 1rem;
+    color: var(--ink-3);
+    font-size: 0.9rem;
+    line-height: 1.9;
+    border: 1px dashed var(--border);
+  }
+
+  .empty-hint .big {
+    font-size: 1.05rem;
+    color: var(--ink-2);
+    margin-bottom: 0.25rem;
+  }
+
+  .transfer-section {
+    margin-bottom: 2rem;
+    animation: fadeIn 0.5s ease-out 0.15s both;
+  }
+
+  .tx-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .tx-head {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.85rem;
+    margin-bottom: 0.6rem;
+    flex-wrap: wrap;
+  }
+
+  .tx-arrow {
+    font-size: 0.9rem;
+    color: var(--ink-2);
+    flex-shrink: 0;
+  }
+
+  .tx-fname {
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 45%;
+  }
+
+  .tx-meta {
+    color: var(--ink-3);
+    font-size: 0.78rem;
+    margin-left: auto;
+    white-space: nowrap;
+  }
+
+  .tx-bar-bg {
+    height: 6px;
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+
+  .tx-bar {
+    height: 100%;
+    width: 0%;
+    background: var(--ink);
+    transition: width 0.25s ease;
+  }
+
+  .tx-done .tx-bar {
+    background: #2e9e4f;
+  }
+
+  .tx-error .tx-bar {
+    background: #b03030;
+  }
+
+  .received-section {
+    margin-bottom: 2rem;
+    animation: fadeIn 0.5s ease-out 0.2s both;
+  }
+
+  .received-files {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .received-file {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.5rem 1rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    font-size: 0.85rem;
+    color: var(--ink);
+    text-decoration: none;
+    transition: all 0.2s;
+    max-width: 100%;
+  }
+
+  .received-file:hover {
+    border-color: var(--ink);
+  }
+
+  .received-file .r-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 18rem;
+  }
+
+  .received-file .r-meta {
+    color: var(--ink-3);
+    font-size: 0.75rem;
+    flex-shrink: 0;
+  }
+
+  .received-file .r-link,
+  .received-file .r-body {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--ink);
+    text-decoration: none;
+    min-width: 0;
+  }
+
+  .received-file .r-body {
+    cursor: pointer;
+  }
+
+  .received-file .r-body:hover .r-name {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .received-file .r-open {
+    margin-left: 0.4rem;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--ink-2);
+    font-family: var(--font-sans);
+    font-size: 0.72rem;
+    padding: 0.2rem 0.5rem;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: border-color var(--t), color var(--t);
+    letter-spacing: 0.05em;
+  }
+
+  .received-file .r-open:hover {
+    border-color: var(--ink);
+    color: var(--ink);
+  }
+
+  .u-send-text {
+    position: absolute;
+    top: 0.4rem;
+    left: 0.4rem;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--ink-3);
+    font-size: 0.75rem;
+    padding: 0.1rem 0.4rem;
+    cursor: pointer;
+    line-height: 1.3;
+    z-index: 1;
+    transition: border-color var(--t), color var(--t);
+  }
+
+  .u-send-text:hover {
+    border-color: var(--ink);
+    color: var(--ink);
+  }
+
+  .text-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(28, 28, 28, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+  }
+
+  .text-modal[hidden] {
+    display: none;
+  }
+
+  .text-modal-box {
+    background: var(--surface);
+    border: 1px solid var(--ink);
+    width: min(480px, calc(100vw - 2rem));
+    padding: 1.5rem;
+    box-shadow: var(--shadow-lift);
+    animation: fadeIn 0.2s ease-out;
+  }
+
+  .text-modal-box h3 {
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    margin: 0 0 0.25rem 0;
+    color: var(--ink);
+  }
+
+  .text-modal-box p {
+    font-size: 0.78rem;
+    color: var(--ink-3);
+    margin-bottom: 0.9rem;
+  }
+
+  .text-modal-box textarea {
+    width: 100%;
+    border: 1px solid var(--border-strong);
+    border-radius: 0;
+    background: var(--surface);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    padding: 0.6rem 0.75rem;
+    resize: vertical;
+    min-height: 90px;
+  }
+
+  .text-modal-box textarea:focus {
+    outline: 2px solid var(--ink);
+    outline-offset: 0;
+    border-color: var(--ink);
+  }
+
+  .text-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  .status-btn.primary {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--white);
+  }
+
+  .status-btn.primary:hover {
+    opacity: 0.85;
+    border-color: var(--ink);
+    color: var(--white);
+  }
+
+  .how-note {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 1.2rem 1.4rem;
+    margin-bottom: 2rem;
+    font-size: 0.82rem;
+    color: var(--ink-3);
+    line-height: 1.9;
+    animation: fadeIn 0.5s ease-out 0.25s both;
+  }
+
+  .how-note strong {
+    color: var(--ink-2);
+    font-weight: 500;
+  }
+
+  .toast-stack {
+    position: fixed;
+    bottom: 1.25rem;
+    right: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    z-index: 100;
+    max-width: min(340px, calc(100vw - 2.5rem));
+  }
+
+  .toast {
+    background: var(--ink);
+    color: var(--white);
+    padding: 0.7rem 1rem;
+    font-size: 0.82rem;
+    border-radius: 0;
+    box-shadow: var(--shadow-lift);
+    animation: fadeIn 0.25s ease-out;
+    letter-spacing: 0.02em;
+    line-height: 1.6;
+  }
+
+  .toast.good {
+    background: #2e6f4a;
+  }
+
+  .toast.bad {
+    background: #8c2f2f;
+  }
+
+  @media (max-width: 640px) {
+    .tools-nav {
+      padding: 0.8rem 1rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .page-header h1 {
+      font-size: 1.5rem;
+    }
+
+    .user-grid {
+      grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    }
+
+    .tx-fname {
+      max-width: 60%;
+    }
+  }
+</style>
+
+<BaseLayout title="NY WIFI DROP ｜ OviNas">
+  <div class="container">
+    <nav class="tools-nav" aria-label="麵包屑">
+      <a href="/">首頁</a>
+      <span class="tools-nav-sep" aria-hidden="true">/</span>
+      <a href="/nytools">NYTools</a>
+      <span class="tools-nav-sep" aria-hidden="true">/</span>
+      <span class="tools-nav-current" aria-current="page">NY WIFI DROP</span>
+    </nav>
+
+    <div class="page-header">
+      <h1>NY WIFI DROP</h1>
+      <p>同一個 Wi-Fi 的使用者自動出現在線上，點擊即可互傳大檔案 — 點對點直連，檔案不經過任何伺服器</p>
+    </div>
+
+    <div class="status-bar">
+      <span class="status-dot" id="statusDot"></span>
+      <span id="statusText">連線中…</span>
+      <span class="status-spacer"></span>
+      <span>你的名稱：</span>
+      <span class="my-name" id="myName" title="點擊改名">…</span>
+      <button class="status-btn" id="copyLinkBtn" type="button">複製連結</button>
+    </div>
+
+    <div class="online-section">
+      <h3 class="section-title">線上使用者 <span class="count" id="userCount">0</span></h3>
+      <div class="user-grid" id="userGrid">
+        <div class="empty-hint">
+          <div class="big">連線中，請稍候…</div>
+          <div>正在尋找同一個 Wi-Fi 上的其他使用者</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="transfer-section">
+      <h3 class="section-title">傳輸中</h3>
+      <div id="transferPanel"></div>
+    </div>
+
+    <div class="received-section">
+      <h3 class="section-title">收到的檔案</h3>
+      <div class="received-files" id="receivedList">
+        <div class="empty-hint">還沒有收到任何檔案</div>
+      </div>
+    </div>
+
+    <div class="how-note">
+      <strong>怎麼運作：</strong>
+      所有開啟本頁的裝置會自動加入同一個房間並顯示在線上清單。點擊任一使用者即可選擇檔案傳送，點卡片左上角的
+      <strong>✉</strong> 可傳送文字訊息；檔案透過 WebRTC 在同一 Wi-Fi 內點對點直連傳輸，不會經過網際網路。
+      收到檔案會自動下載，文字訊息與可預覽的檔案（圖片／影片／PDF）會嘗試開新分頁，清單上的「⧉ 開啟」隨時可再開啟。
+      若路由器開啟「AP 隔離」或「用戶端隔離」則可能無法互連。建議同一時間只有一個人重新整理頁面。
+    </div>
+  </div>
+
+  <div class="toast-stack" id="toastStack"></div>
+
+  <input type="file" id="fileInput" multiple hidden />
+
+  <div class="text-modal" id="textModal" hidden>
+    <div class="text-modal-box">
+      <h3>傳送訊息</h3>
+      <p>傳送給 <span id="textTargetName">…</span></p>
+      <textarea id="textField" rows="4" maxlength="4000" placeholder="輸入想傳送的文字…"></textarea>
+      <div class="text-modal-actions">
+        <button class="status-btn" id="textCancel" type="button">取消</button>
+        <button class="status-btn primary" id="textSend" type="button">傳送</button>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<script is:inline src="https://unpkg.com/peerjs/dist/peerjs.min.js"></script>
+<script is:inline>
+(function () {
+  'use strict';
+
+  // ===================== 常數 =====================
+  var HOST_ID = 'owifi-host';
+  var CHUNK_SIZE = 64 * 1024;            // 64KB，低於各瀏覽器 WebRTC 訊息上限
+  var MAX_BUFFER = 8 * 1024 * 1024;      // 發送緩衝上限 8MB（backpressure）
+  var MAX_FILE = 2 * 1024 * 1024 * 1024; // 建議上限 2GB（瀏覽器記憶體限制）
+
+  // ===================== 狀態 =====================
+  var peer = null;          // 主要的 presence peer
+  var isHost = false;
+  var hostConn = null;      // member → host 的連線
+  var memberConns = {};     // host 端：member peerId → conn
+  var users = {};           // peerId → { peerId, name, device, icon, isHost, self }
+  var myPeerId = '';
+  var myName = defaultName();
+  var myDevice = detectDevice();
+  var reconnecting = false;
+  var transfers = {};       // fileId → outbound 傳輸狀態
+  var incoming = {};        // fileId → inbound 傳輸狀態
+  var outQueue = [];        // 待傳送的檔案佇列（同一個目標）
+  var outTarget = null;     // 目前佇列的目標使用者
+  var fileInput = null;
+
+  function $(id) { return document.getElementById(id); }
+
+  // ===================== 工具函式 =====================
+  function rand(n) {
+    var s = '';
+    var chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+    for (var i = 0; i < n; i++) s += chars.charAt(Math.floor(Math.random() * chars.length));
+    return s;
+  }
+
+  function formatSize(bytes) {
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+    if (bytes < 1073741824) return (bytes / 1048576).toFixed(1) + ' MB';
+    return (bytes / 1073741824).toFixed(2) + ' GB';
+  }
+
+  function isPreviewable(mime) {
+    if (!mime) return false;
+    return /^image\//.test(mime) || /^video\//.test(mime) || /^audio\//.test(mime) ||
+      mime === 'application/pdf' || /^text\//.test(mime);
+  }
+
+  function detectDevice() {
+    var ua = navigator.userAgent;
+    if (/iPhone/.test(ua)) return { label: 'iPhone', icon: '\uD83D\uDCF1' };
+    if (/iPad/.test(ua)) return { label: 'iPad', icon: '\uD83D\uDCDF' };
+    if (/Android/.test(ua)) return { label: 'Android', icon: '\uD83D\uDCF2' };
+    if (/Windows/.test(ua)) return { label: 'Windows', icon: '\uD83D\uDDA5\uFE0F' };
+    if (/Linux/.test(ua)) return { label: 'Linux', icon: '\uD83D\uDC27' };
+    if (/Macintosh|Mac OS X/.test(ua)) return { label: 'Mac', icon: '\uD83D\uDCBB' };
+    return { label: '裝置', icon: '\uD83D\uDCBB' };
+  }
+
+  function defaultName() {
+    return '我的 ' + detectDevice().label;
+  }
+
+  function setStatus(state, text) {
+    var dot = $('statusDot');
+    dot.className = 'status-dot';
+    if (state === 'on') dot.classList.add('on');
+    if (state === 'busy') dot.classList.add('busy');
+    $('statusText').textContent = text;
+  }
+
+  function toast(text, kind) {
+    var stack = $('toastStack');
+    var el = document.createElement('div');
+    el.className = 'toast' + (kind ? ' ' + kind : '');
+    el.textContent = text;
+    stack.appendChild(el);
+    setTimeout(function () { el.remove(); }, 4500);
+  }
+
+  function isSelf(id) { return id === myPeerId; }
+
+  // ===================== UI：使用者網格 =====================
+  function userList() {
+    return Object.keys(users)
+      .map(function (k) { return users[k]; })
+      .sort(function (a, b) {
+        var aMe = a.peerId === myPeerId;
+        var bMe = b.peerId === myPeerId;
+        if (aMe !== bMe) return aMe ? -1 : 1;
+        if (a.isHost !== b.isHost) return a.isHost ? -1 : 1;
+        return (a.name || '').localeCompare(b.name || '', 'zh-Hant');
+      });
+  }
+
+  function renderUsers() {
+    var grid = $('userGrid');
+    var list = userList();
+    $('userCount').textContent = list.length;
+
+    if (list.length === 0) {
+      grid.innerHTML =
+        '<div class="empty-hint"><div class="big">等待其他使用者加入…</div>' +
+        '<div>在另一台裝置（同一 Wi-Fi）開啟此頁面就會出現在這裡</div></div>';
+      return;
+    }
+
+    grid.innerHTML = '';
+    list.forEach(function (u) {
+      var card = document.createElement('div');
+      card.className = 'user-card';
+      card.dataset.peerId = u.peerId;
+      var me = u.peerId === myPeerId;
+
+      var tag = '';
+      if (me) tag = '<span class="u-tag me">我</span>';
+      else if (u.isHost) tag = '<span class="u-tag host">房主</span>';
+
+      card.innerHTML =
+        tag +
+        (me ? '' : '<button class="u-send-text" type="button" title="傳送訊息">✉</button>') +
+        '<div class="device-icon">' + (u.icon || myDevice.icon) + '</div>' +
+        '<div class="u-name">' + escapeHtml(u.name) + '</div>' +
+        '<div class="u-device">' + escapeHtml(u.device) + '</div>' +
+        (me ? '' : '<div class="send-hint">點擊傳送檔案 ↓</div>');
+
+      if (!me) {
+        card.addEventListener('click', function () {
+          selectTarget(u.peerId);
+        });
+        card.querySelector('.u-send-text').addEventListener('click', function (e) {
+          e.stopPropagation();
+          openTextModal(u.peerId);
+        });
+      }
+      grid.appendChild(card);
+    });
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  // ===================== UI：傳輸面板 =====================
+  function upsertTxItem(fid, arrow, fname, targetLabel) {
+    var panel = $('transferPanel');
+    var el = document.querySelector('.tx-item[data-fid="' + fid + '"]');
+    if (!el) {
+      el = document.createElement('div');
+      el.className = 'tx-item';
+      el.dataset.fid = fid;
+      el.innerHTML =
+        '<div class="tx-head">' +
+        '<span class="tx-arrow">' + arrow + '</span>' +
+        '<span class="tx-fname"></span>' +
+        '<span class="tx-meta"></span>' +
+        '</div>' +
+        '<div class="tx-bar-bg"><div class="tx-bar"></div></div>';
+      panel.insertBefore(el, panel.firstChild);
+    }
+    el.querySelector('.tx-fname').textContent = fname;
+    el.querySelector('.tx-meta').textContent = targetLabel;
+    return el;
+  }
+
+  function updateTxProgress(fid, pct, metaText) {
+    var el = document.querySelector('.tx-item[data-fid="' + fid + '"]');
+    if (!el) return;
+    el.querySelector('.tx-bar').style.width = pct + '%';
+    if (metaText) el.querySelector('.tx-meta').textContent = metaText;
+  }
+
+  function finishTxItem(fid, ok) {
+    var el = document.querySelector('.tx-item[data-fid="' + fid + '"]');
+    if (!el) return;
+    el.classList.add(ok ? 'tx-done' : 'tx-error');
+    if (ok) el.querySelector('.tx-bar').style.width = '100%';
+    setTimeout(function () {
+      el.style.opacity = '0.4';
+    }, 3000);
+  }
+
+  // ===================== UI：接收清單 =====================
+  // item: { name, url, from, meta, download:boolean, preview:boolean }
+  function addReceivedItem(item) {
+    var list = $('receivedList');
+    var empty = list.querySelector('.empty-hint');
+    if (empty) empty.remove();
+
+    var el = document.createElement('div');
+    el.className = 'received-file';
+    var inner =
+      '<span class="r-name">' + escapeHtml(item.name) + '</span>' +
+      '<span class="r-meta">' + escapeHtml(item.meta) + '</span>';
+    var openBtn = '<button class="r-open" type="button" title="在新分頁開啟">⧉ 開啟</button>';
+
+    if (item.download) {
+      el.innerHTML =
+        '<a class="r-link" href="' + item.url + '" download="' + escapeHtml(item.name) + '">' + inner + '</a>' +
+        openBtn;
+      el.querySelector('.r-link').addEventListener('click', function (e) { e.stopPropagation(); });
+    } else {
+      el.innerHTML = '<span class="r-body">' + inner + '</span>' + openBtn;
+      el.querySelector('.r-body').addEventListener('click', function () {
+        window.open(item.url, '_blank');
+      });
+    }
+    el.querySelector('.r-open').addEventListener('click', function () {
+      window.open(item.url, '_blank');
+    });
+
+    list.insertBefore(el, list.firstChild);
+
+    // 可預覽的檔案 / 文字訊息：自動嘗試開新分頁（部分瀏覽器會擋非手勢彈出，被擋不影響下載與清單）
+    if (item.preview && window.open(item.url, '_blank') === null) {
+      /* 彈出被擋，使用者可從清單手動開啟 */
+    }
+  }
+
+  // ===================== Presence：PeerJS 啟動 =====================
+  function bootstrap() {
+    if (reconnecting) return;
+    reconnecting = true;
+    setStatus('busy', '連線中…');
+    destroyPeer();
+    users = {};
+    renderUsers();
+
+    // 先嘗試成為房主（固定 ID），被占用代表房主存在 → 以成員身分連入
+    var my = new Peer(HOST_ID, { debug: 1 });
+    my.on('open', function (pid) {
+      reconnecting = false;
+      peer = my;
+      myPeerId = pid;
+      becomeHost();
+    });
+    my.on('connection', handleIncomingConn);
+    my.on('error', function (err) {
+      if (err && (err.type === 'unavailable-id' || (err.message && err.message.indexOf('unavailable') >= 0))) {
+        my.destroy();
+        joinAsMember();
+      } else if (err && err.type === 'network') {
+        reconnecting = false;
+        setStatus('busy', '無法連線到 PeerJS 伺服器，3 秒後重試…');
+        setTimeout(bootstrap, 3000);
+      } else {
+        // server-error / browser-incompatible 等：嘗試以成員身分加入
+        my.destroy();
+        joinAsMember();
+      }
+    });
+  }
+
+  function joinAsMember() {
+    var m = new Peer('owifi-' + rand(8), { debug: 1 });
+    m.on('open', function (pid) {
+      reconnecting = false;
+      peer = m;
+      myPeerId = pid;
+      becomeMember();
+    });
+    m.on('connection', handleIncomingConn);
+    m.on('error', function (err) {
+      if (err && err.type === 'network') {
+        m.destroy();
+        reconnecting = false;
+        setStatus('busy', '無法連線到 PeerJS 伺服器，3 秒後重試…');
+        setTimeout(bootstrap, 3000);
+      } else {
+        m.destroy();
+        reconnecting = false;
+        setStatus('busy', '連線失敗，重新嘗試…');
+        setTimeout(bootstrap, 1500);
+      }
+    });
+  }
+
+  // ===================== Presence：成為房主 =====================
+  function becomeHost() {
+    isHost = true;
+    hostConn = null;
+    users = {};
+    memberConns = {};
+    users[myPeerId] = {
+      peerId: myPeerId,
+      name: myName,
+      device: myDevice.label,
+      icon: myDevice.icon,
+      isHost: true,
+      self: true
+    };
+    renderUsers();
+    setStatus('on', '已連線 · 你是房主');
+    $('myName').textContent = myName;
+    toast('你已成為房主，等待其他使用者加入…');
+  }
+
+  function broadcast(msg, exceptPeerId) {
+    Object.keys(memberConns).forEach(function (pid) {
+      if (pid === exceptPeerId) return;
+      try { memberConns[pid].send(msg); } catch (e) { /* ignore */ }
+    });
+  }
+
+  function onMemberHello(conn, msg) {
+    var pid = msg.peerId || conn.peer;
+    if (!pid || pid === myPeerId) return;
+
+    // 成員改名
+    if (msg.type === 'rename') {
+      if (users[pid]) {
+        users[pid].name = msg.name || users[pid].name;
+        broadcast({ type: 'rename', peerId: pid, name: users[pid].name });
+        renderUsers();
+      }
+      return;
+    }
+    if (msg.type !== 'hello') return;
+    var existed = !!users[pid];
+    users[pid] = {
+      peerId: pid,
+      name: msg.name || '未知裝置',
+      device: msg.device || '裝置',
+      icon: msg.icon || '\uD83D\uDCBB',
+      isHost: false,
+      self: false
+    };
+    memberConns[pid] = conn;
+    // 新成員：完整名單；其他成員：告知有人加入
+    if (!existed) {
+      broadcast({ type: 'join', user: users[pid] }, pid);
+      toast(msg.name + ' 已上線');
+    }
+    conn.send({ type: 'roster', users: userList(), you: pid });
+    renderUsers();
+  }
+
+  function onMemberLeave(pid) {
+    if (!users[pid]) return;
+    var u = users[pid];
+    delete users[pid];
+    delete memberConns[pid];
+    broadcast({ type: 'leave', peerId: pid });
+    toast(u.name + ' 已離線', 'bad');
+    renderUsers();
+  }
+
+  // ===================== Presence：成為成員 =====================
+  function becomeMember() {
+    isHost = false;
+    users = {};
+    users[myPeerId] = {
+      peerId: myPeerId,
+      name: myName,
+      device: myDevice.label,
+      icon: myDevice.icon,
+      isHost: false,
+      self: true
+    };
+    renderUsers();
+    setStatus('busy', '已連線，正在加入房間…');
+    $('myName').textContent = myName;
+
+    hostConn = peer.connect(HOST_ID, { reliable: true, metadata: { kind: 'presence' } });
+    hostConn.on('open', function () {
+      setStatus('on', '已連線到 Wi-Fi Drop');
+      hostConn.send({
+        type: 'hello',
+        peerId: myPeerId,
+        name: myName,
+        device: myDevice.label,
+        icon: myDevice.icon
+      });
+    });
+    hostConn.on('data', handleHostMessage);
+    hostConn.on('close', function () {
+      if (reconnecting) return;
+      setStatus('busy', '房主已離線，重新連線中…');
+      bootstrap();
+    });
+    hostConn.on('error', function () {
+      if (reconnecting) return;
+      setStatus('busy', '與房主的連線中斷，重新連線中…');
+      bootstrap();
+    });
+  }
+
+  function handleHostMessage(msg) {
+    if (!msg || !msg.type) return;
+    if (msg.type === 'roster') {
+      users = {};
+      users[myPeerId] = {
+        peerId: myPeerId,
+        name: myName,
+        device: myDevice.label,
+        icon: myDevice.icon,
+        isHost: false,
+        self: true
+      };
+      (msg.users || []).forEach(function (u) {
+        if (u.peerId === myPeerId) return;
+        users[u.peerId] = u;
+      });
+      renderUsers();
+    } else if (msg.type === 'join') {
+      var j = msg.user;
+      if (!j || !j.peerId || j.peerId === myPeerId) return;
+      users[j.peerId] = j;
+      renderUsers();
+      toast(j.name + ' 已上線');
+    } else if (msg.type === 'leave') {
+      if (users[msg.peerId] && !isSelf(msg.peerId)) {
+        var left = users[msg.peerId];
+        delete users[msg.peerId];
+        renderUsers();
+        toast(left.name + ' 已離線', 'bad');
+      }
+    } else if (msg.type === 'rename') {
+      if (users[msg.peerId]) {
+        users[msg.peerId].name = msg.name;
+        renderUsers();
+      }
+    }
+  }
+
+  // ===================== Presence：共用連線入口 =====================
+  function handleIncomingConn(conn) {
+    var kind = conn.metadata && conn.metadata.kind;
+    conn.on('data', function (d) {
+      if (kind === 'presence' && isHost) {
+        onMemberHello(conn, d);
+      } else if (kind === 'transfer') {
+        handleIncomingTransfer(conn, d);
+      }
+    });
+    conn.on('close', function () {
+      if (kind === 'presence' && isHost) {
+        onMemberLeave(conn.peer);
+      } else if (kind === 'transfer') {
+        abortIncomingTransfer(conn);
+      }
+    });
+    conn.on('error', function () {
+      if (kind === 'presence' && isHost) onMemberLeave(conn.peer);
+    });
+  }
+
+  function destroyPeer() {
+    if (peer) {
+      try { peer.destroy(); } catch (e) { /* ignore */ }
+      peer = null;
+    }
+    hostConn = null;
+    memberConns = {};
+    isHost = false;
+  }
+
+  // ===================== 改名 =====================
+  function renameMe() {
+    var next = prompt('輸入你的顯示名稱：', myName);
+    if (next === null) return;
+    next = next.trim().slice(0, 24);
+    if (!next || next === myName) return;
+    myName = next;
+    $('myName').textContent = myName;
+
+    if (isHost) {
+      users[myPeerId].name = myName;
+      broadcast({ type: 'rename', peerId: myPeerId, name: myName });
+      renderUsers();
+    } else if (hostConn && hostConn.open) {
+      hostConn.send({ type: 'rename', peerId: myPeerId, name: myName });
+      users[myPeerId].name = myName;
+      renderUsers();
+    }
+  }
+
+  // ===================== 傳輸：文字訊息 =====================
+  var textTarget = null;
+  var textSends = {};   // textId → { conn, peer }
+
+  function openTextModal(peerId) {
+    var u = users[peerId];
+    if (!u || u.peerId === myPeerId) return;
+    textTarget = u;
+    $('textTargetName').textContent = u.name;
+    var field = $('textField');
+    field.value = '';
+    $('textModal').hidden = false;
+    field.focus();
+  }
+
+  function closeTextModal() {
+    $('textModal').hidden = true;
+    textTarget = null;
+  }
+
+  function submitText() {
+    if (!textTarget) return;
+    var text = $('textField').value.trim();
+    if (!text) return;
+    var target = textTarget;
+    closeTextModal();
+    sendTextTo(target, text);
+  }
+
+  function sendTextTo(target, text) {
+    var txPeer = new Peer('owifi-tx-' + rand(8), { debug: 1 });
+    var tid = 't' + Date.now().toString(36) + rand(4);
+    textSends[tid] = { peer: txPeer, conn: null };
+
+    upsertTxItem(tid, '\u2709', '訊息', '\u2192 ' + target.name);
+
+    txPeer.on('open', function () {
+      var conn = txPeer.connect(target.peerId, {
+        reliable: true,
+        metadata: { kind: 'transfer', from: myName }
+      });
+      textSends[tid].conn = conn;
+      conn.on('open', function () {
+        try {
+          conn.send({ type: 'text', textId: tid, text: text });
+        } catch (e) {
+          abortTextSend(tid, '發送中斷');
+        }
+      });
+      conn.on('data', function (d) {
+        if (d && d.type === 'text-ack' && d.textId === tid) {
+          finishTextSend(tid);
+        } else if (d && d.type === 'error' && d.textId === tid) {
+          abortTextSend(tid, '對方回覆錯誤');
+        }
+      });
+      conn.on('close', function () { abortTextSend(tid, '連線中斷'); });
+      conn.on('error', function () { abortTextSend(tid, '連線錯誤'); });
+    });
+    txPeer.on('error', function () { abortTextSend(tid, '無法連線到對方'); });
+  }
+
+  function finishTextSend(tid) {
+    var t = textSends[tid];
+    if (!t) return;
+    delete textSends[tid];
+    finishTxItem(tid, true);
+    updateTxProgress(tid, 100, '已送達');
+    toast('訊息已送達');
+    try { t.conn && t.conn.close(); } catch (e) { /* ignore */ }
+    try { t.peer.destroy(); } catch (e) { /* ignore */ }
+  }
+
+  function abortTextSend(tid, reason) {
+    var t = textSends[tid];
+    if (!t) return;
+    delete textSends[tid];
+    finishTxItem(tid, false);
+    updateTxProgress(tid, 0, reason);
+    toast('訊息傳送失敗：' + reason, 'bad');
+    try { t.conn && t.conn.close(); } catch (e) { /* ignore */ }
+    try { t.peer.destroy(); } catch (e) { /* ignore */ }
+  }
+
+  // ===================== 傳輸：發送端 =====================
+  function selectTarget(peerId) {
+    var u = users[peerId];
+    if (!u || u.peerId === myPeerId) return;
+    outTarget = u;
+    outQueue = [];
+    fileInput = $('fileInput');
+    fileInput.value = '';
+    fileInput.click();
+  }
+
+  function onFilesChosen(files) {
+    if (!outTarget) return;
+    var list = Array.prototype.slice.call(files);
+    if (list.length === 0) return;
+    list.forEach(function (f) {
+      if (f.size > MAX_FILE) {
+        toast(f.name + ' 太大（建議 2GB 以下）', 'bad');
+        return;
+      }
+      outQueue.push(f);
+    });
+    if (outQueue.length > 0) startOutboundTransfer();
+  }
+
+  function startOutboundTransfer() {
+    var target = outTarget;
+    if (!target || outQueue.length === 0) return;
+    var file = outQueue.shift();
+
+    var txPeer = new Peer('owifi-tx-' + rand(8), { debug: 1 });
+    var fid = 'f' + Date.now().toString(36) + rand(4);
+
+    transfers[fid] = {
+      file: file,
+      target: target,
+      peer: txPeer,
+      conn: null,
+      sentBytes: 0,
+      lastTick: 0,
+      lastBytes: 0,
+      speed: 0,
+      aborted: false
+    };
+
+    upsertTxItem(fid, '\u2191', file.name, '\u2192 ' + target.name);
+
+    txPeer.on('open', function () {
+      var conn = txPeer.connect(target.peerId, {
+        reliable: true,
+        metadata: { kind: 'transfer', from: myName }
+      });
+      transfers[fid].conn = conn;
+      conn.binaryType = 'arraybuffer';
+
+      conn.on('open', function () {
+        var chunkCount = Math.ceil(file.size / CHUNK_SIZE);
+        try {
+          conn.send({
+            type: 'meta',
+            fileId: fid,
+            name: file.name,
+            size: file.size,
+            mime: file.type || 'application/octet-stream',
+            chunkCount: chunkCount,
+            chunkSize: CHUNK_SIZE
+          });
+        } catch (e) {
+          abortOutbound(fid, '發送中斷');
+        }
+      });
+      conn.on('data', function (d) {
+        if (!d || !d.type) return;
+        if (d.type === 'ack' && d.fileId === fid) {
+          pumpChunks(fid);
+        } else if (d.type === 'done-ack' && d.fileId === fid) {
+          finishOutbound(fid);
+        } else if (d.type === 'error' && d.fileId === fid) {
+          abortOutbound(fid, d.message || '對方回覆錯誤');
+        }
+      });
+      conn.on('close', function () {
+        abortOutbound(fid, '連線中斷');
+      });
+      conn.on('error', function () {
+        abortOutbound(fid, '連線錯誤');
+      });
+    });
+
+    txPeer.on('error', function () {
+      abortOutbound(fid, '無法連線到對方');
+    });
+  }
+
+  function waitForBuffer(dc) {
+    return new Promise(function (resolve) {
+      if (dc.bufferedAmount <= MAX_BUFFER) { resolve(); return; }
+      dc.bufferedAmountLowThreshold = MAX_BUFFER / 2;
+      var check = function () {
+        if (dc.bufferedAmount <= MAX_BUFFER) {
+          dc.removeEventListener('bufferedamountlow', check);
+          resolve();
+        }
+      };
+      dc.addEventListener('bufferedamountlow', check);
+    });
+  }
+
+  function pumpChunks(fid) {
+    var t = transfers[fid];
+    if (!t || t.aborted) return;
+    var file = t.file;
+    var conn = t.conn;
+    var dc = conn.dataChannel;
+    var chunkCount = Math.ceil(file.size / CHUNK_SIZE);
+    var i = 0;
+    t.lastTick = performance.now();
+    t.lastBytes = 0;
+
+    (function next() {
+      if (t.aborted) return;
+      if (i >= chunkCount) {
+        try { conn.send({ type: 'done', fileId: fid }); } catch (e) { abortOutbound(fid, '發送中斷'); }
+        return;
+      }
+      var start = i * CHUNK_SIZE;
+      var end = Math.min(start + CHUNK_SIZE, file.size);
+      file.slice(start, end).arrayBuffer().then(function (buf) {
+        if (t.aborted) return;
+        try {
+          conn.send({ type: 'chunk', fileId: fid, index: i, data: buf });
+        } catch (e) {
+          abortOutbound(fid, '發送中斷');
+          return;
+        }
+        t.sentBytes += buf.byteLength;
+        i++;
+
+        // 速度計算（每秒更新）
+        var now = performance.now();
+        var dt = now - t.lastTick;
+        if (dt >= 800) {
+          var delta = t.sentBytes - t.lastBytes;
+          t.speed = delta / (dt / 1000);
+          t.lastTick = now;
+          t.lastBytes = t.sentBytes;
+        }
+
+        var pct = Math.round((t.sentBytes / file.size) * 100);
+        updateTxProgress(fid, pct, '\u2192 ' + t.target.name + ' · ' + pct + '% · ' + formatSize(t.speed) + '/s');
+
+        waitForBuffer(dc).then(next);
+      }).catch(function () {
+        abortOutbound(fid, '讀取檔案失敗');
+      });
+    })();
+  }
+
+  function abortOutbound(fid, reason) {
+    var t = transfers[fid];
+    if (!t || t.aborted) return;
+    t.aborted = true;
+    finishTxItem(fid, false);
+    updateTxProgress(fid, 0, reason);
+    toast('傳送失敗：' + reason, 'bad');
+    try { t.conn && t.conn.close(); } catch (e) { /* ignore */ }
+    try { t.peer.destroy(); } catch (e) { /* ignore */ }
+    delete transfers[fid];
+  }
+
+  function finishOutbound(fid) {
+    var t = transfers[fid];
+    if (!t) return;
+    t.aborted = true;
+    delete transfers[fid];  // 先移除狀態，避免 conn.close 觸發 abort
+    finishTxItem(fid, true);
+    updateTxProgress(fid, 100, '\u2192 ' + t.target.name + ' · 完成');
+    toast('已傳送給 ' + t.target.name);
+    try { t.conn && t.conn.close(); } catch (e) { /* ignore */ }
+    try { t.peer.destroy(); } catch (e) { /* ignore */ }
+    if (outQueue.length > 0) startOutboundTransfer();
+  }
+
+  // ===================== 傳輸：接收端 =====================
+  function handleIncomingTransfer(conn, msg) {
+    if (!msg || !msg.type) return;
+
+    // 文字訊息
+    if (msg.type === 'text') {
+      var senderName = '未知使用者';
+      if (msg.from) senderName = msg.from;
+      else if (conn.metadata && conn.metadata.from) senderName = conn.metadata.from;
+      var tid = msg.textId || ('t' + rand(6));
+
+      upsertTxItem(tid, '\u2709', '訊息', '來自 ' + senderName + ' · 完成');
+      updateTxProgress(tid, 100, '來自 ' + senderName + ' · 完成');
+      finishTxItem(tid, true);
+
+      var blob = new Blob([msg.text], { type: 'text/plain;charset=utf-8' });
+      var url = URL.createObjectURL(blob);
+      addReceivedItem({
+        name: '\uD83D\uDCDD 訊息',
+        url: url,
+        meta: '來自 ' + senderName + ' · ' + formatSize(blob.size),
+        download: false,
+        preview: true
+      });
+      toast('收到來自 ' + senderName + ' 的訊息', 'good');
+      try { conn.send({ type: 'text-ack', textId: msg.textId }); } catch (e) { /* ignore */ }
+      return;
+    }
+
+    var fid = msg.fileId;
+
+    if (msg.type === 'meta') {
+      if (incoming[fid]) return;
+      if (msg.size > MAX_FILE) {
+        try { conn.send({ type: 'error', fileId: fid, message: '檔案太大' }); } catch (e) { /* ignore */ }
+        return;
+      }
+      var senderName = '未知使用者';
+      if (conn.metadata && conn.metadata.from) senderName = conn.metadata.from;
+      else {
+        Object.keys(users).forEach(function (k) {
+          if (users[k].peerId === conn.peer) senderName = users[k].name;
+        });
+      }
+
+      incoming[fid] = {
+        name: msg.name,
+        size: msg.size,
+        mime: msg.mime || 'application/octet-stream',
+        chunkSize: msg.chunkSize || CHUNK_SIZE,
+        chunkCount: msg.chunkCount,
+        buffer: new Uint8Array(msg.size),
+        received: 0,
+        conn: conn,
+        senderName: senderName,
+        from: conn.peer
+      };
+      upsertTxItem(fid, '\u2193', msg.name, '來自 ' + senderName + ' · 接收中');
+      try { conn.send({ type: 'ack', fileId: fid }); } catch (e) { /* ignore */ }
+
+    } else if (msg.type === 'chunk') {
+      var inc = incoming[fid];
+      if (!inc) return;
+      var start = msg.index * inc.chunkSize;
+      if (start + msg.data.byteLength <= inc.size) {
+        inc.buffer.set(new Uint8Array(msg.data), start);
+      }
+      inc.received += msg.data.byteLength;
+      var p = Math.round((inc.received / inc.size) * 100);
+      updateTxProgress(fid, p, '來自 ' + inc.senderName + ' · ' + p + '%');
+      if (inc.received >= inc.size) {
+        try { conn.send({ type: 'done-ack', fileId: fid }); } catch (e) { /* ignore */ }
+        finalizeIncoming(fid);
+      }
+    } else if (msg.type === 'done') {
+      // 保險：done 到達但尚未收滿（理論上不會）
+    }
+  }
+
+  function finalizeIncoming(fid) {
+    var inc = incoming[fid];
+    if (!inc) return;
+    var blob = new Blob([inc.buffer], { type: inc.mime || 'application/octet-stream' });
+    var url = URL.createObjectURL(blob);
+    addReceivedItem({
+      name: inc.name,
+      url: url,
+      meta: formatSize(inc.size) + ' · 來自 ' + inc.senderName,
+      download: true,
+      preview: isPreviewable(inc.mime)
+    });
+
+    finishTxItem(fid, true);
+    updateTxProgress(fid, 100, '來自 ' + inc.senderName + ' · 完成');
+    toast('收到 ' + inc.name + '（來自 ' + inc.senderName + '）', 'good');
+
+    // 自動觸發下載（某些瀏覽器會改為預覽，清單仍可重新下載）
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = inc.name;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+
+    delete incoming[fid];
+  }
+
+  function abortIncomingTransfer(conn) {
+    Object.keys(incoming).forEach(function (fid) {
+      if (incoming[fid].conn === conn) {
+        finishTxItem(fid, false);
+        updateTxProgress(fid, 0, '傳送中斷');
+        delete incoming[fid];
+      }
+    });
+  }
+
+  // ===================== 啟動 =====================
+  window.addEventListener('DOMContentLoaded', function () {
+    $('myName').textContent = myName;
+    $('myName').addEventListener('click', renameMe);
+
+    $('copyLinkBtn').addEventListener('click', function () {
+      var url = location.origin + '/wifi';
+      var done = function () { toast('已複製連結：' + url); };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).then(done, function () {
+          fallbackCopy(url, done);
+        });
+      } else {
+        fallbackCopy(url, done);
+      }
+    });
+
+    fileInput = $('fileInput');
+    fileInput.addEventListener('change', function () {
+      if (fileInput.files) onFilesChosen(fileInput.files);
+      fileInput.value = '';
+    });
+
+    // 文字訊息 modal
+    $('textSend').addEventListener('click', submitText);
+    $('textCancel').addEventListener('click', closeTextModal);
+    $('textField').addEventListener('keydown', function (e) {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+        e.preventDefault();
+        submitText();
+      }
+    });
+    $('textModal').addEventListener('click', function (e) {
+      if (e.target === this) closeTextModal();
+    });
+
+    bootstrap();
+  });
+
+  function fallbackCopy(text, done) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); } catch (e) { /* ignore */ }
+    ta.remove();
+    done();
+  }
+
+  // 頁面回到前景時，若與房主失聯則重連
+  document.addEventListener('visibilitychange', function () {
+    if (!document.hidden && peer && !isHost && hostConn && !hostConn.open && !reconnecting) {
+      bootstrap();
+    }
+  });
+})();
+</script>

@@ -46,7 +46,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
   .tools-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 1.5rem;
   }
 
@@ -166,6 +166,20 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           <h3>NY DROP</h3>
           <p>6 位數代碼配對，檔案直接從 A 電腦傳送到 B 電腦，點對點即時傳輸。</p>
           <span class="tag">P2P Transfer</span>
+        </a>
+
+        <a href="/wifi" class="tool-card">
+          <div class="icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M5 12.55a11 11 0 0 1 14.08 0" />
+              <path d="M1.42 9a16 16 0 0 1 21.16 0" />
+              <path d="M8.53 16.11a6 6 0 0 1 6.95 0" />
+              <line x1="12" y1="20" x2="12.01" y2="20" />
+            </svg>
+          </div>
+          <h3>NY WIFI DROP</h3>
+          <p>同一個 Wi-Fi 內的使用者自動上線，點擊即可互傳大檔案，點對點直連不經伺服器。</p>
+          <span class="tag">LAN Transfer</span>
         </a>
 
         <a href="/nytools/screen" class="tool-card">
