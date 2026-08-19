@@ -133,8 +133,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     content: '';
     width: 3px;
     height: 1em;
-    background: #0a63d6;
-    border-radius: 2px;
+    background: var(--ink);
+    border-radius: 1px;
     flex-shrink: 0;
   }
 
@@ -159,7 +159,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     display: inline-block;
     width: 6px;
     height: 6px;
-    background: #0a63d6;
+    background: var(--ink);
     border-radius: 50%;
     margin-top: 0.45rem;
     flex-shrink: 0;
@@ -189,8 +189,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     content: '';
     width: 3px;
     height: 1em;
-    background: #0a63d6;
-    border-radius: 2px;
+    background: var(--ink);
+    border-radius: 1px;
     flex-shrink: 0;
   }
 
@@ -230,8 +230,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   }
 
   .mode-btn.active {
-    border-color: #0a63d6;
-    background: linear-gradient(180deg, #f5f9ff 0%, var(--surface) 65%);
+    border-color: var(--ink);
+    background: var(--bg-soft);
   }
 
   .mode-btn.active::after {
@@ -240,9 +240,9 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     left: 0;
     right: 0;
     top: 0;
-    height: 3px;
-    background: #0a63d6;
-    border-radius: 3px 3px 0 0;
+    height: 2px;
+    background: var(--ink);
+    border-radius: 2px 2px 0 0;
   }
 
   .mode-btn h3 {
@@ -286,7 +286,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     font-family: monospace;
     font-size: 2.5rem;
     font-weight: 700;
-    color: #0a63d6;
+    color: var(--ink);
     letter-spacing: 0.2em;
     user-select: all;
   }
@@ -305,8 +305,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   }
 
   .code-display .copy-btn:hover {
-    border-color: #0a63d6;
-    color: #0a63d6;
+    border-color: var(--ink);
+    color: var(--ink);
   }
 
   .code-input {
@@ -339,8 +339,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   }
 
   .code-input input:focus {
-    border-color: #0a63d6;
-    box-shadow: 0 0 0 3px rgba(10, 99, 214, 0.12);
+    border-color: var(--ink);
+    box-shadow: 0 0 0 3px rgba(28, 28, 28, 0.08);
   }
 
   .code-input button {
@@ -375,8 +375,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
   .drop-zone:hover,
   .drop-zone.dragover {
-    border-color: #0a63d6;
-    background: #f5f9ff;
+    border-color: var(--border-strong);
+    background: var(--bg-soft);
   }
 
   .drop-zone p {
@@ -407,15 +407,15 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     height: 8px;
     background: var(--bg-soft);
     border: 1px solid var(--border);
-    border-radius: 999px;
+    border-radius: 8px;
     overflow: hidden;
     margin-bottom: 0.5rem;
   }
 
   .progress-bar {
     height: 100%;
-    background: linear-gradient(90deg, #0a63d6, #4d94e8);
-    border-radius: 999px;
+    background: var(--ink);
+    border-radius: 8px;
     transition: width 0.3s ease;
     width: 0%;
   }
@@ -448,7 +448,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   }
 
   .status-dot.connected {
-    background: #0a63d6;
+    background: var(--ink);
   }
 
   .file-list {
@@ -487,10 +487,10 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
   .received-file {
     display: inline-block;
-    padding: 0.45rem 1rem;
+    padding: 0.45rem 0.9rem;
     background: var(--bg-soft);
     border: 1px solid var(--border);
-    border-radius: 999px;
+    border-radius: 8px;
     margin: 0.25rem;
     font-size: 0.85rem;
     color: var(--ink);
@@ -499,9 +499,9 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   }
 
   .received-file:hover {
-    border-color: #0a63d6;
-    color: #0a63d6;
-    background: #f5f9ff;
+    border-color: var(--ink);
+    color: var(--ink);
+    background: var(--surface);
   }
 
   @media (max-width: 640px) {

@@ -94,8 +94,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   }
 
   .icon-wifi {
-    background: #0b8a4d;
-    color: #ffffff;
+    background: #e8f5ee;
+    color: #0b8a4d;
   }
 
   .page-header h1 {
@@ -191,8 +191,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     content: '';
     width: 3px;
     height: 1em;
-    background: #0b8a4d;
-    border-radius: 2px;
+    background: var(--ink);
+    border-radius: 1px;
     flex-shrink: 0;
   }
 
@@ -236,7 +236,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   }
 
   .user-card:hover {
-    border-color: #0b8a4d;
+    border-color: var(--border-strong);
     transform: translateY(-3px);
     box-shadow: 0 12px 28px -18px rgba(28, 28, 28, 0.28);
     background: var(--surface);
@@ -271,7 +271,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     color: var(--ink-3);
     border: 1px solid var(--border);
     padding: 0.05rem 0.5rem;
-    border-radius: 999px;
+    border-radius: 8px;
     letter-spacing: 0.08em;
   }
 
@@ -358,15 +358,15 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     height: 8px;
     background: var(--bg-soft);
     border: 1px solid var(--border);
-    border-radius: 999px;
+    border-radius: 8px;
     overflow: hidden;
   }
 
   .tx-bar {
     height: 100%;
     width: 0%;
-    background: #0b8a4d;
-    border-radius: 999px;
+    background: var(--ink);
+    border-radius: 8px;
     transition: width 0.25s ease;
   }
 
@@ -381,12 +381,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   .tx-accept {
     margin-left: auto;
     background: transparent;
-    border: 1px solid #0b8a4d;
+    border: 1px solid var(--border-strong);
     border-radius: 10px;
     font-family: var(--font-sans);
     font-size: 0.78rem;
     padding: 0.3rem 0.9rem;
-    color: #0b8a4d;
+    color: var(--ink);
     cursor: pointer;
     transition: border-color var(--t), color var(--t), background var(--t);
     letter-spacing: 0.05em;
@@ -394,7 +394,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   }
 
   .tx-accept:hover {
-    background: #0b8a4d;
+    background: var(--ink);
     color: var(--white);
   }
 
@@ -421,7 +421,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     padding: 0.5rem 1rem;
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 999px;
+    border-radius: 8px;
     font-size: 0.85rem;
     color: var(--ink);
     text-decoration: none;
@@ -431,7 +431,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   }
 
   .received-file:hover {
-    border-color: #0b8a4d;
+    border-color: var(--border-strong);
     background: var(--bg-soft);
   }
 
@@ -471,7 +471,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     margin-left: 0.4rem;
     background: transparent;
     border: 1px solid var(--border);
-    border-radius: 999px;
+    border-radius: 8px;
     color: var(--ink-2);
     font-family: var(--font-sans);
     font-size: 0.72rem;
@@ -500,7 +500,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     left: 0.4rem;
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 999px;
+    border-radius: 8px;
     color: var(--ink-3);
     font-size: 0.75rem;
     padding: 0.1rem 0.4rem;
@@ -511,8 +511,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   }
 
   .u-send-text:hover {
-    border-color: #0b8a4d;
-    color: #0b8a4d;
+    border-color: var(--ink);
+    color: var(--ink);
   }
 
   .text-modal {
@@ -567,8 +567,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
   .text-modal-box textarea:focus {
     outline: none;
-    border-color: #0b8a4d;
-    box-shadow: 0 0 0 3px rgba(11, 138, 77, 0.12);
+    border-color: var(--ink);
+    box-shadow: 0 0 0 3px rgba(28, 28, 28, 0.08);
   }
 
   .text-modal-actions {
