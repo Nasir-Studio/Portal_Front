@@ -107,6 +107,7 @@ const posts: Post[] = [
       <ul>
         <li><strong>文字 Moderation：</strong>基於詞級別（Phrase-level）比對加上古文/歷史詞庫，實作 <strong>BLOCK（直接封鎖）/ REVIEW（人工審核）/ ALLOW（直接通過）</strong> 三級敏感詞控制。</li>
         <li><strong>敏感詞寬容比對：</strong>演算法支援<strong>拼音、注音</strong>等變體諧音比對。舉例：有人用特殊符號或同音字想繞過審查？照樣被抓出來。</li>
+        <li><strong>🔬 待研究（TensorFlow 內容審核）：</strong>除了圖片 NSFW 過濾，<a href="https://www.tensorflow.org/?hl=zh-tw" target="_blank" rel="noopener noreferrer">TensorFlow</a> 也能用 AI 審核<strong>文字內容</strong>或<strong>影音內容</strong>！先把官方網站收藏起來，等我研究完再補一篇實作筆記。</li>
       </ul>
 
       <h3>1.7 多層流量限制與防濫用（Multi-layer Rate Limiting）</h3>
@@ -159,6 +160,35 @@ const posts: Post[] = [
         <li><strong>8. chat（即時聊天室）＝客服線：</strong>買家跟賣家針對特定刊登商品的溝通管道，紀錄對話歷史。</li>
         <li><strong>9. subscriptions（求書與訂閱）＝許願池：</strong>某本書目前沒人刊登？使用者可以建立訂閱，未來一有人上架，系統自動比對並通知訂閱者。</li>
         <li><strong>10. core（核心與背景任務）＝總務處：</strong>全站公用基礎功能、非同步背景任務調度（例如定期清理過期快取）、全系統層級的日誌操作紀錄。</li>
+      </ul>
+
+      <h2>📚 附錄：每天多學一點（待研究清單）</h2>
+      <p>
+        看完整篇架構後，其實還有一串「已經用到、但還沒研究透」跟「未來想引入」的主題。我把它們整理成待研究清單，按照對應的章節分門別類，研究完一篇就補一篇筆記：
+      </p>
+
+      <h3>🔐 認證與授權（對應 1.3）</h3>
+      <ul>
+        <li><strong>JWT 是什麼：</strong>專案已經在用自訂 JWT（HS256），但原理還是要徹底搞懂——<a href="https://jwt.io/" target="_blank" rel="noopener noreferrer">JWT.IO</a> 有互動式解說，還可以直接把 token 丟上去轉碼看內容。</li>
+        <li><strong>自訂 JWT：</strong>1.3 提到的 <code>app_token</code> 就是自訂 JWT 的實作，動手之前先用 <a href="https://jwt.io/" target="_blank" rel="noopener noreferrer">JWT.IO</a> 練習編碼/解碼流程。</li>
+      </ul>
+
+      <h3>⚙️ 後端與背景任務（對應 1.1 / core 總務處）</h3>
+      <ul>
+        <li><strong>DRF（Django REST Framework）：</strong>Django 寫 API 的神器，1.7 提到的「DRF / Django Throttling」就是它的一環——官方文件先卡位：<a href="https://www.django-rest-framework.org/" target="_blank" rel="noopener noreferrer">django-rest-framework.org</a>。</li>
+        <li><strong>Celery 排程：</strong>背景任務的進階解法，適合把「寄信、推播通知、清理快取」這種耗時工作丟到佇列排隊慢慢跑——參考：<a href="https://medium.com/@v0220225/backend-%E6%8E%92%E7%A8%8B%E6%8E%92%E8%B5%B7%E4%BE%86-celery-7cd8ca964716" target="_blank" rel="noopener noreferrer">[Backend] 排程排起來 — Celery</a>。</li>
+      </ul>
+
+      <h3>🗄️ 資料庫（對應第 5 層）</h3>
+      <ul>
+        <li><strong>Database Replication（資料庫複寫）：</strong>探討為什麼要做主從複製、優缺點跟實際做法，評估未來讀寫分離的可能性——參考：<a href="https://homuchen.com/posts/what-and-why-database-replication-advantage-and-disadvantage/" target="_blank" rel="noopener noreferrer">[System Design] 淺談 Database Replication</a>。</li>
+      </ul>
+
+      <h3>🎨 前端與設計（對應第 4 層）</h3>
+      <ul>
+        <li><strong>masonry 套件：</strong>瀑布流排版（Pinterest 那種格子牆），之後做商品牆或圖片牆會用到——官方網站：<a href="https://masonry.desandro.com/" target="_blank" rel="noopener noreferrer">masonry.desandro.com</a>。</li>
+        <li><strong>Aura Build：</strong>主打用 AI 快速生成漂亮 Landing Page 的平台，研究看看能不能拿來做活動頁或行銷頁。</li>
+        <li><strong>名片樣式設計：</strong>收藏的名片排版靈感，之後做個人主頁或電子名片可以參考。</li>
       </ul>
 
       <p class="post-outro">
