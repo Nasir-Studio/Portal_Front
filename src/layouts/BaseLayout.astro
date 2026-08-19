@@ -57,18 +57,8 @@ const {
     <script is:inline>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', function () {
-          navigator.serviceWorker.register('/sw.js', { updateViaCache: 'none' }).catch(function (err) {
-            console.warn('SW registration failed:', err);
-          });
+          navigator.serviceWorker.register('/sw.js', { updateViaCache: 'none' }).catch(function () {});
         });
-      }
-    </script>
-    <script is:inline>
-
-      if (window.location.pathname !== '/') {
-        var hc = new Image();
-        hc.src =
-          'https://www.hitwebcounter.com/counter/counter.php?page=21514902&style=0001&nbdigits=8&type=page';
       }
     </script>
   </body>
