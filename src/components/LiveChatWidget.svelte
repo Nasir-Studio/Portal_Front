@@ -291,31 +291,31 @@
 <style>
   .live-chat-root {
     position: fixed;
-    bottom: 24px;
-    right: 24px;
+    bottom: 20px;
+    right: 20px;
     z-index: 9999;
   }
 
-  /* 懸浮純圖示按鈕 */
+  /* 懸浮純圖示按鈕 (更精巧與圓潤) */
   .chat-launcher {
     appearance: none;
     background: var(--ink);
     color: var(--white);
     border: 1.5px solid var(--ink);
     border-radius: 50%;
-    width: 54px;
-    height: 54px;
+    width: 46px;
+    height: 46px;
     padding: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: 4px 4px 0px rgba(28, 28, 28, 0.16);
+    box-shadow: 3px 3px 0px rgba(28, 28, 28, 0.14);
     transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background var(--t);
   }
 
   .chat-launcher:hover {
-    transform: translateY(-3px);
+    transform: translateY(-2px);
     background: #000;
   }
 
@@ -325,23 +325,24 @@
     justify-content: center;
   }
 
-  /* 聊天視窗主體 */
+  /* 聊天視窗主體 (精緻尺寸與圓角) */
   .chat-window {
-    width: 360px;
-    height: 500px;
+    width: 318px;
+    height: 445px;
     background: var(--surface);
-    border: 2px solid var(--ink);
-    box-shadow: 6px 6px 0px rgba(28, 28, 28, 0.18);
+    border: 1.5px solid var(--ink);
+    border-radius: 12px;
+    box-shadow: 4px 4px 0px rgba(28, 28, 28, 0.14);
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    animation: chat-popup 0.25s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation: chat-popup 0.22s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
 
   @keyframes chat-popup {
     from {
       opacity: 0;
-      transform: translateY(16px) scale(0.96);
+      transform: translateY(12px) scale(0.97);
     }
     to {
       opacity: 1;
@@ -354,7 +355,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0.75rem 1rem;
+    padding: 0.65rem 0.9rem;
     background: var(--ink);
     color: var(--white);
     border-bottom: 1.5px solid var(--ink);
@@ -363,13 +364,13 @@
   .chat-header-info {
     display: flex;
     align-items: center;
-    gap: 0.65rem;
+    gap: 0.55rem;
   }
 
   .header-avatar {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
     background: #ffffff;
     display: flex;
     align-items: center;
@@ -384,9 +385,9 @@
   }
 
   .header-title {
-    font-size: 0.92rem;
+    font-size: 0.88rem;
     font-weight: 600;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.08em;
   }
 
   .chat-close-btn {
