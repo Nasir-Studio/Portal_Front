@@ -91,10 +91,10 @@ svg {
 
 .module {
   background: var(--surface);
-  border: 1px solid var(--ink);
+  border: 1.5px solid var(--ink);
   border-radius: 0;
-  margin-bottom: 1.5rem;
-  box-shadow: 0 4px 14px -6px rgba(28, 28, 28, 0.08);
+  margin-bottom: 1.6rem;
+  box-shadow: 4px 4px 0px rgba(28, 28, 28, 0.14);
   animation: module-in 0.45s var(--ease) both;
 }
 
@@ -114,14 +114,14 @@ svg {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.72rem 1.1rem;
-  background: var(--bg-soft);
-  border-bottom: 1px solid var(--ink);
+  padding: 0.75rem 1.15rem;
+  background: var(--ink);
+  color: #f7eed7;
+  border-bottom: 1.5px solid var(--ink);
   font-family: var(--font-serif);
   font-size: 0.95rem;
   font-weight: 600;
-  letter-spacing: 0.2em;
-  color: var(--ink);
+  letter-spacing: 0.22em;
   border-radius: 0;
 }
 
