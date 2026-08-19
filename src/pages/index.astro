@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Banner from '../components/Banner.astro';
 import Announcements from '../components/Announcements.astro';
 import QuoteOfTheDay from '../components/QuoteOfTheDay.svelte';
+import ContactForm from '../components/ContactForm.svelte';
 import VisitorCounter from '../components/VisitorCounter.svelte';
 
 const services = [
@@ -88,6 +89,11 @@ const badges = [
             ))
           }
         </nav>
+      </section>
+
+      <section class="module contact-module" aria-label="聯絡表單">
+        <h2 class="module-title">聯絡表單</h2>
+        <ContactForm client:load />
       </section>
 
       <section class="module" aria-label="訪客計數器">
