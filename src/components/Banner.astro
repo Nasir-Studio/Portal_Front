@@ -1,46 +1,28 @@
 ---
 const banners = [
   {
-    alt: 'OviNas',
-    body: `<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="auto" viewBox="0 0 1080 360" role="img" aria-label="OviNas">
-      <rect width="1080" height="360" fill="#f5f4f1" />
-      <rect x="18" y="18" width="1044" height="324" fill="none" stroke="#1c1c1c" stroke-width="2" />
-      <image href="/logo.png" x="490" y="30" width="100" height="100" />
-      <text x="540" y="220" text-anchor="middle" font-family="'Noto Serif TC', 'Songti TC', serif" font-size="76" font-weight="700" letter-spacing="18" fill="#1c1c1c">OviNas</text>
-    </svg>`,
+    title: 'OviNas',
+    sub: '',
+    tag: '',
+    isMain: true,
   },
   {
-    alt: '羊監視你 即時監視影像',
-    body: `<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="auto" viewBox="0 0 1080 360" role="img" aria-label="羊監視你 即時監視影像">
-      <rect width="1080" height="360" fill="#f5f4f1" />
-      <rect x="18" y="18" width="1044" height="324" fill="none" stroke="#1c1c1c" stroke-width="2" />
-      <image href="/logo.png" x="490" y="20" width="100" height="100" />
-      <text x="540" y="190" text-anchor="middle" font-family="'Noto Serif TC', 'Songti TC', serif" font-size="68" font-weight="700" letter-spacing="16" fill="#1c1c1c">羊監視你</text>
-      <text x="540" y="248" text-anchor="middle" font-family="'Noto Sans TC', 'PingFang TC', sans-serif" font-size="22" letter-spacing="10" fill="#4c4b47">即時監視影像</text>
-      <text x="540" y="290" text-anchor="middle" font-family="'Noto Sans TC', 'PingFang TC', sans-serif" font-size="16" letter-spacing="8" fill="#8b8983">LIVE CAMERA</text>
-    </svg>`,
+    title: '羊監視你',
+    sub: '即時監視影像',
+    tag: 'LIVE CAMERA',
+    isMain: false,
   },
   {
-    alt: '羊集章 集章活動紀錄',
-    body: `<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="auto" viewBox="0 0 1080 360" role="img" aria-label="羊集章 集章活動紀錄">
-      <rect width="1080" height="360" fill="#f5f4f1" />
-      <rect x="18" y="18" width="1044" height="324" fill="none" stroke="#1c1c1c" stroke-width="2" />
-      <image href="/logo.png" x="490" y="20" width="100" height="100" />
-      <text x="540" y="190" text-anchor="middle" font-family="'Noto Serif TC', 'Songti TC', serif" font-size="68" font-weight="700" letter-spacing="16" fill="#1c1c1c">羊集章</text>
-      <text x="540" y="248" text-anchor="middle" font-family="'Noto Sans TC', 'PingFang TC', sans-serif" font-size="22" letter-spacing="10" fill="#4c4b47">集章活動紀錄</text>
-      <text x="540" y="290" text-anchor="middle" font-family="'Noto Sans TC', 'PingFang TC', sans-serif" font-size="16" letter-spacing="8" fill="#8b8983">BADGE COLLECTION</text>
-    </svg>`,
+    title: '羊集章',
+    sub: '集章活動紀錄',
+    tag: 'BADGE COLLECTION',
+    isMain: false,
   },
   {
-    alt: '羊愛考試 線上測驗系統',
-    body: `<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="auto" viewBox="0 0 1080 360" role="img" aria-label="羊愛考試 線上測驗系統">
-      <rect width="1080" height="360" fill="#f5f4f1" />
-      <rect x="18" y="18" width="1044" height="324" fill="none" stroke="#1c1c1c" stroke-width="2" />
-      <image href="/logo.png" x="490" y="20" width="100" height="100" />
-      <text x="540" y="190" text-anchor="middle" font-family="'Noto Serif TC', 'Songti TC', serif" font-size="68" font-weight="700" letter-spacing="16" fill="#1c1c1c">羊愛考試</text>
-      <text x="540" y="248" text-anchor="middle" font-family="'Noto Sans TC', 'PingFang TC', sans-serif" font-size="22" letter-spacing="10" fill="#4c4b47">線上測驗系統</text>
-      <text x="540" y="290" text-anchor="middle" font-family="'Noto Sans TC', 'PingFang TC', sans-serif" font-size="16" letter-spacing="8" fill="#8b8983">ONLINE EXAM</text>
-    </svg>`,
+    title: '羊愛考試',
+    sub: '線上測驗系統',
+    tag: 'ONLINE EXAM',
+    isMain: false,
   },
 ];
 ---
@@ -51,7 +33,14 @@ const banners = [
       {
         banners.map((b) => (
           <li class="banner-slide">
-            <div class="banner-svg" set:html={b.body} role="img" aria-label={b.alt}></div>
+            <div class="banner-card">
+              <div class="banner-card-inner">
+                <img class="banner-logo" src="/logo.png" alt="Logo" width="90" height="90" loading="lazy" />
+                <h2 class={`banner-title ${b.isMain ? 'is-main-title' : ''}`}>{b.title}</h2>
+                {b.sub && <p class="banner-sub">{b.sub}</p>}
+                {b.tag && <span class="banner-tag">{b.tag}</span>}
+              </div>
+            </div>
           </li>
         ))
       }
@@ -79,24 +68,89 @@ const banners = [
     position: relative;
     overflow: hidden;
     border: 1px solid var(--border);
-    background: var(--surface);
+    background: #f5f4f1;
+    user-select: none;
   }
 
   .banner-track {
     display: flex;
     list-style: none;
+    margin: 0;
+    padding: 0;
     transition: transform 0.5s var(--ease);
   }
 
   .banner-slide {
     flex: 0 0 100%;
+    margin: 0;
+    padding: 0;
   }
 
-  .banner-svg svg {
+  .banner-card {
+    background: #f5f4f1;
+    padding: 18px;
+    height: 320px;
+    box-sizing: border-box;
+    display: flex;
+  }
+
+  .banner-card-inner {
     width: 100%;
-    max-width: 100%;
-    height: auto;
+    height: 100%;
+    border: 2px solid #1c1c1c;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    box-sizing: border-box;
+    padding: 1.4rem 1rem;
+    gap: 0.35rem;
+  }
+
+  .banner-logo {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    margin-bottom: 0.35rem;
     display: block;
+  }
+
+  .banner-title {
+    font-family: var(--font-serif);
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    color: #1c1c1c;
+    margin: 0;
+    padding-left: 0.22em;
+    line-height: 1.15;
+  }
+
+  .banner-title.is-main-title {
+    font-size: 3.2rem;
+    letter-spacing: 0.26em;
+    padding-left: 0.26em;
+  }
+
+  .banner-sub {
+    font-family: var(--font-sans);
+    font-size: 1.1rem;
+    letter-spacing: 0.35em;
+    color: #4c4b47;
+    margin: 0;
+    padding-left: 0.35em;
+    font-weight: 500;
+    line-height: 1.3;
+  }
+
+  .banner-tag {
+    font-family: var(--font-sans);
+    font-size: 0.82rem;
+    letter-spacing: 0.32em;
+    color: #8b8983;
+    padding-left: 0.32em;
+    margin-top: 0.15rem;
   }
 
   .banner-btn {
@@ -115,6 +169,7 @@ const banners = [
     border: none;
     cursor: pointer;
     transition: background var(--t);
+    z-index: 2;
   }
 
   .banner-btn:hover {
@@ -131,17 +186,18 @@ const banners = [
 
   .banner-dots {
     position: absolute;
-    bottom: 10px;
+    bottom: 24px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
     gap: 8px;
+    z-index: 2;
   }
 
   .banner-dot {
-    width: 10px;
-    height: 10px;
-    border: 1px solid var(--white);
+    width: 9px;
+    height: 9px;
+    border: 1px solid #1c1c1c;
     background: transparent;
     cursor: pointer;
     padding: 0;
@@ -149,16 +205,58 @@ const banners = [
   }
 
   .banner-dot.is-active {
-    background: var(--white);
+    background: #1c1c1c;
   }
 
+  /* RWD 手機版最佳化 */
   @media (max-width: 700px) {
     .banner.container {
       width: 100%;
     }
 
     .banner {
-      padding: 0.9rem 0 0.2rem;
+      padding: 0.8rem 0 0.2rem;
+    }
+
+    .banner-card {
+      height: 220px;
+      padding: 10px;
+    }
+
+    .banner-card-inner {
+      border-width: 1.5px;
+      padding: 0.8rem 0.5rem;
+      gap: 0.25rem;
+    }
+
+    .banner-logo {
+      width: 52px;
+      height: 52px;
+      margin-bottom: 0.2rem;
+    }
+
+    .banner-title {
+      font-size: 1.7rem;
+      letter-spacing: 0.16em;
+      padding-left: 0.16em;
+    }
+
+    .banner-title.is-main-title {
+      font-size: 1.95rem;
+      letter-spacing: 0.2em;
+      padding-left: 0.2em;
+    }
+
+    .banner-sub {
+      font-size: 0.88rem;
+      letter-spacing: 0.22em;
+      padding-left: 0.22em;
+    }
+
+    .banner-tag {
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      padding-left: 0.2em;
     }
 
     .banner-btn {
@@ -166,14 +264,37 @@ const banners = [
     }
 
     .banner-dots {
-      bottom: 8px;
+      bottom: 14px;
+      gap: 6px;
     }
 
-    .banner-svg svg {
-      width: 100%;
-      max-width: 100%;
-      height: auto;
-      display: block;
+    .banner-dot {
+      width: 7px;
+      height: 7px;
+    }
+  }
+
+  @media (max-width: 400px) {
+    .banner-card {
+      height: 205px;
+      padding: 8px;
+    }
+
+    .banner-logo {
+      width: 46px;
+      height: 46px;
+    }
+
+    .banner-title {
+      font-size: 1.55rem;
+    }
+
+    .banner-title.is-main-title {
+      font-size: 1.75rem;
+    }
+
+    .banner-sub {
+      font-size: 0.82rem;
     }
   }
 </style>
@@ -182,17 +303,16 @@ const banners = [
   const viewport = document.querySelector('.banner-viewport');
   if (viewport) {
     const track = viewport.querySelector('.banner-track');
-    const slides = Array.from(viewport.querySelectorAll('.banner-slide'));
     const dots = Array.from(viewport.querySelectorAll('.banner-dot'));
     const prevBtn = viewport.querySelector('.banner-prev');
     const nextBtn = viewport.querySelector('.banner-next');
-    const total = slides.length;
+    const total = dots.length;
     let index = 0;
     let timer = null;
 
     const goTo = (i) => {
       index = (i + total) % total;
-      track.style.transform = `translateX(-${index * 100}%)`;
+      if (track) (track as HTMLElement).style.transform = `translateX(-${index * 100}%)`;
       dots.forEach((d, j) => d.classList.toggle('is-active', j === index));
     };
 
@@ -224,6 +344,33 @@ const banners = [
 
     viewport.addEventListener('mouseenter', stop);
     viewport.addEventListener('mouseleave', play);
+
+    // 手機觸控滑動支援
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    viewport.addEventListener(
+      'touchstart',
+      (e) => {
+        touchStartX = (e as TouchEvent).changedTouches[0].screenX;
+        stop();
+      },
+      { passive: true }
+    );
+
+    viewport.addEventListener(
+      'touchend',
+      (e) => {
+        touchEndX = (e as TouchEvent).changedTouches[0].screenX;
+        const diff = touchStartX - touchEndX;
+        if (Math.abs(diff) > 45) {
+          if (diff > 0) goTo(index + 1);
+          else goTo(index - 1);
+        }
+        play();
+      },
+      { passive: true }
+    );
 
     goTo(0);
     if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
