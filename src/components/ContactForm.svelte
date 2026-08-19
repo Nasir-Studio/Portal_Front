@@ -2,7 +2,7 @@
   let name = '';
   let email = '';
   let message = '';
-  let status = 'idle'; // 'idle' | 'submitting' | 'success' | 'error'
+  let status = 'idle';
 
   const FORM_URL =
     'https://docs.google.com/forms/d/e/1FAIpQLSeeWapjagLqPsg7i2y_TYhNq2xKW-nNFj6JywiqiDZ8Hkiheg/formResponse';

@@ -322,7 +322,6 @@ const techPages = paginatePosts(techPosts);
     });
   }
 
-  // 閘門：內嵌於技術文章面板內（不遮畫面），開啟時隱藏文章清單
   const techPagesEl = document.getElementById('tech-pages');
   const techPagerEl = document.querySelector<HTMLElement>('#panel-tech .news-pager');
   const gateWrap = document.getElementById('tech-gate-wrap');
@@ -378,14 +377,12 @@ const techPages = paginatePosts(techPosts);
     if (window.closeTechGate) window.closeTechGate();
   }
 
-  // 初始化：若已解鎖，確保閘門關閉並展開文章清單
   if (localStorage.getItem('ovinas-tech-unlocked') === '1') {
     hideTechGate();
   }
 
   tabs.forEach((tab) => {
     tab.addEventListener('click', () => {
-      // 技術文章 tab：需先通過閘門（登入 + 假付款）
       if (tab.id === 'tab-tech') {
         const unlocked = localStorage.getItem('ovinas-tech-unlocked') === '1';
         if (!unlocked) {
@@ -402,14 +399,12 @@ const techPages = paginatePosts(techPosts);
     });
   });
 
-  // 閘門通過後：隱藏閘門、展開技術文章清單
   window.addEventListener('tech-gate:unlocked', () => {
     const techTab = document.getElementById('tab-tech') as HTMLButtonElement;
     if (techTab) activate(techTab);
     hideTechGate();
   });
 
-  // 分頁（每頁 5 篇）——每個有 .news-pager 的 panel 各自獨立分頁
   panels.forEach((panel) => {
     const pageEls = Array.from(panel.querySelectorAll<HTMLElement>('.news-page'));
     const pager = panel.querySelector<HTMLElement>('.news-pager');

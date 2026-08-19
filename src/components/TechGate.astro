@@ -1,11 +1,9 @@
 ---
-// 技術文章閘門：黑白色調、雙階段（登入 → 假付款 NT$3,000）解鎖面板
-// 桌面「好看的特效頁面」runaway login + 3D credit card 整合版（monochrome）
 ---
 
 <div class="tech-gate" id="tech-gate" aria-hidden="true">
   <div class="gate-modal" role="dialog" aria-modal="true" aria-label="技術文章登入">
-    <!-- ===== 階段一：登入（runaway 按鈕） ===== -->
+    
     <section class="gate-stage" id="gate-login" data-stage="login">
       <form id="gate-login-form" autocomplete="off" novalidate>
         <div class="form-group">
@@ -43,14 +41,14 @@
       </form>
     </section>
 
-    <!-- ===== 階段二：付款（3D 信用卡，NT$3,000） ===== -->
+    
     <section class="gate-stage" id="gate-payment" data-stage="payment" hidden>
       <div class="pay-grid">
         <div class="pay-left">
           <div class="card-slot" id="card-slot">
             <div class="glow-halo" id="glow-halo"></div>
             <div class="card-wrapper" id="card-wrapper">
-              <!-- 正面 -->
+              
               <div class="card-face card-face-front">
                 <div class="card-top-row">
                   <div class="card-chip" aria-hidden="true"></div>
@@ -69,7 +67,7 @@
                   <div class="card-brand-logo" id="display-brand">OVI</div>
                 </div>
               </div>
-              <!-- 背面 -->
+              
               <div class="card-face card-face-back">
                 <div class="card-mag-stripe" aria-hidden="true"></div>
                 <div class="card-cvc-strip" id="display-cvc">•••</div>
@@ -128,7 +126,6 @@
 </div>
 
 <style>
-  /* ===== 整體閘門（內嵌卡片，不遮畫面） ===== */
   .tech-gate {
     display: none;
   }
@@ -154,7 +151,6 @@
     padding: 1.2rem 1.4rem 1.4rem;
   }
 
-  /* ===== 登入階段（緊湊，約 5 篇文章高度） ===== */
   #gate-login {
     max-width: 480px;
     margin-inline: auto;
@@ -233,7 +229,6 @@
     color: var(--ink);
   }
 
-  /* Runaway 按鈕區 */
   .dock-wrap {
     margin-top: 1rem;
     position: relative;
@@ -317,7 +312,6 @@
     box-shadow: 0 0 0 1px var(--ink), 0 8px 20px rgba(0, 0, 0, 0.15);
   }
 
-  /* ===== 付款階段（緊湊雙欄，不超出面板） ===== */
   .pay-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -340,7 +334,6 @@
     gap: 0.8rem;
   }
 
-  /* 3D 卡片 */
   .card-slot {
     position: relative;
     width: 100%;
@@ -514,7 +507,6 @@
     line-height: 1.4;
   }
 
-  /* 訂單明細 */
   .order-summary-box {
     background: var(--bg-soft);
     border: 1px solid var(--border);
@@ -548,7 +540,6 @@
     margin-bottom: 0;
   }
 
-  /* 狀態畫面 */
   .status-screen {
     display: none;
     flex-direction: column;
@@ -634,7 +625,6 @@
     border-color: var(--ink);
   }
 
-  /* 付款表單 */
   .pay-right {
     display: flex;
     flex-direction: column;
@@ -747,7 +737,6 @@
   const ctaBtn = document.getElementById('gate-cta');
   const bandLine = document.querySelector('[data-band-line]');
 
-  // ===== Runaway 按鈕物理 =====
   let pos = { x: 0, y: 0, rot: 0 };
   let targetPos = { x: 0, y: 0, rot: 0 };
   let mouse = { x: -1000, y: -1000 };
@@ -757,7 +746,6 @@
     const emailVal = emailInput.value.trim();
     const passVal = passwordInput.value.trim();
 
-    // 不限格式：只要有輸入就算有效
     const emailValid = emailVal.length > 0;
     const passValid = passVal.length > 0;
 
@@ -849,7 +837,6 @@
     requestAnimationFrame(physics);
   }
 
-  // ===== 登入提交 =====
   loginForm.addEventListener('submit', (e) => {
     e.preventDefault();
     if (validCount < 2) {
@@ -862,7 +849,6 @@
     ctaBtn.style.opacity = '0.75';
 
     setTimeout(() => {
-      // 無論輸入什麼皆登入成功 → 切到付款階段
       loginStage.hidden = true;
       payStage.hidden = false;
       gate.querySelector('.gate-modal').scrollTop = 0;
@@ -871,7 +857,6 @@
     }, 800);
   });
 
-  // ===== 付款：3D 卡片互動 =====
   const cardSlot = document.getElementById('card-slot');
   const cardWrapper = document.getElementById('card-wrapper');
   const glowHalo = document.getElementById('glow-halo');
@@ -892,7 +877,6 @@
   const statusDesc = document.getElementById('status-desc');
   const resetDemoBtn = document.getElementById('reset-demo-btn');
 
-  // 3D 傾斜
   if (cardSlot && cardWrapper) {
     cardSlot.addEventListener('mousemove', (e) => {
       if (cardWrapper.classList.contains('is-flipped')) return;
@@ -911,7 +895,6 @@
     });
   }
 
-  // CVC 聚焦翻面
   cvcInput.addEventListener('focus', () => {
     cardWrapper.classList.add('is-flipped');
     cardWrapper.style.transform = 'rotateY(180deg)';
@@ -927,7 +910,6 @@
     });
   });
 
-  // 即時顯示
   cardholderInput.addEventListener('input', (e) => {
     const val = e.target.value.toUpperCase();
     displayHolder.textContent = val || 'OVI NAS';
@@ -957,7 +939,6 @@
     displayCvc.textContent = raw || '•••';
   });
 
-  // ===== 付款提交（假的，必定成功） =====
   let autoUnlockTimer: ReturnType<typeof setTimeout> | null = null;
 
   payForm.addEventListener('submit', (e) => {
@@ -969,7 +950,6 @@
     statusDesc.textContent = '模擬卡片 金額 NT$3,000';
     resetDemoBtn.hidden = true;
 
-    // 立即儲存已解鎖狀態
     localStorage.setItem('ovinas-tech-unlocked', '1');
 
     setTimeout(() => {
@@ -979,7 +959,6 @@
       resetDemoBtn.hidden = false;
       resetDemoBtn.textContent = '進入技術文章 →';
 
-      // 0.5 秒後自動進入技術文章
       if (autoUnlockTimer) clearTimeout(autoUnlockTimer);
       autoUnlockTimer = setTimeout(() => {
         unlockAndEnter();
@@ -997,7 +976,6 @@
     window.dispatchEvent(new CustomEvent('tech-gate:unlocked'));
   }
 
-  // 付款成功後點擊立即進入
   resetDemoBtn.addEventListener('click', () => {
     unlockAndEnter();
   });
@@ -1019,7 +997,6 @@
     validate();
   }
 
-  // ===== 對外開關：Announcements 呼叫 =====
   window.openTechGate = function () {
     gate.classList.add('is-open');
     gate.setAttribute('aria-hidden', 'false');
