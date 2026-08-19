@@ -6,10 +6,10 @@ import QuoteOfTheDay from '../components/QuoteOfTheDay.svelte';
 import VisitorCounter from '../components/VisitorCounter.svelte';
 
 const services = [
-  { name: '羊監視你', desc: '即時監視影像', href: '/cctv', external: false },
-  { name: '羊集章', desc: '集章活動紀錄', href: '/badges/', external: false },
-  { name: '羊愛考試', desc: '線上測驗系統', href: 'https://1ztests.nsir.uk', external: true },
-  { name: '羊-短網址', desc: '網址縮短服務', href: 'https://nsir.uk', external: true },
+  { name: '羊監視你', desc: '即時監視影像', href: '/cctv', external: false, icon: '/logo.png' },
+  { name: '羊集章', desc: '集章活動紀錄', href: '/badges/', external: false, icon: '/icon素材/icon素材-2.png' },
+  { name: '羊愛考試', desc: '線上測驗系統', href: 'https://1ztests.nsir.uk', external: true, icon: '/service-1ztests.png' },
+  { name: '羊-短網址', desc: '網址縮短服務', href: 'https://nsir.uk', external: true, icon: '/service-nsir.jpg' },
 ];
 
 const badges = [
@@ -65,22 +65,23 @@ const badges = [
         <QuoteOfTheDay client:load />
       </section>
 
-      <section class="module services-module" aria-label="服務連結">
-        <h2 class="module-title">服務連結</h2>
-        <nav class="menu-list" aria-label="服務連結列表">
+      <section class="module tools-module" aria-label="工具服務">
+        <h2 class="module-title">工具服務</h2>
+        <nav class="tools-grid" aria-label="工具服務列表">
           {
             services.map((s) => (
               <a
-                class="menu-item"
+                class="tool-item"
                 href={s.href}
                 target={s.external ? '_blank' : undefined}
                 rel={s.external ? 'noopener noreferrer' : undefined}
               >
-                <span class="menu-item-name">
-                  {s.name}
-                  <span class="menu-item-arrow" aria-hidden="true">{s.external ? '↗' : ''}</span>
+                <span class="tool-icon">
+                  <img src={s.icon} alt={s.name} width="56" height="56" loading="lazy" />
+                  {s.external && <span class="tool-badge" aria-hidden="true">↗</span>}
                 </span>
-                <span class="menu-item-desc">{s.desc}</span>
+                <span class="tool-name">{s.name}</span>
+                <span class="tool-desc">{s.desc}</span>
               </a>
             ))
           }
@@ -190,42 +191,82 @@ const badges = [
     }
   }
 
-  .menu-item {
-    display: block;
-    padding: 0.85rem 1rem;
-    border-bottom: 1px solid var(--border);
-    transition: background var(--t);
+  .tools-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.8rem;
+    padding: 1.1rem 1rem;
   }
 
-  .menu-item:last-child {
-    border-bottom: none;
+  .tool-item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.9rem 0.3rem 0.8rem;
+    text-align: center;
+    text-decoration: none;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    transition: border-color var(--t), transform var(--t), box-shadow var(--t);
   }
 
-  .menu-item:hover {
-    background: var(--bg-soft);
+  .tool-item:hover {
+    border-color: var(--ink);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-soft);
   }
 
-  .menu-item-name {
+  .tool-icon {
+    position: relative;
+    width: 54px;
+    height: 54px;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    background: var(--surface);
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    font-size: 0.92rem;
-    font-weight: 500;
-    letter-spacing: 0.05em;
-    color: var(--ink);
+    justify-content: center;
+    overflow: hidden;
+    box-shadow: var(--shadow-soft);
   }
 
-  .menu-item-arrow {
-    font-size: 0.8rem;
-    color: var(--ink-3);
-  }
-
-  .menu-item-desc {
+  .tool-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
     display: block;
-    margin-top: 0.1rem;
-    font-size: 0.78rem;
-    color: var(--ink-3);
+  }
+
+  .tool-badge {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: var(--white);
+    font-size: 0.62rem;
+    line-height: 18px;
+    text-align: center;
+    border: 2px solid var(--surface);
+  }
+
+  .tool-name {
+    font-size: 0.85rem;
+    font-weight: 500;
     letter-spacing: 0.04em;
+    color: var(--ink);
+    line-height: 1.3;
+  }
+
+  .tool-desc {
+    font-size: 0.7rem;
+    color: var(--ink-3);
+    letter-spacing: 0.03em;
+    line-height: 1.4;
   }
 
   .badge-grid {
@@ -327,10 +368,6 @@ const badges = [
       grid-template-columns: 1fr;
       gap: 1rem;
       padding: 1.2rem 0 2.5rem;
-    }
-
-    .services-module {
-      display: none;
     }
 
     .col-left {
