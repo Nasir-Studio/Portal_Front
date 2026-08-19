@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import AmbientBackground from '../components/AmbientBackground.astro';
 
 interface Props {
   title?: string;
@@ -49,6 +50,7 @@ const {
     />
   </head>
   <body>
+    <AmbientBackground />
     <Nav />
     <main id="main">
       <slot />
