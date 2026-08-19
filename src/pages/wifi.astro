@@ -614,12 +614,20 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     <div class="how-note">
       <strong>怎麼運作：</strong>
       只有連到「同一個 Wi-Fi（同一個區域網路）」的裝置會顯示在線上清單，不同網路的裝置不會出現。
+      手機分享的熱點也算同一個網路（手機本機與連上熱點的裝置可以互見）。
       點擊任一使用者即可選擇檔案傳送，點卡片左上角的
       <strong>✉</strong> 可傳送文字訊息；檔案透過 WebRTC 在同一 Wi-Fi 內點對點直連傳輸，不會經過網際網路。
       收到檔案會自動下載，文字訊息與可預覽的檔案（圖片／影片／PDF）會嘗試開新分頁，清單上的「⧉ 開啟」隨時可再開啟。
       若路由器開啟「AP 隔離」或「用戶端隔離」則可能無法互連。建議同一時間只有一個人重新整理頁面。
     </div>
   </div>
+
+  <div
+    class="wifi-dbg"
+    id="wifi-dbg"
+    hidden
+    style="position: fixed; left: 8px; bottom: 8px; z-index: 99; max-width: 540px; font: 11px/1.5 ui-monospace, Menlo, monospace; color: #c7d0d6; background: rgba(18, 22, 26, 0.92); border-radius: 8px; padding: 8px 10px;"
+  ></div>
 
   <div class="toast-stack" id="toastStack"></div>
 
@@ -660,6 +668,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   var myDevice = detectDevice();
   var reconnecting = false;
   var noLan = false;        // 此網路上沒有其他裝置（跨網段，停止自動重連）
+  var hostRetries = 0;      // 外來房主占用時的搶房重試次數上限
   var hostHandshakeDone = false; // 成員端：是否已完成 hello 握手
   var transfers = {};       // fileId → outbound 傳輸狀態
   var incoming = {};        // fileId → inbound 傳輸狀態
@@ -744,7 +753,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     return false;
   }
 
-  function pairIsLan(local, remote) {
+  function pairIsLan(local, remote, mySrflx) {
     if (!local || !remote) return false;
     // RTCIceCandidateStats 的 .type 是 'local-candidate'（.candidateType 才是候選型別）；
     // RTCIceCandidate 物件則用 .type。因此優先取 candidateType。
@@ -757,39 +766,91 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     var la = local.address || local.ip;
     var ra = remote.address || remote.ip;
     if (la && ra && isPrivateIp(la) && isPrivateIp(ra)) return true;
+    // 手機分享熱點：手機同時是基地台與上網出口，常常挑不到 host-host 直連，
+    // ICE 會改選「兩端都是同一個公網位址」的 srflx 對（NAT 髮夾通道）。
+    // 兩端共用同一個 egress 位址＝在同一個網路後方，視為同網段。
+    if (la && ra && la === ra) return true;
+    // 非對稱情形：一端是私有位址、另一端等於我的 NAT 出口位址 → 同一網路。
+    if (mySrflx) {
+      if (la === mySrflx || ra === mySrflx) return true;
+    }
     return false;
   }
 
-  async function isLanConnection(conn) {
+  // 除錯：URL 加 #dbg 會記錄每條連線的 ICE 判定結果（正式使用不受影響）
+  var DBG = (location.hash + location.search).indexOf('dbg') >= 0;
+  var dbgLogs = [];
+  function dbgLog(tag, verdict, pair, state) {
+    if (!DBG) return;
+    dbgLogs.unshift({
+      t: new Date().toISOString().slice(11, 19),
+      tag: tag,
+      verdict: verdict,
+      pair: pair,
+      state: state
+    });
+    if (dbgLogs.length > 8) dbgLogs.pop();
+    var el = document.getElementById('wifi-dbg');
+    if (!el) return;
+    el.hidden = false;
+    el.innerHTML = dbgLogs.map(function (d) {
+      return '<div>' + [d.t, d.tag, d.verdict, (d.pair ? d.pair.l + ' ⇄ ' + d.pair.r : '-'), d.state].join(' ｜ ') + '</div>';
+    }).join('');
+  }
+
+  // 除錯鉤子：只在 #dbg 開啟時暴露，供單元驗證與現場排查
+  if (DBG) {
+    window.__owifiDbg = {
+      pairIsLan: pairIsLan,
+      isPrivateIp: isPrivateIp,
+      isLanConnection: isLanConnection
+    };
+  }
+
+  async function isLanConnection(conn, tag) {
     var pc = conn && conn.peerConnection;
     if (!pc) return false;
-    var deadline = Date.now() + 8000;
+    var mySrflx = null;   // 我的 NAT 出口位址（供非對稱判斷）
+    var lastPair = null;
+    var deadline = Date.now() + 12000;
     while (Date.now() < deadline) {
       try {
         var state = pc.iceConnectionState;
         if (typeof pc.getSelectedCandidatePair === 'function') {
           var pair = pc.getSelectedCandidatePair();
           if (pair && pair.local && pair.remote) {
-            if (pairIsLan(pair.local, pair.remote)) return true;
-            if (state === 'failed' || state === 'disconnected' || state === 'closed') return false;
-            if ((state === 'connected' || state === 'completed') && Date.now() > deadline - 1200) return false;
+            lastPair = {
+              l: (pair.local.candidateType || pair.local.type) + ':' + (pair.local.address || pair.local.ip || '?'),
+              r: (pair.remote.candidateType || pair.remote.type) + ':' + (pair.remote.address || pair.remote.ip || '?')
+            };
+            if (pairIsLan(pair.local, pair.remote, mySrflx)) { dbgLog(tag, 'OK', lastPair, state); return true; }
+            if (state === 'failed' || state === 'disconnected' || state === 'closed') { dbgLog(tag, 'REJECT', lastPair, state); return false; }
+            if ((state === 'connected' || state === 'completed') && Date.now() > deadline - 1200) { dbgLog(tag, 'WAN', lastPair, state); return false; }
           }
         }
         var stats = await pc.getStats();
         var chosen = null;
         stats.forEach(function (r) {
+          if (r.type === 'local-candidate' && (r.candidateType === 'srflx' || r.candidateType === 'prflx') && !mySrflx) {
+            mySrflx = r.address || r.ip;
+          }
           if (r.type === 'candidate-pair' && (r.state === 'succeeded' || r.selected || r.nominated) && !chosen) chosen = r;
         });
         if (chosen) {
           var local = stats.get(chosen.localCandidateId);
           var remote = stats.get(chosen.remoteCandidateId);
-          if (pairIsLan(local, remote)) return true;
-          if (state === 'failed' || state === 'disconnected' || state === 'closed') return false;
-          if ((state === 'connected' || state === 'completed') && Date.now() > deadline - 1200) return false;
+          lastPair = {
+            l: (local ? (local.candidateType + ':' + (local.address || local.ip || '?')) : '?'),
+            r: (remote ? (remote.candidateType + ':' + (remote.address || remote.ip || '?')) : '?')
+          };
+          if (pairIsLan(local, remote, mySrflx)) { dbgLog(tag, 'OK', lastPair, state); return true; }
+          if (state === 'failed' || state === 'disconnected' || state === 'closed') { dbgLog(tag, 'REJECT', lastPair, state); return false; }
+          if ((state === 'connected' || state === 'completed') && Date.now() > deadline - 1200) { dbgLog(tag, 'WAN', lastPair, state); return false; }
         }
       } catch (e) { /* 忽略，繼續輪詢 */ }
       await sleep(150);
     }
+    dbgLog(tag, 'TIMEOUT', lastPair, pc.iceConnectionState);
     return false;
   }
 
@@ -997,6 +1058,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   function becomeHost() {
     isHost = true;
     noLan = false;
+    hostRetries = 0;
     hostConn = null;
     users = {};
     memberConns = {};
@@ -1084,19 +1146,22 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     hostConn = peer.connect(HOST_ID, { reliable: true, metadata: { kind: 'presence' } });
 
     // 連線一建立就開始同網段檢查（不等 open；跨網段或已失聯的房主可能永遠不觸發 open）
-    var hostCheck = isLanConnection(hostConn);
+    var hostCheck = isLanConnection(hostConn, 'member');
     hostCheck.then(function (ok) {
       if (ok || noLan) return;
-      // 確認與房主不同網段：停止加入與重連
+      // 確認與房主不同網段：可能是舊房主在其他網路占用房間。
+      // 先顯示空狀態，稍後重試搶房（同一網路的裝置就能聚到新房主下）。
       noLan = true;
       setStatus('off', '此網路上沒有其他裝置');
       renderUsers();
       try { hostConn.close(); } catch (e) { /* ignore */ }
+      scheduleHostRetry();
     });
 
     hostConn.on('open', function () {
       hostCheck.then(function (ok) {
         if (!ok || noLan) return;
+        hostRetries = 0;
         setStatus('on', '已連線到 Wi-Fi Drop');
         hostConn.send({
           type: 'hello',
@@ -1118,6 +1183,18 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   }
 
   // 成員端：與房主的連線被關閉／出錯時的處置
+  // 外來房主占用（例如別的網路上的舊分頁）：驗證失敗不等於「本網路沒人」，
+  // 可能是房主在別的網路。延遲重試搶房一次；舊房主關閉後就能接管成為新房主。
+  function scheduleHostRetry() {
+    if (hostRetries >= 2) return;
+    hostRetries++;
+    setTimeout(function () {
+      if (!noLan) return;
+      setStatus('busy', '正在重新偵測同一個網路的裝置…');
+      bootstrap();
+    }, 15000);
+  }
+
   function handleHostDrop(hostCheck) {
     if (reconnecting || noLan) return;
     if (hostHandshakeDone) {
@@ -1133,6 +1210,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         noLan = true;
         setStatus('off', '此網路上沒有其他裝置');
         renderUsers();
+        scheduleHostRetry();
         return;
       }
       setStatus('busy', '房主已離線，重新連線中…');
@@ -1200,7 +1278,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     });
 
     // 先確認連線走的是區域網路直連（host-host），才允許加入／收檔
-    isLanConnection(conn).then(function (ok) {
+    isLanConnection(conn, 'incoming').then(function (ok) {
       if (!ok) {
         // 跨網段：presence 靜默忽略；transfer 中止接收
         if (kind === 'transfer') abortIncomingTransfer(conn);
@@ -1294,7 +1372,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       });
       textSends[tid].conn = conn;
       conn.on('open', function () {
-        isLanConnection(conn).then(function (ok) {
+        isLanConnection(conn, 'text-send').then(function (ok) {
           if (!ok) { abortTextSend(tid, '對方不在同一個網路'); return; }
           try {
             conn.send({ type: 'text', textId: tid, text: text });
@@ -1394,7 +1472,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       conn.binaryType = 'arraybuffer';
 
       conn.on('open', function () {
-        isLanConnection(conn).then(function (ok) {
+        isLanConnection(conn, 'file-send').then(function (ok) {
           if (!ok) { abortOutbound(fid, '對方不在同一個網路'); return; }
           var chunkCount = Math.ceil(file.size / CHUNK_SIZE);
           try {
