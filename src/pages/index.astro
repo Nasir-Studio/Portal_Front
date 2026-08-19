@@ -53,7 +53,7 @@ const badges = [
   <div class="main container">
     <aside class="col col-left">
       <section class="module" aria-label="每日一句">
-        <h2 class="module-title">每日一句</h2>
+        <h2 class="module-title" data-i18n="module.quote">每日一句</h2>
         <QuoteOfTheDay client:load />
       </section>
     </aside>
@@ -76,7 +76,7 @@ const badges = [
         <h2 class="module-title">
           <span class="cal-head-left">
             <span class="cal-square" aria-hidden="true"></span>
-            行事曆
+            <span data-i18n="module.calendar">行事曆</span>
           </span>
         </h2>
         <div class="cal-frame">
@@ -94,7 +94,7 @@ const badges = [
     <aside class="col col-right">
       <section class="module" aria-label="資格認證">
         <h2 class="module-title">
-          <span>資格認證</span>
+          <span data-i18n="module.badges">資格認證</span>
         </h2>
         <ul class="badge-grid">
           {
@@ -107,7 +107,7 @@ const badges = [
           }
         </ul>
         <a class="badge-more" href="https://nasirlin.net" target="_blank" rel="noopener noreferrer">
-          查看更多資格認證
+          <span data-i18n="module.badges_more">查看更多資格認證</span>
           <span aria-hidden="true">↗</span>
         </a>
       </section>

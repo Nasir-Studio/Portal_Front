@@ -1,5 +1,9 @@
 <script>
+  import { onMount } from 'svelte';
+  import { t, getCurrentLang } from '../scripts/i18n';
+
   let isOpen = false;
+  let currentLang = 'zh-TW';
 
   // 聯絡表單狀態 (Google Form)
   let name = '';
@@ -9,6 +13,17 @@
 
   const FORM_URL =
     'https://docs.google.com/forms/d/e/1FAIpQLSeeWapjagLqPsg7i2y_TYhNq2xKW-nNFj6JywiqiDZ8Hkiheg/formResponse';
+
+  onMount(() => {
+    currentLang = getCurrentLang();
+    const onLangChange = (e) => {
+      currentLang = e.detail;
+    };
+    window.addEventListener('langchange', onLangChange);
+    return () => {
+      window.removeEventListener('langchange', onLangChange);
+    };
+  });
 
   async function handleFormSubmit(e) {
     e.preventDefault();
@@ -53,7 +68,7 @@
       class="contact-launcher"
       type="button"
       on:click={() => (isOpen = true)}
-      aria-label="開啟聯絡表單"
+      aria-label={t('contact.title', currentLang)}
     >
       <span class="launcher-icon" aria-hidden="true">
         <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
@@ -64,7 +79,7 @@
     </button>
   {/if}
 
-  <!-- ✉️ 迷你浮動聯絡表單視窗 (無Tab、小巧精緻) -->
+  <!-- ✉️ 迷你浮動聯絡表單視窗 (無Tab、小巧精緻、毛玻璃) -->
   {#if isOpen}
     <div class="contact-window" role="dialog" aria-label="聯絡我們視窗">
       <!-- 標題列 -->
@@ -73,7 +88,7 @@
           <div class="header-avatar">
             <img src="/favicon.png" alt="OviNas" width="18" height="18" />
           </div>
-          <div class="header-title">聯絡表單</div>
+          <div class="header-title">{t('contact.title', currentLang)}</div>
         </div>
         <button
           class="contact-close-btn"
@@ -94,49 +109,49 @@
                 <path d="M20 6L9 17l-5-5"></path>
               </svg>
             </div>
-            <p class="feedback-title">訊息已成功送出</p>
-            <p class="feedback-desc">我們會盡快透過 Email 與您聯繫！</p>
+            <p class="feedback-title">{t('contact.success_title', currentLang)}</p>
+            <p class="feedback-desc">{t('contact.success_desc', currentLang)}</p>
           </div>
         {:else if formStatus === 'error'}
           <div class="contact-feedback is-error">
-            <p class="feedback-title">傳送失敗</p>
-            <p class="feedback-desc">請稍後再試，或直接透過電子郵件聯繫。</p>
+            <p class="feedback-title">{t('contact.error_title', currentLang)}</p>
+            <p class="feedback-desc">{t('contact.error_desc', currentLang)}</p>
           </div>
         {:else}
           <form class="contact-form" on:submit={handleFormSubmit}>
             <div class="field-group">
-              <label for="floating-contact-name">姓名</label>
+              <label for="floating-contact-name">{t('contact.name', currentLang)}</label>
               <input
                 id="floating-contact-name"
                 type="text"
                 bind:value={name}
                 name="entry.57084769"
-                placeholder="您的姓名"
+                placeholder={t('contact.name_ph', currentLang)}
                 required
                 disabled={formStatus === 'submitting'}
               />
             </div>
 
             <div class="field-group">
-              <label for="floating-contact-email">電子郵件</label>
+              <label for="floating-contact-email">{t('contact.email', currentLang)}</label>
               <input
                 id="floating-contact-email"
                 type="email"
                 bind:value={email}
                 name="entry.135399445"
-                placeholder="example@email.com"
+                placeholder={t('contact.email_ph', currentLang)}
                 required
                 disabled={formStatus === 'submitting'}
               />
             </div>
 
             <div class="field-group">
-              <label for="floating-contact-message">聯絡內容</label>
+              <label for="floating-contact-message">{t('contact.message', currentLang)}</label>
               <textarea
                 id="floating-contact-message"
                 bind:value={message}
                 name="entry.1753446536"
-                placeholder="請輸入詢問或反應內容…"
+                placeholder={t('contact.message_ph', currentLang)}
                 rows="3"
                 required
                 disabled={formStatus === 'submitting'}
@@ -148,7 +163,9 @@
               class="contact-submit-btn"
               disabled={formStatus === 'submitting'}
             >
-              {formStatus === 'submitting' ? '傳送中…' : '送出訊息'}
+              {formStatus === 'submitting'
+                ? t('contact.submitting', currentLang)
+                : t('contact.submit', currentLang)}
             </button>
           </form>
         {/if}

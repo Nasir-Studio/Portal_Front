@@ -3,44 +3,59 @@ import SheepLogo from './SheepLogo.astro';
 
 const navGroups = [
   {
-    title: 'Ovis Tools',
+    titleKey: 'nav.tools',
+    defaultTitle: 'Ovis Tools',
     id: 'ovis-tools',
     items: [
-      { label: 'NYTools', href: '/nytools/', external: false },
-      { label: '羊監視你', href: '/cctv', external: false },
-      { label: '羊集章', href: '/badges/', external: false },
-      { label: '單字測驗', href: '/vocab/', external: false },
+      { key: 'nav.nytools', label: 'NYTools', href: '/nytools/', external: false },
+      { key: 'nav.cctv', label: '羊監視你', href: '/cctv', external: false },
+      { key: 'nav.badges', label: '羊集章', href: '/badges/', external: false },
+      { key: 'nav.vocab', label: '單字測驗', href: '/vocab/', external: false },
     ],
   },
   {
-    title: '主要服務',
+    titleKey: 'nav.services',
+    defaultTitle: '主要服務',
     id: 'main-services',
     items: [
-      { label: '羊愛考試', href: 'https://1ztests.nsir.uk', external: true },
-      { label: '羊-短網址', href: 'https://nsir.uk', external: true },
+      { key: 'nav.exam', label: '羊愛考試', href: 'https://1ztests.nsir.uk', external: true },
+      { key: 'nav.shorturl', label: '羊-短網址', href: 'https://nsir.uk', external: true },
     ],
   },
 ];
 ---
 
 <header class="site-header">
+  <!-- 頂部黑條 (Topbar) -->
   <div class="topbar">
     <div class="container topbar-inner">
+      <div class="topbar-left">
+        <!-- 🌐 語系切換器 (Desktop) -->
+        <div class="lang-switcher" aria-label="切換語系">
+          <button class="lang-btn is-active" type="button" data-lang="zh-TW">繁中</button>
+          <span class="lang-divider">/</span>
+          <button class="lang-btn" type="button" data-lang="en">EN</button>
+          <span class="lang-divider">/</span>
+          <button class="lang-btn" type="button" data-lang="ja">日本語</button>
+        </div>
+      </div>
+
       <span class="topbar-right">
-        <a href="/">首頁</a>
+        <a href="/" data-i18n="nav.home">首頁</a>
         <span class="topbar-sep" aria-hidden="true">｜</span>
-        <a href="#news">最新消息</a>
+        <a href="#news" data-i18n="nav.news">最新消息</a>
         <span class="topbar-sep" aria-hidden="true">｜</span>
-        <a href="/vip/">VIP 專區</a>
+        <a href="/vip/" data-i18n="nav.vip">VIP 專區</a>
         <span class="topbar-sep" aria-hidden="true">｜</span>
         <span class="topbar-user" id="topbar-user" hidden>
           <span id="topbar-username"></span>
-          <button class="topbar-logout" id="topbar-logout" type="button">登出</button>
+          <button class="topbar-logout" id="topbar-logout" type="button" data-i18n="nav.logout">登出</button>
         </span>
       </span>
     </div>
   </div>
 
+  <!-- 主品牌列 (Header Main) -->
   <div class="header-main container">
     <a class="brand" href="/">
       <SheepLogo size={58} />
@@ -52,20 +67,21 @@ const navGroups = [
       class="nav-toggle"
       type="button"
       aria-expanded="false"
-      aria-controls="nav-menu"
+      aria-controls="mobile-drawer"
       aria-label="開啟選單"
     >
-      <svg width="22" height="18" viewBox="0 0 22 18" fill="none" aria-hidden="true">
-        <rect y="0" width="22" height="3" fill="#1c1c1c" />
-        <rect y="7.5" width="22" height="3" fill="#1c1c1c" />
-        <rect y="15" width="22" height="3" fill="#1c1c1c" />
+      <svg width="24" height="20" viewBox="0 0 24 20" fill="none" aria-hidden="true">
+        <rect y="0" width="24" height="2.8" rx="1.4" fill="#1c1c1c" />
+        <rect y="8.6" width="24" height="2.8" rx="1.4" fill="#1c1c1c" />
+        <rect y="17.2" width="24" height="2.8" rx="1.4" fill="#1c1c1c" />
       </svg>
     </button>
   </div>
 
-  <div class="menubar-wrap" id="nav-menu">
+  <!-- 桌面版白色選單條 (Menubar Wrap) -->
+  <div class="menubar-wrap">
     <nav class="menubar container" aria-label="主導覽">
-      <a class="menu-link is-home" href="/">首頁</a>
+      <a class="menu-link is-home" href="/" data-i18n="nav.home">首頁</a>
 
       {
         navGroups.map((group) => (
@@ -76,9 +92,8 @@ const navGroups = [
               aria-expanded="false"
               aria-haspopup="true"
             >
-              <span>{group.title}</span>
+              <span data-i18n={group.titleKey}>{group.defaultTitle}</span>
               <span class="arrow-desktop" aria-hidden="true">▾</span>
-              <span class="toggle-mobile" aria-hidden="true">+</span>
             </button>
             <div class="dropdown-panel">
               {group.items.map((item) => (
@@ -88,7 +103,7 @@ const navGroups = [
                   target={item.external ? '_blank' : undefined}
                   rel={item.external ? 'noopener noreferrer' : undefined}
                 >
-                  <span>{item.label}</span>
+                  <span data-i18n={item.key}>{item.label}</span>
                   {item.external && <span class="ext-icon" aria-hidden="true">↗</span>}
                 </a>
               ))}
@@ -97,10 +112,72 @@ const navGroups = [
         ))
       }
 
-      <a class="menu-link menu-cta" href="/reserve/">
+      <a class="menu-link menu-cta" href="/reserve/" data-i18n="nav.reserve">
         預約系統
       </a>
     </nav>
+  </div>
+
+  <!-- 📱 手機版滿版抽屜選單 (Fullscreen Animated Mobile Drawer) -->
+  <div class="mobile-drawer" id="mobile-drawer" aria-hidden="true">
+    <div class="drawer-header">
+      <a class="drawer-brand" href="/">
+        <SheepLogo size={42} />
+        <span class="drawer-brand-name">OviNas</span>
+      </a>
+      <button class="drawer-close-btn" type="button" aria-label="關閉選單">
+        ✕
+      </button>
+    </div>
+
+    <div class="drawer-body">
+      <!-- 語系切換器 (Mobile) -->
+      <div class="drawer-lang-section">
+        <span class="drawer-section-label">LANGUAGE / 言語</span>
+        <div class="drawer-lang-pills">
+          <button class="lang-btn is-active" type="button" data-lang="zh-TW">繁體中文</button>
+          <button class="lang-btn" type="button" data-lang="en">English</button>
+          <button class="lang-btn" type="button" data-lang="ja">日本語</button>
+        </div>
+      </div>
+
+      <nav class="drawer-nav" aria-label="手機主選單">
+        <a class="drawer-link drawer-item-1" href="/" data-i18n="nav.home">首頁</a>
+
+        {
+          navGroups.map((group, gIdx) => (
+            <div class={`drawer-accordion-group drawer-item-${gIdx + 2}`} data-group={group.id}>
+              <button class="drawer-accordion-btn" type="button" aria-expanded="false">
+                <span data-i18n={group.titleKey}>{group.defaultTitle}</span>
+                <span class="drawer-plus" aria-hidden="true">+</span>
+              </button>
+              <div class="drawer-accordion-panel">
+                {group.items.map((item) => (
+                  <a
+                    class="drawer-sublink"
+                    href={item.href}
+                    target={item.external ? '_blank' : undefined}
+                    rel={item.external ? 'noopener noreferrer' : undefined}
+                  >
+                    <span data-i18n={item.key}>{item.label}</span>
+                    {item.external && <span class="ext-icon" aria-hidden="true">↗</span>}
+                  </a>
+                ))}
+              </div>
+            </div>
+          ))
+        }
+
+        <a class="drawer-link drawer-item-4" href="#news" data-i18n="nav.news">最新消息</a>
+        <a class="drawer-link drawer-item-5" href="/vip/" data-i18n="nav.vip">VIP 專區</a>
+
+        <div class="drawer-cta-wrap drawer-item-6">
+          <a class="drawer-cta" href="/reserve/" data-i18n="nav.reserve">
+            預約系統
+          </a>
+        </div>
+      </nav>
+    </div>
   </div>
 </header>
 
@@ -108,10 +185,11 @@ const navGroups = [
   .site-header {
     position: sticky;
     top: 0;
-    z-index: 50;
+    z-index: 100;
     background: var(--surface);
   }
 
+  /* 頂部黑條 */
   .topbar {
     background: var(--ink);
     color: rgba(255, 255, 255, 0.72);
@@ -122,15 +200,55 @@ const navGroups = [
   .topbar-inner {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: space-between;
     min-height: 32px;
   }
 
-  .topbar a {
+  .lang-switcher {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .lang-btn {
+    appearance: none;
+    background: none;
+    border: none;
+    padding: 0.1rem 0.3rem;
+    font-family: inherit;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    color: rgba(255, 255, 255, 0.6);
+    cursor: pointer;
+    border-radius: 3px;
+    transition: all var(--t);
+  }
+
+  .lang-btn:hover {
+    color: var(--white);
+  }
+
+  .lang-btn.is-active {
+    color: var(--white);
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.18);
+  }
+
+  .lang-divider {
+    color: rgba(255, 255, 255, 0.25);
+    font-size: 0.7rem;
+  }
+
+  .topbar-right {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .topbar-right a {
     transition: color var(--t);
   }
 
-  .topbar a:hover {
+  .topbar-right a:hover {
     color: var(--white);
   }
 
@@ -164,6 +282,7 @@ const navGroups = [
     text-decoration: underline;
   }
 
+  /* 主標題列 */
   .header-main {
     display: flex;
     align-items: center;
@@ -276,10 +395,6 @@ const navGroups = [
     transform: rotate(180deg);
   }
 
-  .toggle-mobile {
-    display: none;
-  }
-
   .dropdown-panel {
     position: absolute;
     top: 100%;
@@ -346,6 +461,7 @@ const navGroups = [
     color: var(--white);
   }
 
+  /* 手機版開關 */
   .nav-toggle {
     display: none;
     align-items: center;
@@ -358,14 +474,247 @@ const navGroups = [
     border: 1px solid var(--border);
     border-radius: var(--radius-sm);
     cursor: pointer;
+    transition: background var(--t);
   }
 
-  .nav-toggle svg {
-    display: block;
-    flex-shrink: 0;
+  .nav-toggle:hover {
+    background: var(--bg-soft);
   }
 
-  /* 📱 手機版選單 (含折疊展開 +/-) */
+  /* 📱 手機版滿版抽屜選單 (Fullscreen Mobile Drawer) */
+  .mobile-drawer {
+    display: none;
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100dvh;
+    background: #ffffff;
+    z-index: 999999;
+    flex-direction: column;
+    overflow-y: auto;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-10px);
+    transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .mobile-drawer.is-active {
+    display: flex;
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+
+  .drawer-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.1rem 1.4rem;
+    border-bottom: 2px solid var(--ink);
+    background: var(--surface);
+  }
+
+  .drawer-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--ink);
+  }
+
+  .drawer-brand-name {
+    font-family: var(--font-serif);
+    font-size: 1.35rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+  }
+
+  .drawer-close-btn {
+    appearance: none;
+    background: none;
+    border: none;
+    color: var(--ink);
+    font-size: 1.5rem;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s;
+  }
+
+  .drawer-close-btn:hover {
+    transform: rotate(90deg) scale(1.1);
+    background: var(--bg-soft);
+  }
+
+  .drawer-body {
+    padding: 1.5rem 1.4rem 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .drawer-lang-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    padding-bottom: 1.2rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .drawer-section-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    color: var(--ink-3);
+  }
+
+  .drawer-lang-pills {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .drawer-lang-pills .lang-btn {
+    flex: 1;
+    padding: 0.55rem 0.6rem;
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--ink);
+    font-size: 0.84rem;
+    text-align: center;
+  }
+
+  .drawer-lang-pills .lang-btn.is-active {
+    background: var(--ink);
+    color: var(--white);
+    border-color: var(--ink);
+  }
+
+  .drawer-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .drawer-link {
+    display: flex;
+    align-items: center;
+    padding: 0.95rem 0.5rem;
+    font-size: 1.15rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: var(--ink);
+    border-bottom: 1px solid var(--border);
+    transition: padding-left 0.2s ease, color 0.2s ease;
+  }
+
+  .drawer-link:hover {
+    padding-left: 0.8rem;
+    color: #000;
+  }
+
+  .drawer-accordion-group {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .drawer-accordion-btn {
+    appearance: none;
+    background: none;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.95rem 0.5rem;
+    font-family: inherit;
+    font-size: 1.15rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: var(--ink);
+    cursor: pointer;
+  }
+
+  .drawer-plus {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--ink);
+    transition: transform 0.2s ease;
+  }
+
+  .drawer-accordion-panel {
+    display: none;
+    flex-direction: column;
+    background: var(--bg-soft);
+    border-radius: 8px;
+    margin: 0 0 0.8rem;
+    overflow: hidden;
+  }
+
+  .drawer-accordion-group.is-open .drawer-accordion-panel {
+    display: flex;
+  }
+
+  .drawer-sublink {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.8rem 1.2rem;
+    font-size: 0.95rem;
+    color: var(--ink-2);
+    border-bottom: 1px dashed var(--border);
+  }
+
+  .drawer-sublink:last-child {
+    border-bottom: none;
+  }
+
+  .drawer-cta-wrap {
+    margin-top: 1.5rem;
+  }
+
+  .drawer-cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--ink);
+    color: var(--white);
+    padding: 0.95rem;
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    border-radius: 8px;
+    box-shadow: 3px 4px 12px rgba(28, 28, 28, 0.16);
+    transition: transform 0.2s ease, background 0.2s ease;
+  }
+
+  .drawer-cta:hover {
+    background: #000;
+    transform: translateY(-2px);
+  }
+
+  /* 滿版入場交錯動畫 (Stagger Reveal) */
+  .mobile-drawer.is-active .drawer-item-1 { animation: drawer-slide 0.35s 0.05s ease both; }
+  .mobile-drawer.is-active .drawer-item-2 { animation: drawer-slide 0.35s 0.1s ease both; }
+  .mobile-drawer.is-active .drawer-item-3 { animation: drawer-slide 0.35s 0.15s ease both; }
+  .mobile-drawer.is-active .drawer-item-4 { animation: drawer-slide 0.35s 0.2s ease both; }
+  .mobile-drawer.is-active .drawer-item-5 { animation: drawer-slide 0.35s 0.25s ease both; }
+  .mobile-drawer.is-active .drawer-item-6 { animation: drawer-slide 0.35s 0.3s ease both; }
+
+  @keyframes drawer-slide {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
   @media (max-width: 900px) {
     .site-header {
       position: static;
@@ -393,88 +742,13 @@ const navGroups = [
     .menubar-wrap {
       display: none;
     }
-
-    .menubar-wrap.open {
-      display: block;
-    }
-
-    .menubar {
-      flex-direction: column;
-      align-items: stretch;
-      padding: 0.5rem 0;
-      min-height: 0;
-    }
-
-    .menu-link {
-      width: 100%;
-      height: auto;
-      padding: 0.85rem 0.75rem;
-      border-right: none;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .menu-dropdown-group {
-      width: 100%;
-      height: auto;
-      flex-direction: column;
-      align-items: stretch;
-      border-right: none;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .menu-dropdown-btn {
-      width: 100%;
-      height: auto;
-      padding: 0.85rem 0.75rem;
-      justify-content: space-between;
-    }
-
-    .arrow-desktop {
-      display: none;
-    }
-
-    .toggle-mobile {
-      display: inline-block;
-      font-size: 1.2rem;
-      font-weight: 600;
-      line-height: 1;
-      color: var(--ink);
-      width: 24px;
-      height: 24px;
-      text-align: center;
-      transition: transform var(--t);
-    }
-
-    .dropdown-panel {
-      position: static;
-      display: none;
-      min-width: 0;
-      box-shadow: none;
-      border: none;
-      border-top: 1px solid var(--border);
-      background: var(--bg-soft);
-      transform: none;
-      opacity: 1;
-      visibility: visible;
-    }
-
-    .menu-dropdown-group.is-open .dropdown-panel {
-      display: flex;
-    }
-
-    .dropdown-sublink {
-      padding: 0.75rem 1.4rem;
-      border-bottom: 1px dashed var(--border);
-    }
-
-    .menubar-wrap.open .menu-cta {
-      margin-left: 0;
-      margin-top: 0.5rem;
-      justify-content: center;
-    }
   }
 
-  @media (max-width: 480px) {
+  @media (max-width: 540px) {
+    .topbar-left {
+      display: none;
+    }
+
     .topbar-inner {
       justify-content: flex-end;
     }
@@ -483,41 +757,66 @@ const navGroups = [
 
 <script>
   import { currentUser, logout } from '../scripts/auth';
+  import { setLanguage, getCurrentLang, type Lang, applyTranslations } from '../scripts/i18n';
 
+  // 滿版手機抽屜選單邏輯
   const toggle = document.querySelector('.nav-toggle');
-  const wrap = document.querySelector('.menubar-wrap');
+  const drawer = document.getElementById('mobile-drawer');
+  const closeBtn = document.querySelector('.drawer-close-btn');
 
-  toggle?.addEventListener('click', () => {
-    const open = toggle.getAttribute('aria-expanded') === 'true';
-    toggle.setAttribute('aria-expanded', String(!open));
-    wrap?.classList.toggle('open', !open);
-  });
+  function openDrawer() {
+    drawer?.classList.add('is-active');
+    drawer?.setAttribute('aria-hidden', 'false');
+    toggle?.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  }
 
-  // 手機版折疊展開 (+ / -)
-  const dropdownGroups = document.querySelectorAll('.menu-dropdown-group');
-  dropdownGroups.forEach((group) => {
-    const btn = group.querySelector('.menu-dropdown-btn');
-    const toggleIcon = group.querySelector('.toggle-mobile');
+  function closeDrawer() {
+    drawer?.classList.remove('is-active');
+    drawer?.setAttribute('aria-hidden', 'true');
+    toggle?.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
 
-    btn?.addEventListener('click', (e) => {
-      if (window.innerWidth <= 900) {
-        e.preventDefault();
-        const isOpen = group.classList.toggle('is-open');
-        btn.setAttribute('aria-expanded', String(isOpen));
-        if (toggleIcon) {
-          toggleIcon.textContent = isOpen ? '−' : '+';
-        }
+  toggle?.addEventListener('click', openDrawer);
+  closeBtn?.addEventListener('click', closeDrawer);
+
+  // 手機版手風琴選單 (+ / -)
+  const accordionGroups = document.querySelectorAll('.drawer-accordion-group');
+  accordionGroups.forEach((group) => {
+    const btn = group.querySelector('.drawer-accordion-btn');
+    const plusIcon = group.querySelector('.drawer-plus');
+
+    btn?.addEventListener('click', () => {
+      const isOpen = group.classList.toggle('is-open');
+      btn.setAttribute('aria-expanded', String(isOpen));
+      if (plusIcon) {
+        plusIcon.textContent = isOpen ? '−' : '+';
       }
     });
   });
 
-  wrap?.querySelectorAll('.dropdown-sublink, .menu-link:not(.menu-dropdown-btn)').forEach((a) => {
+  // 點擊連結後自動關閉抽屜
+  drawer?.querySelectorAll('a').forEach((a) => {
     a.addEventListener('click', () => {
-      toggle?.setAttribute('aria-expanded', 'false');
-      wrap?.classList.remove('open');
+      closeDrawer();
     });
   });
 
+  // 語系切換處理
+  document.querySelectorAll('.lang-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const lang = btn.getAttribute('data-lang') as Lang;
+      if (lang) {
+        setLanguage(lang);
+      }
+    });
+  });
+
+  // 初始化語系
+  applyTranslations();
+
+  // Topbar 使用者
   const userBox = document.getElementById('topbar-user');
   const userName = document.getElementById('topbar-username');
   const logoutBtn = document.getElementById('topbar-logout');

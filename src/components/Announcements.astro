@@ -21,7 +21,7 @@ const techPages = paginatePosts(techPosts);
 ---
 
 <section class="module" id="news" aria-label="最新消息">
-  <h2 class="module-title">最新消息</h2>
+  <h2 class="module-title" data-i18n="module.news">最新消息</h2>
 
   <div class="news-tabs" role="tablist" aria-label="最新消息分類">
     <button
@@ -31,6 +31,7 @@ const techPages = paginatePosts(techPosts);
       aria-selected="true"
       aria-controls="panel-announce"
       type="button"
+      data-i18n="news.tab_all"
     >
       最新消息
     </button>
@@ -41,8 +42,9 @@ const techPages = paginatePosts(techPosts);
       aria-selected="false"
       aria-controls="panel-posts"
       type="button"
+      data-i18n="news.tab_posts"
     >
-       其他文章
+      其他文章
     </button>
     <button
       class="news-tab"
@@ -51,8 +53,9 @@ const techPages = paginatePosts(techPosts);
       aria-selected="false"
       aria-controls="panel-tech"
       type="button"
+      data-i18n="news.tab_tech"
     >
-       技術文章
+      技術文章
     </button>
   </div>
 
