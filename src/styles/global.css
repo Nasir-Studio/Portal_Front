@@ -60,6 +60,14 @@ main {
 a {
   color: inherit;
   text-decoration: none;
+  cursor: pointer;
+}
+
+button,
+[role="button"],
+[role="tab"],
+summary {
+  cursor: pointer;
 }
 
 img,
