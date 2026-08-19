@@ -4,7 +4,6 @@ import Banner from '../components/Banner.astro';
 import Announcements from '../components/Announcements.astro';
 import QuoteOfTheDay from '../components/QuoteOfTheDay.svelte';
 import ContactForm from '../components/ContactForm.svelte';
-import LiveClock from '../components/LiveClock.svelte';
 
 const services = [
   { name: 'NYTools', desc: '點對點傳檔、Wi-Fi 互傳、投影', href: '/nytools/', external: false, icon: '/icon素材/icon素材-2.png' },
@@ -63,11 +62,6 @@ const badges = [
   <Banner />
   <div class="main container">
     <aside class="col col-left">
-      <section class="module" aria-label="即時時間">
-        <h2 class="module-title">TAIPEI TIME</h2>
-        <LiveClock client:load />
-      </section>
-
       <section class="module" aria-label="每日一句">
         <h2 class="module-title">每日一句</h2>
         <QuoteOfTheDay client:load />
