@@ -173,9 +173,14 @@ const badges = [
     aspect-ratio: 1 / 1;
     object-fit: contain;
     margin-inline: auto;
-    border: 1px solid var(--border);
-    background: var(--surface);
-    padding: 0.25rem;
+    background: transparent;
+    filter: drop-shadow(0 3px 6px rgba(28, 28, 28, 0.12));
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), filter 0.2s ease;
+  }
+
+  .badge-item:hover .badge-img {
+    transform: translateY(-3px) scale(1.05);
+    filter: drop-shadow(0 6px 12px rgba(28, 28, 28, 0.18));
   }
 
   .badge-name {
