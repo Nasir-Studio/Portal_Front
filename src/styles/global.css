@@ -90,10 +90,40 @@ svg {
 }
 
 .module {
+  position: relative;
   background: var(--surface);
-  border: 1px solid var(--border);
-  margin-bottom: 1.4rem;
+  border: 1px solid var(--border-strong);
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 20px -8px rgba(28, 28, 28, 0.09);
   animation: module-in 0.45s var(--ease) both;
+}
+
+.module::before {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border: 1px solid rgba(28, 28, 28, 0.08);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.module::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  background:
+    linear-gradient(var(--ink), var(--ink)) top left,
+    linear-gradient(var(--ink), var(--ink)) top left,
+    linear-gradient(var(--ink), var(--ink)) top right,
+    linear-gradient(var(--ink), var(--ink)) top right,
+    linear-gradient(var(--ink), var(--ink)) bottom left,
+    linear-gradient(var(--ink), var(--ink)) bottom left,
+    linear-gradient(var(--ink), var(--ink)) bottom right,
+    linear-gradient(var(--ink), var(--ink)) bottom right;
+  background-size: 10px 2.5px, 2.5px 10px;
+  background-repeat: no-repeat;
+  pointer-events: none;
+  z-index: 2;
 }
 
 @keyframes module-in {
@@ -109,16 +139,19 @@ svg {
 }
 
 .module-title {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.65rem 1rem;
+  padding: 0.72rem 1.1rem;
   background: var(--bg-soft);
-  border-bottom: 1px solid var(--border);
-  font-size: 0.92rem;
-  font-weight: 500;
+  border-bottom: 1px solid var(--border-strong);
+  font-family: var(--font-serif);
+  font-size: 0.94rem;
+  font-weight: 600;
   letter-spacing: 0.18em;
   color: var(--ink);
+  z-index: 2;
 }
 
 .btn {
