@@ -24,6 +24,7 @@ const navGroups = [
 ---
 
 <header class="site-header">
+  <!-- 頂部黑條 (Topbar) -->
   <div class="topbar">
     <div class="container topbar-inner">
       <span class="topbar-right">
@@ -41,6 +42,7 @@ const navGroups = [
     </div>
   </div>
 
+  <!-- 主品牌列 (Header Main) -->
   <div class="header-main container">
     <a class="brand" href="/">
       <SheepLogo size={58} />
@@ -53,7 +55,7 @@ const navGroups = [
       type="button"
       aria-expanded="false"
       aria-controls="nav-menu"
-      aria-label="開啟選單"
+      aria-label="切換選單"
     >
       <svg width="22" height="18" viewBox="0 0 22 18" fill="none" aria-hidden="true">
         <rect y="0" width="22" height="3" fill="#1c1c1c" />
@@ -63,33 +65,33 @@ const navGroups = [
     </button>
   </div>
 
+  <!-- 白色選單條 (Menubar Wrap) -->
   <div class="menubar-wrap" id="nav-menu">
     <nav class="menubar container" aria-label="主導覽">
-      <a class="menu-link is-home" href="/">首頁</a>
+      <a class="nav-item is-home" href="/">首頁</a>
 
       {
         navGroups.map((group) => (
-          <div class="menu-dropdown-group" data-group={group.id}>
+          <div class="nav-dropdown" data-group={group.id}>
             <button
-              class="menu-dropdown-btn"
+              class="nav-dropdown-trigger"
               type="button"
               aria-expanded="false"
-              aria-haspopup="true"
             >
               <span>{group.title}</span>
-              <span class="arrow-desktop" aria-hidden="true">▾</span>
-              <span class="toggle-mobile" aria-hidden="true">+</span>
+              <span class="desktop-caret" aria-hidden="true">▾</span>
+              <span class="mobile-plus" aria-hidden="true">+</span>
             </button>
-            <div class="dropdown-panel">
+            <div class="nav-dropdown-menu">
               {group.items.map((item) => (
                 <a
-                  class="dropdown-sublink"
+                  class="nav-sub-item"
                   href={item.href}
                   target={item.external ? '_blank' : undefined}
                   rel={item.external ? 'noopener noreferrer' : undefined}
                 >
                   <span>{item.label}</span>
-                  {item.external && <span class="ext-icon" aria-hidden="true">↗</span>}
+                  {item.external && <span class="nav-ext" aria-hidden="true">↗</span>}
                 </a>
               ))}
             </div>
@@ -97,7 +99,7 @@ const navGroups = [
         ))
       }
 
-      <a class="menu-link menu-cta" href="/reserve/">
+      <a class="nav-item nav-cta" href="/reserve/">
         預約系統
       </a>
     </nav>
@@ -108,13 +110,14 @@ const navGroups = [
   .site-header {
     position: sticky;
     top: 0;
-    z-index: 50;
+    z-index: 100;
     background: var(--surface);
   }
 
+  /* 頂部黑條 */
   .topbar {
     background: var(--ink);
-    color: rgba(255, 255, 255, 0.72);
+    color: rgba(255, 255, 255, 0.75);
     font-size: 0.75rem;
     letter-spacing: 0.14em;
   }
@@ -153,7 +156,7 @@ const navGroups = [
     background: none;
     border: none;
     padding: 0;
-    font-family: var(--font-sans);
+    font-family: inherit;
     font-size: 0.75rem;
     letter-spacing: 0.14em;
     color: var(--white);
@@ -164,11 +167,11 @@ const navGroups = [
     text-decoration: underline;
   }
 
+  /* 主標題列 */
   .header-main {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 1rem;
     padding: 1.25rem 0 1.1rem;
   }
 
@@ -197,28 +200,41 @@ const navGroups = [
     letter-spacing: 0.16em;
   }
 
+  .nav-toggle {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  /* 🖥️ 桌面版白色選單列 (Desktop Menubar) */
   .menubar-wrap {
     border-top: 1px solid var(--border);
     border-bottom: 2px solid var(--ink);
     background: var(--surface);
-    overflow: visible;
+    position: relative;
   }
 
   .menubar {
     display: flex;
     align-items: center;
     flex-wrap: nowrap;
-    gap: 0;
     min-height: 48px;
     width: 100%;
   }
 
-  .menu-link {
+  /* 一般選單連結 */
+  .nav-item {
     display: inline-flex;
     align-items: center;
-    gap: 0.35rem;
-    padding: 0 clamp(0.75rem, 1.4vw, 1.35rem);
     height: 48px;
+    padding: 0 1.35rem;
     font-size: 0.92rem;
     font-weight: 400;
     letter-spacing: 0.1em;
@@ -229,17 +245,17 @@ const navGroups = [
     transition: background var(--t), color var(--t);
   }
 
-  .menu-link:hover {
+  .nav-item:hover {
     background: var(--bg-soft);
     color: var(--ink);
   }
 
-  .is-home {
+  .nav-item.is-home {
     color: var(--ink);
   }
 
-  /* 下拉群組 (Desktop) */
-  .menu-dropdown-group {
+  /* 下拉群組容器 */
+  .nav-dropdown {
     position: relative;
     display: inline-flex;
     align-items: center;
@@ -248,7 +264,7 @@ const navGroups = [
     flex-shrink: 0;
   }
 
-  .menu-dropdown-btn {
+  .nav-dropdown-trigger {
     appearance: none;
     background: none;
     border: none;
@@ -257,7 +273,7 @@ const navGroups = [
     font-weight: 400;
     letter-spacing: 0.1em;
     color: var(--ink-2);
-    padding: 0 clamp(0.75rem, 1.4vw, 1.35rem);
+    padding: 0 1.35rem;
     height: 100%;
     display: inline-flex;
     align-items: center;
@@ -267,26 +283,27 @@ const navGroups = [
     transition: background var(--t), color var(--t);
   }
 
-  .menu-dropdown-group:hover .menu-dropdown-btn,
-  .menu-dropdown-group:focus-within .menu-dropdown-btn {
+  .nav-dropdown:hover .nav-dropdown-trigger,
+  .nav-dropdown:focus-within .nav-dropdown-trigger {
     background: var(--bg-soft);
     color: var(--ink);
   }
 
-  .arrow-desktop {
+  .desktop-caret {
     font-size: 0.72rem;
     transition: transform var(--t);
   }
 
-  .menu-dropdown-group:hover .arrow-desktop {
+  .nav-dropdown:hover .desktop-caret {
     transform: rotate(180deg);
   }
 
-  .toggle-mobile {
+  .mobile-plus {
     display: none;
   }
 
-  .dropdown-panel {
+  /* 下拉子選單面板 (Desktop) */
+  .nav-dropdown-menu {
     position: absolute;
     top: 100%;
     left: 0;
@@ -300,78 +317,59 @@ const navGroups = [
     visibility: hidden;
     transform: translateY(6px);
     transition: opacity 0.2s var(--ease), transform 0.2s var(--ease), visibility 0.2s;
-    z-index: 100;
+    z-index: 200;
   }
 
-  .menu-dropdown-group:hover .dropdown-panel,
-  .menu-dropdown-group:focus-within .dropdown-panel {
+  .nav-dropdown:hover .nav-dropdown-menu,
+  .nav-dropdown:focus-within .nav-dropdown-menu {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
   }
 
-  .dropdown-sublink {
+  .nav-sub-item {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 0.75rem 1.1rem;
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     color: var(--ink-2);
     letter-spacing: 0.08em;
     border-bottom: 1px solid var(--border);
+    white-space: nowrap;
     transition: background var(--t), color var(--t);
   }
 
-  .dropdown-sublink:last-child {
+  .nav-sub-item:last-child {
     border-bottom: none;
   }
 
-  .dropdown-sublink:hover {
+  .nav-sub-item:hover {
     background: var(--bg-soft);
     color: var(--ink);
   }
 
-  .ext-icon {
-    font-size: 0.75rem;
+  .nav-ext {
+    font-size: 0.72rem;
     color: var(--ink-3);
   }
 
-  .menu-cta {
+  /* 右側 CTA 預約系統按鈕 */
+  .nav-cta {
     margin-left: auto;
     border-right: none;
     font-weight: 500;
     background: var(--ink);
     color: var(--white);
-    white-space: nowrap;
-    flex-shrink: 0;
   }
 
-  .menu-cta:hover {
+  .nav-cta:hover {
     background: #000;
     color: var(--white);
   }
 
-  .nav-toggle {
-    display: none;
-    align-items: center;
-    justify-content: center;
-    width: 44px;
-    height: 44px;
-    padding: 0;
-    margin-left: auto;
-    background: transparent;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    cursor: pointer;
-  }
-
-  .nav-toggle svg {
-    display: block;
-    flex-shrink: 0;
-  }
-
-  /* 📱 手機版選單 (含折疊展開 +/-) */
-  @media (max-width: 992px) {
+  /* 📱 手機與平板版 (Mobile / Tablet < 900px) */
+  @media (max-width: 900px) {
     .site-header {
       position: static;
     }
@@ -391,34 +389,36 @@ const navGroups = [
 
     .brand svg,
     .brand img {
-      width: 46px;
-      height: 46px;
+      width: 44px;
+      height: 44px;
     }
 
+    /* 手機版選單容器預設完全隱藏 */
     .menubar-wrap {
       display: none;
+      border-top: none;
     }
 
-    .menubar-wrap.open {
+    .menubar-wrap.is-open {
       display: block;
     }
 
     .menubar {
       flex-direction: column;
       align-items: stretch;
-      padding: 0.5rem 0;
+      padding: 0;
       min-height: 0;
     }
 
-    .menu-link {
+    .nav-item {
       width: 100%;
       height: auto;
-      padding: 0.85rem 0.75rem;
+      padding: 0.9rem 1rem;
       border-right: none;
       border-bottom: 1px solid var(--border);
     }
 
-    .menu-dropdown-group {
+    .nav-dropdown {
       width: 100%;
       height: auto;
       flex-direction: column;
@@ -427,30 +427,30 @@ const navGroups = [
       border-bottom: 1px solid var(--border);
     }
 
-    .menu-dropdown-btn {
+    .nav-dropdown-trigger {
       width: 100%;
       height: auto;
-      padding: 0.85rem 0.75rem;
+      padding: 0.9rem 1rem;
       justify-content: space-between;
     }
 
-    .arrow-desktop {
+    .desktop-caret {
       display: none;
     }
 
-    .toggle-mobile {
+    .mobile-plus {
       display: inline-block;
-      font-size: 1.2rem;
+      font-size: 1.3rem;
       font-weight: 600;
       line-height: 1;
       color: var(--ink);
       width: 24px;
       height: 24px;
       text-align: center;
-      transition: transform var(--t);
     }
 
-    .dropdown-panel {
+    /* 手機版折疊面板 */
+    .nav-dropdown-menu {
       position: static;
       display: none;
       min-width: 0;
@@ -463,19 +463,21 @@ const navGroups = [
       visibility: visible;
     }
 
-    .menu-dropdown-group.is-open .dropdown-panel {
+    .nav-dropdown.expanded .nav-dropdown-menu {
       display: flex;
     }
 
-    .dropdown-sublink {
-      padding: 0.75rem 1.4rem;
+    .nav-sub-item {
+      padding: 0.85rem 1.6rem;
       border-bottom: 1px dashed var(--border);
     }
 
-    .menubar-wrap.open .menu-cta {
+    .menubar-wrap.is-open .nav-cta {
       margin-left: 0;
-      margin-top: 0.5rem;
+      margin-top: 0.4rem;
+      margin-bottom: 0.8rem;
       justify-content: center;
+      border-radius: 4px;
     }
   }
 
@@ -489,40 +491,45 @@ const navGroups = [
 <script>
   import { currentUser, logout } from '../scripts/auth';
 
-  const toggle = document.querySelector('.nav-toggle');
-  const wrap = document.querySelector('.menubar-wrap');
+  // 手機版漢堡開關
+  const toggleBtn = document.querySelector('.nav-toggle');
+  const menuWrap = document.querySelector('.menubar-wrap');
 
-  toggle?.addEventListener('click', () => {
-    const open = toggle.getAttribute('aria-expanded') === 'true';
-    toggle.setAttribute('aria-expanded', String(!open));
-    wrap?.classList.toggle('open', !open);
+  toggleBtn?.addEventListener('click', () => {
+    const isExpanded = toggleBtn.getAttribute('aria-expanded') === 'true';
+    toggleBtn.setAttribute('aria-expanded', String(!isExpanded));
+    menuWrap?.classList.toggle('is-open', !isExpanded);
   });
 
-  // 手機版折疊展開 (+ / -)
-  const dropdownGroups = document.querySelectorAll('.menu-dropdown-group');
-  dropdownGroups.forEach((group) => {
-    const btn = group.querySelector('.menu-dropdown-btn');
-    const toggleIcon = group.querySelector('.toggle-mobile');
+  // 手機版手風琴 (+ / -)
+  const dropdownContainers = document.querySelectorAll('.nav-dropdown');
+  dropdownContainers.forEach((dropdown) => {
+    const trigger = dropdown.querySelector('.nav-dropdown-trigger');
+    const plusIcon = dropdown.querySelector('.mobile-plus');
 
-    btn?.addEventListener('click', (e) => {
+    trigger?.addEventListener('click', (e) => {
       if (window.innerWidth <= 900) {
         e.preventDefault();
-        const isOpen = group.classList.toggle('is-open');
-        btn.setAttribute('aria-expanded', String(isOpen));
-        if (toggleIcon) {
-          toggleIcon.textContent = isOpen ? '−' : '+';
+        const isExpanded = dropdown.classList.toggle('expanded');
+        trigger.setAttribute('aria-expanded', String(isExpanded));
+        if (plusIcon) {
+          plusIcon.textContent = isExpanded ? '−' : '+';
         }
       }
     });
   });
 
-  wrap?.querySelectorAll('.dropdown-sublink, .menu-link:not(.menu-dropdown-btn)').forEach((a) => {
-    a.addEventListener('click', () => {
-      toggle?.setAttribute('aria-expanded', 'false');
-      wrap?.classList.remove('open');
+  // 點擊子連結後自動收合
+  menuWrap?.querySelectorAll('.nav-sub-item, .nav-item:not(.nav-dropdown-trigger)').forEach((link) => {
+    link.addEventListener('click', () => {
+      if (window.innerWidth <= 900) {
+        toggleBtn?.setAttribute('aria-expanded', 'false');
+        menuWrap?.classList.remove('is-open');
+      }
     });
   });
 
+  // Topbar 使用者狀態
   const userBox = document.getElementById('topbar-user');
   const userName = document.getElementById('topbar-username');
   const logoutBtn = document.getElementById('topbar-logout');
