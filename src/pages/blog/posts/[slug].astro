@@ -208,7 +208,7 @@ const cat = getCategoryInfo(item.slug);
         <div class="popular-posts" id="popular-side">
           <h3 class="popular-title">熱門推薦文章</h3>
           <ul class="wpp-list">
-            {posts.slice(0, 5).map((p, idx) => (
+            {posts.slice(0, 3).map((p, idx) => (
               <li class="wpp-item">
                 <a href={`/blog/posts/${p.slug}/`} class="wpp-thumb-link">
                   <div class="wpp-thumbnail-box">

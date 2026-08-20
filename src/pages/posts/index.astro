@@ -161,6 +161,55 @@ function getPostCategory(post: typeof posts[0]) {
               ))}
             </ul>
           </div>
+
+          <!-- 熱門推薦文章 (#popular-side: 75px 1:1 正方形真實照片微縮圖 - 推薦 3 篇) -->
+          <div class="popular-posts" id="popular-side" style="margin-top: 2rem;">
+            <h3 class="side-section-heading">熱門推薦文章</h3>
+            <ul class="wpp-list">
+              {posts.slice(0, 3).map((p) => (
+                <li class="wpp-item">
+                  <a href={`/blog/posts/${p.slug}/`} class="wpp-thumb-link">
+                    <div class="wpp-thumbnail-box">
+                      <img src={`/banners/${p.slug}.jpg`} alt={p.title} class="wpp-thumb-img" />
+                    </div>
+                  </a>
+                  <div class="wpp-details">
+                    <a href={`/blog/posts/${p.slug}/`} class="wpp-post-title">
+                      {p.title}
+                    </a>
+                    <span class="wpp-meta">{p.date}</span>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <!-- 📜 每日一句 (Daily Quote) -->
+          <div class="side-popular-box side-quote-box" style="margin-top: 2rem;">
+            <h2 class="side-quote-title">每日一句</h2>
+            <div class="side-quote-content">
+              <p class="side-quote-text">「{dailyQuote.text}」</p>
+              <p class="side-quote-author">— {dailyQuote.author}</p>
+            </div>
+          </div>
+
+          <!-- 📊 網站計數器 (Website Counter - 即時真實造訪計數) -->
+          <div class="side-popular-box side-counter-box" style="margin-top: 2rem;">
+            <h2 class="side-counter-title">網站計數器</h2>
+            <div class="side-counter-content">
+              <div class="counter-badge-wrap">
+                <a href="https://www.hitwebcounter.com" target="_blank" rel="noopener noreferrer" class="hitcounter-link" title="網站造訪計數器">
+                  <img
+                    src="https://www.hitwebcounter.com/counter/counter.php?page=21514902&style=0001&nbdigits=8&type=page"
+                    title="網站計數器"
+                    alt="網站造訪計數器"
+                    class="hitcounter-img"
+                    loading="lazy"
+                  />
+                </a>
+              </div>
+            </div>
+          </div>
       </aside>
     </div>
   </div>
