@@ -152,12 +152,35 @@ const searchIndexJson = JSON.stringify(
     </div>
     <ul class="mobile-menu-links">
       <li><a href="/">首頁</a></li>
-      <li><a href="/nytools/">NYTools</a></li>
-      <li><a href="/cctv/">羊監視你</a></li>
-      <li><a href="/badges/">羊集章</a></li>
-      <li><a href="/vocab/">單字測驗</a></li>
-      <li><a href="/ntub/">北商學分戰士</a></li>
-            <li><a href="/vip/">VIP 專區</a></li>
+
+      <!-- 手機折疊選單 1：Ovis Tools -->
+      <li class="mobile-has-sub">
+        <button class="mobile-sub-toggle" aria-expanded="false">
+          <span>Ovis Tools</span>
+          <span class="mobile-sub-arrow">▾</span>
+        </button>
+        <ul class="mobile-sub-menu">
+          <li><a href="/nytools/">NYTools</a></li>
+          <li><a href="/cctv/">羊監視你</a></li>
+          <li><a href="/badges/">羊集章</a></li>
+          <li><a href="/vocab/">單字測驗</a></li>
+          <li><a href="/ntub/">北商學分戰士</a></li>
+        </ul>
+      </li>
+
+      <!-- 手機折疊選單 2：主要服務 -->
+      <li class="mobile-has-sub">
+        <button class="mobile-sub-toggle" aria-expanded="false">
+          <span>主要服務</span>
+          <span class="mobile-sub-arrow">▾</span>
+        </button>
+        <ul class="mobile-sub-menu">
+          <li><a href="https://1ztests.nsir.uk" target="_blank" rel="noopener">羊愛考試 ↗</a></li>
+          <li><a href="https://nsir.uk" target="_blank" rel="noopener">羊-短網址 ↗</a></li>
+        </ul>
+      </li>
+
+      <li><a href="/vip/">VIP</a></li>
       <li><a href="/reserve/">預約系統</a></li>
       <li><a href="/downloads/">檔案下載</a></li>
       <li class="mobile-cta-item"><a href="/about/">關於 OviNas</a></li>
@@ -574,6 +597,26 @@ const searchIndexJson = JSON.stringify(
   menuToggle?.addEventListener('click', openDrawer);
   closeMenu?.addEventListener('click', closeDrawer);
   menuOverlay?.addEventListener('click', closeDrawer);
+
+  // 📱 行動版折疊子選單 Accordion 互動
+  const mobileSubToggles = document.querySelectorAll('.mobile-sub-toggle');
+  mobileSubToggles.forEach((toggle) => {
+    toggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const parent = toggle.closest('.mobile-has-sub');
+      const isExpanded = parent?.classList.contains('is-active');
+      
+      document.querySelectorAll('.mobile-has-sub').forEach((item) => {
+        if (item !== parent) {
+          item.classList.remove('is-active');
+          item.querySelector('.mobile-sub-toggle')?.setAttribute('aria-expanded', 'false');
+        }
+      });
+
+      parent?.classList.toggle('is-active', !isExpanded);
+      toggle.setAttribute('aria-expanded', String(!isExpanded));
+    });
+  });
 
   // 3. 全站卡片滑動淡入進場動畫 (Scroll Reveal Animation)
   const revealElements = document.querySelectorAll('.post-card, .loop-article, .single-hero-img-wrap, .side-author-box, .popular-posts, .tag-widget-box');
@@ -1232,6 +1275,78 @@ const searchIndexJson = JSON.stringify(
 
   .mobile-menu-links li {
     border-bottom: 1px solid #f4f4f4;
+  }
+
+  
+  /* 📱 行動版折疊子選單 Accordion 樣式 */
+  .mobile-has-sub {
+    position: relative;
+  }
+
+  .mobile-sub-toggle {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: none;
+    border: none;
+    padding: 0.8rem 0;
+    font-size: 1.02rem;
+    font-weight: 600;
+    color: #444444;
+    cursor: pointer;
+    font-family: inherit;
+    text-align: left;
+    transition: color 0.15s ease;
+  }
+
+  .mobile-sub-toggle:hover {
+    color: #ff6b00;
+  }
+
+  .mobile-sub-arrow {
+    font-size: 12px;
+    transition: transform 0.2s ease;
+    color: #888888;
+  }
+
+  .mobile-has-sub.is-active .mobile-sub-arrow {
+    transform: rotate(180deg);
+    color: #ff6b00;
+  }
+
+  .mobile-sub-menu {
+    list-style: none;
+    padding: 0.2rem 0 0.5rem 1rem !important;
+    margin: 0 0 0.4rem !important;
+    display: none;
+    background: #f8fafc;
+    border-left: 2.5px solid #ff6b00;
+  }
+
+  .mobile-has-sub.is-active .mobile-sub-menu {
+    display: block;
+  }
+
+  .mobile-sub-menu li {
+    border-bottom: 1px solid #eef2f6 !important;
+  }
+
+  .mobile-sub-menu li:last-child {
+    border-bottom: none !important;
+  }
+
+  .mobile-sub-menu a {
+    padding: 0.65rem 0.8rem !important;
+    font-size: 0.92rem !important;
+    color: #555555 !important;
+    font-weight: 500 !important;
+    transition: all 0.15s ease;
+  }
+
+  .mobile-sub-menu a:hover {
+    color: #ff6b00 !important;
+    padding-left: 1.1rem !important;
   }
 
   .mobile-menu-links a {
