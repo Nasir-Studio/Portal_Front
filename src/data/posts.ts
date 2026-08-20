@@ -361,57 +361,7 @@ const posts: Post[] = [
       </p>
     `,
   },
-  {
-    slug: 'front-end-design',
-    category: 'tech',
-    date: '2026.08.19',
-    title: '【文章】Front End Design ( 好看的推薦）',
-    excerpt: '看到好看的設計前端就要收藏起來',
-    content: `
-      <div class="note-box" style="background: #fff7ed; border-left: 4px solid #ff6b00; padding: 1.2rem; margin-bottom: 1.8rem; border-radius: 4px;">
-        <h4 style="margin: 0 0 0.5rem; color: #c2410c; font-size: 15px; font-weight: 500;">📌 內容整合公告</h4>
-        <p style="margin: 0; color: #431407; font-size: 13.5px; line-height: 1.6;">
-          本篇前端設計與動效靈感資源已全面擴充並整合至完整大補帖：
-          <a href="/blog/posts/github-open-source-tools/" style="color: #ff6b00; font-weight: 600; text-decoration: underline;">【文章】學期結束後，收獲的 github 開源工具與精選實戰資源庫</a>，歡迎前往探索更多精選神器！
-        </p>
-      </div>
-      <p class="post-intro">
-        看到好看的設計前端就要收藏起來：
-      </p>
-      <ul>
-        <li><strong>Design Prompts</strong>：設計提示詞與構想庫 <a href="https://www.designprompts.dev/" target="_blank" rel="noopener noreferrer">https://www.designprompts.dev/</a></li>
-        <li><strong>21st.dev Sign-in 元件</strong>：現代極簡登入介面 <a href="https://21st.dev/community/components/s/sign-in" target="_blank" rel="noopener noreferrer">https://21st.dev/community/components/s/sign-in</a></li>
-        <li><strong>Web Design Clip</strong>：日本高質感網站設計剪貼簿 <a href="https://webdesignclip.com/" target="_blank" rel="noopener noreferrer">https://webdesignclip.com/</a></li>
-        <li><strong>Awwwards 精選 Slideshow 動效</strong>：結合 GSAP 的流體幻燈片效果 <a href="https://www.awwwards.com/inspiration/slideshow-gsap-codegrid" target="_blank" rel="noopener noreferrer">https://www.awwwards.com/inspiration/slideshow-gsap-codegrid</a></li>
-      </ul>
-`,
-  },
-  {
-    slug: 'proxy-list-tools',
-    category: 'tech',
-    date: '2026.08.19',
-    title: '【文章】Proxy List & Tools 推薦',
-    excerpt: '前一陣子在找代理，我的好朋朋364同學大力推薦這些，我還沒來得及研究，等研究完再來寫一篇文章好了！',
-    content: `
-      <div class="note-box" style="background: #fff7ed; border-left: 4px solid #ff6b00; padding: 1.2rem; margin-bottom: 1.8rem; border-radius: 4px;">
-        <h4 style="margin: 0 0 0.5rem; color: #c2410c; font-size: 15px; font-weight: 500;">📌 內容整合公告</h4>
-        <p style="margin: 0; color: #431407; font-size: 13.5px; line-height: 1.6;">
-          本篇代理伺服器與指紋環境清單已全面整合至完整大補帖：
-          <a href="/blog/posts/github-open-source-tools/" style="color: #ff6b00; font-weight: 600; text-decoration: underline;">【文章】學期結束後，收獲的 github 開源工具與精選實戰資源庫</a>！
-        </p>
-      </div>
-      <p class="post-intro">
-        前一陣子在找代理，我的好朋朋 364 同學大力推薦這些，包含優質代理與指紋瀏覽器環境：
-      </p>
-      <ul>
-        <li><strong>Proxy Seller</strong>：專屬 IPv4/IPv6 與住宅代理 <a href="https://proxy-seller.com/zh/" target="_blank" rel="noopener noreferrer">https://proxy-seller.com/zh/</a></li>
-        <li><strong>Decodo</strong>：智慧代理與數據採集工具 <a href="https://decodo.com/#gref" target="_blank" rel="noopener noreferrer">https://decodo.com/#gref</a></li>
-        <li><strong>Lumi Proxy</strong>：全球高可用動態住宅代理 <a href="https://www.lumiproxy.com/zh-hant/" target="_blank" rel="noopener noreferrer">https://www.lumiproxy.com/zh-hant/</a></li>
-        <li><strong>AdsPower</strong>：多環境防關聯指紋瀏覽器 <a href="https://www.adspower.com/tc/" target="_blank" rel="noopener noreferrer">https://www.adspower.com/tc/</a></li>
-      </ul>
-`,
-  },
-  {
+      {
     slug: 'ntub-credit-program',
     category: 'tech',
     date: '2026.08.19',
@@ -455,30 +405,7 @@ const posts: Post[] = [
       </p>
     `,
   },
-  {
-    slug: 'windows-experience-freestyle',
-    category: 'tech',
-    date: '2026.07.26',
-    title: '【文章】新找到的玩意兒：利用 Win10 重新復刻 WinXP',
-    excerpt: '我相信很多人是從 XP 時代過來的，我自己也是，我真的很常懷念 XP 的時代…',
-    content: `
-      <div class="note-box" style="background: #fff7ed; border-left: 4px solid #ff6b00; padding: 1.2rem; margin-bottom: 1.8rem; border-radius: 4px;">
-        <h4 style="margin: 0 0 0.5rem; color: #c2410c; font-size: 15px; font-weight: 500;">📌 內容整合公告</h4>
-        <p style="margin: 0; color: #431407; font-size: 13.5px; line-height: 1.6;">
-          本篇 WinXP 復刻專案已整合至完整開源神器清單：
-          <a href="/blog/posts/github-open-source-tools/" style="color: #ff6b00; font-weight: 600; text-decoration: underline;">【文章】學期結束後，收獲的 github 開源工具與精選實戰資源庫</a>！
-        </p>
-      </div>
-      <p>
-        我相信很多人是從 XP 時代過來的，我自己也是，我真的很常懷念 XP 的時代，那個工具查找什麼的真的很方便，就是用習慣後，用 Win10（Win7 我也覺得很好用）Win11 就會覺得不習慣！前幾天找到一位國外大佬開發的利用 Win10 的核心改了主題等，變成 XP 的樣式，真的超有趣，我決定找時間來玩玩看！
-      </p>
-      <p>
-        專案與映像檔載點：
-        <a href="https://archive.org/details/windows-experience-freestyle" target="_blank" rel="noopener noreferrer">https://archive.org/details/windows-experience-freestyle</a>
-      </p>
-`,
-  },
-  {
+    {
     slug: 'github-open-source-tools',
     category: 'tech',
     date: '2026.06.30',

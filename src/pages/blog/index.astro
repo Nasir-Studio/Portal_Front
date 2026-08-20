@@ -21,7 +21,7 @@ const techPosts = posts.slice(0, 4);
 const editorPicks = [
   posts.find(p => p.slug === 'security-research-report') || posts[0],
   posts.find(p => p.slug === 'tech-notes-architecture') || posts[1],
-  posts.find(p => p.slug === 'front-end-design') || posts[2],
+  posts.find(p => p.slug === 'github-open-source-tools') || posts[2],
 ];
 
 // 3. 主題閱讀 分類數據
@@ -45,7 +45,7 @@ const topicCategories = [
       { title: '現代企業級全端 Web 架構規範實踐', slug: 'tech-notes-architecture' },
       { title: 'Cloudflare Pages 與 Edge Functions 邊緣部署實務', slug: 'cf-pages-pwa-webpush' },
       { title: 'PWA WebPush 離線推播與 Service Worker 快取機制', slug: 'cf-pages-pwa-webpush' },
-      { title: '高效能開發環境調校與極簡工作流指南', slug: 'windows-experience-freestyle' },
+      { title: '全端架構效能調校與極簡開發工作流實踐', slug: 'tech-notes-architecture' },
     ],
   },
   {
@@ -53,10 +53,10 @@ const topicCategories = [
     name: '前端工程',
     posts: posts.filter(p => p.slug.includes('design') || p.slug.includes('front-end') || p.slug.includes('presentation')),
     listPosts: [
-      { title: '從零打造高質感自媒體部落格排版美學', slug: 'front-end-design' },
-      { title: '響應式 RWD 佈局與貝茲曲線動畫實踐', slug: 'front-end-design' },
+      { title: '從零打造高質感自媒體部落格排版美學', slug: 'github-open-source-tools' },
+      { title: '響應式 RWD 佈局與貝茲曲線動畫實踐', slug: 'github-open-source-tools' },
       { title: '簡報邏輯與工程師介面視覺傳達技巧', slug: 'presentation-design-logic' },
-      { title: 'TypeScript 與 Astro 現代靜態站點極速構建', slug: 'front-end-design' },
+      { title: 'TypeScript 與 Astro 現代靜態站點極速構建', slug: 'github-open-source-tools' },
     ],
   },
   {
@@ -65,7 +65,7 @@ const topicCategories = [
     posts: posts.filter(p => p.slug.includes('tool') || p.slug.includes('proxy') || p.slug.includes('github') || p.slug.includes('ig')),
     listPosts: [
       { title: '精選 GitHub 開發者神器與高效率工具箱', slug: 'github-open-source-tools' },
-      { title: '免費代理伺服器 Proxy 名單爬取與驗證模組', slug: 'proxy-list-tools' },
+      { title: '代理伺服器 Proxy 與多環境工具箱解析', slug: 'github-open-source-tools' },
       { title: 'Instagram 訊息收回管理與 API 實作探討', slug: 'ig-unsend-tool' },
       { title: 'AI 歷屆考古題索引與智慧讀書計畫系統', slug: 'ai-planner-past-exam-info' },
     ],
