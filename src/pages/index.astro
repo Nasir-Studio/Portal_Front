@@ -15,7 +15,7 @@ const allPosts = posts;
 const featuredPost = posts[0];
 
 
-// 1. 大標題等級的主題 Tab 分類 (兩大核心主題：網站架設、開源工具)
+// 1. 大標題等級的主題 Tab 分類 (三大主題：網站架設、開源工具、獨有工具)
 const mainTabCategories = [
   {
     id: 'arch',
@@ -28,14 +28,6 @@ const mainTabCategories = [
         href: '/posts/tech-notes-architecture/',
         img: '/banners/tech-notes-architecture.jpg?v=20260820light',
         cat: '架構伺服器'
-      },
-      {
-        title: '【文章】NTUB 2026 通識資安稽核一條重',
-        excerpt: '教育部與行政院國家資通安全通報演練實戰：從弱點掃描、靜態原始碼檢測到滲透測試完整流程。',
-        slug: 'ntub-audit',
-        href: '/posts/ntub-audit/',
-        img: '/banners/ntub-audit.jpg?v=20260820light',
-        cat: '系統資安'
       },
       {
         title: '【CF Page】PWA WebPush 設計原理',
@@ -90,6 +82,20 @@ const mainTabCategories = [
         href: '/posts/tech-notes-architecture/',
         img: '/banners/tech-notes-architecture.jpg?v=20260820light',
         cat: '架構伺服器'
+      },
+    ],
+  },
+  {
+    id: 'ovinas',
+    name: '獨有工具',
+    items: [
+      {
+        title: '【文章】NTUB 2026 通識資安稽核一條龍',
+        excerpt: '教育部與行政院國家資通安全通報演練實戰：從弱點掃描、靜態原始碼檢測到滲透測試完整流程。',
+        slug: 'ntub-audit',
+        href: '/posts/ntub-audit/',
+        img: '/banners/ntub-audit.jpg?v=20260820light',
+        cat: '系統資安'
       },
     ],
   },
