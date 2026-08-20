@@ -17,10 +17,10 @@ const featuredPost = posts[0];
 // 1. 技術文章 (首頁頂部雙欄列表：最新 4 篇)
 const techPosts = posts.slice(0, 4);
 
-// 2. 編輯精選 (3 篇經典深度代表作)
+// 2. 編輯精選 (3 篇經典深度代表作 - 三篇完全不同之旗艦文章)
 const editorPicks = [
   posts.find(p => p.slug === 'tech-notes-architecture') || posts[0],
-  posts.find(p => p.slug === 'tech-notes-architecture') || posts[1],
+  posts.find(p => p.slug === 'cf-pages-pwa-webpush') || posts[1],
   posts.find(p => p.slug === 'github-open-source-tools') || posts[2],
 ];
 
