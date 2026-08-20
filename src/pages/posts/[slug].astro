@@ -36,7 +36,7 @@ const catName = getCategoryName(item.category, item.slug);
         <main class="single-main-left">
           <!-- 麵包屑導航 -->
           <nav class="breadcrumbs" aria-label="麵包屑">
-            <a href="/blog/">首頁</a>
+            <a href="/blog/">部落格首頁</a>
             <span class="sep">/</span>
             <a href="/blog/#all-posts">{catName}</a>
             <span class="sep">/</span>
@@ -48,9 +48,10 @@ const catName = getCategoryName(item.category, item.slug);
             <div class="post-cat-badge">{catName}</div>
             <h1 class="single-title">{item.title}</h1>
             <div class="single-meta-row">
-              <span class="meta-item"><i class="meta-icon">👤</i> OviNas</span>
+              <span class="meta-item"><i class="meta-icon">👤</i> OviNas 站長</span>
               <span class="meta-item"><i class="meta-icon">📅</i> {item.date}</span>
-              <span class="meta-item"><i class="meta-icon">⏱️</i> 8 分鐘閱讀</span>
+              <span class="meta-item"><i class="meta-icon">⏱️</i> 8 分鐘精讀</span>
+              <a href="#comments" class="meta-item meta-comment-jump"><i class="meta-icon">💬</i> <span id="metaCommentCount">2 則迴響</span></a>
             </div>
           </header>
 
@@ -62,7 +63,7 @@ const catName = getCategoryName(item.category, item.slug);
             <div class="bgs bgs4"></div>
             <div class="bgs bgs5 single-cover-canvas">
               <div class="cover-center-badge">
-                <span class="cover-topic-tag">{catName} 專題深入</span>
+                <span class="cover-topic-tag">{catName} 深度專題</span>
                 <h2 class="cover-heading">{item.title}</h2>
               </div>
             </div>
@@ -72,7 +73,7 @@ const catName = getCategoryName(item.category, item.slug);
           <div id="toc_container" class="toc-box">
             <p class="toc_title">📑 內容索引</p>
             <ul class="toc_list" id="tocList">
-              <!-- JS 動態生成目錄 -->
+              <!-- JS 自動生成目錄 -->
             </ul>
           </div>
 
@@ -87,7 +88,7 @@ const catName = getCategoryName(item.category, item.slug);
             <div class="author-info-col">
               <h3 class="author-title">關於作者：OviNas</h3>
               <p class="author-desc-p">
-                全端工程師與資安研究愛好者，專注於現代 Web 架構、系統資安滲透稽核與高質感前端互動。如果這篇文章對你有幫助，歡迎分享或加入 VIP 專區！
+                專注於現代 Web 架構設計、系統資安防護與高質感前端開發。如果這篇文章對你有幫助，歡迎在下方留言交流或加入主站 VIP 專區！
               </p>
             </div>
           </div>
@@ -109,7 +110,102 @@ const catName = getCategoryName(item.category, item.slug);
             ) : <div class="pn-empty"></div>}
           </nav>
 
-          <!-- 相關推薦文章 (Related Posts) -->
+          <!-- 💬 4. 經典 WordPress 風格留言板專區 (#comments & #respond) -->
+          <section class="comments-area" id="comments">
+            <div class="comments-section-header">
+              <h3 class="comments-title">
+                <span class="title-icon">💬</span> 讀者迴響與討論
+                <span class="comments-count-pill" id="commentCountBadge">(2 則)</span>
+              </h3>
+            </div>
+
+            <!-- 現有留言清單 (Comment List) -->
+            <div class="commentlist" id="commentList">
+              <!-- 範例留言 1 -->
+              <div class="comment-body">
+                <div class="comment-avatar-wrap">
+                  <div class="default-avatar">羊</div>
+                </div>
+                <div class="comment-main-content">
+                  <div class="comment-meta-bar">
+                    <span class="comment-author-name">Alex Lin</span>
+                    <span class="comment-user-badge">訪客</span>
+                    <span class="comment-time">2 天前</span>
+                  </div>
+                  <div class="comment-text">
+                    這篇架構分析與資安防護拆解得非常清晰，特別是 Cloudflare 與邊緣緩存的實戰設定，收穫良多！
+                  </div>
+                  <div class="comment-reply-btn">
+                    <button type="button" class="btn-reply-action" data-reply-to="Alex Lin">回覆</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 範例留言 2: 站長回覆 -->
+              <div class="comment-body is-author-reply">
+                <div class="comment-avatar-wrap">
+                  <img src="/sheep-hd.png" alt="OviNas" class="author-avatar-img" width="44" height="44" />
+                </div>
+                <div class="comment-main-content">
+                  <div class="comment-meta-bar">
+                    <span class="comment-author-name">OviNas</span>
+                    <span class="comment-user-badge is-admin">站長</span>
+                    <span class="comment-time">1 天前</span>
+                  </div>
+                  <div class="comment-text">
+                    很高興對你有幫助！後續還會更新一系列防護技巧與工具，歡迎隨時交流討論！
+                  </div>
+                  <div class="comment-reply-btn">
+                    <button type="button" class="btn-reply-action" data-reply-to="OviNas">回覆</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 發表迴響表單 (#respond) -->
+            <div class="comment-respond" id="respond">
+              <h3 class="reply-title">
+                <span class="title-square">■</span> 發表您的看法與迴響
+              </h3>
+              <p class="comment-notes">電子郵件地址不會被公開發布。必填欄位已標記 <span class="required">*</span></p>
+
+              <form id="commentForm" class="comment-form">
+                <div class="form-row form-grid-3">
+                  <div class="form-group">
+                    <label for="authorName">稱呼 <span class="required">*</span></label>
+                    <input id="authorName" type="text" class="wp-input" placeholder="你的暱稱" required />
+                  </div>
+                  <div class="form-group">
+                    <label for="authorEmail">電子郵件 <span class="required">*</span></label>
+                    <input id="authorEmail" type="email" class="wp-input" placeholder="you@example.com" required />
+                  </div>
+                  <div class="form-group">
+                    <label for="authorUrl">個人網站 (選填)</label>
+                    <input id="authorUrl" type="url" class="wp-input" placeholder="https://" />
+                  </div>
+                </div>
+
+                <div class="form-group form-comment-box">
+                  <label for="commentContent">留言內容 <span class="required">*</span></label>
+                  <textarea id="commentContent" rows="5" class="wp-textarea" placeholder="寫下你的看法、問題或心得…" required></textarea>
+                </div>
+
+                <div class="form-group form-checkbox-row">
+                  <label class="checkbox-label">
+                    <input type="checkbox" id="saveInfoCheck" checked />
+                    <span>在瀏覽器中記住我的稱呼與電子郵件，以便下次發表留言時自動帶入</span>
+                  </label>
+                </div>
+
+                <div class="form-submit-row">
+                  <button type="submit" class="wp-submit-btn">發表留言 »</button>
+                  <span id="commentFeedback" class="comment-feedback" style="display: none;"></span>
+                </div>
+              </form>
+            </div>
+          </section>
+
+          <!-- 推薦相關文章 (Related Posts) -->
           <div class="related-posts-section">
             <h3 class="related-heading">推薦相關文章</h3>
             <div class="related-grid">
@@ -249,6 +345,7 @@ const catName = getCategoryName(item.category, item.slug);
   .single-meta-row {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
     gap: 1.2rem;
     font-size: 0.86rem;
     color: #888888;
@@ -260,6 +357,16 @@ const catName = getCategoryName(item.category, item.slug);
     display: inline-flex;
     align-items: center;
     gap: 0.3rem;
+  }
+
+  .meta-comment-jump {
+    color: #0062eb;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .meta-comment-jump:hover {
+    text-decoration: underline;
   }
 
   /* 主圖 3D 浮動 */
@@ -334,7 +441,7 @@ const catName = getCategoryName(item.category, item.slug);
     text-decoration: underline;
   }
 
-  /* 📖 文章排版美學 (Gutenberg Content Styling) */
+  /* 📖 文章排版美學 */
   .single-article-content {
     font-size: 1.08rem;
     line-height: 1.85;
@@ -395,7 +502,6 @@ const catName = getCategoryName(item.category, item.slug);
     padding: 0;
   }
 
-  /* 提示框與重點框 */
   .single-article-content .post-intro,
   .single-article-content blockquote {
     background-color: #f4f8ff;
@@ -481,9 +587,255 @@ const catName = getCategoryName(item.category, item.slug);
     margin-left: auto;
   }
 
+  /* 💬 4. 留言板專區樣式 */
+  .comments-area {
+    margin: 3.5rem 0 4rem;
+    border-top: 3px solid #eeeeee;
+    padding-top: 2.5rem;
+  }
+
+  .comments-section-header {
+    margin-bottom: 2rem;
+  }
+
+  .comments-title {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #111111;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin: 0;
+  }
+
+  .comments-count-pill {
+    font-size: 0.9rem;
+    color: #888888;
+    font-weight: 600;
+  }
+
+  .commentlist {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    margin-bottom: 3rem;
+  }
+
+  .comment-body {
+    display: flex;
+    gap: 1.2rem;
+    background: #fdfdfd;
+    border: 1px solid #e8e8e8;
+    padding: 1.2rem 1.5rem;
+    transition: border-color 0.2s ease;
+  }
+
+  .comment-body:hover {
+    border-color: #0062eb;
+  }
+
+  .comment-body.is-author-reply {
+    background: #f0f7ff;
+    border-left: 4px solid #0062eb;
+  }
+
+  .comment-avatar-wrap {
+    flex-shrink: 0;
+  }
+
+  .default-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background-color: #e2e8f0;
+    color: #475569;
+    font-weight: 800;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .author-avatar-img {
+    border-radius: 50%;
+    border: 2px solid #0062eb;
+    background: #ffffff;
+    object-fit: contain;
+  }
+
+  .comment-main-content {
+    flex: 1;
+  }
+
+  .comment-meta-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .comment-author-name {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: #111111;
+  }
+
+  .comment-user-badge {
+    font-size: 0.72rem;
+    font-weight: 700;
+    background: #eeeeee;
+    color: #666666;
+    padding: 2px 8px;
+  }
+
+  .comment-user-badge.is-admin {
+    background: #0062eb;
+    color: #ffffff;
+  }
+
+  .comment-time {
+    font-size: 0.78rem;
+    color: #999999;
+    margin-left: auto;
+  }
+
+  .comment-text {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #444444;
+    margin-bottom: 0.6rem;
+  }
+
+  .btn-reply-action {
+    background: none;
+    border: none;
+    color: #0062eb;
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .btn-reply-action:hover {
+    text-decoration: underline;
+  }
+
+  /* 留言表單 (#respond) */
+  .comment-respond {
+    background: #fbfbfb;
+    border: 1px solid #e7e7e7;
+    border-top: 3px solid #0062eb;
+    padding: 2rem 1.8rem;
+  }
+
+  .reply-title {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #111111;
+    margin: 0 0 0.4rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .reply-title .title-square {
+    color: #0062eb;
+    font-size: 0.9rem;
+  }
+
+  .comment-notes {
+    font-size: 0.84rem;
+    color: #777777;
+    margin: 0 0 1.5rem;
+  }
+
+  .required {
+    color: #e11d48;
+  }
+
+  .form-grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .form-group label {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #333333;
+  }
+
+  .wp-input, .wp-textarea {
+    width: 100%;
+    padding: 10px 14px;
+    font-size: 0.9rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0px;
+    background: #ffffff;
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.2s ease;
+  }
+
+  .wp-input:focus, .wp-textarea:focus {
+    border-color: #0062eb;
+  }
+
+  .form-comment-box {
+    margin-bottom: 1.2rem;
+  }
+
+  .form-checkbox-row {
+    margin-bottom: 1.5rem;
+  }
+
+  .checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.84rem;
+    color: #666666;
+    cursor: pointer;
+  }
+
+  .form-submit-row {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+  }
+
+  .wp-submit-btn {
+    background-color: #0062eb;
+    color: #ffffff;
+    border: none;
+    padding: 12px 28px;
+    font-size: 0.95rem;
+    font-weight: 800;
+    cursor: pointer;
+    border-radius: 0px;
+    transition: background-color 0.2s ease;
+  }
+
+  .wp-submit-btn:hover {
+    background-color: #0047bb;
+  }
+
+  .comment-feedback {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #16a34a;
+  }
+
   /* 推薦相關文章 */
   .related-posts-section {
-    margin-top: 3rem;
+    margin-top: 3.5rem;
   }
 
   .related-heading {
@@ -547,6 +899,9 @@ const catName = getCategoryName(item.category, item.slug);
       flex: 0 0 100%;
       max-width: 100%;
     }
+    .form-grid-3 {
+      grid-template-columns: 1fr;
+    }
     .related-grid {
       grid-template-columns: 1fr;
     }
@@ -554,7 +909,7 @@ const catName = getCategoryName(item.category, item.slug);
 </style>
 
 <script>
-  // 自動解析內文 H2 生成 Table of Contents
+  // 1. 自動解析內文 H2 生成 Table of Contents
   const articleBody = document.getElementById('articleBody');
   const tocList = document.getElementById('tocList');
 
@@ -575,5 +930,69 @@ const catName = getCategoryName(item.category, item.slug);
     if (headings.length === 0) {
       document.getElementById('toc_container')?.remove();
     }
+  }
+
+  // 2. 互動式留言板邏輯 (Interactive Comment System)
+  const commentForm = document.getElementById('commentForm') as HTMLFormElement;
+  const commentList = document.getElementById('commentList');
+  const feedback = document.getElementById('commentFeedback');
+  const countBadge = document.getElementById('commentCountBadge');
+  const metaCount = document.getElementById('metaCommentCount');
+
+  // 回覆功能
+  document.querySelectorAll('.btn-reply-action').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const replyTo = btn.getAttribute('data-reply-to');
+      const textarea = document.getElementById('commentContent') as HTMLTextAreaElement;
+      if (textarea && replyTo) {
+        textarea.value = `@${replyTo} `;
+        textarea.focus();
+        document.getElementById('respond')?.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
+
+  // 提交留言
+  if (commentForm && commentList) {
+    commentForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const author = (document.getElementById('authorName') as HTMLInputElement).value.trim();
+      const content = (document.getElementById('commentContent') as HTMLTextAreaElement).value.trim();
+
+      if (!author || !content) return;
+
+      const newComment = document.createElement('div');
+      newComment.className = 'comment-body';
+      newComment.innerHTML = `
+        <div class="comment-avatar-wrap">
+          <div class="default-avatar">${author.charAt(0).toUpperCase()}</div>
+        </div>
+        <div class="comment-main-content">
+          <div class="comment-meta-bar">
+            <span class="comment-author-name">${author}</span>
+            <span class="comment-user-badge">訪客</span>
+            <span class="comment-time">剛剛</span>
+          </div>
+          <div class="comment-text">${content}</div>
+        </div>
+      `;
+
+      commentList.appendChild(newComment);
+
+      // 清空文字框並提示
+      (document.getElementById('commentContent') as HTMLTextAreaElement).value = '';
+      if (feedback) {
+        feedback.textContent = '✓ 留言發表成功！謝謝您的分享與迴響。';
+        feedback.style.display = 'inline-block';
+        setTimeout(() => { feedback.style.display = 'none'; }, 4000);
+      }
+
+      // 更新留言篇數
+      const total = commentList.querySelectorAll('.comment-body').length;
+      if (countBadge) countBadge.textContent = `(${total} 則)`;
+      if (metaCount) metaCount.textContent = `${total} 則迴響`;
+
+      newComment.scrollIntoView({ behavior: 'smooth' });
+    });
   }
 </script>

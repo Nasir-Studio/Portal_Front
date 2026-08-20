@@ -12,7 +12,6 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
   <link rel="icon" href="/favicon.png" type="image/png" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   
-  <!-- 字型引入 -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@600;700;900&display=swap" rel="stylesheet" />
@@ -45,21 +44,22 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
         </div>
         <div class="logo-sub-title">
           <a href="/blog/" class="site-title-link">OviNas 羊之誌</a>
-          <span class="site-desc-text">技術 · 資安 · 架構 · 前端</span>
+          <span class="site-desc-text">技術專欄 · 資安 · 架構 · 雲端實戰</span>
         </div>
       </div>
 
-      <!-- 導覽選單與搜尋 -->
+      <!-- 導覽選單與主站聯通 -->
       <div class="header-right">
         <nav class="main-menu" aria-label="部落格主選單">
           <ul>
-            <li><a href="/blog/">部落格首頁</a></li>
+            <li><a href="/blog/">首頁</a></li>
             <li><a href="/blog/#all-posts">全部文章</a></li>
             <li><a href="/posts/security-research-report/">系統資安</a></li>
             <li><a href="/posts/tech-notes-architecture/">架構筆記</a></li>
             <li><a href="/posts/front-end-design/">前端工程</a></li>
-            <li><a href="/posts/github-open-source-tools/">開源工具</a></li>
-            <li><a href="/" class="back-portal-btn">← 回入口首頁</a></li>
+            <li><a href="/posts/github-open-source-tools/">開源精選</a></li>
+            <li><a href="/vip/" class="nav-highlight-link">VIP 專區</a></li>
+            <li><a href="/" class="back-portal-btn">← 回 Portal 首頁</a></li>
           </ul>
         </nav>
 
@@ -75,13 +75,17 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
     <!-- 手機版下拉選單 -->
     <div id="mobileDropdown" class="mobile-dropdown-menu" hidden>
       <ul>
-        <li><a href="/blog/">部落格首頁</a></li>
+        <li><a href="/blog/">首頁</a></li>
         <li><a href="/blog/#all-posts">全部文章</a></li>
         <li><a href="/posts/security-research-report/">系統資安</a></li>
         <li><a href="/posts/tech-notes-architecture/">架構筆記</a></li>
         <li><a href="/posts/front-end-design/">前端工程</a></li>
-        <li><a href="/posts/github-open-source-tools/">開源工具</a></li>
-        <li><a href="/" class="back-portal-btn">← 回入口首頁</a></li>
+        <li><a href="/posts/github-open-source-tools/">開源精選</a></li>
+        <li><a href="/vip/">VIP 專區</a></li>
+        <li><a href="/reserve/">預約服務</a></li>
+        <li><a href="/badges/">證照專區</a></li>
+        <li><a href="/cctv/">即時影像</a></li>
+        <li><a href="/" class="back-portal-btn">← 回 Portal 首頁</a></li>
       </ul>
     </div>
   </header>
@@ -91,7 +95,7 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
     <slot />
   </div>
 
-  <!-- 📜 3. 獨立 WordPress 風格頁尾 (Footer) -->
+  <!-- 📜 3. 獨立 WordPress 風格頁尾 (Footer - 深度連結 Portal 主站體系) -->
   <footer class="wp-footer">
     <div class="footer-content">
       <div class="container footer-grid">
@@ -107,24 +111,26 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
             <div class="footer-social-row">
               <a href="https://github.com/Nasir-VM" target="_blank" rel="noopener" class="social-icon-box github">GitHub</a>
               <a href="/vip/" class="social-icon-box vip">VIP 專區</a>
-              <a href="/" class="social-icon-box portal">Portal 首頁</a>
+              <a href="/" class="social-icon-box portal">Portal 主站</a>
             </div>
           </div>
         </div>
 
-        <!-- 中間：主題分類導航 -->
+        <!-- 中間：專欄與主站重要入口 -->
         <div class="footer-col footer-links">
-          <h2 class="footer-heading">精選專欄分類</h2>
+          <h2 class="footer-heading">主站系統入口</h2>
           <ul class="footer-cat-list">
-            <li><a href="/blog/#all-posts">🛡️ 系統資安滲透與稽核</a></li>
-            <li><a href="/blog/#all-posts">⚙️ 巨型專案架構與雲端部署</a></li>
-            <li><a href="/blog/#all-posts">🎨 前端動效美學與 UI/UX</a></li>
-            <li><a href="/blog/#all-posts">📦 開源實戰與代理爬蟲工具</a></li>
-            <li><a href="/blog/#all-posts">🎓 校園學分學程小幫手專案</a></li>
+            <li><a href="/vip/">💎 VIP 尊榮會員專區</a></li>
+            <li><a href="/reserve/">📅 線上時段預約系統</a></li>
+            <li><a href="/badges/">🏅 資格認證與專業徽章</a></li>
+            <li><a href="/cctv/">📹 即時公共影像監控</a></li>
+            <li><a href="/life/">🚌 生活便民與公車動態</a></li>
+            <li><a href="/pastpapers/">📚 考古題與學習資源</a></li>
+            <li><a href="/wifi/">📶 WiFi 認證連線服務</a></li>
           </ul>
         </div>
 
-        <!-- 右側：最新消息與站長簡介 -->
+        <!-- 右側：站長簡介與聯絡 -->
         <div class="footer-col footer-meta">
           <h2 class="footer-heading">關於站長</h2>
           <p class="footer-author-text">
@@ -141,20 +147,23 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
     <!-- 底部版權版權條 -->
     <div class="footer-bottom-bar">
       <div class="container bottom-bar-inner">
-        <p class="copyright-text">© 2026 OviNas 羊之誌 · All Rights Reserved.</p>
+        <p class="copyright-text">© 2026 OviNas 羊之誌 · Portal System · All Rights Reserved.</p>
         <div class="bottom-links">
+          <a href="/">Portal 首頁</a>
+          <span>·</span>
           <a href="/blog/">部落格</a>
+          <span>·</span>
+          <a href="/vip/">VIP 專區</a>
           <span>·</span>
           <a href="/reserve/">預約系統</a>
           <span>·</span>
-          <a href="/vip/">VIP 專區</a>
+          <a href="/login/">管理登入</a>
         </div>
       </div>
     </div>
   </footer>
 
   <script>
-    // 手機選單切換
     const toggleBtn = document.getElementById('mobileMenuToggle');
     const dropdown = document.getElementById('mobileDropdown');
     if (toggleBtn && dropdown) {
@@ -169,7 +178,6 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
 </html>
 
 <style is:global>
-  /* 🌟 全域基礎重置 (Pure WordPress Editorial Reset) */
   *, *::before, *::after {
     box-sizing: border-box;
   }
@@ -285,7 +293,7 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
     margin: 0;
     display: flex;
     align-items: center;
-    gap: 1.5rem;
+    gap: 1.3rem;
   }
 
   .main-menu a {
@@ -299,6 +307,11 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
 
   .main-menu a:hover {
     color: #0062eb;
+  }
+
+  .nav-highlight-link {
+    color: #0062eb !important;
+    border-bottom: 2px solid #0062eb;
   }
 
   .back-portal-btn {
@@ -357,9 +370,9 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
     padding: 6px 0;
   }
 
-  /* 📜 3. Footer 樣式 */
+  /* 📜 3. Footer 樣式 (深邃黑藍 + 皇家藍頂條) */
   .wp-footer {
-    background-color: #1a1a1a;
+    background-color: #161a22;
     color: #cccccc;
     padding-top: 4rem;
     border-top: 5px solid #0062eb;
@@ -378,7 +391,7 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
     color: #ffffff;
     margin: 0 0 1.2rem;
     letter-spacing: 1px;
-    border-bottom: 2px solid #333333;
+    border-bottom: 2px solid #282f3d;
     padding-bottom: 0.6rem;
   }
 
@@ -392,7 +405,7 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
   .footer-text-body p {
     font-size: 0.86rem;
     line-height: 1.7;
-    color: #aaaaaa;
+    color: #94a3b8;
     margin: 0 0 0.8rem;
   }
 
@@ -409,12 +422,14 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
     font-weight: 700;
     color: #ffffff;
     text-decoration: none;
-    background-color: #333333;
-    transition: background-color 0.2s ease;
+    background-color: #242c38;
+    border: 1px solid #334155;
+    transition: all 0.2s ease;
   }
 
   .social-icon-box:hover {
     background-color: #0062eb;
+    border-color: #0062eb;
   }
 
   .footer-cat-list {
@@ -427,38 +442,38 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
   }
 
   .footer-cat-list a {
-    color: #aaaaaa;
+    color: #94a3b8;
     text-decoration: none;
     font-size: 0.88rem;
     transition: color 0.2s ease;
   }
 
   .footer-cat-list a:hover {
-    color: #0062eb;
+    color: #38bdf8;
   }
 
   .footer-author-text {
     font-size: 0.86rem;
     line-height: 1.7;
-    color: #aaaaaa;
+    color: #94a3b8;
     margin: 0 0 1rem;
   }
 
   .footer-contact-link {
     font-size: 0.86rem;
-    color: #888888;
+    color: #64748b;
   }
 
   .footer-contact-link a {
-    color: #0062eb;
+    color: #38bdf8;
     text-decoration: none;
     font-weight: 700;
   }
 
   .footer-bottom-bar {
-    background-color: #111111;
+    background-color: #0d1117;
     padding: 1.2rem 0;
-    border-top: 1px solid #222222;
+    border-top: 1px solid #1e293b;
   }
 
   .bottom-bar-inner {
@@ -466,7 +481,7 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
     justify-content: space-between;
     align-items: center;
     font-size: 0.82rem;
-    color: #777777;
+    color: #64748b;
   }
 
   .copyright-text {
@@ -479,7 +494,7 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
   }
 
   .bottom-links a {
-    color: #888888;
+    color: #94a3b8;
     text-decoration: none;
     transition: color 0.2s ease;
   }
