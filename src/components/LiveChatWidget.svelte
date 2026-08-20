@@ -176,44 +176,44 @@
     z-index: 9999;
   }
 
-  /* 💬 懸浮 LiveChat 按鈕 (方正俐落、立體投影) */
+  /* 💬 懸浮 LiveChat 圓形泡泡圖示 (保持經典圓形) */
   .contact-launcher {
     appearance: none;
-    background: #10b981;
+    background: #ff6b00;
     color: #ffffff;
-    border: 2px solid #059669;
-    border-radius: 0px;
-    width: 52px;
-    height: 52px;
+    border: none;
+    border-radius: 50%;
+    width: 56px;
+    height: 56px;
     padding: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
-    transition: all 0.15s ease;
+    box-shadow: 0 6px 20px rgba(255, 107, 0, 0.4), 0 2px 6px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s, box-shadow 0.2s;
     position: relative;
   }
 
   .contact-launcher:hover {
-    background: #059669;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+    background: #ea580c;
+    transform: translateY(-3px) scale(1.06);
+    box-shadow: 0 10px 25px rgba(255, 107, 0, 0.5);
   }
 
   .contact-launcher:active {
-    transform: translateY(0);
+    transform: translateY(0) scale(0.96);
   }
 
   .live-status-dot {
     position: absolute;
-    top: 3px;
-    right: 3px;
-    width: 9px;
-    height: 9px;
+    top: 4px;
+    right: 4px;
+    width: 12px;
+    height: 12px;
     background-color: #22c55e;
-    border: 1.5px solid #ffffff;
-    border-radius: 0px;
+    border: 2px solid #ffffff;
+    border-radius: 50%;
   }
 
   .launcher-icon {
