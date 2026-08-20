@@ -31,7 +31,7 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
   <!-- 🔷 1. 獨立 WordPress 風格導覽列 (Main Header) -->
   <header id="main-header" class="main-header">
     <div class="container header-row">
-      <!-- 經典 3D 浮動 Logo (帶有經典羊 Icon) -->
+      <!-- 經典 75px 3D 浮動 Logo (帶有經典羊 Icon) -->
       <div class="logo">
         <div class="img-wrap logo-img-wrap">
           <div class="bgs bgs1"></div>
@@ -48,17 +48,59 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
         </div>
       </div>
 
-      <!-- 右側主選單 (Desktop) -->
+      <!-- 右側主選單 (含下拉選單、圓形切換鈕、膠囊按鈕) -->
       <div class="header-right">
         <nav class="main-menu" aria-label="部落格主選單">
-          <ul>
-            <li><a href="/blog/">首頁</a></li>
-            <li><a href="/posts/">全部文章</a></li>
-            <li><a href="/posts/security-research-report/">系統資安</a></li>
-            <li><a href="/posts/tech-notes-architecture/">架構筆記</a></li>
-            <li><a href="/posts/front-end-design/">前端工程</a></li>
-            <li><a href="/posts/github-open-source-tools/">開源工具</a></li>
-            <li class="nav-cta-btn"><a href="/">返回主站</a></li>
+          <ul class="menu-nav-list">
+            <li class="menu-item"><a href="/blog/">首頁</a></li>
+
+            <!-- 下拉選單 1：架站與架構 -->
+            <li class="menu-item menu-item-has-children">
+              <a href="/posts/">架站與架構 <span class="arrow-down">▾</span></a>
+              <ul class="sub-menu">
+                <li><a href="/posts/tech-notes-architecture/">[架構] 巨型全端技術規範</a></li>
+                <li><a href="/posts/cf-pages-pwa-webpush/">[雲端] CF Pages 與 PWA 部署</a></li>
+                <li><a href="/posts/windows-experience-freestyle/">[實務] 現代開發環境隨筆</a></li>
+              </ul>
+            </li>
+
+            <!-- 下拉選單 2：系統資安 -->
+            <li class="menu-item menu-item-has-children">
+              <a href="/posts/security-research-report/">系統資安 <span class="arrow-down">▾</span></a>
+              <ul class="sub-menu">
+                <li><a href="/posts/security-research-report/">[資安] 滲透分級研究報告</a></li>
+                <li><a href="/posts/ntub-audit/">[稽核] 專案系統稽核實務</a></li>
+              </ul>
+            </li>
+
+            <!-- 下拉選單 3：設計與工具 -->
+            <li class="menu-item menu-item-has-children">
+              <a href="/posts/">設計與工具 <span class="arrow-down">▾</span></a>
+              <ul class="sub-menu">
+                <li><a href="/posts/front-end-design/">[前端] 介面美學設計思維</a></li>
+                <li><a href="/posts/github-open-source-tools/">[開源] 精選 GitHub 工具箱</a></li>
+                <li><a href="/posts/proxy-list-tools/">[工具] 代理爬蟲工具整合</a></li>
+                <li><a href="/posts/ig-unsend-tool/">[應用] IG 訊息管理工具</a></li>
+              </ul>
+            </li>
+
+            <!-- 經典圓形切換站點按鈕 (.nav-switch-site) -->
+            <li class="menu-item nav-switch-site">
+              <a href="#!" class="btn-round-portal" aria-label="切換服務站點" title="切換站點">
+                <span class="grid-icon">ⵘ</span>
+              </a>
+              <ul class="sub-menu switch-site-menu">
+                <li class="switch-item-portal"><a href="/">Portal 入口主站</a></li>
+                <li class="switch-item-shop"><a href="/shop/">周邊購物中心</a></li>
+                <li class="switch-item-cctv"><a href="/cctv/">即時影像 CCTV</a></li>
+                <li class="switch-item-vip"><a href="/vip/">VIP 站長專區</a></li>
+              </ul>
+            </li>
+
+            <!-- 經典膠囊按鈕 (.nav-cta-btn) -->
+            <li class="menu-item nav-cta-btn">
+              <a href="/">返回 Portal 主站</a>
+            </li>
           </ul>
         </nav>
 
@@ -263,7 +305,7 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
     padding: 0 1.5rem;
   }
 
-  /* 🔷 Header 樣式 (含縮小懸浮動效與羊 Icon) */
+  /* 🔷 Header 樣式 (100% 依據經典自媒體比例，含 75px Logo、灰字選單、下拉、圓形按鈕、毛玻璃透明) */
   .main-header {
     background-color: #ffffff;
     border-top: 5px solid #ff6b00;
@@ -271,28 +313,28 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
     position: sticky;
     top: 0;
     z-index: 1000;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: all 0.25s ease;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
   }
 
-  /* 滾動時縮小懸浮樣式 (.min-fixed) */
+  /* 滾動時透明毛玻璃縮小樣式 (.min-fixed) */
   .main-header.min-fixed {
-    height: 70px;
-    background-color: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(8px);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    background-color: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
   }
 
   .header-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 90px;
-    transition: height 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    height: 100px;
+    transition: height 0.25s ease;
   }
 
   .main-header.min-fixed .header-row {
-    height: 70px;
+    height: 72px;
   }
 
   .logo {
@@ -300,49 +342,49 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
     align-items: center;
   }
 
-  /* 3D 浮動方塊 Logo (.bgs1 ~ .bgs5) 帶有純淨羊 Icon */
+  /* 3D 浮動 75px 方塊 Logo (.bgs1 ~ .bgs5) */
   .logo-img-wrap {
     position: relative;
-    width: 60px;
-    height: 60px;
+    width: 70px;
+    height: 70px;
     margin: 0;
     flex-shrink: 0;
-    transition: all 0.3s ease;
+    transition: all 0.25s ease;
   }
 
   .main-header.min-fixed .logo-img-wrap {
-    width: 48px;
-    height: 48px;
+    width: 52px;
+    height: 52px;
   }
 
   .logo-link {
-    width: 60px;
-    height: 60px;
+    width: 70px;
+    height: 70px;
     background-color: #ff6b00;
     display: flex;
     align-items: center;
     justify-content: center;
     text-decoration: none;
     border-radius: 6px;
-    transition: all 0.3s ease;
+    transition: all 0.25s ease;
   }
 
   .main-header.min-fixed .logo-link {
-    width: 48px;
-    height: 48px;
+    width: 52px;
+    height: 52px;
   }
 
   .logo-sheep-icon {
-    width: 40px;
-    height: 40px;
+    width: 46px;
+    height: 46px;
     object-fit: contain;
     filter: brightness(0) invert(1);
     transition: transform 0.2s ease;
   }
 
   .main-header.min-fixed .logo-sheep-icon {
-    width: 32px;
-    height: 32px;
+    width: 34px;
+    height: 34px;
   }
 
   .logo-img-wrap:hover .logo-link {
@@ -353,20 +395,20 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
     transform: scale(1.1);
   }
 
-  .logo-img-wrap .bgs1 { border-right: 0.5rem solid #ff6b00; }
-  .logo-img-wrap .bgs2 { border-top: 0.5rem solid #ff6b00; }
+  .logo-img-wrap .bgs1 { border-right: 0.6rem solid #ff6b00; }
+  .logo-img-wrap .bgs2 { border-top: 0.6rem solid #ff6b00; }
   .logo-img-wrap .bgs3, .logo-img-wrap .bgs4 { background: #ff6b00; }
 
   .sub-txt {
-    margin-left: 14px;
+    margin-left: 16px;
     display: flex;
     flex-direction: column;
   }
 
   .logo-site-name {
-    font-size: 1.2rem;
+    font-size: 1.25rem;
     font-weight: 700;
-    color: #111111;
+    color: #222222;
     text-decoration: none;
     letter-spacing: 0.5px;
   }
@@ -376,56 +418,167 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
   }
 
   .logo-site-desc {
-    font-size: 0.78rem;
-    color: #888888;
+    font-size: 0.8rem;
+    color: #999999;
     margin-top: 2px;
     font-weight: 400;
   }
 
-  /* 導覽選單 (Desktop) */
+  /* 導覽選單 */
   .header-right {
     display: flex;
     align-items: center;
   }
 
-  .main-menu ul {
+  .menu-nav-list {
     list-style: none;
     padding: 0;
     margin: 0;
     display: flex;
     align-items: center;
-    gap: 1.8rem;
+    gap: 0.5rem;
   }
 
-  .main-menu a {
-    color: #555555;
+  .menu-item {
+    position: relative;
+    padding: 12px 14px;
+  }
+
+  /* 選單文字顏色採用經典柔和灰色 (#666666)，Hover 切換暖橙色 */
+  .menu-item > a {
+    color: #666666;
     text-decoration: none;
-    font-size: 0.95rem;
+    font-size: 16px;
     font-weight: 400;
     transition: color 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 4px;
   }
 
-  .main-menu a:hover {
+  .arrow-down {
+    font-size: 11px;
+    color: #aaaaaa;
+    transition: transform 0.2s ease;
+  }
+
+  .menu-item:hover > a {
     color: #ff6b00;
   }
 
-  /* 經典右側膠囊按鈕 */
+  .menu-item:hover .arrow-down {
+    transform: rotate(180deg);
+    color: #ff6b00;
+  }
+
+  /* 🔽 經典下拉選單 (.sub-menu: 橘色背景 + 懸停金黃色連結) */
+  .menu-item .sub-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 240px;
+    background-color: #ff6b00;
+    list-style: none;
+    padding: 12px 0;
+    margin: 0;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    border-top: 4px solid #ea580c;
+    z-index: 1010;
+    animation: fadeInDown 0.2s ease forwards;
+  }
+
+  .menu-item:hover > .sub-menu {
+    display: block;
+  }
+
+  @keyframes fadeInDown {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .menu-item .sub-menu li {
+    width: 100%;
+  }
+
+  .menu-item .sub-menu li a {
+    display: block;
+    padding: 10px 22px;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 400;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: all 0.15s ease;
+  }
+
+  .menu-item .sub-menu li a:hover {
+    background-color: rgba(0, 0, 0, 0.12);
+    color: #f7d002;
+    padding-left: 26px;
+  }
+
+  /* 🔘 經典圓形切換站點按鈕 (.nav-switch-site) */
+  .nav-switch-site {
+    padding: 0 8px;
+  }
+
+  .btn-round-portal {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: 1.5px solid #444444;
+    border-radius: 50%;
+    color: #222222 !important;
+    transition: all 0.2s ease;
+  }
+
+  .grid-icon {
+    font-size: 20px;
+    line-height: 1;
+    position: relative;
+    top: -1px;
+  }
+
+  .nav-switch-site:hover .btn-round-portal {
+    border-color: #ff6b00;
+    color: #ff6b00 !important;
+    background-color: #fff7ed;
+    transform: rotate(90deg);
+  }
+
+  .switch-site-menu {
+    right: 0 !important;
+    left: auto !important;
+    min-width: 200px !important;
+  }
+
+  /* 💊 經典右側膠囊按鈕 (.nav-cta-btn) */
   .nav-cta-btn a {
     display: block;
     background-color: #ff6b00;
     color: #ffffff !important;
-    padding: 0 20px;
-    height: 38px;
-    line-height: 38px;
-    border-radius: 19px;
+    padding: 0 22px;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 20px;
     font-weight: 400;
-    font-size: 0.88rem;
+    font-size: 15px;
     transition: all 0.25s ease;
   }
 
   .nav-cta-btn a:hover {
-    background-color: #ea580c !important;
+    background-color: #ff6488 !important;
     transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(255, 107, 0, 0.25);
   }
 
   /* 手機漢堡按鈕 (#menu-toggle) */
@@ -544,7 +697,7 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
 
   .mobile-menu-links a {
     display: block;
-    color: #333333;
+    color: #555555;
     text-decoration: none;
     font-size: 1.05rem;
     font-weight: 400;
@@ -569,7 +722,7 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
     padding: 10px 0;
   }
 
-  @media (max-width: 960px) {
+  @media (max-width: 1024px) {
     .main-menu {
       display: none;
     }
@@ -578,7 +731,7 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
     }
   }
   
-    /* 🌟 滑動進場動畫 (Scroll Reveal Animation) */
+  /* 🌟 滑動進場動畫 (Scroll Reveal Animation) */
   .reveal-ready {
     opacity: 0;
     transform: translateY(24px);
