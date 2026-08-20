@@ -1,5 +1,5 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
+import BlogLayout from '../../layouts/BlogLayout.astro';
 import posts from '../../data/posts';
 
 const allPosts = posts;
@@ -7,38 +7,35 @@ const featuredPost = posts[0];
 
 function getPostCategory(post: typeof posts[0]) {
   if (post.slug.includes('security') || post.slug.includes('audit')) {
-    return { name: '系統資安', slug: 'security', color: '#0062eb' };
+    return { name: '系統資安', slug: 'security' };
   }
   if (post.slug.includes('architecture') || post.slug.includes('pwa')) {
-    return { name: '架構伺服器', slug: 'architecture', color: '#0062eb' };
+    return { name: '架構伺服器', slug: 'architecture' };
   }
   if (post.slug.includes('design') || post.slug.includes('front-end')) {
-    return { name: '前端設計', slug: 'design', color: '#0062eb' };
+    return { name: '前端設計', slug: 'design' };
   }
   if (post.slug.includes('tool') || post.slug.includes('proxy') || post.slug.includes('github')) {
-    return { name: '外掛工具', slug: 'tools', color: '#0062eb' };
+    return { name: '外掛工具', slug: 'tools' };
   }
   if (post.slug.includes('ntub') || post.slug.includes('exam')) {
-    return { name: '專案實戰', slug: 'campus', color: '#0062eb' };
+    return { name: '專案實戰', slug: 'campus' };
   }
-  return { name: 'WordPress', slug: 'general', color: '#0062eb' };
+  return { name: 'WordPress', slug: 'general' };
 }
 ---
 
-<BaseLayout title="部落格 ｜ OviNas 羊之誌 — 網站架設、系統資安、前端設計與外掛推薦">
+<BlogLayout title="OviNas 羊之誌 — 網站架設、系統資安、前端工程與外掛推薦" description="專注於網站架設、系統資安、前端工程與開源工具推薦。">
   <div class="make9-page-wrapper">
-    <!-- 頂部高質感深藍飾條 -->
-    <div class="top-color-stripe"></div>
-
-    <div class="make9-container">
-      <!-- 🔷 1. 經典 Hero Header 區塊 (左側大標 + 右側置頂 3D 浮動焦點) -->
+    <div class="container">
+      <!-- 🔷 1. 經典 Hero Header 區塊 (左側大標 + 右側置頂 3D 浮動焦點大圖) -->
       <section class="content-hero-header">
-        <div class="left">
+        <div class="hero-left">
           <h1 class="hero-brand">OviNas 羊之誌</h1>
-          <h2 class="hero-tagline">網站架設、系統資安、前端工程</h2>
-          <a href="/vip/" class="btn-about">關於 OviNas</a>
+          <h2 class="hero-tagline">網站架設、系統資安、前端工程、外掛推薦</h2>
+          <a href="#all-posts" class="btn-about">瀏覽全部教學文章</a>
         </div>
-        <div class="right">
+        <div class="hero-right">
           <div class="slider-wrap-header">
             <div class="slider-one">
               <div class="img-wrap">
@@ -61,11 +58,11 @@ function getPostCategory(post: typeof posts[0]) {
         </div>
       </section>
 
-      <!-- 🔍 2. 分類導航列與即時搜尋欄 (支援即時計算篇數) -->
-      <section class="make9-nav-bar" id="categoryNav">
+      <!-- 🔍 2. 分類導航列與即時搜尋欄 (即時動態計數) -->
+      <section class="make9-nav-bar" id="all-posts">
         <div class="nav-pills-group" id="filterButtons">
           <button class="nav-pill is-active" data-cat="all" type="button">
-            全部文章 <span class="pill-badge" id="count-all">({allPosts.length})</span>
+            全部文章 <span class="pill-badge">({allPosts.length})</span>
           </button>
           <button class="nav-pill" data-cat="security" type="button">
             系統資安 <span class="pill-badge">({allPosts.filter(p => p.slug.includes('security') || p.slug.includes('audit')).length})</span>
@@ -104,7 +101,7 @@ function getPostCategory(post: typeof posts[0]) {
           <!-- 區塊標題條 (經典 post-area-head 帶黃色 hover 變色) -->
           <div class="post-area-head">
             <h2 class="post-area-title" id="currentSectionTitle">精選文章</h2>
-            <a href="#categoryNav" class="cat-read-all" id="currentCountDisplay">共 {allPosts.length} 篇文章</a>
+            <a href="#all-posts" class="cat-read-all" id="currentCountDisplay">共 {allPosts.length} 篇文章</a>
           </div>
 
           <!-- 3 欄式文章網格 (post-list col3) -->
@@ -155,7 +152,7 @@ function getPostCategory(post: typeof posts[0]) {
             })}
           </div>
 
-          <!-- 查無結果 -->
+          <!-- 查無結果提示 -->
           <div class="empty-results-box" id="emptyNotice" style="display: none;">
             <div class="empty-icon-sheep">🐑</div>
             <h3>查無相關文章！</h3>
@@ -168,7 +165,7 @@ function getPostCategory(post: typeof posts[0]) {
           <!-- 作者專欄 (Side Author Box) -->
           <div class="side-author-box">
             <div class="photo">
-              <img src="/sheep-hd.png" alt="OviNas" width="140" height="140" />
+              <img src="/sheep-hd.png" alt="OviNas" width="120" height="120" />
             </div>
             <h2>OviNas <span class="eng-name">/ 站長專欄</span></h2>
             <p class="history">全端開發 · 系統架構 · 資安防護</p>
@@ -218,44 +215,26 @@ function getPostCategory(post: typeof posts[0]) {
       </div>
     </div>
   </div>
-</BaseLayout>
+</BlogLayout>
 
 <style>
-  /* 🌟 全局字型與排版架構 (100% 還原經典風格) */
   .make9-page-wrapper {
     background-color: #ffffff;
-    min-height: 100vh;
-    padding-bottom: 5rem;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    color: #333333;
+    padding: 1.5rem 0 5rem;
   }
 
-  .top-color-stripe {
-    height: 5px;
-    background: #0062eb;
-    width: 100%;
-  }
-
-  .make9-container {
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 1.5rem;
-    box-sizing: border-box;
-  }
-
-  /* 🔷 1. 經典 Hero 區塊 (content-hero-header) */
+  /* 🔷 1. 經典 Hero 區塊 */
   .content-hero-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 2.5rem;
-    padding: 3.5rem 0 2.8rem;
+    padding: 2.5rem 0 2.8rem;
     border-bottom: 1px solid #e7e7e7;
     margin-bottom: 2rem;
   }
 
-  .content-hero-header .left {
+  .content-hero-header .hero-left {
     flex: 0 0 38%;
   }
 
@@ -269,7 +248,7 @@ function getPostCategory(post: typeof posts[0]) {
   }
 
   .hero-tagline {
-    font-size: 1.15rem;
+    font-size: 1.12rem;
     font-weight: 400;
     color: #666666;
     line-height: 1.6;
@@ -291,7 +270,7 @@ function getPostCategory(post: typeof posts[0]) {
     background-color: #0047bb;
   }
 
-  .content-hero-header .right {
+  .content-hero-header .hero-right {
     flex: 0 0 58%;
   }
 
@@ -916,8 +895,8 @@ function getPostCategory(post: typeof posts[0]) {
       flex-direction: column;
       align-items: flex-start;
     }
-    .content-hero-header .left,
-    .content-hero-header .right {
+    .content-hero-header .hero-left,
+    .content-hero-header .hero-right {
       flex: 0 0 100%;
       width: 100%;
     }
@@ -1032,7 +1011,7 @@ function getPostCategory(post: typeof posts[0]) {
         searchInput.value = kw;
         currentSearchQuery = kw.toLowerCase();
         updatePosts();
-        document.getElementById('categoryNav')?.scrollIntoView({ behavior: 'smooth' });
+        document.getElementById('all-posts')?.scrollIntoView({ behavior: 'smooth' });
       }
     });
   });
@@ -1045,7 +1024,7 @@ function getPostCategory(post: typeof posts[0]) {
       filterTabs.forEach((tab) => {
         if (tab.getAttribute('data-cat') === target) {
           (tab as HTMLElement).click();
-          document.getElementById('categoryNav')?.scrollIntoView({ behavior: 'smooth' });
+          document.getElementById('all-posts')?.scrollIntoView({ behavior: 'smooth' });
         }
       });
     });
