@@ -15,36 +15,121 @@ const allPosts = posts;
 const featuredPost = posts[0];
 
 
-// 1. 大標題等級的主題 Tab 分類 (三大主題：網站架設、開源工具、獨有工具，每類精選 4 篇)
+// 1. 大標題等級的主題 Tab 分類 (三大主題：網站架設、開源工具、獨有工具)
 const mainTabCategories = [
   {
     id: 'arch',
     name: '網站架設',
-    posts: [
-      posts.find(p => p.slug === 'tech-notes-architecture'),
-      posts.find(p => p.slug === 'ntub-audit'),
-      posts.find(p => p.slug === 'cf-pages-pwa-webpush'),
-      posts.find(p => p.slug === 'presentation-design-logic'),
-    ].filter(Boolean),
+    items: [
+      {
+        title: '【技術文章】技術筆記本（含系統資安專題）',
+        excerpt: '白話拆解現代網站系統架構：從 Cloudflare 第一道防線、Nginx 到 Django 技術棧，再到模組化設計。',
+        slug: 'tech-notes-architecture',
+        href: '/posts/tech-notes-architecture/',
+        img: '/banners/tech-notes-architecture.jpg?v=20260820light',
+        cat: '架構伺服器'
+      },
+      {
+        title: '【文章】NTUB 2026 通識資安稽核一條龍',
+        excerpt: '教育部與行政院國家資通安全通報演練實戰：從弱點掃描、靜態原始碼檢測到滲透測試完整流程。',
+        slug: 'ntub-audit',
+        href: '/posts/ntub-audit/',
+        img: '/banners/ntub-audit.jpg?v=20260820light',
+        cat: '系統資安'
+      },
+      {
+        title: '【CF Page】PWA WebPush 設計原理',
+        excerpt: 'Cloudflare Pages 免費託管搭配 PWA 與 Web Push，低成本打造免上架 App 的全端推播架構！',
+        slug: 'cf-pages-pwa-webpush',
+        href: '/posts/cf-pages-pwa-webpush/',
+        img: '/banners/cf-pages-pwa-webpush.jpg?v=20260820light',
+        cat: '架構伺服器'
+      },
+      {
+        title: '【文章】簡報的設計方式跟邏輯',
+        excerpt: '設計簡報不用靠美工天份！掌握 Why-What-How 三段論，打造邏輯清晰的專案發表簡報。',
+        slug: 'presentation-design-logic',
+        href: '/posts/presentation-design-logic/',
+        img: '/banners/presentation-design-logic.jpg?v=20260820light',
+        cat: '前端設計'
+      },
+    ],
   },
   {
     id: 'tools',
     name: '開源工具',
-    posts: [
-      posts.find(p => p.slug === 'github-open-source-tools'),
-      posts.find(p => p.slug === 'cf-pages-pwa-webpush'),
-      posts.find(p => p.slug === 'presentation-design-logic'),
-      posts.find(p => p.slug === 'ig-unsend-tool'),
-    ].filter(Boolean),
+    items: [
+      {
+        title: '【文章】學期結束後，收獲的 github 開源工具',
+        excerpt: '暑假總結！精選 GitHub 實用開源專案、AI Agent 擴充、Proxy 代理與前端 UI 設計工具庫。',
+        slug: 'github-open-source-tools',
+        href: '/posts/github-open-source-tools/',
+        img: '/banners/github-open-source-tools.jpg?v=20260820light',
+        cat: '外掛工具'
+      },
+      {
+        title: '【CF Page】PWA WebPush 設計原理',
+        excerpt: 'Cloudflare Pages 免費託管搭配 PWA 與 Web Push，低成本打造免上架 App 的全端推播架構！',
+        slug: 'cf-pages-pwa-webpush',
+        href: '/posts/cf-pages-pwa-webpush/',
+        img: '/banners/cf-pages-pwa-webpush.jpg?v=20260820light',
+        cat: '架構伺服器'
+      },
+      {
+        title: '【文章】簡報的設計方式跟邏輯',
+        excerpt: '設計簡報不用靠美工天份！掌握 Why-What-How 三段論，打造邏輯清晰的專案發表簡報。',
+        slug: 'presentation-design-logic',
+        href: '/posts/presentation-design-logic/',
+        img: '/banners/presentation-design-logic.jpg?v=20260820light',
+        cat: '前端設計'
+      },
+      {
+        title: '【技術文章】技術筆記本（含系統資安專題）',
+        excerpt: '白話拆解現代網站系統架構：從 Cloudflare 第一道防線、Nginx 到 Django 技術棧。',
+        slug: 'tech-notes-architecture',
+        href: '/posts/tech-notes-architecture/',
+        img: '/banners/tech-notes-architecture.jpg?v=20260820light',
+        cat: '架構伺服器'
+      },
+    ],
   },
   {
     id: 'ovinas',
     name: '獨有工具',
-    posts: [
-      posts.find(p => p.slug === 'ntub-credit-program'),
-      posts.find(p => p.slug === 'ig-unsend-tool'),
-      posts.find(p => p.slug === 'ai-planner-past-exam-info'),
-    ].filter(Boolean),
+    items: [
+      {
+        title: '【工具】北商學分戰士（簡章與學分試算）',
+        excerpt: 'NTUB 跨領域學分學程簡章即時查詢、設置要點與線上學分預算修課規劃工具。',
+        slug: 'ntub',
+        href: '/ntub/',
+        img: '/banners/ntub-credit-program.jpg?v=20260820light',
+        cat: '自研工具'
+      },
+      {
+        title: '【工具】IG 收回工具 Batch',
+        excerpt: '批次收回 Instagram 私訊中你所傳送的訊息，Chrome 擴充套件免費下載。',
+        slug: 'ig-unsend-tool',
+        href: '/posts/ig-unsend-tool/',
+        img: '/banners/ig-unsend-tool.jpg?v=20260820light',
+        cat: '外掛工具'
+      },
+      {
+        title: '【工具】羊集章（捷運電子集章冊）',
+        excerpt: '收集台北捷運與新北捷運官方紀念章，隨時隨地記錄你的足跡與集章進度。',
+        slug: 'badges',
+        href: '/badges/',
+        img: '/banners/hero-promo-v3.jpg?v=20260820light',
+        cat: '自研工具'
+      },
+      {
+        title: '【文章】AI應用規劃師考古資訊',
+        excerpt: '想要測驗 AI 應用規劃師歷屆模擬題庫與考古資訊，即時線上智慧測驗。',
+        slug: 'ai-planner-past-exam-info',
+        href: '/posts/ai-planner-past-exam-info/',
+        img: '/banners/ai-planner-past-exam-info.jpg?v=20260820light',
+        cat: '認證考試'
+      },
+    ],
   },
 ];
 
@@ -97,8 +182,7 @@ function getPostCategory(post: typeof posts[0]) {
             <!-- 📰 2. 頂部主要文章區 (左側 70%「技術文章」雙欄網格 + 右側 30% 側邊欄) -->
       <div class="content-area-top">
         <div class="left">
-          <!-- 「技術文章」標題條 (.post-area-head) -->
-          <!-- 📑 大標題等級主題 Tab 列 (與「技術文章」同等大字體) -->
+                    <!-- 📑 大標題等級主題 Tab 列 (與「技術文章」同等大字體) -->
           <div class="tech-main-tab-bar">
             <div class="tech-main-tabs" id="techMainTabs">
               {mainTabCategories.map((cat, idx) => (
@@ -119,41 +203,38 @@ function getPostCategory(post: typeof posts[0]) {
             {mainTabCategories.map((cat, idx) => (
               <div class={`tech-tab-pane ${idx === 0 ? 'active' : ''}`} id={`tab-pane-${cat.id}`}>
                 <div class="post-list col2">
-                  {cat.posts.slice(0, 4).map((post) => {
-                    const catMeta = getPostCategory(post);
-                    return (
-                      <article class="post-card">
-                        <!-- 🎨 3D 浮動 Hover 縮圖 -->
-                        <div class="img-wrap">
-                          <div class="bgs bgs1"></div>
-                          <div class="bgs bgs2"></div>
-                          <div class="bgs bgs3"></div>
-                          <div class="bgs bgs4"></div>
-                          <a class="bgs bgs5 card-thumb-link" href={`/posts/${post.slug}/`}>
-                            <div class="card-img-box">
-                              <img src={`/banners/${post.slug}.jpg?v=20260820light`} alt={post.title} class="card-img" loading="lazy" />
-                            </div>
-                          </a>
-                        </div>
+                  {cat.items.map((item) => (
+                    <article class="post-card">
+                      <!-- 🎨 3D 浮動 Hover 縮圖 -->
+                      <div class="img-wrap">
+                        <div class="bgs bgs1"></div>
+                        <div class="bgs bgs2"></div>
+                        <div class="bgs bgs3"></div>
+                        <div class="bgs bgs4"></div>
+                        <a class="bgs bgs5 card-thumb-link" href={item.href}>
+                          <div class="card-img-box">
+                            <img src={item.img} alt={item.title} class="card-img" loading="lazy" />
+                          </div>
+                        </a>
+                      </div>
 
-                        <!-- 分類標籤 -->
-                        <ul class="post-categories">
-                          <li><a href="/posts/">{catMeta.name}</a></li>
-                        </ul>
+                      <!-- 分類標籤 -->
+                      <ul class="post-categories">
+                        <li><a href={item.href}>{item.cat}</a></li>
+                      </ul>
 
-                        <!-- 文章標題 -->
-                        <h3 class="post-title">
-                          <a href={`/posts/${post.slug}/`}>{post.title}</a>
-                        </h3>
+                      <!-- 文章標題 -->
+                      <h3 class="post-title">
+                        <a href={item.href}>{item.title}</a>
+                      </h3>
 
-                        <!-- 摘要 -->
-                        <p class="post-excerpt">{post.excerpt}</p>
+                      <!-- 摘要 -->
+                      <p class="post-excerpt">{item.excerpt}</p>
 
-                        <!-- 閱讀更多按鈕 -->
-                        <a href={`/posts/${post.slug}/`} class="read-more">閱讀更多</a>
-                      </article>
-                    );
-                  })}
+                      <!-- 閱讀更多 / 開啟工具按鈕 -->
+                      <a href={item.href} class="read-more">開啟專區 →</a>
+                    </article>
+                  ))}
                 </div>
               </div>
             ))}

@@ -273,22 +273,7 @@ const posts: Post[] = [
       </p>
     `,
   },
-      {
-    slug: 'ntub-credit-program',
-    category: 'tech',
-    date: '2026.08.19',
-    title: '【工具】NTUB學分學程查詢及預算學分',
-    excerpt: 'NTUB 學分學程簡章與學分勾選，一站查詢各學分學程的設置要點與計畫書內容。',
-    content: `
-      <p class="post-intro">
-        為了方便查閱 NTUB 各學分學程與微學程的設置要點暨計畫書內容，特別整理了這支「學分學程查詢及預算學分」工具！
-      </p>
-
-      <h2>工具介紹</h2>
-      <p>收錄 NTUB 各學分學程與微學程的簡章，可以快速查詢設置要點、計畫書內容與學分勾選資訊，方便你規劃自己的學分預算。</p>
-      <p><a href="/ntub/" target="_blank" rel="noopener noreferrer">點此開啟「學分學程查詢及預算學分」→</a></p>
-    `,
-  },
+      
   {
     slug: 'ig-unsend-tool',
     category: 'tech',
