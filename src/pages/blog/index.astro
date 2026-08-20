@@ -270,6 +270,47 @@ function getPostCategory(post: typeof posts[0]) {
         </aside>
       </div>
 
+            <!-- ⭐ 3. 經典「編輯精選」區塊 (.index-recommend-area) -->
+      <section class="index-recommend-area">
+        <div class="recommend-head-row">
+          <div class="author-photo">
+            <img src="/sheep-hd.png" alt="OviNas" width="70" height="70" />
+          </div>
+          <h2 class="recommend-title">編輯精選</h2>
+        </div>
+        <p class="recommend-desc">這裡挑了幾篇我自己寫得最深入、細節也最完整的實戰筆記，推薦給你慢慢看！</p>
+
+        <!-- 3 欄式精選文章卡片 -->
+        <div class="recommend-posts-grid">
+          {editorPicks.map((post) => {
+            const cat = getPostCategory(post);
+            return (
+              <article class="recommend-col-card">
+                <div class="onebox">
+                  <ul class="post-categories">
+                    <li><a href="/blog/posts/">{cat.name}</a></li>
+                  </ul>
+                  <div class="img-wrap">
+                    <div class="bgs bgs1"></div>
+                    <div class="bgs bgs2"></div>
+                    <div class="bgs bgs3"></div>
+                    <div class="bgs bgs4"></div>
+                    <a class="bgs bgs5 recommend-thumb-link" href={`/blog/posts/${post.slug}/`}>
+                      <div class="recommend-img-box">
+                        <img src={`/banners/${post.slug}.jpg`} alt={post.title} class="recommend-img" loading="lazy" />
+                      </div>
+                    </a>
+                  </div>
+                  <h3 class="post-title">
+                    <a href={`/blog/posts/${post.slug}/`}>{post.title}</a>
+                  </h3>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      </section>
+
       <!-- 📑 4. 主題閱讀區塊 (.content-area-cats-read) -->
       <div class="content-area-cats-read">
         <h2 class="post-area-title2">主題閱讀</h2>
