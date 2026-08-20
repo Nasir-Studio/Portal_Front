@@ -1,0 +1,534 @@
+---
+import BlogLayout from '../../layouts/BlogLayout.astro';
+
+const filesList = [
+  {
+    id: 'ig-unsend',
+    name: 'IG 自動訊息收回工具（Chrome 擴充套件）',
+    filename: 'IGUnsend.zip',
+    href: '/files/IGUnsend.zip',
+    ext: 'ZIP',
+    category: 'tools',
+    size: '1.2 MB',
+    date: '2026.08.17',
+    desc: '批次自動收回 Instagram 私訊中由你發出的歷史訊息，支援 Chrome 開發人員模式直接載入。',
+    tag: 'Chrome 外掛'
+  },
+  {
+    id: 'ntub-audit-zip',
+    name: 'NTUB 通識資安稽核全套檢測工具包',
+    filename: 'NTUB_Audit.zip',
+    href: '/files/NTUB_Audit.zip',
+    ext: 'ZIP',
+    category: 'tools',
+    size: '8.4 MB',
+    date: '2026.08.19',
+    desc: '教育部與行政院國家資通安全通報演練實戰檢測工具，含弱點掃描、靜態原始碼與檢測報告範本。',
+    tag: '資安工具包'
+  },
+  {
+    id: 'ntub-audit-bat',
+    name: '資安稽核一鍵通報自動化檢測腳本',
+    filename: 'NTUB_Audit.bat',
+    href: '/files/NTUB_Audit.bat',
+    ext: 'BAT',
+    category: 'scripts',
+    size: '2.4 KB',
+    date: '2026.08.19',
+    desc: 'Windows 系統環境資安基準檢測與演練通報輔助腳本，點擊即可自動輸出檢測摘要。',
+    tag: '自動化腳本'
+  },
+  {
+    id: 'presentation-template',
+    name: '專案發表與競賽簡報 Why-What-How 邏輯企劃範本',
+    filename: 'Presentation_Design_Logic_Template.docx',
+    href: '#',
+    ext: 'DOCX',
+    category: 'docs',
+    size: '520 KB',
+    date: '2026.08.19',
+    desc: '黑客松、專題評審與商業發表專用之 3 段論簡報企劃 Word 範本，含痛點、可行性與實作成效架構。',
+    tag: 'Word 範本'
+  },
+  {
+    id: 'ntub-credit-guide',
+    name: '北商大學分學程暨微學程設置要點與計畫書彙整',
+    filename: 'NTUB_Credit_Program_Guide.pdf',
+    href: '/ntub/',
+    ext: 'PDF',
+    category: 'docs',
+    size: '3.5 MB',
+    date: '2026.08.18',
+    desc: '國立臺北商業大學跨領域學分學程、微學程最新修業規定、學分門檻與課程清冊全集。',
+    tag: 'PDF 文件'
+  },
+  {
+    id: 'ai-planner-exam',
+    name: 'AI 應用規劃師歷屆模擬題庫與重點筆記彙整',
+    filename: 'AI_Planner_Exam_Prep.pdf',
+    href: '/posts/ai-planner-past-exam-info/',
+    ext: 'PDF',
+    category: 'exams',
+    size: '1.8 MB',
+    date: '2026.08.17',
+    desc: 'AI 應用規劃師認證必備題庫重點整理與歷屆核心考點分析，助你快速掌握測驗關鍵。',
+    tag: '考古題庫'
+  },
+];
+---
+
+<BlogLayout title="檔案下載中心 — OviNas" description="OviNas 官方檔案下載專區：提供軟體套件、資安腳本、簡報範本、學分計畫書等 PDF、Word、ZIP 附件免費下載。">
+  <div class="main-content downloads-page">
+    <div class="container">
+      
+      <!-- 頂部標題區 -->
+      <header class="dl-hero-header">
+        <div class="dl-hero-badge">DOWNLOADS & ATTACHMENTS</div>
+        <h1 class="dl-hero-title">檔案下載專區</h1>
+        <p class="dl-hero-sub">
+          收錄 OviNas 專案相關之實用軟體套件、自動化腳本、簡報企劃範本與 PDF/Word 附件，點擊即可高速下載或線上檢視。
+        </p>
+
+        <!-- 即時搜尋與分類過濾 -->
+        <div class="dl-controls-box">
+          <div class="dl-search-wrap">
+            <svg class="dl-search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input
+              type="text"
+              id="fileSearchInput"
+              class="dl-search-input"
+              placeholder="搜尋檔案名稱、副檔名或關鍵字 (例：ZIP、PDF、資安、IG)..."
+              autocomplete="off"
+            />
+          </div>
+
+          <div class="dl-filter-tabs" id="dlFilterTabs">
+            <button class="dl-tab-btn active" data-filter="all">全部檔案 (All)</button>
+            <button class="dl-tab-btn" data-filter="tools">軟體與擴充 (ZIP)</button>
+            <button class="dl-tab-btn" data-filter="docs">文件與計畫書 (PDF / Word)</button>
+            <button class="dl-tab-btn" data-filter="scripts">自動化腳本 (Script)</button>
+            <button class="dl-tab-btn" data-filter="exams">認證與題庫</button>
+          </div>
+        </div>
+      </header>
+
+      <!-- 檔案清單表格與卡片 -->
+      <section class="dl-list-section">
+        <div class="dl-table-wrap">
+          <table class="dl-table" id="dlTable">
+            <thead>
+              <tr>
+                <th style="width: 80px;">類型</th>
+                <th>檔案名稱與描述</th>
+                <th style="width: 140px;">分類標籤</th>
+                <th style="width: 100px;">大小</th>
+                <th style="width: 110px;">更新日期</th>
+                <th style="width: 130px; text-align: center;">操作</th>
+              </tr>
+            </thead>
+            <tbody id="dlTableBody">
+              {filesList.map((file) => (
+                <tr class="dl-row" data-category={file.category} data-search={`${file.name} ${file.filename} ${file.desc} ${file.ext} ${file.tag}`.toLowerCase()}>
+                  <!-- 類型圖示 -->
+                  <td>
+                    <span class={`file-ext-badge ext-${file.ext.toLowerCase()}`}>
+                      {file.ext}
+                    </span>
+                  </td>
+
+                  <!-- 檔案名稱與描述 -->
+                  <td class="file-info-cell">
+                    <div class="file-name-row">
+                      <a href={file.href} download={file.filename} class="file-primary-name">
+                        {file.name}
+                      </a>
+                    </div>
+                    <p class="file-desc-text">{file.desc}</p>
+                    <span class="file-real-name">📎 {file.filename}</span>
+                  </td>
+
+                  <!-- 分類標籤 -->
+                  <td>
+                    <span class="file-tag-pill">{file.tag}</span>
+                  </td>
+
+                  <!-- 大小 -->
+                  <td class="file-size-text">{file.size}</td>
+
+                  <!-- 日期 -->
+                  <td class="file-date-text">{file.date}</td>
+
+                  <!-- 操作按鈕 -->
+                  <td style="text-align: center;">
+                    <a href={file.href} download={file.filename} class="btn-dl-action" title={`下載 ${file.filename}`}>
+                      下載 ↓
+                    </a>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          
+          <!-- 無搜尋結果提示 -->
+          <div id="noResultsMsg" class="dl-no-results" style="display: none;">
+            <p>🔍 找不到符合條件的檔案，請嘗試其他關鍵字！</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 下載說明區塊 -->
+      <section class="dl-notice-box">
+        <h3 class="notice-title">💡 檔案下載與使用說明</h3>
+        <ul class="notice-list">
+          <li><strong>ZIP 壓縮檔案：</strong>下載後請先在本地進行「解壓縮」，若為 Chrome 擴充套件請至 <code>chrome://extensions</code> 開啟「開發人員模式」後選取載入。</li>
+          <li><strong>PDF / Word 文件：</strong>點擊即可直接於瀏覽器預覽或儲存至本機，若排版需要可搭配微軟 Office 或 Adobe Acrobat 開啟。</li>
+          <li><strong>安全檢測保證：</strong>全站所有發佈之腳本與檔案均經過內部 SHA-256 完整性校驗與防毒掃描，請安心下載使用。</li>
+        </ul>
+      </section>
+
+    </div>
+  </div>
+</BlogLayout>
+
+<style>
+  .downloads-page {
+    background-color: #ffffff;
+    padding: 2.5rem 0 5rem;
+  }
+
+  /* 🔷 頂部 Hero 區塊 */
+  .dl-hero-header {
+    margin-bottom: 2.5rem;
+    border-bottom: 2px solid #0f172a;
+    padding-bottom: 2rem;
+  }
+
+  .dl-hero-badge {
+    display: inline-block;
+    background: #0f172a;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    padding: 3px 10px;
+    margin-bottom: 0.8rem;
+  }
+
+  .dl-hero-title {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin: 0 0 0.6rem;
+    letter-spacing: 0.04em;
+  }
+
+  .dl-hero-sub {
+    font-size: 1.05rem;
+    color: #475569;
+    line-height: 1.7;
+    margin: 0 0 2rem;
+    max-width: 800px;
+  }
+
+  /* 🔍 搜尋與篩選列 */
+  .dl-controls-box {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    background: #f8fafc;
+    border: 1.5px solid #cbd5e1;
+    padding: 1.5rem;
+  }
+
+  .dl-search-wrap {
+    position: relative;
+    width: 100%;
+  }
+
+  .dl-search-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #64748b;
+  }
+
+  .dl-search-input {
+    width: 100%;
+    box-sizing: border-box;
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.85rem 1rem 0.85rem 2.75rem;
+    background: #ffffff;
+    border: 1.5px solid #94a3b8;
+    border-radius: 0px;
+    color: #0f172a;
+    outline: none;
+    transition: all 0.15s ease;
+  }
+
+  .dl-search-input:focus {
+    border-color: #ff6b00;
+    box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.15);
+  }
+
+  .dl-filter-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  .dl-tab-btn {
+    appearance: none;
+    background: #ffffff;
+    border: 1.5px solid #cbd5e1;
+    border-radius: 0px;
+    padding: 0.5rem 1.1rem;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #334155;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .dl-tab-btn:hover {
+    border-color: #0f172a;
+    background: #f1f5f9;
+  }
+
+  .dl-tab-btn.active {
+    background: #0f172a;
+    border-color: #0f172a;
+    color: #ffffff;
+    font-weight: 700;
+  }
+
+  /* 📑 檔案清單表格 */
+  .dl-list-section {
+    margin-bottom: 3.5rem;
+  }
+
+  .dl-table-wrap {
+    overflow-x: auto;
+    border: 1.5px solid #0f172a;
+    background: #ffffff;
+    box-shadow: 0 6px 24px rgba(15, 23, 42, 0.06);
+  }
+
+  .dl-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+  }
+
+  .dl-table th {
+    background: #f1f5f9;
+    color: #0f172a;
+    font-size: 0.88rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    padding: 14px 18px;
+    border-bottom: 1.5px solid #0f172a;
+  }
+
+  .dl-table td {
+    padding: 16px 18px;
+    border-bottom: 1px solid #e2e8f0;
+    vertical-align: middle;
+  }
+
+  .dl-row:last-child td {
+    border-bottom: none;
+  }
+
+  .dl-row:hover {
+    background: #f8fafc;
+  }
+
+  /* 🏷️ 檔案標籤與資訊 */
+  .file-ext-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    font-size: 0.82rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    color: #ffffff;
+    border-radius: 0px;
+  }
+
+  .ext-zip { background: #b45309; }
+  .ext-pdf { background: #dc2626; }
+  .ext-docx { background: #0284c7; }
+  .ext-bat { background: #047857; }
+
+  .file-info-cell {
+    min-width: 240px;
+  }
+
+  .file-primary-name {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #0f172a;
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  .file-primary-name:hover {
+    color: #ff6b00;
+  }
+
+  .file-desc-text {
+    font-size: 0.86rem;
+    color: #64748b;
+    margin: 4px 0 6px;
+    line-height: 1.6;
+  }
+
+  .file-real-name {
+    display: inline-block;
+    font-family: monospace;
+    font-size: 0.78rem;
+    color: #94a3b8;
+    background: #f1f5f9;
+    padding: 2px 6px;
+    border: 1px solid #e2e8f0;
+  }
+
+  .file-tag-pill {
+    display: inline-block;
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 3px 10px;
+    background: #f1f5f9;
+    color: #334155;
+    border: 1px solid #cbd5e1;
+  }
+
+  .file-size-text {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #475569;
+  }
+
+  .file-date-text {
+    font-size: 0.85rem;
+    color: #64748b;
+  }
+
+  .btn-dl-action {
+    display: inline-block;
+    padding: 0.55rem 1.2rem;
+    background: #0f172a;
+    color: #ffffff !important;
+    font-size: 0.88rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-decoration: none;
+    border: 1.5px solid #0f172a;
+    border-radius: 0px;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+  }
+
+  .btn-dl-action:hover {
+    background: #ff6b00;
+    border-color: #ff6b00;
+    color: #ffffff !important;
+    transform: translateY(-1px);
+  }
+
+  .dl-no-results {
+    padding: 3rem 1.5rem;
+    text-align: center;
+    color: #64748b;
+    font-size: 1.05rem;
+  }
+
+  /* 💡 下載提示卡片 */
+  .dl-notice-box {
+    background: #f8fafc;
+    border: 1.5px solid #cbd5e1;
+    padding: 1.8rem 2rem;
+  }
+
+  .notice-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 1rem;
+  }
+
+  .notice-list {
+    margin: 0;
+    padding-left: 1.4rem;
+    color: #475569;
+    font-size: 0.92rem;
+    line-height: 1.8;
+  }
+
+  .notice-list strong {
+    color: #0f172a;
+  }
+
+  .notice-list code {
+    background: #e2e8f0;
+    padding: 2px 6px;
+    font-size: 0.85rem;
+  }
+</style>
+
+<script>
+  // 🔍 檔案即時搜尋與 Tab 篩選互動
+  const searchInput = document.getElementById('fileSearchInput');
+  const filterBtns = document.querySelectorAll('#dlFilterTabs .dl-tab-btn');
+  const rows = document.querySelectorAll('#dlTableBody .dl-row');
+  const noResults = document.getElementById('noResultsMsg');
+
+  let currentCategory = 'all';
+  let searchQuery = '';
+
+  function applyFilter() {
+    let visibleCount = 0;
+
+    rows.forEach((row) => {
+      const category = row.getAttribute('data-category');
+      const searchContent = row.getAttribute('data-search') || '';
+
+      const matchesCat = currentCategory === 'all' || category === currentCategory;
+      const matchesSearch = !searchQuery || searchContent.includes(searchQuery.toLowerCase());
+
+      if (matchesCat && matchesSearch) {
+        row.style.display = '';
+        visibleCount++;
+      } else {
+        row.style.display = 'none';
+      }
+    });
+
+    if (noResults) {
+      noResults.style.display = visibleCount === 0 ? 'block' : 'none';
+    }
+  }
+
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      searchQuery = e.target.value.trim();
+      applyFilter();
+    });
+  }
+
+  filterBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach((b) => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentCategory = btn.getAttribute('data-filter') || 'all';
+      applyFilter();
+    });
+  });
+</script>
