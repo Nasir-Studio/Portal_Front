@@ -167,4 +167,15 @@
   .app-footer__sep {
     color: #b9b8b2;
   }
+
+  .app-footer {
+    display: none !important;
+  }
+  .splash {
+    background: #ffffff !important;
+  }
+  .shell {
+    padding-top: 1rem !important;
+  }
+
 </style>

@@ -425,4 +425,17 @@
       display: none;
     }
   }
+
+  .app-topbar {
+    display: none !important;
+  }
+  .app-brand {
+    display: none !important;
+  }
+  .app-header-main {
+    justify-content: flex-end;
+    padding: 0.5rem 0 1rem;
+    border-bottom: none;
+  }
+
 </style>

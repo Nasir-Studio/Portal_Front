@@ -1,18 +1,18 @@
 
 :root {
-  --bg: #f1efe9;
-  --bg-soft: #e8e5dc;
+  --bg: #ffffff;
+  --bg-soft: #f8fafc;
   --surface: #ffffff;
-  --surface-2: #f2efe8;
-  --line: #dcd8cc;
-  --line-strong: #b8b3a5;
+  --surface-2: #f8fafc;
+  --line: #e2e8f0;
+  --line-strong: #cbd5e1;
   --text: #191713;
   --text-dim: #57534a;
   --text-faint: #8b8577;
   --paper: #191713;
   --ink: #f4f2ec;
   --paper-hover: #33302b;
-  --header-bg: rgba(241, 239, 233, 0.9);
+  --header-bg: #ffffff;
   --danger: #c0452a;
   --warn: #99792c;
   --font-display: 'Space Grotesk Variable', system-ui, sans-serif;
