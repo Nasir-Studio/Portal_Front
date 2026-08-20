@@ -382,6 +382,58 @@ import BlogLayout from '../layouts/BlogLayout.astro';
     color: #a33;
     border-color: #d8a8a2;
   }
+
+  /* 📅 高對比預約系統卡片與時段列表樣式 */
+  .slot-card {
+    background: #ffffff !important;
+    border: 1.5px solid #cbd5e1 !important;
+    border-radius: 0px !important;
+    transition: all 0.15s ease;
+  }
+
+  .slot-card:hover {
+    background: #f8fafc !important;
+    border-color: #0f172a !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+
+  .slot-title {
+    color: #0f172a !important;
+    font-weight: 700 !important;
+  }
+
+  .slot-meta {
+    color: #64748b !important;
+    font-weight: 500;
+  }
+
+  .slot-desc {
+    color: #334155 !important;
+    line-height: 1.6;
+  }
+
+  .slot-foot {
+    background: #f1f5f9 !important;
+    border-top: 1.5px solid #cbd5e1 !important;
+    padding: 0.8rem 1.2rem !important;
+  }
+
+  .slot-remaining {
+    color: #15803d !important;
+    font-weight: 600 !important;
+  }
+
+  .slot-remaining.full {
+    color: #b91c1c !important;
+  }
+
+  .cal-frame iframe {
+    width: 100%;
+    height: 480px;
+    border: 1.5px solid #cbd5e1 !important;
+    border-radius: 0px !important;
+  }
+
 </style>
 
 <script>
