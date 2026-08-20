@@ -2,121 +2,225 @@
 import BlogLayout from '../layouts/BlogLayout.astro';
 ---
 
-<BlogLayout title="登入 — OviNas" description="使用 VIP 帳號登入 OviNas 系統。">
+<BlogLayout title="VIP 登入 — OviNas" description="使用 VIP 帳號登入 OviNas 系統。">
   <div class="main-content">
-  <div class="container">
-    <div class="login-wrap">
-      <h1 class="page-title">登入</h1>
-      <p class="page-sub">使用 VIP 帳號登入</p>
+    <div class="container">
+      <div class="login-box-wrapper">
+        <div class="login-header-group">
+          <h1 class="page-title">VIP 登入</h1>
+          <p class="page-sub">登入即可存取 VIP 專屬會員權限與獨家技術專欄</p>
+        </div>
 
-      <div class="module">
-        <h2 class="module-title">帳號登入</h2>
-        <form class="login-form" id="login-form" novalidate>
-          <label class="field">
-            <span class="field-label">Email</span>
-            <input id="email" type="email" name="email" autocomplete="email" required />
-          </label>
-          <label class="field">
-            <span class="field-label">密碼</span>
-            <input id="password" type="password" name="password" autocomplete="current-password" required />
-          </label>
-          <p class="form-error" id="form-error" role="alert" hidden></p>
-          <button class="btn btn--block" id="submit-btn" type="submit">登入</button>
-        </form>
+        <!-- 俐落方正質感登入卡片 (零圓角、高對比俐落邊框) -->
+        <div class="login-card-module">
+          <div class="login-card-head">
+            <span class="square-bullet"></span>
+            <h2>會員帳號驗證</h2>
+          </div>
+
+          <form class="login-form-body" id="login-form" novalidate>
+            <div class="field-item">
+              <label for="email" class="field-label">電子郵件 / EMAIL</label>
+              <input
+                id="email"
+                type="email"
+                name="email"
+                autocomplete="email"
+                placeholder="請輸入註冊的 Email"
+                required
+                class="field-input"
+              />
+            </div>
+
+            <div class="field-item">
+              <label for="password" class="field-label">密碼 / PASSWORD</label>
+              <input
+                id="password"
+                type="password"
+                name="password"
+                autocomplete="current-password"
+                placeholder="請輸入會員密碼"
+                required
+                class="field-input"
+              />
+            </div>
+
+            <div class="form-error" id="form-error" role="alert" style="display: none;"></div>
+
+            <button class="login-submit-btn" id="submit-btn" type="submit">
+              立即登入 →
+            </button>
+          </form>
+        </div>
+
+        <div class="login-footer-notes">
+          <p>
+            訪客如需預約時段 —
+            <a class="reserve-redirect-link" href="/reserve/">前往預約系統</a>
+          </p>
+        </div>
       </div>
-
-      <p class="page-note">
-        訪客不需登入即可預約 —
-        <a class="note-link" href="/reserve/">前往預約系統</a>
-      </p>
     </div>
-  </div>
   </div>
 </BlogLayout>
 
-<style>
-  .login-wrap {
-    max-width: 440px;
-    margin-inline: auto;
-    padding: 3.2rem 0 4rem;
+<style is:global>
+  .login-box-wrapper {
+    max-width: 460px;
+    margin: 2.5rem auto 4.5rem;
+    padding: 0 15px;
+  }
+
+  .login-header-group {
+    text-align: center;
+    margin-bottom: 2rem;
   }
 
   .page-title {
-    font-family: var(--font-serif);
-    font-size: 2rem;
-    font-weight: 600;
-    letter-spacing: 0.14em;
-    text-align: center;
+    font-family: var(--font-serif, "Noto Serif TC", serif);
+    font-size: 2.2rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: #0f172a;
+    margin: 0 0 8px;
   }
 
   .page-sub {
-    margin-top: 0.5rem;
-    text-align: center;
-    font-size: 0.9rem;
-    color: var(--ink-3);
-    letter-spacing: 0.08em;
+    font-size: 0.92rem;
+    color: #64748b;
+    margin: 0;
+    letter-spacing: 0.02em;
+    line-height: 1.5;
   }
 
-  .login-form {
-    padding: 1.4rem 1.5rem 1.6rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1.1rem;
+  /* 📦 俐落方正卡片：零圓角、黑邊/深藍邊、純白底色、柔和立體陰影 */
+  .login-card-module {
+    background: #ffffff;
+    border: 1.5px solid #0f172a;
+    border-radius: 0px !important;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
+    overflow: hidden;
   }
 
-  .field {
+  .login-card-head {
+    background: #0f172a;
+    color: #ffffff;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-radius: 0px !important;
+  }
+
+  .square-bullet {
+    width: 8px;
+    height: 8px;
+    background: #ff6b00;
+    display: inline-block;
+  }
+
+  .login-card-head h2 {
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    margin: 0;
+    color: #ffffff;
+  }
+
+  .login-form-body {
+    padding: 2rem 1.8rem 2.2rem;
     display: flex;
     flex-direction: column;
-    gap: 0.4rem;
+    gap: 1.3rem;
+    background: #ffffff;
+  }
+
+  .field-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
   }
 
   .field-label {
-    font-size: 0.82rem;
-    letter-spacing: 0.12em;
-    color: var(--ink-2);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: #334155;
   }
 
-  .field input {
-    font-family: var(--font-sans);
-    font-size: 1rem;
-    padding: 0.65rem 0.8rem;
-    background: var(--surface);
-    border: 1px solid var(--border-strong);
-    border-radius: 0;
-    color: var(--ink);
-    transition: border-color var(--t), outline var(--t);
+  .field-input {
+    width: 100%;
+    box-sizing: border-box;
+    font-family: inherit;
+    font-size: 0.95rem;
+    padding: 0.75rem 0.9rem;
+    background: #ffffff;
+    border: 1.5px solid #cbd5e1;
+    border-radius: 0px !important;
+    color: #0f172a;
+    outline: none;
+    transition: all 0.15s ease;
   }
 
-  .field input:focus {
-    outline: 2px solid var(--ink);
-    outline-offset: 0;
-    border-color: var(--ink);
+  .field-input:focus {
+    border-color: #ff6b00;
+    box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.12);
   }
 
   .form-error {
     font-size: 0.88rem;
-    color: #a33;
-    letter-spacing: 0.04em;
+    color: #b91c1c;
+    background: #fef2f2;
+    border-left: 3px solid #ef4444;
+    padding: 8px 12px;
+    border-radius: 0px !important;
+    letter-spacing: 0.02em;
   }
 
-  .page-note {
-    margin-top: 1.4rem;
+  .login-submit-btn {
+    width: 100%;
+    padding: 0.85rem;
+    background: #0f172a;
+    color: #ffffff;
+    border: none;
+    border-radius: 0px !important;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+    margin-top: 0.5rem;
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.2);
+  }
+
+  .login-submit-btn:hover {
+    background: #ff6b00;
+    box-shadow: 0 6px 18px rgba(255, 107, 0, 0.35);
+  }
+
+  .login-submit-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .login-footer-notes {
+    margin-top: 1.8rem;
     text-align: center;
     font-size: 0.9rem;
-    color: var(--ink-2);
-    letter-spacing: 0.05em;
+    color: #64748b;
   }
 
-  .note-link {
-    color: var(--ink);
-    font-weight: 500;
+  .reserve-redirect-link {
+    color: #ff6b00;
+    font-weight: 600;
     text-decoration: underline;
     text-underline-offset: 3px;
-    transition: color var(--t);
+    transition: color 0.15s ease;
   }
 
-  .note-link:hover {
-    color: #000;
+  .reserve-redirect-link:hover {
+    color: #ea580c;
   }
 </style>
 
@@ -131,8 +235,10 @@ import BlogLayout from '../layouts/BlogLayout.astro';
   const submitBtn = document.querySelector('#submit-btn') as HTMLButtonElement;
 
   function showError(message: string): void {
-    errorBox.textContent = message;
-    errorBox.hidden = false;
+    if (errorBox) {
+      errorBox.textContent = message;
+      errorBox.style.display = 'block';
+    }
   }
 
   async function redirectByRole(role: 'admin' | 'member'): Promise<void> {
@@ -149,39 +255,34 @@ import BlogLayout from '../layouts/BlogLayout.astro';
     }
   }
 
-  form.addEventListener('submit', async (event) => {
-    event.preventDefault();
-    errorBox.hidden = true;
+  if (form) {
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (errorBox) errorBox.style.display = 'none';
 
-    const email = emailInput.value.trim();
-    const password = passwordInput.value;
-    if (email.length === 0 || password.length === 0) {
-      showError('請填寫 Email 與密碼');
-      return;
-    }
-
-    submitBtn.disabled = true;
-    submitBtn.textContent = '登入中…';
-    try {
-      const user = await login(email, password);
-      await redirectByRole(user.role);
-    } catch (err) {
-      if (err instanceof ApiError) {
-        if (err.code === 'invalid_credentials') showError('Email 或密碼錯誤');
-        else if (err.code === 'network_error') showError('無法連線到伺服器');
-        else showError(err.message);
-      } else {
-        showError('發生未知錯誤，請稍後再試');
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
+      if (email.length === 0 || password.length === 0) {
+        showError('請填寫 Email 與密碼');
+        return;
       }
-      submitBtn.disabled = false;
-      submitBtn.textContent = '登入';
-    }
-  });
 
-  if (currentUser() !== null) {
-    const user = currentUser();
-    if (user !== null) {
-      void redirectByRole(user.role);
-    }
+      submitBtn.disabled = true;
+      submitBtn.textContent = '登入中…';
+      try {
+        const user = await login(email, password);
+        await redirectByRole(user.role);
+      } catch (err) {
+        if (err instanceof ApiError) {
+          if (err.code === 'invalid_credentials') showError('Email 或密碼錯誤');
+          else if (err.code === 'network_error') showError('無法連線到伺服器');
+          else showError(err.message);
+        } else {
+          showError('發生未知錯誤，請稍後再試');
+        }
+        submitBtn.disabled = false;
+        submitBtn.textContent = '立即登入 →';
+      }
+    });
   }
 </script>
