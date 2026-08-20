@@ -22,7 +22,7 @@ function getCategoryInfo(slug: string) {
   if (slug.includes('design') || slug.includes('front-end')) return { name: '前端設計', parent: '前端工程' };
   if (slug.includes('tool') || slug.includes('proxy') || slug.includes('github')) return { name: '外掛工具', parent: '開源工具' };
   if (slug.includes('ntub') || slug.includes('exam')) return { name: '專案實戰', parent: '校園專案' };
-  return { name: 'WordPress教學', parent: '架站日誌' };
+  return { name: '網站架設', parent: '架站日誌' };
 }
 
 const cat = getCategoryInfo(item.slug);
