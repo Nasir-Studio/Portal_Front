@@ -15,7 +15,7 @@ const allPosts = posts;
 const featuredPost = posts[0];
 
 
-// 1. 大標題等級的主題 Tab 分類 (三大主題：網站架設、開源工具、獨有工具)
+// 1. 大標題等級的主題 Tab 分類 (嚴格一對一歸類，各大標籤文章絕不重複)
 const mainTabCategories = [
   {
     id: 'arch',
@@ -59,30 +59,6 @@ const mainTabCategories = [
         img: '/banners/github-open-source-tools.jpg?v=20260820light',
         cat: '外掛工具'
       },
-      {
-        title: '【CF Page】PWA WebPush 設計原理',
-        excerpt: 'Cloudflare Pages 免費託管搭配 PWA 與 Web Push，低成本打造免上架 App 的全端推播架構！',
-        slug: 'cf-pages-pwa-webpush',
-        href: '/posts/cf-pages-pwa-webpush/',
-        img: '/banners/cf-pages-pwa-webpush.jpg?v=20260820light',
-        cat: '架構伺服器'
-      },
-      {
-        title: '【文章】簡報的設計方式跟邏輯',
-        excerpt: '設計簡報不用靠美工天份！掌握 Why-What-How 三段論，打造邏輯清晰的專案發表簡報。',
-        slug: 'presentation-design-logic',
-        href: '/posts/presentation-design-logic/',
-        img: '/banners/presentation-design-logic.jpg?v=20260820light',
-        cat: '前端設計'
-      },
-      {
-        title: '【技術文章】技術筆記本（含系統資安專題）',
-        excerpt: '白話拆解現代網站系統架構：從 Cloudflare 第一道防線、Nginx 到 Django 技術棧。',
-        slug: 'tech-notes-architecture',
-        href: '/posts/tech-notes-architecture/',
-        img: '/banners/tech-notes-architecture.jpg?v=20260820light',
-        cat: '架構伺服器'
-      },
     ],
   },
   {
@@ -96,6 +72,22 @@ const mainTabCategories = [
         href: '/posts/ntub-audit/',
         img: '/banners/ntub-audit.jpg?v=20260820light',
         cat: '系統資安'
+      },
+      {
+        title: '【工具】IG 收回工具 Batch',
+        excerpt: '批次收回 Instagram 私訊中你所傳送的訊息，Chrome 擴充套件免費下載。',
+        slug: 'ig-unsend-tool',
+        href: '/posts/ig-unsend-tool/',
+        img: '/banners/ig-unsend-tool.jpg?v=20260820light',
+        cat: '外掛工具'
+      },
+      {
+        title: '【文章】AI應用規劃師考古資訊',
+        excerpt: '想要測驗 AI 應用規劃師歷屆模擬題庫與考古資訊，即時線上智慧測驗。',
+        slug: 'ai-planner-past-exam-info',
+        href: '/posts/ai-planner-past-exam-info/',
+        img: '/banners/ai-planner-past-exam-info.jpg?v=20260820light',
+        cat: '認證考試'
       },
     ],
   },
