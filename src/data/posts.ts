@@ -144,22 +144,7 @@ const posts: Post[] = [
     `,
   },
       
-  {
-    slug: 'ig-unsend-tool',
-    category: 'tech',
-    date: '2026.08.17',
-    title: '【工具】IG 收回工具 Batch',
-    excerpt: 'IG 訊息傳錯人？想要一次收回所有你傳送的訊息？「IG自動訊息收回工具 （Nasir）」讓你批次收回 Instagram 私訊！',
-    content: `
-      <p class="post-intro">
-        不小心傳錯訊息、或是傳了不該傳的內容？「IG自動訊息收回工具 （Nasir）」是一支 Chrome 擴充套件，可以批次收回 Instagram 私訊中「你所傳送」的訊息，不用一隻一隻手動刪！
-      </p>
-
-      <h2>工具下載</h2>
-      <p><a class="audit-dl" href="/files/IGUnsend.zip"> 下載 IGUnsend.zip</a></p>
-      <p class="audit-note">下載後請先「解壓縮」，再到 Chrome 的 <code>chrome://extensions</code> 開啟開發人員模式，點「載入未封裝功能」選取資料夾即可安裝。</p>
-    `,
-  },
+  
   {
     slug: 'ai-planner-past-exam-info',
     category: 'general',
