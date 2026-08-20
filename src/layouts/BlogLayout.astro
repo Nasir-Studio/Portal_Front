@@ -91,7 +91,7 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
   </div>
 
   <!-- 📜 3. 獨立 WordPress 風格頁尾 (Footer - 深度連結 Portal 主站體系) -->
-    <!-- 📜 3. 經典 WordPress 淺灰頁尾 + 亮藍底條 (.footer-content #eee + .bottom-bar #0062eb) -->
+    <!-- 📜 3. 經典 WordPress 淺灰頁尾 + 亮藍底條 (.footer-content #eee + .bottom-bar #ff6b00) -->
   <footer class="footer">
     <div class="footer-content">
       <div class="container footer-layout">
@@ -188,7 +188,7 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
 
   .header-top-stripe {
     height: 5px;
-    background-color: #0062eb;
+    background-color: #ff6b00;
     width: 100%;
   }
 
@@ -233,7 +233,7 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
   .logo-link {
     width: 60px;
     height: 60px;
-    background-color: #0062eb;
+    background-color: #ff6b00;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -257,9 +257,9 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
     background-color: #222222;
   }
 
-  .logo-img-wrap .bgs1 { border-right: 0.5rem solid #0062eb; }
-  .logo-img-wrap .bgs2 { border-top: 0.5rem solid #0062eb; }
-  .logo-img-wrap .bgs3, .logo-img-wrap .bgs4 { background: #0062eb; }
+  .logo-img-wrap .bgs1 { border-right: 0.5rem solid #ff6b00; }
+  .logo-img-wrap .bgs2 { border-top: 0.5rem solid #ff6b00; }
+  .logo-img-wrap .bgs3, .logo-img-wrap .bgs4 { background: #ff6b00; }
 
   .sub-txt {
     margin-left: 14px;
@@ -276,7 +276,7 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
   }
 
   .logo-site-name:hover {
-    color: #0062eb;
+    color: #ff6b00;
   }
 
   .logo-site-desc {
@@ -315,7 +315,7 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
   /* 經典右側膠囊按鈕 (.nav-cta-btn) */
   .nav-cta-btn a {
     display: block;
-    background-color: #0062eb;
+    background-color: #ff6b00;
     color: #ffffff !important;
     padding: 0 20px;
     height: 40px;
@@ -351,7 +351,7 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
   .mobile-dropdown-menu {
     background-color: #ffffff;
     border-top: 1px solid #eeeeee;
-    border-bottom: 2px solid #0062eb;
+    border-bottom: 2px solid #ff6b00;
     padding: 1rem 1.5rem;
   }
 
@@ -373,16 +373,16 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
     padding: 6px 0;
   }
   
-  /* 📜 3. Footer 樣式 (100% 依據經典自媒體 #eee 淺灰 + #0062eb 亮藍底條) */
+  /* 📜 3. Footer 樣式 (典雅大字號、去粗體、暖橙色底條) */
   .footer {
     position: relative;
-    font-size: 15px;
-    margin-top: 3rem;
+    font-size: 16px;
+    margin-top: 3.5rem;
   }
 
   .footer .footer-content {
     background-color: #eeeeee;
-    padding: 3.5em 0 3em;
+    padding: 4em 0 3.5em;
     color: #444444;
   }
 
@@ -404,94 +404,99 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
     width: 26%;
   }
 
+  /* 標題字體加大 (font-size: 22px)，不加粗 (font-weight: 500 / 400) */
   .footer-content h2 {
-    border-left: 5px solid #0062eb;
-    padding-left: 10px;
-    margin-bottom: 0.6em;
-    font-size: 1.15rem;
-    font-weight: 800;
+    border-left: 5px solid #ff6b00;
+    padding-left: 12px;
+    margin-bottom: 0.8em;
+    font-size: 22px;
+    font-weight: 500;
     color: #222222;
   }
 
   .footer-content h3 {
-    margin: 1.2rem 0 0.5rem;
-    font-size: 1rem;
-    font-weight: 700;
-    color: #222222;
+    margin: 1.5rem 0 0.8rem;
+    font-size: 18px;
+    font-weight: 400;
+    color: #333333;
   }
 
   .footer-content .content {
     padding-left: 15px;
-    font-size: 0.9rem;
-    line-height: 1.7;
+    font-size: 15px;
+    line-height: 1.8;
   }
 
   .footer-content p {
     margin: 0 0 0.8rem;
     color: #555555;
+    font-weight: 400;
   }
 
   .footer-content a {
-    color: #0062eb;
+    color: #ff6b00;
     text-decoration: none;
+    font-weight: 400;
   }
 
   .footer-content a:hover {
-    color: #ff6488;
+    color: #ea580c;
   }
 
   .mail-p {
-    font-weight: 700;
+    font-weight: 400;
   }
 
   .social-links-row {
     display: flex;
-    gap: 0.5rem;
-    margin-top: 0.8rem;
+    gap: 0.6rem;
+    margin-top: 1rem;
   }
 
   .social-btn {
     display: inline-block;
-    padding: 6px 14px;
+    padding: 6px 16px;
     background-color: #ffffff;
-    color: #0062eb !important;
+    color: #ff6b00 !important;
     border: 1px solid #d1d5db;
-    font-size: 0.84rem;
-    font-weight: 700;
+    font-size: 14px;
+    font-weight: 400;
     border-radius: 4px;
     transition: all 0.2s ease;
   }
 
   .social-btn:hover {
-    background-color: #0062eb;
+    background-color: #ff6b00;
     color: #ffffff !important;
-    border-color: #0062eb;
+    border-color: #ff6b00;
   }
 
   /* 白底方形標籤導覽 */
   .tag-buttons-wrap a {
     display: inline-block;
     background-color: #ffffff;
-    padding: 4px 12px;
-    margin: 0 6px 6px 0;
-    color: #333333 !important;
-    font-size: 0.84rem;
+    padding: 5px 14px;
+    margin: 0 6px 8px 0;
+    color: #444444 !important;
+    font-size: 14px;
+    font-weight: 400;
     border: 1px solid #e2e2e2;
     transition: all 0.2s ease;
   }
 
   .tag-buttons-wrap a:hover {
-    background-color: #0062eb;
+    background-color: #ff6b00;
     color: #ffffff !important;
-    border-color: #0062eb;
+    border-color: #ff6b00;
   }
 
-  /* 底部亮藍底條 */
+  /* 底部暖橙色版權條 */
   .footer .bottom-bar {
-    background-color: #0062eb;
-    padding: 1.1rem 0;
+    background-color: #ff6b00;
+    padding: 1.2rem 0;
     color: #ffffff;
-    font-size: 0.86rem;
+    font-size: 14px;
+    font-weight: 400;
     text-align: left;
   }
 
@@ -502,10 +507,11 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
   .footer .bottom-bar a {
     color: #ffffff;
     text-decoration: underline;
+    font-weight: 400;
   }
 
   .footer .bottom-bar a:hover {
-    color: #f7d002;
+    color: #fef08a;
   }
 
   @media (max-width: 960px) {
@@ -524,5 +530,4 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
     .footer .footer-right {
       width: 100%;
     }
-  }
-</style>
+  }</style>
