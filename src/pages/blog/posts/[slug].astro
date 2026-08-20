@@ -8,6 +8,7 @@ const dailyQuote = quotes[seed % quotes.length];
 
 
 
+import TechGate from '../../../components/TechGate.astro';
 import BlogLayout from '../../../layouts/BlogLayout.astro';
 import posts from '../../../data/posts';
 
@@ -95,6 +96,20 @@ const cat = getCategoryInfo(item.slug);
           </div>
 
           <!-- 文章內文排版 (綠色鏈結 #3bce89 + 橘色左粗條 H2 + 柔灰提示框 + 表格) -->
+                    <!-- 🔒 技術文章專屬門禁 (登入鎖 + 信用卡解鎖) - ONLY 技術筆記本 -->
+          {item.slug === 'tech-notes-architecture' && (
+            <div id="tech-gate-wrap" class="tech-gate-wrap" style="display: none; margin: 1.5rem 0 2.5rem;">
+              <div class="tech-lock-card">
+                <div class="lock-card-header">
+                  <span class="lock-badge">🔒 VIP 技術文章門禁</span>
+                  <h3>本篇為【技術筆記本】深度架構篇</h3>
+                  <p>請使用下方快速登入（輸入任意帳密）或信用卡/模擬刷卡完成解鎖。</p>
+                </div>
+                <TechGate />
+              </div>
+            </div>
+          )}
+
           <div class="post-content" id="articleBody" set:html={item.content}></div>
 
           <!-- 底部作者專欄卡片 (Side Author Box) -->
@@ -980,9 +995,80 @@ const cat = getCategoryInfo(item.slug);
     text-align: right;
     font-style: italic;
   }
+  /* 🔒 VIP 門禁專用卡片樣式 */
+  .tech-lock-card {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-top: 4px solid #ff6b00;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+  }
+
+  .lock-card-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .lock-badge {
+    display: inline-block;
+    background: #fff7ed;
+    color: #ff6b00;
+    font-size: 12.5px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 9999px;
+    margin-bottom: 0.5rem;
+  }
+
+  .lock-card-header h3 {
+    font-size: 1.25rem;
+    color: #1e293b;
+    margin: 0 0 6px;
+    font-weight: 600;
+  }
+
+  .lock-card-header p {
+    font-size: 14px;
+    color: #64748b;
+    margin: 0;
+  }
 </style>
 
 <script>
+  // 🔒 技術文章專用門禁解鎖控制
+  const currentSlug = window.location.pathname;
+  if (currentSlug.includes('tech-notes-architecture')) {
+    const articleBodyEl = document.getElementById('articleBody');
+    const tocContainerEl = document.getElementById('toc_container');
+    const gateWrapEl = document.getElementById('tech-gate-wrap');
+
+    function applyTechGate() {
+      const unlocked = localStorage.getItem('ovinas-tech-unlocked') === '1';
+      if (!unlocked) {
+        if (articleBodyEl) articleBodyEl.style.display = 'none';
+        if (tocContainerEl) tocContainerEl.style.display = 'none';
+        if (gateWrapEl) {
+          gateWrapEl.style.display = 'block';
+          if (window.openTechGate) window.openTechGate();
+        }
+      } else {
+        if (articleBodyEl) articleBodyEl.style.display = 'block';
+        if (tocContainerEl) tocContainerEl.style.display = 'block';
+        if (gateWrapEl) {
+          gateWrapEl.style.display = 'none';
+          if (window.closeTechGate) window.closeTechGate();
+        }
+      }
+    }
+
+    applyTechGate();
+
+    window.addEventListener('tech-gate:unlocked', () => {
+      applyTechGate();
+    });
+  }
+
   const articleBody = document.getElementById('articleBody');
   const tocList = document.getElementById('tocList');
 
@@ -1327,5 +1413,43 @@ const cat = getCategoryInfo(item.slug);
     margin: 0;
     text-align: right;
     font-style: italic;
+  }
+  /* 🔒 VIP 門禁專用卡片樣式 */
+  .tech-lock-card {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-top: 4px solid #ff6b00;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+  }
+
+  .lock-card-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .lock-badge {
+    display: inline-block;
+    background: #fff7ed;
+    color: #ff6b00;
+    font-size: 12.5px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 9999px;
+    margin-bottom: 0.5rem;
+  }
+
+  .lock-card-header h3 {
+    font-size: 1.25rem;
+    color: #1e293b;
+    margin: 0 0 6px;
+    font-weight: 600;
+  }
+
+  .lock-card-header p {
+    font-size: 14px;
+    color: #64748b;
+    margin: 0;
   }
 </style>
