@@ -634,6 +634,7 @@ const topicCategories = [
   }
 
   .featured-main-img {
+    object-position: left center;
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -642,6 +643,7 @@ const topicCategories = [
   }
 
   .img-wrap:hover .featured-main-img {
+    object-position: left center;
     transform: scale(1.03);
   }
 
@@ -1962,6 +1964,19 @@ const topicCategories = [
     height: auto;
     border-radius: 2px;
   }
+
+  /* 📱 RWD 手機版：圖片位置微調，保證不折字、不切字、大小不變 */
+  @media (max-width: 900px) {
+    .featured-main-img {
+      object-position: 8% center !important;
+    }
+  }
+  @media (max-width: 480px) {
+    .featured-main-img {
+      object-position: 4% center !important;
+    }
+  }
+
 </style>
 
 <script>
