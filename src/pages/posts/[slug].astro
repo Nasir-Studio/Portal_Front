@@ -46,11 +46,11 @@ const cat = getCategoryInfo(item.slug);
       <main class="left">
         <!-- 經典麵包屑導航 (Breadcrumbs) -->
         <div class="breadcrumbs">
-          <a href="/blog/" class="home">首頁</a>
+          <a href="/" class="home">首頁</a>
           <span class="sep">&gt;</span>
-          <a href="/blog/posts/" class="taxonomy-cat">{cat.parent}</a>
+          <a href="/posts/" class="taxonomy-cat">{cat.parent}</a>
           <span class="sep">&gt;</span>
-          <a href="/blog/posts/" class="taxonomy-subcat">{cat.name}</a>
+          <a href="/posts/" class="taxonomy-subcat">{cat.name}</a>
           <span class="sep">&gt;</span>
           <span class="current-post-name">{item.title}</span>
         </div>
@@ -62,7 +62,7 @@ const cat = getCategoryInfo(item.slug);
           <!-- 文章 Meta 資訊欄 (.post-meta) -->
           <div class="post-meta">
             <div class="post-author">
-              By <a href="/blog/">OviNas 站長</a>
+              By <a href="/">OviNas 站長</a>
             </div>
             <div class="post-date">
               {item.date}
@@ -72,7 +72,7 @@ const cat = getCategoryInfo(item.slug);
             </div>
             <div class="meta-divider">|</div>
             <ul class="post-categories">
-              <li><a href="/blog/posts/">{cat.name}</a></li>
+              <li><a href="/posts/">{cat.name}</a></li>
             </ul>
           </div>
 
@@ -110,7 +110,7 @@ const cat = getCategoryInfo(item.slug);
             <div class="photo">
               <img src="/sheep-hd.png" alt="OviNas" width="90" height="90" />
             </div>
-            <h2>OviNas <span class="eng-name">/ 站長專欄</span></h2>
+            <h2>Nasir /OviNas <span class="eng-name">站長專欄</span></h2>
             <p class="history">網站架設 · 系統資安 · 筆記小分享</p>
             <div class="author-bio">
               <p>
@@ -174,14 +174,14 @@ const cat = getCategoryInfo(item.slug);
           <!-- 上一篇 / 下一篇導航 (prev-next-article) -->
           <div class="prev-next-article">
             {prevPost ? (
-              <a href={`/blog/posts/${prevPost.slug}/`} class="pn-item prev">
+              <a href={`/posts/${prevPost.slug}/`} class="pn-item prev">
                 <span class="pn-dir">« 上一篇文章</span>
                 <span class="pn-text">{prevPost.title}</span>
               </a>
             ) : <div class="pn-empty"></div>}
 
             {nextPost ? (
-              <a href={`/blog/posts/${nextPost.slug}/`} class="pn-item next">
+              <a href={`/posts/${nextPost.slug}/`} class="pn-item next">
                 <span class="pn-dir">下一篇文章 »</span>
                 <span class="pn-text">{nextPost.title}</span>
               </a>
@@ -210,13 +210,13 @@ const cat = getCategoryInfo(item.slug);
           <ul class="wpp-list">
             {posts.slice(0, 3).map((p, idx) => (
               <li class="wpp-item">
-                <a href={`/blog/posts/${p.slug}/`} class="wpp-thumb-link">
+                <a href={`/posts/${p.slug}/`} class="wpp-thumb-link">
                   <div class="wpp-thumbnail-box">
                     <img src={`/banners/${p.slug}.jpg`} alt={p.title} class="wpp-thumb-img" />
                   </div>
                 </a>
                 <div class="wpp-details">
-                  <a href={`/blog/posts/${p.slug}/`} class="wpp-post-title">
+                  <a href={`/posts/${p.slug}/`} class="wpp-post-title">
                     {p.title}
                   </a>
                   <span class="wpp-meta">{p.date}</span>

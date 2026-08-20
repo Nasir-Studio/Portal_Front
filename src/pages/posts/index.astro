@@ -41,7 +41,7 @@ function getPostCategory(post: typeof posts[0]) {
       <main class="left">
         <!-- 經典麵包屑導航 (Breadcrumbs) -->
         <div class="breadcrumbs">
-          <a href="/blog/" class="home">首頁</a>
+          <a href="/" class="home">首頁</a>
           <span class="sep">&gt;</span>
           <span class="current-crumb">全部文章列表</span>
         </div>
@@ -76,7 +76,7 @@ function getPostCategory(post: typeof posts[0]) {
               >
                 <!-- 1. 16:9 文青真實照片橫幅縮圖 (.img-wrap) -->
                 <div class="img-wrap loop-img-wrap">
-                  <a href={`/blog/posts/${post.slug}/`}>
+                  <a href={`/posts/${post.slug}/`}>
                     <img
                       src={`/banners/${post.slug}.jpg`}
                       alt={post.title}
@@ -89,7 +89,7 @@ function getPostCategory(post: typeof posts[0]) {
                 <!-- 2. 文章 Meta 資訊列 (.post-meta: BY 作者 | 日期 | 分類) -->
                 <div class="post-meta">
                   <div class="post-author">
-                    BY <a href="/blog/">OviNas</a>
+                    BY <a href="/">OviNas</a>
                   </div>
                   <p class="meta-sep">|</p>
                   <div class="post-date">
@@ -103,7 +103,7 @@ function getPostCategory(post: typeof posts[0]) {
 
                 <!-- 3. 文章大標題 (.post-title) -->
                 <h3 class="post-title">
-                  <a href={`/blog/posts/${post.slug}/`}>{post.title}</a>
+                  <a href={`/posts/${post.slug}/`}>{post.title}</a>
                 </h3>
 
                 <!-- 4. 文章內文摘要 (.post-excerpt) -->
@@ -111,7 +111,7 @@ function getPostCategory(post: typeof posts[0]) {
 
                 <!-- 5. 繼續閱讀按鈕 (.read-more) -->
                 <div class="read-more-wrap">
-                  <a href={`/blog/posts/${post.slug}/`} class="read-more">繼續閱讀</a>
+                  <a href={`/posts/${post.slug}/`} class="read-more">繼續閱讀</a>
                 </div>
               </article>
             );
@@ -132,7 +132,7 @@ function getPostCategory(post: typeof posts[0]) {
           <div class="photo">
             <img src="/sheep-hd.png" alt="OviNas" width="90" height="90" />
           </div>
-          <h2>OviNas <span class="eng-name">/ 站長專欄</span></h2>
+          <h2>Nasir /OviNas <span class="eng-name">站長專欄</span></h2>
           <p class="history">網站架設 · 系統資安 · 筆記小分享</p>
           <div class="author-bio">
               <p>
@@ -168,13 +168,13 @@ function getPostCategory(post: typeof posts[0]) {
             <ul class="wpp-list">
               {posts.slice(0, 3).map((p) => (
                 <li class="wpp-item">
-                  <a href={`/blog/posts/${p.slug}/`} class="wpp-thumb-link">
+                  <a href={`/posts/${p.slug}/`} class="wpp-thumb-link">
                     <div class="wpp-thumbnail-box">
                       <img src={`/banners/${p.slug}.jpg`} alt={p.title} class="wpp-thumb-img" />
                     </div>
                   </a>
                   <div class="wpp-details">
-                    <a href={`/blog/posts/${p.slug}/`} class="wpp-post-title">
+                    <a href={`/posts/${p.slug}/`} class="wpp-post-title">
                       {p.title}
                     </a>
                     <span class="wpp-meta">{p.date}</span>

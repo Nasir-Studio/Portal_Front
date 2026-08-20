@@ -88,7 +88,7 @@ const topicCategories = [
         <div class="left">
           <h3>OviNas</h3>
           <h2>網站架設、系統資安、筆記小分享</h2>
-          <a href="/blog/about/" class="btn-about-hero">關於 OviNas</a>
+          <a href="/about/" class="btn-about-hero">關於 OviNas</a>
         </div>
         <div class="right">
           <div class="slider-wrap-header">
@@ -98,7 +98,7 @@ const topicCategories = [
                 <div class="bgs bgs2"></div>
                 <div class="bgs bgs3"></div>
                 <div class="bgs bgs4"></div>
-                <a class="bgs bgs5 hero-featured-link" href="/blog/posts/" title="點擊探索 OviNas 全站專欄文章">
+                <a class="bgs bgs5 hero-featured-link" href="/posts/" title="點擊探索 OviNas 全站專欄文章">
                   <div class="featured-img-container">
                     <img src="/banners/hero-promo-v3.jpg" alt="OviNas 網站架設與系統資安實戰" class="featured-main-img" />
                   </div>
@@ -115,7 +115,7 @@ const topicCategories = [
           <!-- 「技術文章」標題條 (.post-area-head) -->
           <div class="post-area-head">
             <h2 class="post-area-title">技術文章</h2>
-            <a href="/blog/posts/" class="cat-read-all">查看全部文章</a>
+            <a href="/posts/" class="cat-read-all">查看全部文章</a>
           </div>
 
           <!-- 2 欄式文章網格 (.post-list.col2) -->
@@ -130,7 +130,7 @@ const topicCategories = [
                     <div class="bgs bgs2"></div>
                     <div class="bgs bgs3"></div>
                     <div class="bgs bgs4"></div>
-                    <a class="bgs bgs5 card-thumb-link" href={`/blog/posts/${post.slug}/`}>
+                    <a class="bgs bgs5 card-thumb-link" href={`/posts/${post.slug}/`}>
                       <div class="card-img-box">
                         <img src={`/banners/${post.slug}.jpg`} alt={post.title} class="card-img" loading="lazy" />
                       </div>
@@ -139,19 +139,19 @@ const topicCategories = [
 
                   <!-- 分類標籤 -->
                   <ul class="post-categories">
-                    <li><a href="/blog/posts/">{cat.name}</a></li>
+                    <li><a href="/posts/">{cat.name}</a></li>
                   </ul>
 
                   <!-- 文章標題 -->
                   <h3 class="post-title">
-                    <a href={`/blog/posts/${post.slug}/`}>{post.title}</a>
+                    <a href={`/posts/${post.slug}/`}>{post.title}</a>
                   </h3>
 
                   <!-- 摘要 -->
                   <p class="post-excerpt">{post.excerpt}</p>
 
                   <!-- 閱讀更多按鈕 -->
-                  <a href={`/blog/posts/${post.slug}/`} class="read-more">閱讀更多</a>
+                  <a href={`/posts/${post.slug}/`} class="read-more">閱讀更多</a>
                 </article>
               );
             })}
@@ -182,7 +182,7 @@ const topicCategories = [
             <div class="photo">
               <img src="/sheep-hd.png" alt="OviNas" width="90" height="90" />
             </div>
-            <h2>OviNas <span class="eng-name">/ 站長專欄</span></h2>
+            <h2>Nasir /OviNas <span class="eng-name">站長專欄</span></h2>
             <p class="history">網站架設 · 系統資安 · 筆記小分享</p>
             <div class="author-bio">
               <p>
@@ -218,13 +218,13 @@ const topicCategories = [
             <ul class="wpp-list">
               {allPosts.slice(0, 3).map((p) => (
                 <li class="wpp-item">
-                  <a href={`/blog/posts/${p.slug}/`} class="wpp-thumb-link">
+                  <a href={`/posts/${p.slug}/`} class="wpp-thumb-link">
                     <div class="wpp-thumbnail-box">
                       <img src={`/banners/${p.slug}.jpg`} alt={p.title} class="wpp-thumb-img" />
                     </div>
                   </a>
                   <div class="wpp-details">
-                    <a href={`/blog/posts/${p.slug}/`} class="wpp-post-title">
+                    <a href={`/posts/${p.slug}/`} class="wpp-post-title">
                       {p.title}
                     </a>
                     <span class="wpp-meta">{p.date}</span>
@@ -255,21 +255,21 @@ const topicCategories = [
               <article class="recommend-col-card">
                 <div class="onebox">
                   <ul class="post-categories">
-                    <li><a href="/blog/posts/">{cat.name}</a></li>
+                    <li><a href="/posts/">{cat.name}</a></li>
                   </ul>
                   <div class="img-wrap">
                     <div class="bgs bgs1"></div>
                     <div class="bgs bgs2"></div>
                     <div class="bgs bgs3"></div>
                     <div class="bgs bgs4"></div>
-                    <a class="bgs bgs5 recommend-thumb-link" href={`/blog/posts/${post.slug}/`}>
+                    <a class="bgs bgs5 recommend-thumb-link" href={`/posts/${post.slug}/`}>
                       <div class="recommend-img-box">
                         <img src={`/banners/${post.slug}.jpg`} alt={post.title} class="recommend-img" loading="lazy" />
                       </div>
                     </a>
                   </div>
                   <h3 class="post-title">
-                    <a href={`/blog/posts/${post.slug}/`}>{post.title}</a>
+                    <a href={`/posts/${post.slug}/`}>{post.title}</a>
                   </h3>
                 </div>
               </article>
@@ -307,7 +307,7 @@ const topicCategories = [
                       <div class="bgs bgs2"></div>
                       <div class="bgs bgs3"></div>
                       <div class="bgs bgs4"></div>
-                      <a class="bgs bgs5" href={`/blog/posts/${cat.posts[0].slug}/`}>
+                      <a class="bgs bgs5" href={`/posts/${cat.posts[0].slug}/`}>
                         <img src={`/banners/${cat.posts[0].slug}.jpg`} alt={cat.posts[0].title} class="topic-cover-img" />
                       </a>
                     </div>
@@ -322,7 +322,7 @@ const topicCategories = [
                       <div class="bgs bgs2"></div>
                       <div class="bgs bgs3"></div>
                       <div class="bgs bgs4"></div>
-                      <a class="bgs bgs5" href={`/blog/posts/${subPost.slug}/`}>
+                      <a class="bgs bgs5" href={`/posts/${subPost.slug}/`}>
                         <img src={`/banners/${subPost.slug}.jpg`} alt={subPost.title} class="topic-cover-img" />
                       </a>
                     </div>
@@ -335,7 +335,7 @@ const topicCategories = [
                 <ul>
                   {cat.listPosts.map((item) => (
                     <li>
-                      <a href={`/blog/posts/${item.slug}/`}>{item.title}</a>
+                      <a href={`/posts/${item.slug}/`}>{item.title}</a>
                     </li>
                   ))}
                 </ul>

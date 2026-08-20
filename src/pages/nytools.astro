@@ -5,6 +5,103 @@ import BlogLayout from '../layouts/BlogLayout.astro';
 <style is:global>
   #tools-app {
     min-height: 60vh;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    margin-top: 2rem;
+    margin-bottom: 3.5rem;
+    overflow: hidden;
+  }
+
+  .tools-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 1rem 1.6rem;
+    background: #f8fafc;
+    border-bottom: 1px solid #e2e8f0;
+    font-size: 0.88rem;
+    letter-spacing: 0.04em;
+  }
+
+  .tools-nav a {
+    color: #64748b;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .tools-nav a:hover {
+    color: #ff6b00;
+  }
+
+  .tools-nav-sep {
+    color: #cbd5e1;
+  }
+
+  .tools-nav-current {
+    color: #0f172a;
+    font-weight: 600;
+  }
+
+  .tools-body {
+    padding: 2.2rem 1.8rem;
+    background: #ffffff;
+  }
+
+  .tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.4rem;
+  }
+
+  .tool-card {
+    position: relative;
+    background: #ffffff;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 1.9rem 1.7rem;
+    text-decoration: none;
+    color: #0f172a;
+    transition: all 0.2s ease;
+    animation: fadeUp 0.5s ease-out forwards;
+    opacity: 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  }
+
+  .tool-card:hover {
+    border-color: #ff6b00;
+    transform: translateY(-4px);
+    box-shadow: 0 10px 24px rgba(255, 107, 0, 0.12);
+  }
+
+  .tool-card h3 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 0.5rem 0;
+  }
+
+  .tool-card p {
+    color: #475569;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .tool-card .tag {
+    display: inline-block;
+    margin-top: 1.2rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #ff6b00;
+    background: #fff7ed;
+    border-radius: 4px;
+    padding: 0.3rem 0.75rem;
+  }
+
+  #tools-app {
+    min-height: 60vh;
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 20px;
@@ -202,7 +299,7 @@ import BlogLayout from '../layouts/BlogLayout.astro';
   <div class="main-content">
   <div class="tools container" id="tools-app">
     <nav class="tools-nav" aria-label="麵包屑">
-      <a href="/blog/">首頁</a>
+      <a href="/">首頁</a>
       <span class="tools-nav-sep" aria-hidden="true">/</span>
       <span class="tools-nav-current" aria-current="page">NYTools</span>
     </nav>
