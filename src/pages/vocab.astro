@@ -411,13 +411,145 @@ import BlogLayout from '../layouts/BlogLayout.astro';
       font-size: 0.8rem;
     }
   }
+  /* 🎯 鮮明高對比單字測驗按鈕樣式 */
+  .voc-start-btn {
+    width: 100%;
+    padding: 0.95rem;
+    background: #ff6b00 !important;
+    color: #ffffff !important;
+    border: none;
+    border-radius: 4px;
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+    margin-top: 0.5rem;
+    box-shadow: 0 4px 12px rgba(255, 107, 0, 0.25);
+  }
+
+  .voc-start-btn:hover {
+    background: #ea580c !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(255, 107, 0, 0.35);
+  }
+
+  .voc-choices {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.85rem;
+  }
+
+  .voc-choice {
+    padding: 0.95rem 1.1rem;
+    border: 1.5px solid #cbd5e1 !important;
+    border-radius: 6px;
+    background: #ffffff !important;
+    color: #1e293b !important;
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    text-align: left;
+    line-height: 1.5;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+  }
+
+  .voc-choice:hover:not(.chosen) {
+    border-color: #ff6b00 !important;
+    background: #fff7ed !important;
+    color: #ff6b00 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 107, 0, 0.15);
+  }
+
+  .voc-choice.correct-choice {
+    border-color: #10b981 !important;
+    background: #ecfdf5 !important;
+    color: #065f46 !important;
+    font-weight: 700;
+  }
+
+  .voc-choice.wrong-choice {
+    border-color: #ef4444 !important;
+    background: #fef2f2 !important;
+    color: #991b1b !important;
+  }
+
+  .voc-submit-btn {
+    padding: 0.65rem 1.4rem;
+    background: #0f172a !important;
+    color: #ffffff !important;
+    border: none;
+    border-radius: 4px;
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: opacity 0.15s, transform 0.1s;
+  }
+
+  .voc-submit-btn:hover {
+    background: #1e293b !important;
+    transform: translateY(-1px);
+  }
+
+  .voc-quiz-next {
+    padding: 0.5rem 1.3rem;
+    background: #ff6b00 !important;
+    color: #ffffff !important;
+    border: none;
+    border-radius: 4px;
+    font-family: var(--font-sans);
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    box-shadow: 0 2px 8px rgba(255, 107, 0, 0.25);
+  }
+
+  .voc-quiz-next:hover {
+    background: #ea580c !important;
+    transform: translateY(-1px);
+  }
+
+  .voc-select {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 100%;
+    padding: 0.75rem 2.6rem 0.75rem 1rem;
+    border: 1.5px solid #cbd5e1;
+    border-radius: 4px;
+    background: #ffffff url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%231c1c1c' stroke-width='1.5'/%3E%3C/svg%3E") no-repeat right 1rem center;
+    color: #1e293b;
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+
+  .voc-select:focus {
+    border-color: #ff6b00;
+  }
+
+  .voc-setup, .voc-quiz, .voc-result {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  }
 </style>
 
 <BlogLayout title="VOC 單字測驗 ｜ OviNas" description="線上單字測驗系統，支援自選詞表、英聽發音與即時錯題複習。">
   <div class="main-content">
   <div class="container">
     <nav class="voc-nav" aria-label="麵包屑">
-      <a href="/">首頁</a>
+      <a href="/blog/">首頁</a>
       <span aria-hidden="true">／</span>
       <span class="voc-nav-current">VOC 單字</span>
     </nav>

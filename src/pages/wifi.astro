@@ -1,5 +1,5 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import BlogLayout from '../layouts/BlogLayout.astro';
 ---
 
 <style is:global>
@@ -649,13 +649,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   }
 </style>
 
-<BaseLayout title="NY WIFI DROP ｜ OviNas">
+<BlogLayout title="NY WIFI DROP ｜ OviNas" description="同一個 Wi-Fi 內的使用者自動上線，點擊即可互傳大檔案，點對點直連不經伺服器。">
+  <div class="main-content">
   <div class="container">
     <div class="tools-app">
       <nav class="tools-nav" aria-label="麵包屑">
-        <a href="/">首頁</a>
+        <a href="/blog/">首頁</a>
         <span class="tools-nav-sep" aria-hidden="true">/</span>
-        <a href="/nytools">NYTools</a>
+        <a href="/nytools/">NYTools</a>
         <span class="tools-nav-sep" aria-hidden="true">/</span>
         <span class="tools-nav-current" aria-current="page">NY WIFI DROP</span>
       </nav>
@@ -728,7 +729,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       </div>
     </div>
   </div>
-</BaseLayout>
+  </div>
+</BlogLayout>
 
 <script is:inline src="https://unpkg.com/peerjs/dist/peerjs.min.js"></script>
 <script is:inline>
