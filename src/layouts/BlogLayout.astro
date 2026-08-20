@@ -314,73 +314,187 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
     });
   }
 
-  // 5. 即時文章搜尋 (Header Search & Live Search)
+  // 5. 全站極速全文搜尋引擎 (Full-Text In-Memory Search Engine)
+  const postsIndex = (window as any).__BLOG_SEARCH_INDEX__ || [];
+
   const searchToggle = document.getElementById('searchToggle');
-  const searchDropdown = document.getElementById('headerSearchDropdown');
-  const searchInput = document.getElementById('headerSearchInput') as HTMLInputElement;
-  const liveResults = document.getElementById('liveSearchResults');
+  const searchModal = document.getElementById('searchModal');
+  const searchInput = document.getElementById('globalSearchInput') as HTMLInputElement;
+  const searchCloseBtn = document.getElementById('searchModalCloseBtn');
+  const searchClearBtn = document.getElementById('searchClearBtn');
+  const resultsContainer = document.getElementById('searchResultsList');
+  const tagBtns = document.querySelectorAll('.search-tag-btn');
 
-  const searchArticles = [
-    { title: '【系統資安】資安研究報告', slug: 'security-research-report', cat: '系統資安', excerpt: 'CVSS v4.0 滲透分級、OWASP/CWE 標準與 AI 防禦' },
-    { title: '【系統資安】全端技術架構筆記', slug: 'tech-notes-architecture', cat: '架構伺服器', excerpt: '大型企業級技術規範與系統架構設計' },
-    { title: '【系統資安】Cloudflare Pages 與 PWA 部署實戰', slug: 'cf-pages-pwa-webpush', cat: '架構伺服器', excerpt: 'WebPush 離線推播與 Service Worker 快取' },
-    { title: '【系統資安】介面排版與簡報設計邏輯', slug: 'presentation-design-logic', cat: '前端設計', excerpt: '工程師的視覺傳達與資訊層次結構' },
-    { title: '【系統資安】前端工程與響應式美學', slug: 'front-end-design', cat: '前端設計', excerpt: 'RWD 響應式佈局與現代 CSS 動效' },
-    { title: '【系統資安】代理伺服器與爬蟲名單整合工具', slug: 'proxy-list-tools', cat: '外掛工具', excerpt: 'Proxy 名單即時抓取與代理驗證' },
-    { title: '【系統資安】北商大修課學分管理與選課規劃', slug: 'ntub-credit-program', cat: '專案實戰', excerpt: '大專院校學分計算與選課檢核系統' },
-    { title: '【系統資安】Instagram 訊息管理與收回偵測探討', slug: 'ig-unsend-tool', cat: '外掛工具', excerpt: '即時訊息快取與收回事件捕獲' },
-    { title: '【系統資安】AI 歷屆考古題資訊系統', slug: 'ai-planner-past-exam-info', cat: '專案實戰', excerpt: '智慧考古題索引與複習計畫' },
-    { title: '【系統資安】Windows 開發環境調校與 Freestyle 心得', slug: 'windows-experience-freestyle', cat: '架構伺服器', excerpt: 'WSL2 與現代開發環境極簡配置' },
-    { title: '【系統資安】精選 GitHub 開源工具箱', slug: 'github-open-source-tools', cat: '外掛工具', excerpt: '高效率開發者工具與開源專案推薦' },
-    { title: '【系統資安】校園系統稽核與安全性探討', slug: 'ntub-audit', cat: '系統資安', excerpt: '安全漏洞評估與滲透稽核實務' },
-  ];
+  let selectedIndex = -1;
 
-  searchToggle?.addEventListener('click', (e) => {
-    e.stopPropagation();
-    searchDropdown?.classList.toggle('is-open');
-    searchToggle.classList.toggle('is-active');
-    if (searchDropdown?.classList.contains('is-open')) {
-      searchInput?.focus();
+  function openSearchModal(initialQuery = '') {
+    if (!searchModal) return;
+    searchModal.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+    if (searchInput) {
+      if (initialQuery) searchInput.value = initialQuery;
+      setTimeout(() => searchInput.focus(), 50);
+      runSearch(searchInput.value);
+    }
+  }
+
+  function closeSearchModal() {
+    if (!searchModal) return;
+    searchModal.classList.remove('is-open');
+    document.body.style.overflow = '';
+    selectedIndex = -1;
+  }
+
+  // 鍵盤快捷鍵 (⌘K / Ctrl+K & ESC)
+  window.addEventListener('keydown', (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+      e.preventDefault();
+      if (searchModal?.classList.contains('is-open')) {
+        closeSearchModal();
+      } else {
+        openSearchModal();
+      }
+    } else if (e.key === 'Escape' && searchModal?.classList.contains('is-open')) {
+      e.preventDefault();
+      closeSearchModal();
     }
   });
 
-  document.addEventListener('click', (e) => {
-    if (!searchDropdown?.contains(e.target as Node) && !searchToggle?.contains(e.target as Node)) {
-      searchDropdown?.classList.remove('is-open');
-      searchToggle?.classList.remove('is-active');
+  searchToggle?.addEventListener('click', () => openSearchModal());
+  searchCloseBtn?.addEventListener('click', closeSearchModal);
+  searchModal?.addEventListener('click', (e) => {
+    if (e.target === searchModal) closeSearchModal();
+  });
+
+  searchClearBtn?.addEventListener('click', () => {
+    if (searchInput) {
+      searchInput.value = '';
+      searchInput.focus();
+      runSearch('');
     }
   });
 
-  searchInput?.addEventListener('input', () => {
-    const q = searchInput.value.trim().toLowerCase();
-    if (!liveResults) return;
+  tagBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const q = btn.getAttribute('data-query') || '';
+      openSearchModal(q);
+    });
+  });
 
-    if (q.length === 0) {
-      liveResults.innerHTML = '';
-      liveResults.classList.remove('has-results');
+  function escapeRegExp(string: string) {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  }
+
+  function highlightMatches(text: string, queryWords: string[]) {
+    if (!queryWords.length) return text;
+    const regex = new RegExp('(' + queryWords.map(escapeRegExp).join('|') + ')', 'gi');
+    return text.replace(regex, '<mark class="search-hl">$1</mark>');
+  }
+
+  function extractSnippet(fullText: string, queryWords: string[]) {
+    if (!queryWords.length) return fullText.slice(0, 110) + '…';
+    const firstWord = queryWords[0].toLowerCase();
+    const idx = fullText.toLowerCase().indexOf(firstWord);
+    if (idx === -1) return fullText.slice(0, 110) + '…';
+
+    const start = Math.max(0, idx - 35);
+    const end = Math.min(fullText.length, idx + 85);
+    let snippet = fullText.slice(start, end);
+    if (start > 0) snippet = '…' + snippet;
+    if (end < fullText.length) snippet = snippet + '…';
+    return snippet;
+  }
+
+  function runSearch(rawQuery: string) {
+    const q = rawQuery.trim();
+    if (searchClearBtn) searchClearBtn.style.display = q ? 'block' : 'none';
+
+    if (!resultsContainer) return;
+
+    if (!q) {
+      resultsContainer.innerHTML = '<div class="search-empty-state"><p>輸入關鍵字或點選上方標籤，立即全文檢索 12 篇深度技術專欄！</p></div>';
+      selectedIndex = -1;
       return;
     }
 
-    const matches = searchArticles.filter(a => 
-      a.title.toLowerCase().includes(q) || 
-      a.cat.toLowerCase().includes(q) || 
-      a.excerpt.toLowerCase().includes(q)
-    );
+    const queryWords = q.toLowerCase().split(/\s+/).filter(Boolean);
 
-    if (matches.length > 0) {
-      liveResults.innerHTML = matches.map(m => `
-        <a href="/blog/posts/${m.slug}/" class="live-search-item">
-          <div class="live-search-title">${m.title}</div>
-          <div class="live-search-meta">${m.cat}</div>
+    // 計算關聯性分數 (Title: 15分, Excerpt: 6分, Content: 2分)
+    const scoredResults = postsIndex.map((post: any) => {
+      let score = 0;
+      const lowerTitle = post.title.toLowerCase();
+      const lowerExcerpt = post.excerpt.toLowerCase();
+      const lowerText = post.text.toLowerCase();
+
+      queryWords.forEach((word: string) => {
+        if (lowerTitle.includes(word)) score += 15;
+        if (lowerExcerpt.includes(word)) score += 6;
+        if (lowerText.includes(word)) score += 2;
+      });
+
+      return { post, score };
+    }).filter((item: any) => item.score > 0).sort((a: any, b: any) => b.score - a.score);
+
+    if (scoredResults.length === 0) {
+      resultsContainer.innerHTML = `<div class="search-empty-state"><p>找不到與「<strong style="color:#ff6b00;">${q}</strong>」相關的文章，試試其他關鍵字？</p></div>`;
+      selectedIndex = -1;
+      return;
+    }
+
+    selectedIndex = 0;
+    resultsContainer.innerHTML = scoredResults.map(({ post }: any, idx: number) => {
+      const highlightedTitle = highlightMatches(post.title, queryWords);
+      const snippet = extractSnippet(post.text, queryWords);
+      const highlightedSnippet = highlightMatches(snippet, queryWords);
+
+      return `
+        <a href="/blog/posts/${post.slug}/" class="search-result-card ${idx === 0 ? 'is-selected' : ''}" data-index="${idx}">
+          <div class="search-result-top">
+            <div class="search-result-title">${highlightedTitle}</div>
+            <span class="search-result-date">${post.date}</span>
+          </div>
+          <div class="search-result-snippet">${highlightedSnippet}</div>
         </a>
-      `).join('');
-      liveResults.classList.add('has-results');
-    } else {
-      liveResults.innerHTML = '<div class="live-search-empty">找不到符合的相關文章</div>';
-      liveResults.classList.add('has-results');
+      `;
+    }).join('');
+  }
+
+  searchInput?.addEventListener('input', () => {
+    runSearch(searchInput.value);
+  });
+
+  // 鍵盤上下鍵與 Enter 導航
+  searchInput?.addEventListener('keydown', (e) => {
+    const cards = resultsContainer?.querySelectorAll('.search-result-card');
+    if (!cards || cards.length === 0) return;
+
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      selectedIndex = (selectedIndex + 1) % cards.length;
+      updateCardSelection(cards);
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      selectedIndex = (selectedIndex - 1 + cards.length) % cards.length;
+      updateCardSelection(cards);
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      if (selectedIndex >= 0 && selectedIndex < cards.length) {
+        (cards[selectedIndex] as HTMLElement).click();
+      }
     }
   });
-</script>
+
+  function updateCardSelection(cards: NodeListOf<Element>) {
+    cards.forEach((card, idx) => {
+      if (idx === selectedIndex) {
+        card.classList.add('is-selected');
+        card.scrollIntoView({ block: 'nearest' });
+      } else {
+        card.classList.remove('is-selected');
+      }
+    });
+  }
+  </script>
 <script>
   // 1. 頂部導覽列滾動縮小動效 (.min-fixed)
   const header = document.getElementById('main-header');
