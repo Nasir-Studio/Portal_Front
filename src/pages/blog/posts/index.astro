@@ -147,62 +147,20 @@ function getPostCategory(post: typeof posts[0]) {
           </div>
         </div>
 
-          <!-- 🏅 資格認證 (Badges) -->
+          <!-- 🏅 資格認證 (Badges - 純淨展示，無多餘超連結) -->
           <div class="side-popular-box side-badges-box" style="margin-top: 2rem;">
             <h2 class="side-badges-title">資格認證</h2>
             <ul class="side-badges-list">
               {badges.map((b) => (
                 <li class="side-badge-item">
-                  <a href={b.url} target="_blank" rel="noopener noreferrer" class="side-badge-link" title={b.name}>
+                  <div class="side-badge-link" title={b.name}>
                     <img src={b.img} alt={b.name} class="side-badge-img" loading="lazy" />
                     <span class="side-badge-name">{b.name}</span>
-                  </a>
+                  </div>
                 </li>
               ))}
             </ul>
-            <a href="https://nasirlin.net" target="_blank" rel="noopener noreferrer" class="side-badge-more-link">
-              查看更多資格認證 ↗
-            </a>
           </div>
-
-        <!-- 熱門排行側欄 (#popular-side: 75px 1:1 正方形真實文青照片微縮圖) -->
-        <div class="popular-posts" id="popular-side">
-          <h3 class="side-section-heading">熱門推薦文章</h3>
-          <ul class="wpp-list">
-            {allPosts.slice(0, 5).map((p, idx) => {
-              const cat = getPostCategory(p);
-              return (
-                <li class="wpp-item">
-                  <a href={`/blog/posts/${p.slug}/`} class="wpp-thumb-link">
-                    <div class="wpp-thumbnail-box">
-                      <img src={`/banners/${p.slug}.jpg`} alt={p.title} class="wpp-thumb-img" />
-                    </div>
-                  </a>
-                  <div class="wpp-details">
-                    <a href={`/blog/posts/${p.slug}/`} class="wpp-post-title">
-                      {p.title}
-                    </a>
-                    <span class="wpp-meta">{p.date} · {cat.name}</span>
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-
-        <!-- 熱門標籤 -->
-        <div class="tag-widget-box">
-          <h3 class="side-section-heading">熱門主題標籤</h3>
-          <div class="tag-cloud">
-            <button class="tag-pill" data-kw="資安" type="button">系統資安</button>
-            <button class="tag-pill" data-kw="架構" type="button">網站架設</button>
-            <button class="tag-pill" data-kw="pwa" type="button">PWA</button>
-            <button class="tag-pill" data-kw="設計" type="button">前端設計</button>
-            <button class="tag-pill" data-kw="代理" type="button">實用工具</button>
-            <button class="tag-pill" data-kw="北商" type="button">北商學程</button>
-            <button class="tag-pill" data-kw="github" type="button">開源精選</button>
-          </div>
-        </div>
       </aside>
     </div>
   </div>

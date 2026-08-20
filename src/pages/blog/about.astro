@@ -41,26 +41,21 @@ import badges from '../../data/badges';
 
           
 
-                    <!-- 🏅 專業資格認證區塊 (Badges & Certifications - 經典立體徽章網格) -->
+                    <!-- 🏅 專業資格認證區塊 (Badges & Certifications - 純淨立體展示網格，無超連結) -->
           <h2 class="about-section-h2">專業資格認證</h2>
           <div class="about-badges-container">
             <ul class="about-badge-grid">
               {badges.map((b) => (
                 <li class="about-badge-item">
-                  <a href={b.url} target="_blank" rel="noopener noreferrer" class="about-badge-link" title={`${b.name} (點擊驗證 Credly 證書)`}>
+                  <div class="about-badge-link" title={b.name}>
                     <div class="about-badge-img-box">
                       <img src={b.img} alt={b.name} class="about-badge-img" loading="lazy" />
                     </div>
                     <p class="about-badge-name">{b.name}</p>
-                  </a>
+                  </div>
                 </li>
               ))}
             </ul>
-            <div class="about-badge-more-wrap">
-              <a href="https://nasirlin.net" target="_blank" rel="noopener noreferrer" class="about-badge-more-btn">
-                查看更多資格認證 ↗
-              </a>
-            </div>
           </div>
 
           <!-- 社群關注與文章探索 (純粹極簡 Icon 按鈕) -->
