@@ -104,16 +104,16 @@
     }
   }
 
-  /* 🐑 小羊行走軌道 */
+  /* 🐑 純小羊行走軌道 (無下方文字) */
   .sheep-track {
     position: relative;
     width: 100%;
-    height: 60px;
+    height: 44px;
   }
 
   .sheep-walker {
     position: absolute;
-    top: 0;
+    bottom: 4px;
     transform: translateX(-50%);
     display: flex;
     align-items: center;
@@ -122,12 +122,12 @@
     will-change: left;
   }
 
-  /* 靜止行走的小羊 (無上下浮動，純高清平移) */
+  /* 靜止行走的高清純小羊 (無英文字、無上下浮動，純平移) */
   .loader-sheep {
-    width: 58px;
-    height: 58px;
+    width: 64px;
+    height: 38px;
     object-fit: contain;
-    filter: drop-shadow(0 4px 8px rgba(28, 28, 28, 0.12));
+    filter: drop-shadow(0 3px 6px rgba(28, 28, 28, 0.1));
     display: block;
   }
 
