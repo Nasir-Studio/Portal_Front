@@ -4,6 +4,7 @@ export const translations: Record<Lang, Record<string, string>> = {
   'zh-TW': {
     'nav.home': '首頁',
     'nav.news': '最新消息',
+    'nav.blog': '部落格',
     'nav.vip': 'VIP 專區',
     'nav.logout': '登出',
     'nav.reserve': '預約系統',
@@ -56,6 +57,7 @@ export const translations: Record<Lang, Record<string, string>> = {
   en: {
     'nav.home': 'Home',
     'nav.news': 'News',
+    'nav.blog': 'Blog',
     'nav.vip': 'VIP Area',
     'nav.logout': 'Logout',
     'nav.reserve': 'Reservation',
@@ -108,6 +110,7 @@ export const translations: Record<Lang, Record<string, string>> = {
   ja: {
     'nav.home': 'ホーム',
     'nav.news': 'お知らせ',
+    'nav.blog': 'ブログ',
     'nav.vip': 'VIPエリア',
     'nav.logout': 'ログアウト',
     'nav.reserve': '予約システム',

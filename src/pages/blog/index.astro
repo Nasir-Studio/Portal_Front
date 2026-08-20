@@ -1,0 +1,972 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import posts from '../../data/posts';
+
+// 依照分類與精選排序
+const featuredPost = posts[0]; // 資安研究報告為焦點文章
+const regularPosts = posts;
+
+const categories = [
+  { id: 'all', label: '全部文章', count: posts.length },
+  { id: 'security', label: '系統資安', count: posts.filter(p => p.slug.includes('security') || p.slug.includes('audit')).length },
+  { id: 'architecture', label: '架構與雲端', count: posts.filter(p => p.slug.includes('architecture') || p.slug.includes('pwa')).length },
+  { id: 'frontend', label: '前端與設計', count: posts.filter(p => p.slug.includes('design') || p.slug.includes('front-end')).length },
+  { id: 'tools', label: '開源工具', count: posts.filter(p => p.slug.includes('tool') || p.slug.includes('proxy')).length },
+  { id: 'campus', label: '校園專案', count: posts.filter(p => p.slug.includes('ntub') || p.slug.includes('exam')).length },
+];
+
+function getCategoryMeta(post: typeof posts[0]) {
+  if (post.slug.includes('security') || post.slug.includes('audit')) {
+    return { tag: '系統資安', class: 'cat-security', color: '#c0392b' };
+  }
+  if (post.slug.includes('architecture') || post.slug.includes('pwa')) {
+    return { tag: '架構雲端', class: 'cat-arch', color: '#2980b9' };
+  }
+  if (post.slug.includes('design') || post.slug.includes('front-end')) {
+    return { tag: '前端美學', class: 'cat-design', color: '#8e44ad' };
+  }
+  if (post.slug.includes('tool') || post.slug.includes('proxy')) {
+    return { tag: '開源工具', class: 'cat-tools', color: '#27ae60' };
+  }
+  if (post.slug.includes('ntub') || post.slug.includes('exam')) {
+    return { tag: '校園專案', class: 'cat-campus', color: '#d35400' };
+  }
+  return { tag: '技術隨筆', class: 'cat-general', color: '#34495e' };
+}
+---
+
+<BaseLayout title="部落格 ｜ OviNas 羊之誌 — 深度技術與設計精選">
+  <main class="blog-page">
+    <div class="container">
+      <!-- 🌟 1. Hero 頂部焦點區 (Magazine Split Hero) -->
+      <section class="blog-hero">
+        <div class="hero-intro">
+          <div class="hero-badge">
+            <span class="pulse-dot"></span>
+            <span>OviNas Journal 羊之誌</span>
+          </div>
+          <h1 class="hero-title">探索技術與設計的<br><span class="hero-title-accent">純粹美學</span></h1>
+          <p class="hero-desc">
+            收錄巨型架構拆解、企業資安防護、前端動效工程與實用開源工具心得。以白話文與實戰視角，記錄每一個值得深究的技術靈感。
+          </p>
+
+          <!-- 搜尋與統計 -->
+          <div class="hero-search-wrap">
+            <div class="search-input-box">
+              <svg class="search-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <input
+                id="blogSearchInput"
+                type="search"
+                placeholder="搜尋文章關鍵字、主題或標籤…"
+                autocomplete="off"
+              />
+            </div>
+            <span class="post-count-badge" id="postCountBadge">共 {posts.length} 篇精選文章</span>
+          </div>
+        </div>
+
+        <!-- 焦點大卡 (Featured Card) -->
+        <div class="hero-featured">
+          <article class="featured-card">
+            <a href={`/posts/${featuredPost.slug}/`} class="featured-img-wrap">
+              <div class="featured-cover-visual" data-theme="security">
+                <div class="cover-icon-bg">🛡️</div>
+                <div class="cover-lines"></div>
+                <span class="featured-ribbon">★ 本月焦點</span>
+                <span class="card-cat-pill cat-security">系統資安</span>
+              </div>
+            </a>
+            <div class="featured-body">
+              <div class="card-meta">
+                <span class="meta-date">{featuredPost.date}</span>
+                <span class="meta-dot">·</span>
+                <span class="meta-read">8 分鐘閱讀</span>
+              </div>
+              <h2 class="featured-title">
+                <a href={`/posts/${featuredPost.slug}/`}>{featuredPost.title}</a>
+              </h2>
+              <p class="featured-excerpt">{featuredPost.excerpt}</p>
+              <div class="card-foot">
+                <div class="author-info">
+                  <img src="/sheep-hd.png" alt="OviNas" class="author-avatar" width="28" height="28" />
+                  <span class="author-name">OviNas</span>
+                </div>
+                <a href={`/posts/${featuredPost.slug}/`} class="read-more-link">
+                  閱讀全文 <span class="arrow">→</span>
+                </a>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- 🏷️ 2. 分類篩選導航 (Category Tabs) -->
+      <nav class="category-nav" aria-label="文章分類篩選">
+        <div class="category-tabs" id="categoryTabs">
+          {categories.map((cat, idx) => (
+            <button
+              class={`cat-tab ${idx === 0 ? 'is-active' : ''}`}
+              data-category={cat.id}
+              type="button"
+            >
+              <span class="cat-label">{cat.label}</span>
+              <span class="cat-count">{cat.count}</span>
+            </button>
+          ))}
+        </div>
+      </nav>
+
+      <!-- 📰 3. 主要文章區塊 + 側邊精選欄位 (Main Grid & Sidebar) -->
+      <div class="blog-layout">
+        <!-- 左側文章網格 (3-Column / 2-Column Responsive Card Grid) -->
+        <section class="posts-section">
+          <div class="posts-grid" id="postsGrid">
+            {regularPosts.map((post, idx) => {
+              const meta = getCategoryMeta(post);
+              return (
+                <article
+                  class="post-card"
+                  data-category={meta.class.replace('cat-', '')}
+                  data-title={post.title.toLowerCase()}
+                  data-excerpt={post.excerpt.toLowerCase()}
+                >
+                  <a href={`/posts/${post.slug}/`} class="card-img-wrap">
+                    <div class={`card-cover-visual ${meta.class}`}>
+                      <div class="card-watermark">{idx < 9 ? `0${idx + 1}` : idx + 1}</div>
+                      <span class={`card-cat-pill ${meta.class}`}>{meta.tag}</span>
+                    </div>
+                  </a>
+
+                  <div class="card-body">
+                    <div class="card-meta">
+                      <span class="meta-date">{post.date}</span>
+                      <span class="meta-dot">·</span>
+                      <span class="meta-read">5 分鐘閱讀</span>
+                    </div>
+
+                    <h3 class="card-title">
+                      <a href={`/posts/${post.slug}/`}>{post.title}</a>
+                    </h3>
+
+                    <p class="card-excerpt">{post.excerpt}</p>
+
+                    <div class="card-foot">
+                      <div class="author-info">
+                        <img src="/sheep-hd.png" alt="OviNas" class="author-avatar" width="24" height="24" />
+                        <span class="author-name">OviNas</span>
+                      </div>
+                      <a href={`/posts/${post.slug}/`} class="read-more-link">
+                        閱讀 <span class="arrow">→</span>
+                      </a>
+                    </div>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+
+          <!-- 無搜尋結果提示 -->
+          <div class="no-results" id="noResults" hidden>
+            <div class="no-results-icon">🐑</div>
+            <h3>找不到相符的文章</h3>
+            <p>請嘗試更換關鍵字或點選上方的「全部文章」分類。</p>
+          </div>
+        </section>
+
+        <!-- 📌 右側精選專欄與作者資訊 (Sidebar) -->
+        <aside class="blog-sidebar">
+          <!-- 站長簡介卡片 -->
+          <div class="sidebar-widget author-widget">
+            <div class="author-card-header">
+              <div class="author-avatar-lg">
+                <img src="/sheep-hd.png" alt="OviNas" width="56" height="56" />
+              </div>
+              <div class="author-details">
+                <h4 class="author-card-name">OviNas</h4>
+                <p class="author-card-title">全端工程師 · 資安愛好者</p>
+                <div class="status-indicator">
+                  <span class="status-dot"></span>
+                  <span>Writing & Building</span>
+                </div>
+              </div>
+            </div>
+            <p class="author-bio">
+              專注於現代 Web 架構設計、高效能前端、系統資安稽核與 Cloudflare 邊緣技術。追求極致細膩的介面質感。
+            </p>
+            <div class="author-tags">
+              <span>#Astro</span>
+              <span>#Svelte</span>
+              <span>#TypeScript</span>
+              <span>#Security</span>
+              <span>#Python</span>
+            </div>
+          </div>
+
+          <!-- 熱門精選榜單 -->
+          <div class="sidebar-widget popular-widget">
+            <h3 class="widget-title">
+              <span class="widget-icon">🔥</span> 熱門精選文章
+            </h3>
+            <ul class="popular-list">
+              {posts.slice(0, 4).map((p, idx) => (
+                <li class="popular-item">
+                  <span class="popular-rank">{idx + 1}</span>
+                  <div class="popular-info">
+                    <a href={`/posts/${p.slug}/`} class="popular-link">
+                      {p.title.replace(/【.*?】/, '')}
+                    </a>
+                    <span class="popular-date">{p.date}</span>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <!-- 快速分類標籤雲 -->
+          <div class="sidebar-widget tag-widget">
+            <h3 class="widget-title">
+              <span class="widget-icon">🏷️</span> 熱門探索標籤
+            </h3>
+            <div class="tag-cloud">
+              <a href="#" class="tag-pill" data-tag="資安"># 系統資安</a>
+              <a href="#" class="tag-pill" data-tag="架構"># 巨型專案架構</a>
+              <a href="#" class="tag-pill" data-tag="pwa"># PWA 與 WebPush</a>
+              <a href="#" class="tag-pill" data-tag="設計"># 簡報設計</a>
+              <a href="#" class="tag-pill" data-tag="前端"># 前端工程美學</a>
+              <a href="#" class="tag-pill" data-tag="代理"># 代理清單爬蟲</a>
+              <a href="#" class="tag-pill" data-tag="北商"># 北商學分學程</a>
+              <a href="#" class="tag-pill" data-tag="開源"># GitHub 精選工具</a>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .blog-page {
+    padding: 2.5rem 0 5rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* 🌟 1. Hero 頂部焦點區 */
+  .blog-hero {
+    display: grid;
+    grid-template-columns: 1fr 1.15fr;
+    gap: 3rem;
+    align-items: center;
+    padding: 2.5rem 0 3.2rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.85rem;
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 1.2rem;
+  }
+
+  .pulse-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #27ae60;
+    box-shadow: 0 0 0 2px rgba(39, 174, 96, 0.2);
+  }
+
+  .hero-title {
+    font-family: var(--font-serif);
+    font-size: 2.4rem;
+    line-height: 1.3;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--ink);
+    margin: 0 0 1rem;
+  }
+
+  .hero-title-accent {
+    position: relative;
+    display: inline-block;
+  }
+
+  .hero-title-accent::after {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    left: 0;
+    width: 100%;
+    height: 8px;
+    background: rgba(28, 28, 28, 0.08);
+    z-index: -1;
+    border-radius: 2px;
+  }
+
+  .hero-desc {
+    font-size: 0.96rem;
+    line-height: 1.7;
+    color: var(--ink-2);
+    margin: 0 0 1.8rem;
+    max-width: 480px;
+  }
+
+  .hero-search-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    max-width: 440px;
+  }
+
+  .search-input-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 1rem;
+    color: var(--ink-3);
+    pointer-events: none;
+  }
+
+  .search-input-box input {
+    width: 100%;
+    padding: 0.8rem 1rem 0.8rem 2.7rem;
+    font-size: 0.92rem;
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    border-radius: 10px;
+    color: var(--ink);
+    outline: none;
+    box-shadow: 0 2px 8px rgba(28, 28, 28, 0.04);
+    transition: all var(--t);
+  }
+
+  .search-input-box input:focus {
+    border-color: var(--ink);
+    box-shadow: 0 0 0 3px rgba(28, 28, 28, 0.08);
+  }
+
+  .post-count-badge {
+    font-size: 0.78rem;
+    color: var(--ink-3);
+    letter-spacing: 0.06em;
+    padding-left: 0.2rem;
+  }
+
+  /* 焦點大卡 */
+  .featured-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 30px rgba(28, 28, 28, 0.07);
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .featured-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 40px rgba(28, 28, 28, 0.12);
+  }
+
+  .featured-img-wrap {
+    display: block;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .featured-cover-visual {
+    height: 220px;
+    background: linear-gradient(135deg, #1c1c1c 0%, #3a3a3a 100%);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .cover-icon-bg {
+    font-size: 5rem;
+    opacity: 0.25;
+    transform: rotate(-10deg);
+  }
+
+  .featured-ribbon {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    background: #d97706;
+    color: #ffffff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    padding: 0.3rem 0.7rem;
+    border-radius: 999px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .card-cat-pill {
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    padding: 0.25rem 0.65rem;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.95);
+    color: var(--ink);
+    backdrop-filter: blur(8px);
+  }
+
+  .featured-body {
+    padding: 1.6rem 1.8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .featured-title {
+    font-family: var(--font-serif);
+    font-size: 1.35rem;
+    font-weight: 700;
+    line-height: 1.4;
+    letter-spacing: 0.05em;
+    margin: 0;
+  }
+
+  .featured-title a {
+    color: var(--ink);
+    transition: color var(--t);
+  }
+
+  .featured-title a:hover {
+    color: #4a5568;
+  }
+
+  .featured-excerpt {
+    font-size: 0.88rem;
+    line-height: 1.65;
+    color: var(--ink-2);
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* 🏷️ 2. 分類篩選導航 */
+  .category-nav {
+    margin: 2.5rem 0 2rem;
+    overflow-x: auto;
+    padding-bottom: 0.4rem;
+  }
+
+  .category-tabs {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .cat-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.55rem 1.1rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-family: var(--font-serif);
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--ink-2);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all var(--t);
+  }
+
+  .cat-tab:hover {
+    background: var(--bg-soft);
+    color: var(--ink);
+    border-color: var(--ink-3);
+  }
+
+  .cat-tab.is-active {
+    background: var(--ink);
+    color: #ffffff;
+    border-color: var(--ink);
+    box-shadow: 0 4px 12px rgba(28, 28, 28, 0.15);
+  }
+
+  .cat-count {
+    font-size: 0.72rem;
+    padding: 0.1rem 0.4rem;
+    border-radius: 999px;
+    background: rgba(28, 28, 28, 0.08);
+  }
+
+  .cat-tab.is-active .cat-count {
+    background: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+  }
+
+  /* 📰 3. 主版面 (文章網格 + 側邊欄) */
+  .blog-layout {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 2.8rem;
+    align-items: start;
+  }
+
+  /* 文章網格 (2 欄 / 3 欄) */
+  .posts-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.8rem;
+  }
+
+  .post-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 16px rgba(28, 28, 28, 0.04);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s;
+  }
+
+  .post-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 28px rgba(28, 28, 28, 0.08);
+    border-color: rgba(28, 28, 28, 0.3);
+  }
+
+  .card-img-wrap {
+    display: block;
+    overflow: hidden;
+  }
+
+  .card-cover-visual {
+    height: 160px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f4f4f0;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .post-card:hover .card-cover-visual {
+    transform: scale(1.04);
+  }
+
+  /* 類別自訂視覺色調 */
+  .cat-security { background: linear-gradient(135deg, #2c3e50, #34495e); }
+  .cat-arch { background: linear-gradient(135deg, #1e3c72, #2a5298); }
+  .cat-design { background: linear-gradient(135deg, #4b1248, #f0c27b); }
+  .cat-tools { background: linear-gradient(135deg, #134e5e, #71b280); }
+  .cat-campus { background: linear-gradient(135deg, #ba8b02, #181818); }
+  .cat-general { background: linear-gradient(135deg, #434343, #000000); }
+
+  .card-watermark {
+    font-family: var(--font-serif);
+    font-size: 4rem;
+    font-weight: 900;
+    color: rgba(255, 255, 255, 0.15);
+    letter-spacing: 0.05em;
+  }
+
+  .card-body {
+    padding: 1.3rem 1.4rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 0.65rem;
+  }
+
+  .card-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.78rem;
+    color: var(--ink-3);
+    letter-spacing: 0.05em;
+  }
+
+  .card-title {
+    font-family: var(--font-serif);
+    font-size: 1.12rem;
+    font-weight: 700;
+    line-height: 1.42;
+    letter-spacing: 0.04em;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .card-title a {
+    color: var(--ink);
+    transition: color var(--t);
+  }
+
+  .card-title a:hover {
+    color: #4a5568;
+  }
+
+  .card-excerpt {
+    font-size: 0.84rem;
+    line-height: 1.6;
+    color: var(--ink-2);
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    flex: 1;
+  }
+
+  .card-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 0.9rem;
+    margin-top: 0.4rem;
+    border-top: 1px dashed var(--border);
+  }
+
+  .author-info {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+
+  .author-avatar {
+    border-radius: 50%;
+    background: var(--bg-soft);
+    object-fit: contain;
+  }
+
+  .author-name {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .read-more-link {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--ink);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    transition: gap 0.2s ease;
+  }
+
+  .read-more-link .arrow {
+    transition: transform 0.2s ease;
+  }
+
+  .post-card:hover .read-more-link .arrow {
+    transform: translateX(3px);
+  }
+
+  /* 側邊欄樣式 */
+  .blog-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 1.8rem;
+  }
+
+  .sidebar-widget {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 16px rgba(28, 28, 28, 0.04);
+  }
+
+  /* 作者卡片 */
+  .author-card-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .author-avatar-lg {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .author-card-name {
+    font-family: var(--font-serif);
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin: 0 0 0.2rem;
+    color: var(--ink);
+  }
+
+  .author-card-title {
+    font-size: 0.78rem;
+    color: var(--ink-3);
+    margin: 0 0 0.35rem;
+  }
+
+  .status-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.72rem;
+    color: #27ae60;
+    font-weight: 600;
+  }
+
+  .status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #27ae60;
+  }
+
+  .author-bio {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: var(--ink-2);
+    margin: 0 0 1rem;
+  }
+
+  .author-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .author-tags span {
+    font-size: 0.75rem;
+    padding: 0.2rem 0.55rem;
+    background: var(--bg-soft);
+    border-radius: 6px;
+    color: var(--ink-2);
+  }
+
+  /* 熱門榜單 */
+  .widget-title {
+    font-family: var(--font-serif);
+    font-size: 1.02rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--ink);
+    margin: 0 0 1.2rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .popular-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .popular-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.8rem;
+  }
+
+  .popular-rank {
+    font-family: var(--font-serif);
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--ink-3);
+    min-width: 1.5rem;
+    line-height: 1.2;
+  }
+
+  .popular-item:nth-child(1) .popular-rank { color: #d97706; }
+  .popular-item:nth-child(2) .popular-rank { color: #4b5563; }
+  .popular-item:nth-child(3) .popular-rank { color: #92400e; }
+
+  .popular-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .popular-link {
+    font-size: 0.86rem;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--ink);
+    transition: color var(--t);
+  }
+
+  .popular-link:hover {
+    color: #4a5568;
+  }
+
+  .popular-date {
+    font-size: 0.75rem;
+    color: var(--ink-3);
+  }
+
+  /* 標籤雲 */
+  .tag-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .tag-pill {
+    font-size: 0.78rem;
+    padding: 0.35rem 0.75rem;
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--ink-2);
+    transition: all var(--t);
+  }
+
+  .tag-pill:hover {
+    background: var(--ink);
+    color: #ffffff;
+    border-color: var(--ink);
+  }
+
+  .no-results {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 4rem 1rem;
+    background: var(--surface);
+    border: 1px dashed var(--border-strong);
+    border-radius: 14px;
+  }
+
+  .no-results-icon {
+    font-size: 3rem;
+    margin-bottom: 0.8rem;
+  }
+
+  /* 📱 RWD 響應式 */
+  @media (max-width: 1024px) {
+    .blog-hero {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    .blog-layout {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .posts-grid {
+      grid-template-columns: 1fr;
+    }
+    .hero-title {
+      font-size: 1.85rem;
+    }
+  }
+</style>
+
+<script>
+  // 🔍 即時搜尋與分類標籤篩選腳本
+  const searchInput = document.getElementById('blogSearchInput') as HTMLInputElement;
+  const categoryTabs = document.querySelectorAll('.cat-tab');
+  const postCards = document.querySelectorAll('.post-card');
+  const noResults = document.getElementById('noResults');
+  const countBadge = document.getElementById('postCountBadge');
+
+  let activeCategory = 'all';
+  let searchQuery = '';
+
+  function filterPosts() {
+    let visibleCount = 0;
+
+    postCards.forEach((card) => {
+      const el = card as HTMLElement;
+      const cardCategory = el.dataset.category || '';
+      const cardTitle = el.dataset.title || '';
+      const cardExcerpt = el.dataset.excerpt || '';
+
+      const matchesCat = activeCategory === 'all' || cardCategory === activeCategory;
+      const matchesSearch = searchQuery === '' ||
+        cardTitle.includes(searchQuery) ||
+        cardExcerpt.includes(searchQuery);
+
+      if (matchesCat && matchesSearch) {
+        el.style.display = 'flex';
+        visibleCount++;
+      } else {
+        el.style.display = 'none';
+      }
+    });
+
+    if (countBadge) {
+      countBadge.textContent = `共 ${visibleCount} 篇精選文章`;
+    }
+
+    if (noResults) {
+      noResults.hidden = visibleCount > 0;
+    }
+  }
+
+  // 分類切換
+  categoryTabs.forEach((tab) => {
+    tab.addEventListener('click', () => {
+      categoryTabs.forEach((t) => t.classList.remove('is-active'));
+      tab.classList.add('is-active');
+      activeCategory = tab.getAttribute('data-category') || 'all';
+      filterPosts();
+    });
+  });
+
+  // 即時搜尋
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      searchQuery = (e.target as HTMLInputElement).value.trim().toLowerCase();
+      filterPosts();
+    });
+  }
+
+  // 點擊標籤雲快速過濾
+  document.querySelectorAll('.tag-pill').forEach((pill) => {
+    pill.addEventListener('click', (e) => {
+      e.preventDefault();
+      const tag = pill.getAttribute('data-tag') || '';
+      if (searchInput) {
+        searchInput.value = tag;
+        searchQuery = tag.toLowerCase();
+        filterPosts();
+        searchInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    });
+  });
+</script>
