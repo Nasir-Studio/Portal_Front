@@ -21,35 +21,6 @@
 
 <div class="login">
 
-  <div class="login__topbar">
-    <div class="login__topbar-inner">
-      <span class="login__topbar-left">OviNas</span>
-      <span class="login__topbar-right">
-        <a href="/">首頁</a>
-        <span class="login__sep" aria-hidden="true">｜</span>
-        <a href="#news">最新消息</a>
-      </span>
-    </div>
-  </div>
-
-  <div class="login__header-main">
-    <div class="login__brand">
-      <SheepLogo size={58} />
-      <span class="login__brand-text">
-        <span class="login__brand-name">OviNas</span>
-      </span>
-    </div>
-  </div>
-
-  <div class="login__menubar-wrap">
-    <nav class="login__menubar" aria-label="主導覽">
-      <a class="login__menu-link login__menu-link--back" href="/">
-        <span class="login__menu-back-arrow" aria-hidden="true">←</span>
-        回入口
-      </a>
-    </nav>
-  </div>
-
   <div class="login__hero">
     <div class="login__hero-frame">
       <span class="login__hero-square login__hero-square--l" aria-hidden="true"></span>

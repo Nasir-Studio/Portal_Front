@@ -72,15 +72,7 @@
       onclose={() => (selectedId = null)} />
   {/if}
 
-  <footer class="app-footer">
-    <div class="app-footer__inner">
-      <span>OviNas</span>
-      <span class="app-footer__sep" aria-hidden="true">｜</span>
-      <span>印章圖源：台北捷運・新北捷運</span>
-      <span class="app-footer__sep" aria-hidden="true">｜</span>
-      <span>© Nasir 2026</span>
-    </div>
-  </footer>
+  
 {/if}
 
 <style>
