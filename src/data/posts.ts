@@ -419,19 +419,44 @@ const posts: Post[] = [
         這學期特別喜歡 Astro 框架，一方面他是一個全端的現代架構，另一方面非常輕量極速，也能兼顧安全性與極佳的自定義能力！
       </p>
 
-      <h2>1. AI Agent 擴充、Skill 與 API</h2>
-      <p>這裡蒐集了許多實用的 AI Agent 擴充、Skill 腳本與 API 整合專案（大部分可用於 Opencode 或各類自動化工作流）：</p>
+      <h2>1. AI Agent 擴充、Skill 與 API 專題</h2>
+      <p>
+        AI 正在徹底改寫軟體開發與自動化的工作流。這裡將我平時蒐集到、測試過的高價值 Agent 執行環境、擴充 Skill 與路由工具依照<strong>「架構定位與應用場景」</strong>進行細緻分類：
+      </p>
+
+      <h3>1.1 Agent 執行環境與工作流編排 (Runtime & Orchestration)</h3>
+      <p>專注於提供獨立乾淨的執行環境或多 Agent 協同作戰框架：</p>
       <ul>
-        <li><strong>caveman</strong>：極簡純粹的 AI Agent 執行環境 <a href="https://github.com/JuliusBrussee/caveman" target="_blank" rel="noopener noreferrer">https://github.com/JuliusBrussee/caveman</a></li>
-        <li><strong>taste-skill</strong>：高品味 UI/UX 與代碼審查技能包 <a href="https://github.com/Leonxlnx/taste-skill" target="_blank" rel="noopener noreferrer">https://github.com/Leonxlnx/taste-skill</a></li>
-        <li><strong>OmniRoute</strong>：多模型與多端點智能路由分發器 <a href="https://github.com/diegosouzapw/OmniRoute" target="_blank" rel="noopener noreferrer">https://github.com/diegosouzapw/OmniRoute</a></li>
-        <li><strong>graphiti</strong>：為 AI Agent 構建時間感知動態知識圖譜 <a href="https://github.com/getzep/graphiti" target="_blank" rel="noopener noreferrer">https://github.com/getzep/graphiti</a></li>
-        <li><strong>deer-flow</strong>：字節跳動開源的輕量工作流引擎 <a href="https://github.com/bytedance/deer-flow" target="_blank" rel="noopener noreferrer">https://github.com/bytedance/deer-flow</a></li>
-        <li><strong>kilocode</strong>：現代化代碼生成與重構輔助工具 <a href="https://github.com/Kilo-Org/kilocode" target="_blank" rel="noopener noreferrer">https://github.com/Kilo-Org/kilocode</a></li>
-        <li><strong>codeg</strong>：命令列極速代碼產生器 <a href="https://github.com/xintaofei/codeg" target="_blank" rel="noopener noreferrer">https://github.com/xintaofei/codeg</a></li>
-        <li><strong>Wegent</strong>：協同式多 Agent 團隊開發框架 <a href="https://github.com/wecode-ai/Wegent" target="_blank" rel="noopener noreferrer">https://github.com/wecode-ai/Wegent</a></li>
-        <li><strong>oh-my-opencode</strong>：開箱即用的 Opencode 增強擴充套件庫 <a href="https://github.com/opensoft/oh-my-opencode" target="_blank" rel="noopener noreferrer">https://github.com/opensoft/oh-my-opencode</a></li>
-        <li><strong>notebooklm-skill</strong>：整合 Google NotebookLM 知識萃取能力的專屬技能 <a href="https://github.com/claude-world/notebooklm-skill" target="_blank" rel="noopener noreferrer">https://github.com/claude-world/notebooklm-skill</a></li>
+        <li><strong>caveman</strong>：極簡純粹的 AI Agent 獨立沙盒執行環境，適合打造專屬輕量助理。<a href="https://github.com/JuliusBrussee/caveman" target="_blank" rel="noopener noreferrer">https://github.com/JuliusBrussee/caveman</a></li>
+        <li><strong>deer-flow</strong>：字節跳動開源的輕量級工作流引擎，適合複雜多步任務自動化。<a href="https://github.com/bytedance/deer-flow" target="_blank" rel="noopener noreferrer">https://github.com/bytedance/deer-flow</a></li>
+        <li><strong>Wegent</strong>：協同式多 Agent 團隊開發框架，實現多角色分工自動構建代碼。<a href="https://github.com/wecode-ai/Wegent" target="_blank" rel="noopener noreferrer">https://github.com/wecode-ai/Wegent</a></li>
+      </ul>
+
+      <h3>1.2 知識記憶與上下文圖譜 (Memory & Knowledge Graph)</h3>
+      <p>解決 Agent 長期記憶、時間演進與深度文檔萃取的核心利器：</p>
+      <ul>
+        <li><strong>graphiti</strong>：為 AI Agent 構建具備時間感知能力（Temporal-aware）的動態知識圖譜與長期記憶。<a href="https://github.com/getzep/graphiti" target="_blank" rel="noopener noreferrer">https://github.com/getzep/graphiti</a></li>
+        <li><strong>notebooklm-skill</strong>：串接 Google NotebookLM 深度文檔理解與結構化筆記萃取的專屬技能。<a href="https://github.com/claude-world/notebooklm-skill" target="_blank" rel="noopener noreferrer">https://github.com/claude-world/notebooklm-skill</a></li>
+      </ul>
+
+      <h3>1.3 智慧路由、多模型分發與閘道 (Smart Routing & Gateway)</h3>
+      <p>在不同大語言模型之間動態分發請求，兼顧成本與響應速度：</p>
+      <ul>
+        <li><strong>OmniRoute</strong>：多模型與多端點智能 API 負載均衡與動態路由分發器，實現高可用與自動容錯。<a href="https://github.com/diegosouzapw/OmniRoute" target="_blank" rel="noopener noreferrer">https://github.com/diegosouzapw/OmniRoute</a></li>
+      </ul>
+
+      <h3>1.4 程式碼生成、重構與開發輔助 (Code Generation & Tooling)</h3>
+      <p>深度整合進終端與 IDE 的全自動編程加速模組：</p>
+      <ul>
+        <li><strong>kilocode</strong>：現代化代碼生成、深度重構與品質分析輔助工具。<a href="https://github.com/Kilo-Org/kilocode" target="_blank" rel="noopener noreferrer">https://github.com/Kilo-Org/kilocode</a></li>
+        <li><strong>codeg</strong>：命令列極速代碼架構與模組模板產生器，秒級建立專案骨架。<a href="https://github.com/xintaofei/codeg" target="_blank" rel="noopener noreferrer">https://github.com/xintaofei/codeg</a></li>
+      </ul>
+
+      <h3>1.5 Opencode 專屬生態與擴充技能 (Opencode Ecosystem & Skills)</h3>
+      <p>專為 Opencode 設計的高級擴充包與自定義審查規則：</p>
+      <ul>
+        <li><strong>taste-skill</strong>：高品味 UI/UX 設計規範與代碼美學審查專用技能包。<a href="https://github.com/Leonxlnx/taste-skill" target="_blank" rel="noopener noreferrer">https://github.com/Leonxlnx/taste-skill</a></li>
+        <li><strong>oh-my-opencode</strong>：開箱即用的 Opencode 增強擴充套件庫，預先配置最佳提示詞與工具組合。<a href="https://github.com/opensoft/oh-my-opencode" target="_blank" rel="noopener noreferrer">https://github.com/opensoft/oh-my-opencode</a></li>
       </ul>
 
       <h2>2. 前端 UI/UX 設計、現代元件與動效靈感資源</h2>
