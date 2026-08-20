@@ -41,20 +41,26 @@ import badges from '../../data/badges';
 
           
 
-                    <!-- 🏅 專業資格認證區塊 (Badges & Certifications) -->
+                    <!-- 🏅 專業資格認證區塊 (Badges & Certifications - 經典立體徽章網格) -->
           <h2 class="about-section-h2">專業資格認證</h2>
-          <div class="about-badges-grid">
-            {badges.map((b) => (
-              <a href={b.url} target="_blank" rel="noopener noreferrer" class="about-badge-card" title={b.name}>
-                <div class="about-badge-img-box">
-                  <img src={b.img} alt={b.name} class="about-badge-img" loading="lazy" />
-                </div>
-                <div class="about-badge-info">
-                  <span class="about-badge-name">{b.name}</span>
-                  <span class="about-badge-verify">官方 Credly 認證 ↗</span>
-                </div>
+          <div class="about-badges-container">
+            <ul class="about-badge-grid">
+              {badges.map((b) => (
+                <li class="about-badge-item">
+                  <a href={b.url} target="_blank" rel="noopener noreferrer" class="about-badge-link" title={`${b.name} (點擊驗證 Credly 證書)`}>
+                    <div class="about-badge-img-box">
+                      <img src={b.img} alt={b.name} class="about-badge-img" loading="lazy" />
+                    </div>
+                    <p class="about-badge-name">{b.name}</p>
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <div class="about-badge-more-wrap">
+              <a href="https://nasirlin.net" target="_blank" rel="noopener noreferrer" class="about-badge-more-btn">
+                查看更多資格認證 ↗
               </a>
-            ))}
+            </div>
           </div>
 
           <!-- 社群關注與文章探索 -->
@@ -194,66 +200,100 @@ import badges from '../../data/badges';
 
   
 
-    /* 🏅 關於頁面資格認證樣式 */
-  .about-badges-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 14px;
-    margin: 1.5rem 0 2.2rem;
-  }
-
-  .about-badge-card {
-    display: flex;
-    align-items: center;
-    gap: 14px;
+    /* 🏅 關於頁面資格認證樣式 (經典多徽章展示網格) */
+  .about-badges-container {
     background: #f8fafc;
     border: 1px solid #e2e8f0;
-    border-radius: 6px;
-    padding: 12px 14px;
+    border-radius: 8px;
+    padding: 2rem 1.5rem 1.5rem;
+    margin: 1.5rem 0 2.5rem;
+  }
+
+  .about-badge-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.8rem 1.2rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .about-badge-item {
+    text-align: center;
+  }
+
+  .about-badge-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     text-decoration: none;
+    height: 100%;
     transition: all 0.2s ease;
   }
 
-  .about-badge-card:hover {
-    background: #ffffff;
-    border-color: #ff6b00;
-    box-shadow: 0 4px 12px rgba(255, 107, 0, 0.1);
-    transform: translateY(-2px);
-  }
-
   .about-badge-img-box {
-    width: 60px;
-    height: 60px;
-    flex-shrink: 0;
+    width: 90px;
+    height: 90px;
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-bottom: 0.75rem;
   }
 
   .about-badge-img {
     max-width: 100%;
     max-height: 100%;
+    aspect-ratio: 1 / 1;
     object-fit: contain;
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.12));
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), filter 0.25s ease;
   }
 
-  .about-badge-info {
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-    flex: 1;
+  .about-badge-link:hover .about-badge-img {
+    transform: translateY(-4px) scale(1.08);
+    filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.2));
   }
 
   .about-badge-name {
-    font-size: 13.5px;
+    font-size: 12.5px;
     font-weight: 500;
-    color: #1e293b;
-    line-height: 1.4;
+    color: #334155;
+    line-height: 1.45;
+    margin: 0;
+    letter-spacing: 0.02em;
+    transition: color 0.15s ease;
   }
 
-  .about-badge-verify {
-    font-size: 11.5px;
+  .about-badge-link:hover .about-badge-name {
     color: #ff6b00;
+  }
+
+  .about-badge-more-wrap {
+    margin-top: 1.8rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e2e8f0;
+    text-align: center;
+  }
+
+  .about-badge-more-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13.5px;
+    color: #ff6b00;
+    text-decoration: none;
     font-weight: 500;
+    padding: 6px 18px;
+    background: #fff7ed;
+    border: 1px solid #ffedd5;
+    border-radius: 4px;
+    transition: all 0.15s ease;
+  }
+
+  .about-badge-more-btn:hover {
+    background: #ff6b00;
+    color: #ffffff;
+    border-color: #ff6b00;
   }
 
   .about-actions-row {
@@ -408,70 +448,108 @@ import badges from '../../data/badges';
   }
 
   @media (max-width: 680px) {
+    .about-badge-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.2rem 0.8rem;
+    }
     .about-card-wrap {
       padding: 2rem 1.4rem;
     }
     
-      /* 🏅 關於頁面資格認證樣式 */
-  .about-badges-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 14px;
-    margin: 1.5rem 0 2.2rem;
-  }
-
-  .about-badge-card {
-    display: flex;
-    align-items: center;
-    gap: 14px;
+      /* 🏅 關於頁面資格認證樣式 (經典多徽章展示網格) */
+  .about-badges-container {
     background: #f8fafc;
     border: 1px solid #e2e8f0;
-    border-radius: 6px;
-    padding: 12px 14px;
+    border-radius: 8px;
+    padding: 2rem 1.5rem 1.5rem;
+    margin: 1.5rem 0 2.5rem;
+  }
+
+  .about-badge-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.8rem 1.2rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .about-badge-item {
+    text-align: center;
+  }
+
+  .about-badge-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     text-decoration: none;
+    height: 100%;
     transition: all 0.2s ease;
   }
 
-  .about-badge-card:hover {
-    background: #ffffff;
-    border-color: #ff6b00;
-    box-shadow: 0 4px 12px rgba(255, 107, 0, 0.1);
-    transform: translateY(-2px);
-  }
-
   .about-badge-img-box {
-    width: 60px;
-    height: 60px;
-    flex-shrink: 0;
+    width: 90px;
+    height: 90px;
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-bottom: 0.75rem;
   }
 
   .about-badge-img {
     max-width: 100%;
     max-height: 100%;
+    aspect-ratio: 1 / 1;
     object-fit: contain;
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.12));
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), filter 0.25s ease;
   }
 
-  .about-badge-info {
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-    flex: 1;
+  .about-badge-link:hover .about-badge-img {
+    transform: translateY(-4px) scale(1.08);
+    filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.2));
   }
 
   .about-badge-name {
-    font-size: 13.5px;
+    font-size: 12.5px;
     font-weight: 500;
-    color: #1e293b;
-    line-height: 1.4;
+    color: #334155;
+    line-height: 1.45;
+    margin: 0;
+    letter-spacing: 0.02em;
+    transition: color 0.15s ease;
   }
 
-  .about-badge-verify {
-    font-size: 11.5px;
+  .about-badge-link:hover .about-badge-name {
     color: #ff6b00;
+  }
+
+  .about-badge-more-wrap {
+    margin-top: 1.8rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e2e8f0;
+    text-align: center;
+  }
+
+  .about-badge-more-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13.5px;
+    color: #ff6b00;
+    text-decoration: none;
     font-weight: 500;
+    padding: 6px 18px;
+    background: #fff7ed;
+    border: 1px solid #ffedd5;
+    border-radius: 4px;
+    transition: all 0.15s ease;
+  }
+
+  .about-badge-more-btn:hover {
+    background: #ff6b00;
+    color: #ffffff;
+    border-color: #ff6b00;
   }
 
   .about-actions-row {
