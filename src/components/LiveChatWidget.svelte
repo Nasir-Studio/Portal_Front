@@ -261,7 +261,7 @@
   }
 
   .contact-header {
-    background: #ff6b00;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
     color: #ffffff;
     padding: 12px 14px;
     display: flex;
@@ -364,8 +364,9 @@
 
   .field-group input:focus,
   .field-group textarea:focus {
-    border-color: #ff6b00;
+    border-color: #10b981;
     background: #ffffff;
+    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.15);
   }
 
   .field-group textarea {
@@ -375,20 +376,20 @@
   }
 
   .contact-submit-btn {
-    background: #ff6b00;
+    background: #10b981;
     color: #ffffff;
     border: none;
     border-radius: 5px;
     padding: 8px 12px;
     font-size: 13px;
-    font-weight: 500;
+    font-weight: 600;
     cursor: pointer;
     transition: background 0.2s;
     margin-top: 4px;
   }
 
   .contact-submit-btn:hover:not(:disabled) {
-    background: #ea580c;
+    background: #059669;
   }
 
   .contact-submit-btn:disabled {
