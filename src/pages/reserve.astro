@@ -1,8 +1,9 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import BlogLayout from '../layouts/BlogLayout.astro';
 ---
 
-<BaseLayout title="預約系統 — OviNas">
+<BlogLayout title="預約系統 — OviNas" description="選擇時段預約，VIP 會員可查看預約紀錄。">
+  <div class="main-content">
   <div class="container">
     <h1 class="page-title">預約系統</h1>
     <p class="page-sub">選擇時段預約，VIP會員可查看自己的預約紀錄</p>
@@ -50,7 +51,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       </div>
     </section>
   </div>
-</BaseLayout>
+  </div>
+</BlogLayout>
 
 <style is:global>
   .page-title {

@@ -1,8 +1,9 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import BlogLayout from '../layouts/BlogLayout.astro';
 ---
 
-<BaseLayout title="考古刷題 ｜ OviNas">
+<BlogLayout title="題庫與考古題 — OviNas" description="歷屆考古題下載與題庫資源。">
+  <div class="main-content">
   <div class="quiz container" id="quiz-app">
     <nav class="quiz-nav" aria-label="麵包屑">
       <a href="/">首頁</a>
@@ -15,7 +16,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <div id="view-result" style="display:none"></div>
     </div>
   </div>
-</BaseLayout>
+  </div>
+</BlogLayout>
 
 <style is:global>
   #quiz-app {

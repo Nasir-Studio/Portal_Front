@@ -1,68 +1,37 @@
 ---
+import BlogLayout from '../../layouts/BlogLayout.astro';
 import App from '../../badges/App.svelte';
 import '../../badges/app.css';
 import '@fontsource-variable/space-grotesk';
 
-const title = '羊-集章';
+const title = '羊-集章 — OviNas';
 const description = '羊-集章 — 捷運紀念章電子集章冊：收集台北捷運與新北捷運的紀念章，記錄你的足跡。';
 ---
 
-<!doctype html>
-<html lang="zh-Hant">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="/favicon.png" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-
-  
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;700&family=Noto+Sans+TC:wght@400;500&display=swap"
-      rel="stylesheet"
-    />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#f5f4f1" />
-    <meta name="description" content={description} />
-      <!-- 🚫 嚴格禁止所有搜尋引擎、爬蟲、Google 與 AI 模型抓取 -->
-  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex, notranslate, noai, noimageai" />
-  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
-  <meta name="google-extended" content="noindex" />
-  <meta name="robots" content="noai, noimageai" />
-  <meta name="bingbot" content="noindex, nofollow" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-    <meta name="apple-mobile-web-app-title" content="羊-集章" />
-    <link rel="manifest" href="/badges/manifest.webmanifest" />
-    <title>{title}</title>
-  </head>
-  <body>
-    <div id="app">
-      <App client:only="svelte" />
+<BlogLayout title={title} description={description}>
+  <div class="main-content">
+    <div class="container" style="padding: 1.5rem 0 3.5rem;">
+      <div id="app">
+        <App client:only="svelte" />
+      </div>
     </div>
-    <script>
+  </div>
+</BlogLayout>
 
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', function () {
-          navigator.serviceWorker
-            .register('/badges/sw.js', { updateViaCache: 'none' })
-            .catch(function (err) {
-              console.warn('Badges SW registration failed:', err);
-            });
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker
+        .register('/badges/sw.js', { updateViaCache: 'none' })
+        .catch(function (err) {
+          console.warn('Badges SW registration failed:', err);
         });
-      }
-    </script>
-    <style is:global>
+    });
+  }
+</script>
 
-      body {
-        background: #f5f4f1;
-      }
-    </style>
-  <script is:inline>
-
-    var hc = new Image();
-    hc.src = "https://www.hitwebcounter.com/counter/counter.php?page=21514902&style=0001&nbdigits=8&type=page";
-  </script>
-  </body>
-</html>
+<style is:global>
+  #app {
+    min-height: 60vh;
+  }
+</style>

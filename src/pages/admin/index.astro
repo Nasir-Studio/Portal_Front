@@ -1,15 +1,17 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
+import BlogLayout from '../../layouts/BlogLayout.astro';
 ---
 
-<BaseLayout title="管理後台 — OviNas">
+<BlogLayout title="管理後台 — OviNas" description="VIP 問題專區管理與後台設定。">
+  <div class="main-content">
   <div class="container" id="page-shell" hidden>
     <h1 class="page-title">管理後台</h1>
     <p class="page-sub">VIP 問題專區管理</p>
 
     <div id="admin-app"></div>
   </div>
-</BaseLayout>
+  </div>
+</BlogLayout>
 
 <style is:global>
   .page-title {

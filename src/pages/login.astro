@@ -1,8 +1,9 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import BlogLayout from '../layouts/BlogLayout.astro';
 ---
 
-<BaseLayout title="登入 — OviNas">
+<BlogLayout title="登入 — OviNas" description="使用 VIP 帳號登入 OviNas 系統。">
+  <div class="main-content">
   <div class="container">
     <div class="login-wrap">
       <h1 class="page-title">登入</h1>
@@ -30,7 +31,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       </p>
     </div>
   </div>
-</BaseLayout>
+  </div>
+</BlogLayout>
 
 <style>
   .login-wrap {

@@ -1,8 +1,9 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
+import BlogLayout from '../../layouts/BlogLayout.astro';
 ---
 
-<BaseLayout title="問題專區 — OviNas">
+<BlogLayout title="問題專區 — OviNas" description="VIP 問題回報與即時工單專區。">
+  <div class="main-content">
   <div class="container" id="page-shell" hidden>
     <h1 class="page-title">問題專區</h1>
     <p class="page-sub">提出問題或回報狀況，我們會儘快回覆</p>
@@ -52,7 +53,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       </div>
     </div>
   </div>
-</BaseLayout>
+  </div>
+</BlogLayout>
 
 <style is:global>
   .page-title {

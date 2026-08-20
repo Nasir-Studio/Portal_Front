@@ -1,50 +1,25 @@
 ---
+import BlogLayout from '../../layouts/BlogLayout.astro';
 import Brochure from '../../ntub/components/Brochure.svelte';
 import '../../ntub/app.css';
 import '@fontsource-variable/space-grotesk';
 
-const title = '簡章 — 學分學程學分戰士';
+const title = '簡章 — NTUB 學分學程';
 const description = 'NTUB 學分學程簡章：收錄各學分學程及微學程之設置要點暨計畫書內容。';
 ---
 
-<!doctype html>
-<html lang="zh-Hant">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="/favicon.png" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-
-  
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;700&family=Zen+Old+Mincho:wght@400;700&display=swap"
-      rel="stylesheet"
-    />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#f7f5f0" />
-    <meta name="description" content={description} />
-      <!-- 🚫 嚴格禁止所有搜尋引擎、爬蟲、Google 與 AI 模型抓取 -->
-  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex, notranslate, noai, noimageai" />
-  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
-  <meta name="google-extended" content="noindex" />
-  <meta name="robots" content="noai, noimageai" />
-  <meta name="bingbot" content="noindex, nofollow" />
-    <title>{title}</title>
-  </head>
-  <body>
-    <div id="app">
-      <Brochure client:only="svelte" />
+<BlogLayout title={title} description={description}>
+  <div class="main-content">
+    <div class="container" style="padding: 1.5rem 0 3.5rem;">
+      <div id="app">
+        <Brochure client:only="svelte" />
+      </div>
     </div>
-    <style is:global>
-      body {
-        background: #f7f5f0;
-      }
-    </style>
-  <script is:inline>
+  </div>
+</BlogLayout>
 
-    var hc = new Image();
-    hc.src = "https://www.hitwebcounter.com/counter/counter.php?page=21514902&style=0001&nbdigits=8&type=page";
-  </script>
-  </body>
-</html>
+<style is:global>
+  #app {
+    min-height: 60vh;
+  }
+</style>
