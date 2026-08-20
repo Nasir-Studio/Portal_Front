@@ -1,8 +1,9 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import BlogLayout from '../layouts/BlogLayout.astro';
 ---
 
-<BaseLayout title="VIP 專區 — OviNas">
+<BlogLayout title="VIP 專區 — OviNas" description="OviNas VIP 會員專屬權限與獨家內容。">
+  <div class="main-content">
   <div class="container">
     <h1 class="page-title">VIP 專區</h1>
     <p class="page-sub">VIP會員專屬權限與獨家內容</p>
@@ -15,7 +16,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     </section>
 
   </div>
-</BaseLayout>
+  </div>
+</BlogLayout>
 
 <style is:global>
   .page-title {
