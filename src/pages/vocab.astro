@@ -1,5 +1,5 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import BlogLayout from '../layouts/BlogLayout.astro';
 ---
 
 <style is:global>
@@ -413,7 +413,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   }
 </style>
 
-<BaseLayout title="VOC 單字測驗 ｜ OviNas">
+<BlogLayout title="VOC 單字測驗 ｜ OviNas" description="線上單字測驗系統，支援自選詞表、英聽發音與即時錯題複習。">
+  <div class="main-content">
   <div class="container">
     <nav class="voc-nav" aria-label="麵包屑">
       <a href="/">首頁</a>
@@ -461,7 +462,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
     <div id="voc-result" class="voc-result" style="display:none"></div>
   </div>
-</BaseLayout>
+  </div>
+</BlogLayout>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" is:inline></script>
 <script>

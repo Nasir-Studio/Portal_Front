@@ -1,5 +1,5 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
+import BlogLayout from '../../layouts/BlogLayout.astro';
 ---
 
 <style is:global>
@@ -550,7 +550,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   }
 </style>
 
-<BaseLayout title="NY Screen ｜ OviNas">
+<BlogLayout title="NY Screen ｜ OviNas" description="免安裝、免登入、免配對碼，開網頁就能無線投影。">
+  <div class="main-content">
   <div class="container">
     <div class="tools-app">
       <nav class="tools-nav" aria-label="麵包屑">
@@ -623,7 +624,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       </div>
     </div>
   </div>
-</BaseLayout>
+  </div>
+</BlogLayout>
 
 <script is:inline src="https://unpkg.com/peerjs/dist/peerjs.min.js"></script>
 <script is:inline>

@@ -1,5 +1,5 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import BlogLayout from '../layouts/BlogLayout.astro';
 ---
 
 <style is:global>
@@ -198,7 +198,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   }
 </style>
 
-<BaseLayout title="NYTools ｜ OviNas">
+<BlogLayout title="NYTools ｜ OviNas" description="OviNas 實用線上工具箱：NY DROP、NY WIFI DROP、NY Screen 等免安裝檔案傳輸與無線投影工具。">
+  <div class="main-content">
   <div class="tools container" id="tools-app">
     <nav class="tools-nav" aria-label="麵包屑">
       <a href="/">首頁</a>
@@ -247,4 +248,5 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       </div>
     </div>
   </div>
-</BaseLayout>
+  </div>
+</BlogLayout>

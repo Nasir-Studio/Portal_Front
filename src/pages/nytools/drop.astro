@@ -1,5 +1,5 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
+import BlogLayout from '../../layouts/BlogLayout.astro';
 ---
 
 <style is:global>
@@ -533,7 +533,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   }
 </style>
 
-<BaseLayout title="NY DROP ｜ OviNas">
+<BlogLayout title="NY DROP ｜ OviNas" description="6 位數代碼配對，檔案直接點對點即時傳輸。">
+  <div class="main-content">
   <div class="container">
     <div class="tools-app">
       <nav class="tools-nav" aria-label="麵包屑">
@@ -603,7 +604,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       </div>
     </div>
   </div>
-</BaseLayout>
+  </div>
+</BlogLayout>
 
 <script is:inline src="https://unpkg.com/peerjs/dist/peerjs.min.js"></script>
 <script is:inline>
