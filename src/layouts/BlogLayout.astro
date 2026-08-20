@@ -1,5 +1,18 @@
 ---
+import LiveChatWidget from '../components/LiveChatWidget.svelte';
+import posts from '../data/posts';
+
 const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程', description = '專注於網站架設、系統資安、前端工程與開源工具推薦。' } = Astro.props;
+
+const searchIndexJson = JSON.stringify(
+  posts.map((p) => ({
+    title: p.title,
+    slug: p.slug,
+    date: p.date,
+    excerpt: p.excerpt,
+    text: p.content.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').slice(0, 1500),
+  }))
+);
 ---
 
 <!DOCTYPE html>
@@ -674,6 +687,8 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
     }
   });
 </script>
+  <!-- 💬 右下角浮動 LiveChat 迷你聯絡表單 (Google Form) -->
+  <LiveChatWidget client:idle />
 </body>
 </html>
 
