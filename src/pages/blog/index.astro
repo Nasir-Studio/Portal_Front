@@ -75,12 +75,12 @@ function getPostCategory(post: typeof posts[0]) {
 <BlogLayout title="OviNas — 網站架設、系統資安、筆記小分享與外掛推薦" description="專注於網站架設、系統資安、筆記小分享與開源工具推薦。">
   <div class="main-content">
     <div class="container">
-      <!-- 🔷 1. 經典 Hero Header 區塊 (左側 30% 灰色資訊方塊 + 右側 70% 16:9 焦點大圖) -->
+      <!-- 🔷 1. 經典 Hero Header 區塊 (左側 30% 關於作者/站點 + 右側 70% 核心推廣 Banner) -->
       <section class="content-hero-header">
         <div class="left">
           <h3>OviNas</h3>
           <h2>網站架設、系統資安、筆記小分享</h2>
-          <a href="/blog/posts/">查看全部文章</a>
+          <a href="/blog/posts/">關於 OviNas</a>
         </div>
         <div class="right">
           <div class="slider-wrap-header">
@@ -90,12 +90,9 @@ function getPostCategory(post: typeof posts[0]) {
                 <div class="bgs bgs2"></div>
                 <div class="bgs bgs3"></div>
                 <div class="bgs bgs4"></div>
-                <a class="bgs bgs5 hero-featured-link" href={`/blog/posts/${featuredPost.slug}/`}>
+                <a class="bgs bgs5 hero-featured-link" href="/blog/posts/" title="點擊探索 OviNas 全站專欄文章">
                   <div class="featured-img-container">
-                    <img src={`/banners/${featuredPost.slug}.jpg`} alt={featuredPost.title} class="featured-main-img" />
-                    <div class="slogan">
-                      <span class="slogan-text">{featuredPost.title}</span>
-                    </div>
+                    <img src="/banners/hero-promo.jpg" alt="OviNas 網站架設與系統資安實戰" class="featured-main-img" />
                   </div>
                 </a>
               </div>
