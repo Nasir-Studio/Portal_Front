@@ -80,7 +80,7 @@ function getPostCategory(post: typeof posts[0]) {
         <div class="left">
           <h3>OviNas</h3>
           <h2>網站架設、系統資安、筆記小分享</h2>
-          <a href="/blog/posts/">關於 OviNas</a>
+          <button type="button" id="openAboutHeroBtn" class="btn-about-hero">關於 OviNas</button>
         </div>
         <div class="right">
           <div class="slider-wrap-header">
@@ -100,6 +100,42 @@ function getPostCategory(post: typeof posts[0]) {
           </div>
         </div>
       </section>
+
+            <!-- 🐑 關於 OviNas 專屬彈窗 (About OviNas Modal) -->
+      <div id="aboutOvinasModal" class="about-modal-backdrop" role="dialog" aria-modal="true" aria-label="關於 OviNas">
+        <div class="about-modal-box">
+          <button id="closeAboutModalBtn" class="about-modal-close" aria-label="關閉視窗">✕</button>
+          
+          <div class="about-modal-top">
+            <div class="about-modal-avatar">
+              <img src="/sheep-hd.png" alt="OviNas" width="90" height="90" />
+            </div>
+            <h2 class="about-modal-name">OviNas <span class="eng-sub">/ 站長專欄</span></h2>
+            <p class="about-modal-slogan">網站架設 · 系統資安 · 筆記小分享</p>
+          </div>
+
+          <div class="about-modal-body">
+            <p>
+              從小對資訊抱有熱忱，從 Google 查詢時代轉向 AI 世代，面對學習與獲取資訊方式的改變，我始終一直持續 Update 我的資訊專業能力。時代轉變，像是 DOS 轉變成 Windows 一樣，很多東西懂需要重新學，這個資訊爆炸的世代，我不僅具備傳統電腦維修與程式設計能力，更擅長利用資訊解決企業的【痛點】。
+            </p>
+            <p>
+              許多企業目前仍以人工方式處理專業技術工作，而我喜歡發揮想像力，將流程與資訊系統整合，讓原本緩慢的效率獲得大幅提升！
+            </p>
+
+            <div class="about-skills-row">
+              <span class="skill-pill">Web 架構設計</span>
+              <span class="skill-pill">系統資安稽核</span>
+              <span class="skill-pill">雲端邊緣部署</span>
+              <span class="skill-pill">開源工具開發</span>
+            </div>
+          </div>
+
+          <div class="about-modal-footer">
+            <a href="https://github.com/nasircy" target="_blank" rel="noopener" class="btn-modal-gh">GitHub @nasircy</a>
+            <a href="/blog/posts/" class="btn-modal-articles">探索專欄文章</a>
+          </div>
+        </div>
+      </div>
 
       <!-- 📰 2. 頂部主要文章區 (左側 70%「技術文章」雙欄網格 + 右側 30% 側邊欄) -->
       <div class="content-area-top">
@@ -314,6 +350,202 @@ function getPostCategory(post: typeof posts[0]) {
   }
 
   /* 🔷 1. 經典 Hero Header 區塊 (30% 左灰盒 + 70% 右大圖) */
+    /* 🐑 關於 OviNas 彈窗樣式 (.about-modal-backdrop) */
+  .btn-about-hero {
+    margin-top: 24px;
+    color: #222222;
+    background: transparent;
+    display: inline-block;
+    border: 2px solid #222222;
+    padding: 0.4em 1.3em;
+    font-size: 15.5px;
+    font-weight: 500;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+  }
+
+  .btn-about-hero:hover {
+    background-color: #151d22;
+    border-color: #151d22;
+    color: #ffffff;
+    transform: translateY(-1px);
+  }
+
+  .about-modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(15, 23, 42, 0.7);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 10000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    box-sizing: border-box;
+    animation: modalFadeIn 0.2s ease;
+  }
+
+  .about-modal-backdrop.is-open {
+    display: flex;
+  }
+
+  .about-modal-box {
+    width: 520px;
+    max-width: 100%;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+    padding: 2.5rem 2.2rem 2rem;
+    position: relative;
+    animation: modalSlideUp 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  @keyframes modalSlideUp {
+    from { opacity: 0; transform: translateY(20px) scale(0.96); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .about-modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: #f1f5f9;
+    border: none;
+    color: #64748b;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .about-modal-close:hover {
+    background: #e2e8f0;
+    color: #0f172a;
+  }
+
+  .about-modal-top {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .about-modal-avatar {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 12px;
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: 0 4px 14px rgba(255, 107, 0, 0.25);
+    border: 3px solid #ff6b00;
+  }
+
+  .about-modal-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .about-modal-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0 0 4px;
+  }
+
+  .about-modal-name .eng-sub {
+    font-size: 0.95rem;
+    color: #ff6b00;
+    font-weight: 500;
+  }
+
+  .about-modal-slogan {
+    font-size: 0.9rem;
+    color: #64748b;
+    margin: 0;
+  }
+
+  .about-modal-body p {
+    font-size: 0.94rem;
+    color: #475569;
+    line-height: 1.7;
+    margin: 0 0 0.9rem;
+    text-align: justify;
+  }
+
+  .about-skills-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 1.2rem;
+    justify-content: center;
+  }
+
+  .skill-pill {
+    background: #fff7ed;
+    color: #ea580c;
+    border: 1px solid #ffedd5;
+    font-size: 12px;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-weight: 500;
+  }
+
+  .about-modal-footer {
+    display: flex;
+    gap: 12px;
+    margin-top: 1.8rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #f1f5f9;
+  }
+
+  .btn-modal-gh {
+    flex: 1;
+    text-align: center;
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    color: #334155;
+    padding: 9px 0;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: all 0.15s ease;
+  }
+
+  .btn-modal-gh:hover {
+    background: #0f172a;
+    color: #ffffff;
+    border-color: #0f172a;
+  }
+
+  .btn-modal-articles {
+    flex: 1;
+    text-align: center;
+    background: #ff6b00;
+    color: #ffffff;
+    border: none;
+    padding: 9px 0;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background 0.15s ease;
+  }
+
+  .btn-modal-articles:hover {
+    background: #ea580c;
+  }
+
   .content-hero-header {
     display: flex;
     margin: 0 auto 2.5rem;
@@ -1087,7 +1319,203 @@ function getPostCategory(post: typeof posts[0]) {
   }
 
   @media (max-width: 960px) {
-    .content-hero-header {
+      /* 🐑 關於 OviNas 彈窗樣式 (.about-modal-backdrop) */
+  .btn-about-hero {
+    margin-top: 24px;
+    color: #222222;
+    background: transparent;
+    display: inline-block;
+    border: 2px solid #222222;
+    padding: 0.4em 1.3em;
+    font-size: 15.5px;
+    font-weight: 500;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+  }
+
+  .btn-about-hero:hover {
+    background-color: #151d22;
+    border-color: #151d22;
+    color: #ffffff;
+    transform: translateY(-1px);
+  }
+
+  .about-modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(15, 23, 42, 0.7);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 10000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    box-sizing: border-box;
+    animation: modalFadeIn 0.2s ease;
+  }
+
+  .about-modal-backdrop.is-open {
+    display: flex;
+  }
+
+  .about-modal-box {
+    width: 520px;
+    max-width: 100%;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+    padding: 2.5rem 2.2rem 2rem;
+    position: relative;
+    animation: modalSlideUp 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  @keyframes modalSlideUp {
+    from { opacity: 0; transform: translateY(20px) scale(0.96); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .about-modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: #f1f5f9;
+    border: none;
+    color: #64748b;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .about-modal-close:hover {
+    background: #e2e8f0;
+    color: #0f172a;
+  }
+
+  .about-modal-top {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .about-modal-avatar {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 12px;
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: 0 4px 14px rgba(255, 107, 0, 0.25);
+    border: 3px solid #ff6b00;
+  }
+
+  .about-modal-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .about-modal-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0 0 4px;
+  }
+
+  .about-modal-name .eng-sub {
+    font-size: 0.95rem;
+    color: #ff6b00;
+    font-weight: 500;
+  }
+
+  .about-modal-slogan {
+    font-size: 0.9rem;
+    color: #64748b;
+    margin: 0;
+  }
+
+  .about-modal-body p {
+    font-size: 0.94rem;
+    color: #475569;
+    line-height: 1.7;
+    margin: 0 0 0.9rem;
+    text-align: justify;
+  }
+
+  .about-skills-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 1.2rem;
+    justify-content: center;
+  }
+
+  .skill-pill {
+    background: #fff7ed;
+    color: #ea580c;
+    border: 1px solid #ffedd5;
+    font-size: 12px;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-weight: 500;
+  }
+
+  .about-modal-footer {
+    display: flex;
+    gap: 12px;
+    margin-top: 1.8rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #f1f5f9;
+  }
+
+  .btn-modal-gh {
+    flex: 1;
+    text-align: center;
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    color: #334155;
+    padding: 9px 0;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: all 0.15s ease;
+  }
+
+  .btn-modal-gh:hover {
+    background: #0f172a;
+    color: #ffffff;
+    border-color: #0f172a;
+  }
+
+  .btn-modal-articles {
+    flex: 1;
+    text-align: center;
+    background: #ff6b00;
+    color: #ffffff;
+    border: none;
+    padding: 9px 0;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background 0.15s ease;
+  }
+
+  .btn-modal-articles:hover {
+    background: #ea580c;
+  }
+
+  .content-hero-header {
       flex-direction: column;
       height: auto;
     }
