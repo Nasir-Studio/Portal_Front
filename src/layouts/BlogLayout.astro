@@ -51,7 +51,7 @@ const searchIndexJson = JSON.stringify(
     <div class="container header-row">
       <!-- 🐑 經典 Logo：自然原版黑色羊標誌，無多餘橘色方形背景 -->
       <div class="logo">
-        <a class="logo-link" href="/blog/" aria-label="返回部落格首頁" title="OviNas 首頁">
+        <a class="logo-link" href="/" aria-label="返回首頁" title="OviNas 首頁">
           <img src="/sheep-hd.png" alt="OviNas" class="logo-sheep-icon" width="52" height="52" />
         </a>
       </div>
@@ -60,7 +60,8 @@ const searchIndexJson = JSON.stringify(
       <div class="header-right">
         <nav class="main-menu" aria-label="部落格主選單">
           <ul class="menu-nav-list">
-            <li class="menu-item"><a href="/blog/">首頁</a></li>
+            <li class="menu-item"><a href="/">首頁</a></li>
+            <li class="menu-item"><a href="/posts/">專欄文章</a></li>
 
             <!-- 下拉選單 1：Ovis Tools -->
             <li class="menu-item menu-item-has-children">
@@ -88,7 +89,7 @@ const searchIndexJson = JSON.stringify(
             <li class="menu-item"><a href="/reserve/">預約系統</a></li>
 
             <!-- 關於 OviNas -->
-            <li class="menu-item"><a href="/blog/about/">關於 OviNas</a></li>
+            <li class="menu-item"><a href="/about/">關於 OviNas</a></li>
 
                     <!-- 🔍 經典搜尋框區塊 (.header-search + #search-toggle) -->
         <div class="search-wrap-box">
@@ -100,7 +101,7 @@ const searchIndexJson = JSON.stringify(
           </button>
           
           <div id="headerSearchDropdown" class="header-search-form-wrap">
-            <form action="/blog/posts/" method="get" class="header-search-form" id="globalSearchForm">
+            <form action="/posts/" method="get" class="header-search-form" id="globalSearchForm">
               <input
                 type="search"
                 name="q"
@@ -118,7 +119,7 @@ const searchIndexJson = JSON.stringify(
 
         <!-- 經典膠囊按鈕 (.nav-cta-btn) -->
             <li class="menu-item nav-cta-btn">
-              <a href="/">返回 Portal 主站</a>
+              <a href="/posts/">探索所有專欄</a>
             </li>
           </ul>
         </nav>
@@ -145,21 +146,22 @@ const searchIndexJson = JSON.stringify(
     </div>
 
         <div class="mobile-search-box">
-      <form action="/blog/posts/" method="get" class="mobile-search-form">
+      <form action="/posts/" method="get" class="mobile-search-form">
         <input type="search" name="q" placeholder="搜尋文章或關鍵字…" class="mobile-search-input" />
         <button type="submit" class="mobile-search-submit">搜尋</button>
       </form>
     </div>
     <ul class="mobile-menu-links">
-      <li><a href="/blog/">首頁</a></li>
-      <li><a href="/blog/posts/">專欄文章</a></li>
+      <li><a href="/">首頁</a></li>
+      <li><a href="/posts/">專欄文章</a></li>
       <li><a href="/nytools/">NYTools</a></li>
       <li><a href="/cctv">羊監視你</a></li>
       <li><a href="/badges/">羊集章</a></li>
       <li><a href="/vocab/">單字測驗</a></li>
       <li><a href="/vip/">VIP 專區</a></li>
-      <li><a href="/blog/about/">關於 OviNas</a></li>
-      <li class="mobile-cta-item"><a href="/">返回 Portal 主站</a></li>
+      <li><a href="/reserve/">預約系統</a></li>
+      <li><a href="/about/">關於 OviNas</a></li>
+      <li class="mobile-cta-item"><a href="/posts/">探索所有專欄</a></li>
     </ul>
   </aside>
 
@@ -271,14 +273,14 @@ const searchIndexJson = JSON.stringify(
         <div class="footer-right">
           <h2>標籤瀏覽</h2>
           <div class="content tag-buttons-wrap">
-            <a href="/blog/posts/">系統資安</a>
-            <a href="/blog/posts/">網站架設</a>
-            <a href="/blog/posts/">前端工程</a>
-            <a href="/blog/posts/">PWA應用</a>
-            <a href="/blog/posts/">開源工具</a>
-            <a href="/blog/posts/">筆記分享</a>
-            <a href="/blog/posts/">實用工具</a>
-            <a href="/blog/about/">關於OviNas</a>
+            <a href="/posts/">系統資安</a>
+            <a href="/posts/">網站架設</a>
+            <a href="/posts/">前端工程</a>
+            <a href="/posts/">PWA應用</a>
+            <a href="/posts/">開源工具</a>
+            <a href="/posts/">筆記分享</a>
+            <a href="/posts/">實用工具</a>
+            <a href="/about/">關於OviNas</a>
           </div>
         </div>
       </div>
@@ -287,7 +289,7 @@ const searchIndexJson = JSON.stringify(
     <!-- 底部皇家藍色版權條 -->
     <div class="bottom-bar">
       <div class="container bottom-bar-container">
-        Copyright &copy; 2026 OviNas | <a href="/">回 Portal 首頁</a> | <a href="/blog/">部落格</a>
+        Copyright &copy; 2026 OviNas | <a href="/">首頁</a> | <a href="/posts/">專欄文章</a> | <a href="/about/">關於 OviNas</a>
       </div>
     </div>
   </footer>
