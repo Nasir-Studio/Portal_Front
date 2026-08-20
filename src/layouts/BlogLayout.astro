@@ -97,67 +97,37 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
 
   <!-- 📜 3. 獨立 WordPress 風格頁尾 (Footer - 深度連結 Portal 主站體系) -->
   <footer class="wp-footer">
-    <div class="footer-content">
-      <div class="container footer-grid">
-        <!-- 左側：版權宣告與理念 -->
-        <div class="footer-col footer-about">
-          <h2 class="footer-heading">文章版權宣告</h2>
-          <div class="footer-text-body">
-            <p>
-              本部落格所有技術筆記、架構拆解、資安研究及圖文皆為原創或經合法授權整理。歡迎引用文章內容，只需於引用處附上原文連結即可。如需整篇轉載，請與我們聯繫取得同意。
-            </p>
-            <h3 class="footer-sub-heading">持續追蹤 OviNas 羊之誌！</h3>
-            <p class="footer-follow-text">分享現代 Web 架構、系統資安、前端工程動效與實用開源工具。</p>
-            <div class="footer-social-row">
-              <a href="https://github.com/Nasir-VM" target="_blank" rel="noopener" class="social-icon-box github">GitHub</a>
-              <a href="/vip/" class="social-icon-box vip">VIP 專區</a>
-              <a href="/" class="social-icon-box portal">Portal 主站</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- 中間：專欄與主站重要入口 -->
-        <div class="footer-col footer-links">
-          <h2 class="footer-heading">主站系統入口</h2>
-          <ul class="footer-cat-list">
-            <li><a href="/vip/">💎 VIP 尊榮會員專區</a></li>
-            <li><a href="/reserve/">📅 線上時段預約系統</a></li>
-            <li><a href="/badges/">🏅 資格認證與專業徽章</a></li>
-            <li><a href="/cctv/">📹 即時公共影像監控</a></li>
-            <li><a href="/life/">🚌 生活便民與公車動態</a></li>
-            <li><a href="/pastpapers/">📚 考古題與學習資源</a></li>
-            <li><a href="/wifi/">📶 WiFi 認證連線服務</a></li>
-          </ul>
-        </div>
-
-        <!-- 右側：站長簡介與聯絡 -->
-        <div class="footer-col footer-meta">
-          <h2 class="footer-heading">關於站長</h2>
-          <p class="footer-author-text">
-            <strong>OviNas</strong> — 全端工程師 / 資安研究愛好者。<br>
-            以俐落實戰的白話筆記，記錄每一個值得深究的技術靈感與工程實踐。
+    <div class="container footer-grid">
+      <!-- 左側：文章版權宣告 -->
+      <div class="footer-col footer-about">
+        <h2 class="footer-heading">文章版權宣告</h2>
+        <div class="footer-text-body">
+          <p>
+            本站文章歡迎於非營利目的下合理引用，只需於引用處附上原文連結即可。謝謝對本站內容的認可。
           </p>
-          <div class="footer-contact-link">
-            聯絡信箱：<a href="mailto:hi@nasirlin.net">hi@nasirlin.net</a>
-          </div>
         </div>
+      </div>
+
+      <!-- 右側：網站導覽連結 -->
+      <div class="footer-col footer-links">
+        <h2 class="footer-heading">快速導覽</h2>
+        <ul class="footer-nav-list">
+          <li><a href="/blog/">部落格首頁</a></li>
+          <li><a href="/blog/#all-posts">全部文章</a></li>
+          <li><a href="https://github.com/Nasir-VM" target="_blank" rel="noopener">GitHub 專頁</a></li>
+          <li><a href="/">返回 Portal 主站</a></li>
+        </ul>
       </div>
     </div>
 
-    <!-- 底部版權版權條 -->
+    <!-- 底部版權條 -->
     <div class="footer-bottom-bar">
       <div class="container bottom-bar-inner">
-        <p class="copyright-text">© 2026 OviNas 羊之誌 · Portal System · All Rights Reserved.</p>
+        <p class="copyright-text">© 2026 OviNas · All Rights Reserved.</p>
         <div class="bottom-links">
-          <a href="/">Portal 首頁</a>
-          <span>·</span>
           <a href="/blog/">部落格</a>
           <span>·</span>
-          <a href="/vip/">VIP 專區</a>
-          <span>·</span>
-          <a href="/reserve/">預約系統</a>
-          <span>·</span>
-          <a href="/login/">管理登入</a>
+          <a href="/">主站首頁</a>
         </div>
       </div>
     </div>
@@ -370,104 +340,56 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
     padding: 6px 0;
   }
 
-  /* 📜 3. Footer 樣式 (深邃黑藍 + 皇家藍頂條) */
+  /* 📜 3. Footer 樣式 (極簡經典深黑藍) */
   .wp-footer {
     background-color: #161a22;
     color: #cccccc;
-    padding-top: 4rem;
+    padding-top: 3rem;
     border-top: 5px solid #0062eb;
   }
 
   .footer-grid {
     display: grid;
-    grid-template-columns: 1.4fr 1fr 1fr;
+    grid-template-columns: 1.5fr 1fr;
     gap: 3rem;
-    padding-bottom: 3.5rem;
+    padding-bottom: 2.5rem;
   }
 
   .footer-heading {
-    font-size: 1.15rem;
+    font-size: 1.05rem;
     font-weight: 800;
     color: #ffffff;
-    margin: 0 0 1.2rem;
-    letter-spacing: 1px;
+    margin: 0 0 1rem;
+    letter-spacing: 0.5px;
     border-bottom: 2px solid #282f3d;
-    padding-bottom: 0.6rem;
-  }
-
-  .footer-sub-heading {
-    font-size: 0.95rem;
-    font-weight: 700;
-    color: #ffffff;
-    margin: 1.2rem 0 0.4rem;
+    padding-bottom: 0.5rem;
   }
 
   .footer-text-body p {
-    font-size: 0.86rem;
+    font-size: 0.88rem;
     line-height: 1.7;
     color: #94a3b8;
-    margin: 0 0 0.8rem;
+    margin: 0;
   }
 
-  .footer-social-row {
-    display: flex;
-    gap: 0.6rem;
-    margin-top: 1rem;
-  }
-
-  .social-icon-box {
-    display: inline-block;
-    padding: 6px 14px;
-    font-size: 0.82rem;
-    font-weight: 700;
-    color: #ffffff;
-    text-decoration: none;
-    background-color: #242c38;
-    border: 1px solid #334155;
-    transition: all 0.2s ease;
-  }
-
-  .social-icon-box:hover {
-    background-color: #0062eb;
-    border-color: #0062eb;
-  }
-
-  .footer-cat-list {
+  .footer-nav-list {
     list-style: none;
     padding: 0;
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 0.8rem;
+    gap: 0.6rem;
   }
 
-  .footer-cat-list a {
+  .footer-nav-list a {
     color: #94a3b8;
     text-decoration: none;
     font-size: 0.88rem;
     transition: color 0.2s ease;
   }
 
-  .footer-cat-list a:hover {
+  .footer-nav-list a:hover {
     color: #38bdf8;
-  }
-
-  .footer-author-text {
-    font-size: 0.86rem;
-    line-height: 1.7;
-    color: #94a3b8;
-    margin: 0 0 1rem;
-  }
-
-  .footer-contact-link {
-    font-size: 0.86rem;
-    color: #64748b;
-  }
-
-  .footer-contact-link a {
-    color: #38bdf8;
-    text-decoration: none;
-    font-weight: 700;
   }
 
   .footer-bottom-bar {
@@ -512,7 +434,7 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
     }
     .footer-grid {
       grid-template-columns: 1fr;
-      gap: 2.2rem;
+      gap: 1.8rem;
     }
     .bottom-bar-inner {
       flex-direction: column;
