@@ -82,14 +82,14 @@
     visibility: hidden;
   }
 
-  /* 舞台容器 (220px 寬度) */
+  /* 舞台容器 (260px 寬度，高大清晰) */
   .loader-stage {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 220px;
-    gap: 0.5rem;
+    width: 260px;
+    gap: 0.8rem;
     animation: pop-in 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
 
@@ -104,11 +104,11 @@
     }
   }
 
-  /* 🐑 純小羊行走軌道 (無下方文字) */
+  /* 🐑 純小羊行走軌道 (飽滿立體尺寸) */
   .sheep-track {
     position: relative;
     width: 100%;
-    height: 44px;
+    height: 70px;
   }
 
   .sheep-walker {
@@ -122,19 +122,19 @@
     will-change: left;
   }
 
-  /* 靜止行走的高清純小羊 (無英文字、無上下浮動，純平移) */
+  /* 靜止行走的高清純小羊 (96px × 58px 大尺寸呈現，不壓扁) */
   .loader-sheep {
-    width: 64px;
-    height: 38px;
+    width: 96px;
+    height: 58px;
     object-fit: contain;
-    filter: drop-shadow(0 3px 6px rgba(28, 28, 28, 0.1));
+    filter: drop-shadow(0 4px 10px rgba(28, 28, 28, 0.12));
     display: block;
   }
 
-  /* 圓角進度條軌道 (220px 寬度, 7px 高度) */
+  /* 圓角進度條軌道 (260px 寬度, 9px 高度) */
   .loader-bar-wrap {
     width: 100%;
-    height: 7px;
+    height: 9px;
     background: rgba(28, 28, 28, 0.08);
     border-radius: 999px;
     padding: 1.5px;
@@ -149,11 +149,11 @@
     transition: width 0.05s linear;
   }
 
-  /* 可愛 Klee One 手寫手感百分比字體 */
+  /* 可愛 Klee One 手寫手感百分比字體 (加大至 1.18rem) */
   .loader-pct {
-    margin-top: 0.35rem;
+    margin-top: 0.2rem;
     font-family: 'Klee One', 'Iansui', var(--font-serif), cursive, sans-serif;
-    font-size: 0.98rem;
+    font-size: 1.15rem;
     font-weight: 600;
     letter-spacing: 0.08em;
     color: var(--ink);
@@ -164,11 +164,11 @@
 
   .pct-num {
     font-variant-numeric: tabular-nums;
-    font-size: 1.1rem;
+    font-size: 1.25rem;
   }
 
   .pct-symbol {
-    font-size: 0.85rem;
+    font-size: 0.95rem;
     margin-left: 2px;
     color: var(--ink-2);
   }
