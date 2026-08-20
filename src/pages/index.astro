@@ -15,7 +15,7 @@ const allPosts = posts;
 const featuredPost = posts[0];
 
 
-// 1. 大標題等級的主題 Tab 分類 (核心類別：技術筆記 / 工具)
+// 1. 大標題等級的主題 Tab 分類 (三大核心類別：技術筆記 / 工具 / 其他)
 const mainTabCategories = [
   {
     id: 'tech',
@@ -74,6 +74,20 @@ const mainTabCategories = [
         href: '/posts/ai-planner-past-exam-info/',
         img: '/banners/ai-planner-past-exam-info.jpg?v=20260820light',
         cat: '認證考試'
+      },
+    ],
+  },
+  {
+    id: 'other',
+    name: '其他',
+    items: [
+      {
+        title: '【公告】新的開始 — OviNas 創站隨筆與日記',
+        excerpt: '記錄大學生活、自研專案與心情成長！分享為什麼叫做 OviNas 以及未來的方向。',
+        slug: 'a-new-beginning',
+        href: '/news/a-new-beginning/',
+        img: '/banners/hero-promo-v3.jpg?v=20260820light',
+        cat: '站務公告'
       },
     ],
   },
