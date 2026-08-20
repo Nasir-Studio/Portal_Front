@@ -20,7 +20,12 @@ export function getStaticPaths() {
 <html lang="zh-TW" class="h-full antialiased">
   <head>
 
-    <meta name="robots" content="noindex, nofollow, noarchive, nosnippet" />
+      <!-- 🚫 嚴格禁止所有搜尋引擎、爬蟲、Google 與 AI 模型抓取 -->
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex, notranslate, noai, noimageai" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="google-extended" content="noindex" />
+  <meta name="robots" content="noai, noimageai" />
+  <meta name="bingbot" content="noindex, nofollow" />
     <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet" />
     <meta name="bingbot" content="noindex, nofollow, noarchive, nosnippet" />
 
@@ -41,15 +46,7 @@ export function getStaticPaths() {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.4.1/dist/fonts/geist-sans/style.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.4.1/dist/fonts/geist-mono/style.css" />
 
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y3XYZ3RKPZ"></script>
-    <script is:inline>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag('js', new Date());
-      gtag('config', 'G-Y3XYZ3RKPZ');
-    </script>
+    
   </head>
   <body class="min-h-full flex flex-col bg-[#fafafa] text-[#171717]">
     <LifeApp client:only="svelte" />

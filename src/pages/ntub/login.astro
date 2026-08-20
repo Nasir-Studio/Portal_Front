@@ -14,13 +14,7 @@ const description = 'NTUB 學分學程登入：登入後勾選的學分進度雲
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y3XYZ3RKPZ"></script>
-  <script is:inline>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag("js", new Date());
-    gtag("config", "G-Y3XYZ3RKPZ");
-  </script>
+  
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -30,7 +24,12 @@ const description = 'NTUB 學分學程登入：登入後勾選的學分進度雲
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#f7f5f0" />
     <meta name="description" content={description} />
-    <meta name="robots" content="noindex, nofollow" />
+      <!-- 🚫 嚴格禁止所有搜尋引擎、爬蟲、Google 與 AI 模型抓取 -->
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex, notranslate, noai, noimageai" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="google-extended" content="noindex" />
+  <meta name="robots" content="noai, noimageai" />
+  <meta name="bingbot" content="noindex, nofollow" />
     <title>{title}</title>
   </head>
   <body>
