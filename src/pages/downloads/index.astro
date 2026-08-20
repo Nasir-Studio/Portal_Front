@@ -55,48 +55,76 @@ const files = [
 
       <h1 class="apache-title">Index of /downloads/</h1>
 
-      <table class="apache-table" id="apacheTable">
-        <thead>
-          <tr>
-            <th class="col-icon"><img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='20' height='22'></svg>" alt="[ICO]" class="apache-ico" /></th>
-            <th class="col-name"><a href="#sort-name" id="sortName">Name</a></th>
-            <th class="col-date"><a href="#sort-date" id="sortDate">Last modified</a></th>
-            <th class="col-size"><a href="#sort-size" id="sortSize">Size</a></th>
-            <th class="col-desc"><a href="#sort-desc" id="sortDesc">Description</a></th>
-          </tr>
-          <tr>
-            <th colspan="5"><hr class="apache-hr" /></th>
-          </tr>
-        </thead>
-        <tbody id="apacheTbody">
+      <!-- 🖥️ 桌面端經典 Apache 表格模式 -->
+      <div class="apache-desktop-view">
+        <table class="apache-table" id="apacheTable">
+          <thead>
+            <tr>
+              <th class="col-icon"><img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='20' height='22'></svg>" alt="[ICO]" class="apache-ico" /></th>
+              <th class="col-name"><a href="#sort-name" id="sortName">Name</a></th>
+              <th class="col-date"><a href="#sort-date" id="sortDate">Last modified</a></th>
+              <th class="col-size"><a href="#sort-size" id="sortSize">Size</a></th>
+              <th class="col-desc"><a href="#sort-desc" id="sortDesc">Description</a></th>
+            </tr>
+            <tr>
+              <th colspan="5"><hr class="apache-hr" /></th>
+            </tr>
+          </thead>
+          <tbody id="apacheTbody">
+            {files.map((file) => (
+              <tr class="apache-row" data-name={file.name} data-date={file.date} data-size={file.sizeBytes} data-desc={file.desc}>
+                <td class="col-icon" valign="top">
+                  <span class="apache-ico-badge" title={file.icon}>{file.iconSymbol}</span>
+                </td>
+                <td class="col-name">
+                  <a href={file.href} download={file.type !== 'dir' ? file.name : undefined} class="apache-link">
+                    {file.name}
+                  </a>
+                </td>
+                <td class="col-date" align="right">
+                  {file.date}
+                </td>
+                <td class="col-size" align="right">
+                  {file.size}
+                </td>
+                <td class="col-desc">
+                  {file.desc}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+          <tfoot>
+            <tr>
+              <th colspan="5"><hr class="apache-hr" /></th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <!-- 📱 行動端專屬 RWD 響應式清單 (保持極簡 Apache 風格但觸控友善) -->
+      <div class="apache-mobile-view">
+        <hr class="apache-hr" />
+        <ul class="apache-mobile-list">
           {files.map((file) => (
-            <tr class="apache-row" data-name={file.name} data-date={file.date} data-size={file.sizeBytes} data-desc={file.desc}>
-              <td class="col-icon" valign="top">
-                <span class="apache-ico-badge" title={file.icon}>{file.iconSymbol}</span>
-              </td>
-              <td class="col-name">
-                <a href={file.href} download={file.type !== 'dir' ? file.name : undefined} class="apache-link">
+            <li class="apache-mobile-item">
+              <div class="m-item-head">
+                <span class="m-icon">{file.iconSymbol}</span>
+                <a href={file.href} download={file.type !== 'dir' ? file.name : undefined} class="apache-link m-name">
                   {file.name}
                 </a>
-              </td>
-              <td class="col-date" align="right">
-                {file.date}
-              </td>
-              <td class="col-size" align="right">
-                {file.size}
-              </td>
-              <td class="col-desc">
-                {file.desc}
-              </td>
-            </tr>
+              </div>
+              {file.type !== 'dir' && (
+                <div class="m-item-meta">
+                  <span class="m-date">🕒 {file.date}</span>
+                  <span class="m-size">💾 {file.size}</span>
+                </div>
+              )}
+              <div class="m-desc">{file.desc}</div>
+              <hr class="apache-hr m-divider" />
+            </li>
           ))}
-        </tbody>
-        <tfoot>
-          <tr>
-            <th colspan="5"><hr class="apache-hr" /></th>
-          </tr>
-        </tfoot>
-      </table>
+        </ul>
+      </div>
 
       <address class="apache-server-sig">
         Apache/2.4.58 (Ubuntu) Server at ovis.nsir.uk Port 443
@@ -109,7 +137,7 @@ const files = [
 <style>
   .apache-wrapper {
     background-color: #ffffff;
-    padding: 2.5rem 0 5rem;
+    padding: 2rem 0 4.5rem;
     font-family: 'Courier New', Courier, monospace, 'Space Grotesk', system-ui;
     color: #000000;
   }
@@ -117,16 +145,23 @@ const files = [
   .apache-container {
     max-width: 1080px;
     margin: 0 auto;
-    padding: 0 1.5rem;
+    padding: 0 1.25rem;
   }
 
   .apache-title {
     font-family: 'Courier New', Courier, monospace, 'Space Grotesk', serif;
-    font-size: 2.1rem;
+    font-size: 1.9rem;
     font-weight: 700;
-    margin: 0 0 1rem;
+    margin: 0 0 0.8rem;
     color: #000000;
     letter-spacing: -0.02em;
+  }
+
+  /* 🖥️ 桌面端表格樣式 */
+  .apache-desktop-view {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
   .apache-table {
@@ -135,7 +170,7 @@ const files = [
     font-family: 'Courier New', Courier, monospace, 'Space Grotesk', monospace;
     font-size: 15px;
     line-height: 1.6;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
   }
 
   .apache-table th {
@@ -156,12 +191,12 @@ const files = [
   }
 
   .apache-table td {
-    padding: 4px 10px;
+    padding: 6px 10px;
     white-space: nowrap;
   }
 
   .col-icon {
-    width: 32px;
+    width: 36px;
     text-align: center;
   }
 
@@ -213,23 +248,81 @@ const files = [
     width: 100%;
   }
 
+  /* 📱 行動端 RWD 樣式 */
+  .apache-mobile-view {
+    display: none;
+  }
+
+  .apache-mobile-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .apache-mobile-item {
+    padding: 0.6rem 0;
+  }
+
+  .m-item-head {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.35rem;
+  }
+
+  .m-icon {
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+
+  .m-name {
+    font-size: 1.05rem;
+    word-break: break-all;
+  }
+
+  .m-item-meta {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    font-size: 0.82rem;
+    color: #555555;
+    margin: 0.2rem 0 0.4rem 1.8rem;
+  }
+
+  .m-desc {
+    font-size: 0.85rem;
+    color: #444444;
+    margin-left: 1.8rem;
+    line-height: 1.5;
+  }
+
+  .m-divider {
+    border-top-color: #dddddd;
+    margin-top: 0.8rem;
+  }
+
   .apache-server-sig {
     font-style: italic;
     font-size: 13.5px;
     color: #444444;
-    margin-top: 1rem;
+    margin-top: 1.2rem;
     font-family: 'Courier New', Courier, monospace, system-ui;
+    line-height: 1.5;
   }
 
-  @media (max-width: 768px) {
-    .apache-table {
-      font-size: 13px;
-    }
-    .apache-table th, .apache-table td {
-      padding: 3px 6px;
-    }
-    .col-desc {
+  /* 📲 響應式斷點切換 (<= 680px) */
+  @media (max-width: 680px) {
+    .apache-desktop-view {
       display: none;
+    }
+    .apache-mobile-view {
+      display: block;
+    }
+    .apache-title {
+      font-size: 1.5rem;
+    }
+    .apache-server-sig {
+      font-size: 12px;
     }
   }
 </style>
