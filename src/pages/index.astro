@@ -113,18 +113,34 @@ const topicCategories = [
       <div class="content-area-top">
         <div class="left">
           <!-- 「技術文章」標題條 (.post-area-head) -->
-          <div class="post-area-head">
-            <h2 class="post-area-title">技術文章</h2>
-            <a href="/posts/" class="cat-read-all">查看全部文章</a>
+          <!-- 「技術文章」標題條 + 旁邊主題分類 Tab -->
+          <div class="post-area-head post-area-head-with-tabs">
+            <div class="head-left-group">
+              <h2 class="post-area-title">技術文章</h2>
+              <div class="tech-topic-tabs" id="techFilterTabs">
+                <button type="button" class="tech-tab-btn active" data-filter="all">全部</button>
+                <button type="button" class="tech-tab-btn" data-filter="arch">網站架設</button>
+                <button type="button" class="tech-tab-btn" data-filter="tools">開源工具</button>
+                <button type="button" class="tech-tab-btn" data-filter="ovinas">獨有工具</button>
+              </div>
+            </div>
+            <a href="/posts/" class="cat-read-all">查看全部 →</a>
           </div>
 
-          <!-- 2 欄式文章網格 (.post-list.col2) -->
-          <div class="post-list col2">
-            {techPosts.map((post) => {
+          <!-- 2 欄式文章網格 (支援即時 Tab 篩選) -->
+          <div class="post-list col2" id="techPostsList">
+            {posts.map((post) => {
               const cat = getPostCategory(post);
+              let topicGroup = 'arch';
+              if (post.slug.includes('tool') || post.slug.includes('github') || post.slug.includes('presentation')) {
+                topicGroup = 'tools';
+              }
+              if (post.slug.includes('unsend') || post.slug.includes('credit') || post.slug.includes('exam') || post.slug.includes('planner')) {
+                topicGroup = 'ovinas';
+              }
               return (
-                <article class="post-card">
-                  <!-- 🎨 經典 3D 浮動 Hover 縮圖 (.img-wrap + .bgs1 ~ .bgs5) -->
+                <article class="post-card tech-post-card" data-topic={topicGroup} data-slug={post.slug}>
+                  <!-- 🎨 經典 3D 浮動 Hover 縮圖 -->
                   <div class="img-wrap">
                     <div class="bgs bgs1"></div>
                     <div class="bgs bgs2"></div>
@@ -1987,6 +2003,62 @@ const topicCategories = [
     }
   }
 
+
+  /* 📑 技術文章標題旁主題閱讀 Tab */
+  .post-area-head-with-tabs {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .head-left-group {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  .tech-topic-tabs {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #f1f5f9;
+    padding: 3px;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+  }
+
+  .tech-tab-btn {
+    appearance: none;
+    border: none;
+    background: transparent;
+    color: #64748b;
+    font-size: 12.5px;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .tech-tab-btn:hover {
+    color: #ff6b00;
+    background: rgba(255, 255, 255, 0.8);
+  }
+
+  .tech-tab-btn.active {
+    background: #ff6b00;
+    color: #ffffff !important;
+    font-weight: 600;
+    box-shadow: 0 2px 6px rgba(255, 107, 0, 0.3);
+  }
+
+  .tech-post-card.is-hidden {
+    display: none !important;
+  }
+
 </style>
 
 <script>
@@ -2009,4 +2081,28 @@ const topicCategories = [
       });
     });
   });
+
+  // 📑 技術文章標題旁主題閱讀 Tab 切換互動
+  const techTabs = document.querySelectorAll('#techFilterTabs .tech-tab-btn');
+  const postCards = document.querySelectorAll('.tech-post-card');
+
+  if (techTabs.length > 0 && postCards.length > 0) {
+    techTabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        techTabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+
+        const filterVal = tab.getAttribute('data-filter');
+        postCards.forEach(card => {
+          const topic = card.getAttribute('data-topic');
+          if (filterVal === 'all' || topic === filterVal) {
+            card.classList.remove('is-hidden');
+          } else {
+            card.classList.add('is-hidden');
+          }
+        });
+      });
+    });
+  }
+
 </script>
