@@ -28,12 +28,12 @@ function getPostCategory(post: typeof posts[0]) {
 <BlogLayout title="OviNas 羊之誌 — 網站架設、系統資安、前端工程與外掛推薦" description="專注於網站架設、系統資安、前端工程與開源工具推薦。">
   <div class="make9-page-wrapper">
     <div class="container">
-      <!-- 🔷 1. 經典 Hero Header 區塊 (左側大標 + 右側置頂 3D 浮動焦點大圖) -->
+      <!-- 🔷 1. 經典 Hero Header 區塊 (左側標題 + 右側 16:9 文青照片輪播焦點) -->
       <section class="content-hero-header">
         <div class="hero-left">
           <h1 class="hero-brand">OviNas 羊之誌</h1>
           <h2 class="hero-tagline">網站架設、系統資安、前端工程、外掛推薦</h2>
-          <a href="#all-posts" class="btn-about">瀏覽全部教學文章</a>
+          <a href="#all-posts" class="btn-about">瀏覽全部文章</a>
         </div>
         <div class="hero-right">
           <div class="slider-wrap-header">
@@ -44,9 +44,8 @@ function getPostCategory(post: typeof posts[0]) {
                 <div class="bgs bgs3"></div>
                 <div class="bgs bgs4"></div>
                 <a class="bgs bgs5 hero-featured-card" href={`/posts/${featuredPost.slug}/`}>
-                  <div class="featured-bg-canvas">
-                    <span class="hero-corner-badge">★ 本月熱門精選</span>
-                    <div class="hero-graphic-icon">🛡️</div>
+                  <div class="featured-img-box">
+                    <img src={`/banners/${featuredPost.slug}.jpg`} alt={featuredPost.title} class="featured-real-photo" />
                     <div class="slogan">
                       <div class="slogan-text">{featuredPost.title}</div>
                     </div>
@@ -104,9 +103,9 @@ function getPostCategory(post: typeof posts[0]) {
             <a href="#all-posts" class="cat-read-all" id="currentCountDisplay">共 {allPosts.length} 篇文章</a>
           </div>
 
-          <!-- 3 欄式文章網格 (post-list col3) -->
+          <!-- 2/3 欄式文章網格 (post-list col3) -->
           <div class="post-list col3" id="postGrid">
-            {allPosts.map((post, idx) => {
+            {allPosts.map((post) => {
               const cat = getPostCategory(post);
               return (
                 <article
@@ -115,18 +114,15 @@ function getPostCategory(post: typeof posts[0]) {
                   data-title={post.title.toLowerCase()}
                   data-excerpt={post.excerpt.toLowerCase()}
                 >
-                  <!-- 🎨 經典 3D 幾何 Hover 浮起遮罩層 (bgs1 ~ bgs5) -->
+                  <!-- 🎨 經典 3D 幾何 Hover 浮起遮罩層 (bgs1 ~ bgs5 + 16:9 文青真實照片) -->
                   <div class="img-wrap">
                     <div class="bgs bgs1"></div>
                     <div class="bgs bgs2"></div>
                     <div class="bgs bgs3"></div>
                     <div class="bgs bgs4"></div>
                     <a class="bgs bgs5 card-thumb-box" href={`/posts/${post.slug}/`}>
-                      <div class="card-thumb-bg" data-cat-theme={cat.slug}>
-                        <span class="card-num-watermark">#{idx < 9 ? `0${idx + 1}` : idx + 1}</span>
-                        <div class="card-hover-mask">
-                          <span class="mask-read-text">閱讀文章</span>
-                        </div>
+                      <div class="card-thumb-photo-wrap">
+                        <img src={`/banners/${post.slug}.jpg`} alt={post.title} class="card-photo" loading="lazy" />
                       </div>
                     </a>
                   </div>
@@ -154,7 +150,6 @@ function getPostCategory(post: typeof posts[0]) {
 
           <!-- 查無結果提示 -->
           <div class="empty-results-box" id="emptyNotice" style="display: none;">
-            <div class="empty-icon-sheep">🐑</div>
             <h3>查無相關文章！</h3>
             <p>請嘗試使用其他關鍵字搜尋，或點選上方「全部文章」。</p>
           </div>
@@ -165,19 +160,19 @@ function getPostCategory(post: typeof posts[0]) {
           <!-- 作者專欄 (Side Author Box) -->
           <div class="side-author-box">
             <div class="photo">
-              <img src="/sheep-hd.png" alt="OviNas" width="120" height="120" />
+              <img src="/sheep-hd.png" alt="OviNas" width="110" height="110" />
             </div>
             <h2>OviNas <span class="eng-name">/ 站長專欄</span></h2>
             <p class="history">全端開發 · 系統架構 · 資安防護</p>
             <p class="author-bio">
-              專注於現代 Web 架構設計、高效能前端、系統資安稽核與 Cloudflare 邊緣技術。追求極致細膩的介面質感。
+              專注於現代 Web 架構設計、高效能前端、系統資安滲透稽核與邊緣雲端技術。追求純粹細膩的排版美學。
             </p>
             <div class="side-btn-row">
               <a href="/vip/" class="btn-side-vip">加入 VIP 專區</a>
             </div>
           </div>
 
-          <!-- 熱門排行側欄 (#popular-side - 經典 75px 正方形縮圖 + Lato 排行) -->
+          <!-- 熱門排行側欄 (#popular-side: 75px 1:1 正方形真實文青照片微縮圖) -->
           <div class="popular-posts" id="popular-side">
             <h3 class="side-section-heading">熱門推薦文章</h3>
             <ul class="wpp-list">
@@ -186,9 +181,8 @@ function getPostCategory(post: typeof posts[0]) {
                 return (
                   <li class="wpp-item">
                     <a href={`/posts/${p.slug}/`} class="wpp-thumb-link">
-                      <div class="wpp-thumbnail-box" data-theme={cat.slug}>
-                        <span class={`wpp-rank-badge rank-${idx + 1}`}>{idx + 1}</span>
-                        <span class="wpp-thumb-symbol">#0{idx + 1}</span>
+                      <div class="wpp-thumbnail-box">
+                        <img src={`/banners/${p.slug}.jpg`} alt={p.title} class="wpp-thumb-img" />
                       </div>
                     </a>
                     <div class="wpp-details">
@@ -244,16 +238,16 @@ function getPostCategory(post: typeof posts[0]) {
   }
 
   .hero-brand {
-    font-size: 3rem;
-    font-weight: 900;
-    line-height: 1.15;
-    color: #111111;
+    font-size: 2.6rem;
+    font-weight: 700;
+    line-height: 1.2;
+    color: #222222;
     margin: 0 0 0.8rem;
-    letter-spacing: 2px;
+    letter-spacing: 1px;
   }
 
   .hero-tagline {
-    font-size: 1.12rem;
+    font-size: 1.05rem;
     font-weight: 400;
     color: #666666;
     line-height: 1.6;
@@ -264,9 +258,9 @@ function getPostCategory(post: typeof posts[0]) {
     display: inline-block;
     background-color: #0062eb;
     color: #ffffff;
-    padding: 12px 28px;
-    font-size: 1rem;
-    font-weight: 700;
+    padding: 11px 26px;
+    font-size: 0.95rem;
+    font-weight: 400;
     text-decoration: none;
     transition: background-color 0.2s ease;
   }
@@ -284,32 +278,24 @@ function getPostCategory(post: typeof posts[0]) {
     position: relative;
   }
 
-  .featured-bg-canvas {
+  .featured-img-box {
     position: relative;
     width: 100%;
     height: 300px;
-    background: linear-gradient(135deg, #111827 0%, #1e293b 50%, #0f172a 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    background-color: #000000;
     overflow: hidden;
   }
 
-  .hero-corner-badge {
-    position: absolute;
-    top: 1rem;
-    left: 1rem;
-    background-color: #0062eb;
-    color: #ffffff;
-    font-size: 0.82rem;
-    font-weight: 700;
-    padding: 5px 12px;
-    z-index: 2;
+  .featured-real-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
   }
 
-  .hero-graphic-icon {
-    font-size: 5.5rem;
-    opacity: 0.2;
+  .img-wrap:hover .featured-real-photo {
+    transform: scale(1.03);
   }
 
   .slogan {
@@ -317,8 +303,8 @@ function getPostCategory(post: typeof posts[0]) {
     bottom: 0;
     left: 0;
     width: 100%;
-    background-color: rgba(0, 0, 0, 0.55);
-    backdrop-filter: blur(8px);
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
     padding: 12px 20px;
     box-sizing: border-box;
     transition: background-color 0.2s ease;
@@ -330,15 +316,15 @@ function getPostCategory(post: typeof posts[0]) {
 
   .slogan-text {
     color: #ffffff;
-    font-size: 1.15rem;
-    font-weight: 700;
+    font-size: 1.1rem;
+    font-weight: 400;
     line-height: 1.4;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
 
-  /* 🎨 經典 3D 幾何 Hover 浮動陰影層 (.bgs1 ~ .bgs5) */
+  /* 🎨 3D 幾何 Hover 浮動陰影層 (.bgs1 ~ .bgs5) */
   .img-wrap {
     position: relative;
     width: 100%;
@@ -427,7 +413,6 @@ function getPostCategory(post: typeof posts[0]) {
     transition-delay: 70ms;
   }
 
-  /* 隔項彩色跳色 (2n 黃色, 3n 藍色, 1n 粉色) */
   article:nth-child(2n) .img-wrap .bgs1 { border-right: 0.6rem solid #f7d002; }
   article:nth-child(2n) .img-wrap .bgs2 { border-top: 0.6rem solid #f7d002; }
   article:nth-child(2n) .img-wrap .bgs3,
@@ -457,11 +442,11 @@ function getPostCategory(post: typeof posts[0]) {
 
   .nav-pill {
     background-color: #f3f4f6;
-    color: #4b5563;
+    color: #555555;
     border: none;
-    padding: 8px 16px;
+    padding: 7px 15px;
     font-size: 0.88rem;
-    font-weight: 600;
+    font-weight: 400;
     cursor: pointer;
     border-radius: 0;
     transition: all 0.2s ease;
@@ -469,7 +454,7 @@ function getPostCategory(post: typeof posts[0]) {
 
   .nav-pill:hover {
     background-color: #e5e7eb;
-    color: #111827;
+    color: #111111;
   }
 
   .nav-pill.is-active {
@@ -490,7 +475,7 @@ function getPostCategory(post: typeof posts[0]) {
 
   .search-input-field {
     width: 100%;
-    padding: 9px 12px;
+    padding: 8px 12px;
     font-size: 0.88rem;
     border: 1px solid #d1d5db;
     border-right: none;
@@ -507,9 +492,9 @@ function getPostCategory(post: typeof posts[0]) {
     background-color: #0062eb;
     color: #ffffff;
     border: 1px solid #0062eb;
-    padding: 9px 18px;
+    padding: 8px 18px;
     font-size: 0.88rem;
-    font-weight: 700;
+    font-weight: 400;
     cursor: pointer;
     border-radius: 0;
     transition: background-color 0.2s ease;
@@ -534,7 +519,6 @@ function getPostCategory(post: typeof posts[0]) {
     flex: 0 0 calc(30% - 1.5rem);
   }
 
-  /* 分類區塊大標籤條 (post-area-head) */
   .post-area-head {
     display: flex;
     justify-content: space-between;
@@ -552,20 +536,20 @@ function getPostCategory(post: typeof posts[0]) {
     background-color: #0062eb;
     color: #ffffff;
     display: inline-block;
-    padding: 12px 24px;
-    font-size: 1.15rem;
+    padding: 10px 22px;
+    font-size: 1.05rem;
     font-weight: 700;
-    letter-spacing: 2px;
+    letter-spacing: 1px;
     margin: 0;
   }
 
   .cat-read-all {
     display: block;
-    color: #4b5563;
+    color: #555555;
     background-color: #eeeeee;
-    font-size: 0.88rem;
-    font-weight: 600;
-    padding: 12px 20px;
+    font-size: 0.86rem;
+    font-weight: 400;
+    padding: 10px 18px;
     text-decoration: none;
     transition: background-color 0.2s ease;
   }
@@ -575,7 +559,7 @@ function getPostCategory(post: typeof posts[0]) {
     color: #111111;
   }
 
-  /* 3 欄式文章網格 (post-list col3) */
+  /* 2 欄式文章網格 (post-list col3) */
   .post-list.col3 {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -585,56 +569,28 @@ function getPostCategory(post: typeof posts[0]) {
   .make9-article-card {
     background: #ffffff;
     border-bottom: 1px solid #e7e7e7;
-    padding-bottom: 2rem;
+    padding-bottom: 1.8rem;
     display: flex;
     flex-direction: column;
   }
 
-  .card-thumb-bg {
+  .card-thumb-photo-wrap {
     width: 100%;
     height: 180px;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #1f2937;
+    overflow: hidden;
+    background: #f0f0f0;
   }
 
-  .card-thumb-bg[data-cat-theme="security"] { background: linear-gradient(135deg, #1e293b, #0f172a); }
-  .card-thumb-bg[data-cat-theme="architecture"] { background: linear-gradient(135deg, #0369a1, #0c4a6e); }
-  .card-thumb-bg[data-cat-theme="design"] { background: linear-gradient(135deg, #701a75, #4a044e); }
-  .card-thumb-bg[data-cat-theme="tools"] { background: linear-gradient(135deg, #15803d, #14532d); }
-  .card-thumb-bg[data-cat-theme="campus"] { background: linear-gradient(135deg, #b45309, #78350f); }
-
-  .card-num-watermark {
-    font-size: 3.5rem;
-    font-weight: 900;
-    color: rgba(255, 255, 255, 0.18);
-    letter-spacing: 2px;
+  .card-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
   }
 
-  .card-hover-mask {
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 98, 235, 0.85);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transition: opacity 0.2s ease;
-  }
-
-  .img-wrap:hover .card-hover-mask {
-    opacity: 1;
-  }
-
-  .mask-read-text {
-    color: #ffffff;
-    font-weight: 700;
-    font-size: 0.95rem;
-    letter-spacing: 1px;
-    border: 2px solid #ffffff;
-    padding: 6px 16px;
+  .img-wrap:hover .card-photo {
+    transform: scale(1.04);
   }
 
   /* 文章標籤與文字 */
@@ -647,26 +603,26 @@ function getPostCategory(post: typeof posts[0]) {
 
   .post-categories li {
     background-color: #0062eb;
-    padding: 2px 10px;
-    border-radius: 4px;
+    padding: 2px 8px;
+    border-radius: 3px;
   }
 
   .cat-tag-link {
     color: #ffffff;
-    font-size: 0.78rem;
-    font-weight: 700;
+    font-size: 0.76rem;
+    font-weight: 400;
     text-decoration: none;
   }
 
   .post-title {
-    font-size: 1.22rem;
+    font-size: 1.15rem;
     font-weight: 700;
-    line-height: 1.35;
-    margin: 8px 0 10px;
+    line-height: 1.38;
+    margin: 6px 0 8px;
   }
 
   .post-title a {
-    color: #222222;
+    color: #333333;
     text-decoration: none;
     transition: color 0.2s ease;
   }
@@ -676,15 +632,16 @@ function getPostCategory(post: typeof posts[0]) {
   }
 
   .post-excerpt {
-    font-size: 0.88rem;
+    font-size: 0.86rem;
     line-height: 1.6;
     color: #666666;
-    margin: 0 0 1.2rem;
+    margin: 0 0 1rem;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
     flex: 1;
+    font-weight: 400;
   }
 
   .post-meta {
@@ -692,9 +649,6 @@ function getPostCategory(post: typeof posts[0]) {
     justify-content: space-between;
     align-items: center;
     margin-top: auto;
-  }
-
-  .post-date {
     font-size: 0.82rem;
     color: #999999;
   }
@@ -702,9 +656,9 @@ function getPostCategory(post: typeof posts[0]) {
   .read-more {
     background-color: #0062eb;
     color: #ffffff;
-    padding: 6px 20px;
-    font-size: 0.84rem;
-    font-weight: 700;
+    padding: 5px 18px;
+    font-size: 0.82rem;
+    font-weight: 400;
     text-decoration: none;
     transition: all 0.2s ease;
   }
@@ -725,51 +679,52 @@ function getPostCategory(post: typeof posts[0]) {
   .side-author-box .photo {
     border-radius: 50%;
     overflow: hidden;
-    width: 110px;
-    height: 110px;
+    width: 100px;
+    height: 100px;
     margin: 0 auto 1.2rem;
     border: 3px solid #0062eb;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #f9f9f9;
+    background: #ffffff;
   }
 
   .side-author-box h2 {
     background-color: #fff;
     margin-bottom: 0.3rem;
-    font-size: 1.3rem;
-    font-weight: 800;
-    color: #111111;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #222222;
   }
 
   .side-author-box h2 .eng-name {
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     color: #999999;
     font-weight: 400;
   }
 
   .side-author-box .history {
     color: #0062eb;
-    font-size: 0.85rem;
-    font-weight: 700;
+    font-size: 0.82rem;
+    font-weight: 400;
     margin: 0 0 0.8rem;
   }
 
   .side-author-box .author-bio {
-    font-size: 0.85rem;
+    font-size: 0.84rem;
     line-height: 1.6;
     color: #666666;
     margin: 0 0 1.2rem;
+    font-weight: 400;
   }
 
   .btn-side-vip {
     display: block;
     background-color: #0062eb;
     color: #ffffff;
-    padding: 9px 0;
-    font-size: 0.88rem;
-    font-weight: 700;
+    padding: 8px 0;
+    font-size: 0.86rem;
+    font-weight: 400;
     text-decoration: none;
     transition: background-color 0.2s ease;
   }
@@ -786,11 +741,10 @@ function getPostCategory(post: typeof posts[0]) {
   }
 
   .side-section-heading {
-    font-size: 1.1rem;
-    font-weight: 800;
+    font-size: 1.05rem;
+    font-weight: 700;
     margin: 0 0 1.2rem;
-    color: #111111;
-    letter-spacing: 1px;
+    color: #222222;
   }
 
   .wpp-list {
@@ -799,14 +753,14 @@ function getPostCategory(post: typeof posts[0]) {
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 0.9rem;
   }
 
   .wpp-item {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    padding-bottom: 1rem;
+    gap: 0.8rem;
+    padding-bottom: 0.9rem;
     border-bottom: 1px solid #f0f0f0;
     min-height: 75px;
   }
@@ -817,68 +771,35 @@ function getPostCategory(post: typeof posts[0]) {
     display: block;
   }
 
-  /* 75px × 75px 經典正方形微縮圖 */
   .wpp-thumbnail-box {
     width: 75px;
     height: 75px;
-    background: #1e293b;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     overflow: hidden;
+    background: #eeeeee;
+  }
+
+  .wpp-thumb-img {
+    width: 75px;
+    height: 75px;
+    object-fit: cover;
+    display: block;
     transition: transform 0.2s ease;
   }
 
-  .wpp-thumbnail-box[data-theme="security"] { background: linear-gradient(135deg, #1e293b, #0f172a); }
-  .wpp-thumbnail-box[data-theme="architecture"] { background: linear-gradient(135deg, #0369a1, #0c4a6e); }
-  .wpp-thumbnail-box[data-theme="design"] { background: linear-gradient(135deg, #701a75, #4a044e); }
-  .wpp-thumbnail-box[data-theme="tools"] { background: linear-gradient(135deg, #15803d, #14532d); }
-  .wpp-thumbnail-box[data-theme="campus"] { background: linear-gradient(135deg, #b45309, #78350f); }
-
-  .wpp-thumb-link:hover .wpp-thumbnail-box {
-    transform: scale(1.05);
+  .wpp-thumb-link:hover .wpp-thumb-img {
+    transform: scale(1.06);
   }
-
-  .wpp-thumb-symbol {
-    font-size: 1.6rem;
-    font-weight: 900;
-    color: rgba(255, 255, 255, 0.22);
-    font-family: "Lato", sans-serif;
-  }
-
-  /* 彩色方形排名徽章 */
-  .wpp-rank-badge {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 22px;
-    height: 22px;
-    font-size: 0.78rem;
-    font-weight: 900;
-    font-family: "Lato", sans-serif;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #475569;
-    color: #ffffff;
-    z-index: 2;
-  }
-
-  .wpp-rank-badge.rank-1 { background-color: #0062eb; color: #ffffff; }
-  .wpp-rank-badge.rank-2 { background-color: #f7d002; color: #111111; }
-  .wpp-rank-badge.rank-3 { background-color: #222222; color: #ffffff; }
 
   .wpp-details {
     display: flex;
     flex-direction: column;
-    gap: 0.3rem;
+    gap: 0.25rem;
     flex: 1;
   }
 
   .wpp-post-title {
-    font-size: 0.9rem;
-    font-weight: 700;
+    font-size: 0.88rem;
+    font-weight: 400;
     line-height: 1.45;
     color: #444444;
     text-decoration: none;
@@ -896,6 +817,7 @@ function getPostCategory(post: typeof posts[0]) {
   .wpp-meta {
     font-size: 0.76rem;
     color: #999999;
+    font-weight: 400;
   }
 
   /* 標籤雲 */
@@ -908,16 +830,16 @@ function getPostCategory(post: typeof posts[0]) {
   .make9-tag-cloud {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: 0.4rem;
   }
 
   .tag-link-pill {
     background-color: #f3f4f6;
-    color: #4b5563;
+    color: #555555;
     border: 1px solid #e5e7eb;
-    padding: 6px 12px;
-    font-size: 0.8rem;
-    font-weight: 600;
+    padding: 5px 11px;
+    font-size: 0.78rem;
+    font-weight: 400;
     cursor: pointer;
     transition: all 0.2s ease;
   }
@@ -930,15 +852,11 @@ function getPostCategory(post: typeof posts[0]) {
 
   .empty-results-box {
     text-align: center;
-    padding: 4rem 1rem;
+    padding: 3rem 1rem;
     background: #f9fafb;
     border: 1px dashed #d1d5db;
     margin-top: 1.5rem;
-  }
-
-  .empty-icon-sheep {
-    font-size: 3rem;
-    margin-bottom: 0.5rem;
+    color: #888888;
   }
 
   /* 📱 RWD 響應式 */
@@ -974,13 +892,12 @@ function getPostCategory(post: typeof posts[0]) {
       flex: 1;
     }
     .hero-brand {
-      font-size: 2.2rem;
+      font-size: 2rem;
     }
   }
 </style>
 
 <script>
-  // ⚡ 即時分類切換、搜尋與計數功能 (Real-time Filtering & Counting)
   const searchInput = document.getElementById('make9Search') as HTMLInputElement;
   const filterTabs = document.querySelectorAll('.nav-pill');
   const postCards = document.querySelectorAll('.make9-article-card');
@@ -1037,7 +954,6 @@ function getPostCategory(post: typeof posts[0]) {
     }
   }
 
-  // 1. 分類按鈕點擊
   filterTabs.forEach((tab) => {
     tab.addEventListener('click', () => {
       filterTabs.forEach((t) => t.classList.remove('is-active'));
@@ -1047,7 +963,6 @@ function getPostCategory(post: typeof posts[0]) {
     });
   });
 
-  // 2. 搜尋框輸入
   if (searchInput) {
     searchInput.addEventListener('input', (e) => {
       currentSearchQuery = (e.target as HTMLInputElement).value.trim().toLowerCase();
@@ -1055,7 +970,6 @@ function getPostCategory(post: typeof posts[0]) {
     });
   }
 
-  // 3. 標籤點擊
   document.querySelectorAll('.tag-link-pill').forEach((btn) => {
     btn.addEventListener('click', () => {
       const kw = btn.getAttribute('data-kw') || '';
@@ -1068,7 +982,6 @@ function getPostCategory(post: typeof posts[0]) {
     });
   });
 
-  // 4. 卡片分類標籤點擊
   document.querySelectorAll('.cat-tag-link').forEach((link) => {
     link.addEventListener('click', (e) => {
       e.preventDefault();
