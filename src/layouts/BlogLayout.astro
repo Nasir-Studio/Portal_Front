@@ -31,15 +31,15 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
   <!-- 🔷 1. 獨立 WordPress 風格導覽列 (Main Header) -->
   <header id="main-header" class="main-header">
     <div class="container header-row">
-      <!-- 經典 3D 浮動 Logo -->
+      <!-- 經典 3D 浮動 Logo (帶有經典羊 Icon) -->
       <div class="logo">
         <div class="img-wrap logo-img-wrap">
           <div class="bgs bgs1"></div>
           <div class="bgs bgs2"></div>
           <div class="bgs bgs3"></div>
           <div class="bgs bgs4"></div>
-          <a class="bgs bgs5 logo-link" href="/blog/">
-            <span class="logo-text">羊之<br>誌</span>
+          <a class="bgs bgs5 logo-link" href="/blog/" aria-label="返回部落格首頁">
+            <img src="/sheep-hd.png" alt="OviNas 羊" class="logo-sheep-icon" />
           </a>
         </div>
         <div class="sub-txt">
@@ -48,42 +48,51 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
         </div>
       </div>
 
-      <!-- 右側主選單 -->
+      <!-- 右側主選單 (Desktop) -->
       <div class="header-right">
         <nav class="main-menu" aria-label="部落格主選單">
           <ul>
             <li><a href="/blog/">首頁</a></li>
-            <li><a href="/blog/#all-posts">全部文章</a></li>
+            <li><a href="/posts/">全部文章</a></li>
             <li><a href="/posts/security-research-report/">系統資安</a></li>
             <li><a href="/posts/tech-notes-architecture/">架構筆記</a></li>
             <li><a href="/posts/front-end-design/">前端工程</a></li>
             <li><a href="/posts/github-open-source-tools/">開源工具</a></li>
-            <li class="nav-cta-btn"><a href="/">返回 Portal 主站</a></li>
+            <li class="nav-cta-btn"><a href="/">返回主站</a></li>
           </ul>
         </nav>
 
         <!-- 手機漢堡按鈕 -->
-        <button id="mobileMenuToggle" class="mobile-toggle" aria-label="開啟選單">
-          <span></span>
-          <span></span>
-          <span></span>
+        <button id="menu-toggle" class="menu-toggle-btn" aria-label="開啟行動版選單">
+          <span class="bar bar-1"></span>
+          <span class="bar bar-2"></span>
+          <span class="bar bar-3"></span>
         </button>
       </div>
     </div>
-
-    <!-- 手機版下拉選單 -->
-    <div id="mobileDropdown" class="mobile-dropdown-menu" hidden>
-      <ul>
-        <li><a href="/blog/">首頁</a></li>
-        <li><a href="/blog/#all-posts">全部文章</a></li>
-        <li><a href="/posts/security-research-report/">系統資安</a></li>
-        <li><a href="/posts/tech-notes-architecture/">架構筆記</a></li>
-        <li><a href="/posts/front-end-design/">前端工程</a></li>
-        <li><a href="/posts/github-open-source-tools/">開源工具</a></li>
-        <li><a href="/">返回 Portal 主站</a></li>
-      </ul>
-    </div>
   </header>
+
+  <!-- 📱 手機版全螢幕/抽屜式滑動選單 (#menu-mobile) -->
+  <div id="menu-overlay" class="menu-backdrop"></div>
+  <aside id="menu-mobile" class="mobile-nav-drawer" aria-label="行動版選單">
+    <div class="mobile-drawer-header">
+      <div class="mobile-brand">
+        <img src="/sheep-hd.png" alt="OviNas 羊" class="mobile-sheep-icon" />
+        <span>OviNas 羊之誌</span>
+      </div>
+      <button id="close-menu" class="btn-close-drawer" aria-label="關閉選單">&times;</button>
+    </div>
+
+    <ul class="mobile-menu-links">
+      <li><a href="/blog/">首頁</a></li>
+      <li><a href="/posts/">全部文章列表</a></li>
+      <li><a href="/posts/security-research-report/">系統資安專欄</a></li>
+      <li><a href="/posts/tech-notes-architecture/">巨型架構筆記</a></li>
+      <li><a href="/posts/front-end-design/">前端設計工程</a></li>
+      <li><a href="/posts/github-open-source-tools/">精選開源工具</a></li>
+      <li class="mobile-cta-item"><a href="/">返回 Portal 主站</a></li>
+    </ul>
+  </aside>
 
   <!-- 📖 2. 頁面主要內容插槽 (Main Content) -->
   <div class="blog-main-content">
@@ -159,6 +168,61 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
       });
     }
   </script>
+<script>
+  // 1. 頂部導覽列滾動縮小動效 (.min-fixed)
+  const header = document.getElementById('main-header');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) {
+      header?.classList.add('min-fixed');
+    } else {
+      header?.classList.remove('min-fixed');
+    }
+  }, { passive: true });
+
+  // 2. 行動版選單抽屜動畫
+  const menuToggle = document.getElementById('menu-toggle');
+  const menuMobile = document.getElementById('menu-mobile');
+  const menuOverlay = document.getElementById('menu-overlay');
+  const closeMenu = document.getElementById('close-menu');
+
+  function openDrawer() {
+    menuMobile?.classList.add('is-open');
+    menuOverlay?.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeDrawer() {
+    menuMobile?.classList.remove('is-open');
+    menuOverlay?.classList.remove('is-open');
+    document.body.style.overflow = '';
+  }
+
+  menuToggle?.addEventListener('click', openDrawer);
+  closeMenu?.addEventListener('click', closeDrawer);
+  menuOverlay?.addEventListener('click', closeDrawer);
+
+  // 3. 全站卡片滑動淡入進場動畫 (Scroll Reveal Animation)
+  const revealElements = document.querySelectorAll('.post-card, .loop-article, .single-hero-img-wrap, .side-author-box, .popular-posts, .tag-widget-box');
+
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, {
+      rootMargin: '0px 0px -40px 0px',
+      threshold: 0.08,
+    });
+
+    revealElements.forEach(el => {
+      el.classList.add('reveal-ready');
+      observer.observe(el);
+    });
+  }
+</script>
 </body>
 </html>
 
@@ -199,14 +263,24 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
     padding: 0 1.5rem;
   }
 
-  /* 🔷 Header 樣式 (100% 還原經典自媒體比例) */
+  /* 🔷 Header 樣式 (含縮小懸浮動效與羊 Icon) */
   .main-header {
     background-color: #ffffff;
+    border-top: 5px solid #ff6b00;
     border-bottom: 1px solid #e7e7e7;
     position: sticky;
     top: 0;
-    z-index: 999;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+    z-index: 1000;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  }
+
+  /* 滾動時縮小懸浮樣式 (.min-fixed) */
+  .main-header.min-fixed {
+    height: 70px;
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
   }
 
   .header-row {
@@ -214,6 +288,11 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
     align-items: center;
     justify-content: space-between;
     height: 90px;
+    transition: height 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .main-header.min-fixed .header-row {
+    height: 70px;
   }
 
   .logo {
@@ -221,13 +300,19 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
     align-items: center;
   }
 
-  /* 3D 浮動方塊 Logo (.bgs1 ~ .bgs5) */
+  /* 3D 浮動方塊 Logo (.bgs1 ~ .bgs5) 帶有純淨羊 Icon */
   .logo-img-wrap {
     position: relative;
     width: 60px;
     height: 60px;
     margin: 0;
     flex-shrink: 0;
+    transition: all 0.3s ease;
+  }
+
+  .main-header.min-fixed .logo-img-wrap {
+    width: 48px;
+    height: 48px;
   }
 
   .logo-link {
@@ -238,23 +323,34 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
     align-items: center;
     justify-content: center;
     text-decoration: none;
-    color: #ffffff;
     border-radius: 6px;
-    transition: background-color 0.2s ease;
+    transition: all 0.3s ease;
   }
 
-  .logo-text {
-    font-size: 1.1rem;
-    font-weight: 900;
-    line-height: 1.15;
-    text-align: center;
-    color: #ffffff;
-    letter-spacing: 1px;
-    font-family: "Noto Sans TC", sans-serif;
+  .main-header.min-fixed .logo-link {
+    width: 48px;
+    height: 48px;
+  }
+
+  .logo-sheep-icon {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+    transition: transform 0.2s ease;
+  }
+
+  .main-header.min-fixed .logo-sheep-icon {
+    width: 32px;
+    height: 32px;
   }
 
   .logo-img-wrap:hover .logo-link {
     background-color: #222222;
+  }
+
+  .logo-img-wrap:hover .logo-sheep-icon {
+    transform: scale(1.1);
   }
 
   .logo-img-wrap .bgs1 { border-right: 0.5rem solid #ff6b00; }
@@ -268,8 +364,8 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
   }
 
   .logo-site-name {
-    font-size: 1.25rem;
-    font-weight: 900;
+    font-size: 1.2rem;
+    font-weight: 700;
     color: #111111;
     text-decoration: none;
     letter-spacing: 0.5px;
@@ -283,9 +379,10 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
     font-size: 0.78rem;
     color: #888888;
     margin-top: 2px;
+    font-weight: 400;
   }
 
-  /* 導覽選單 */
+  /* 導覽選單 (Desktop) */
   .header-right {
     display: flex;
     align-items: center;
@@ -304,75 +401,195 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
     color: #555555;
     text-decoration: none;
     font-size: 0.95rem;
-    font-weight: 700;
+    font-weight: 400;
     transition: color 0.2s ease;
   }
 
   .main-menu a:hover {
-    color: #ff6488;
+    color: #ff6b00;
   }
 
-  /* 經典右側膠囊按鈕 (.nav-cta-btn) */
+  /* 經典右側膠囊按鈕 */
   .nav-cta-btn a {
     display: block;
     background-color: #ff6b00;
     color: #ffffff !important;
     padding: 0 20px;
-    height: 40px;
-    line-height: 40px;
-    border-radius: 20px;
-    font-weight: 700;
+    height: 38px;
+    line-height: 38px;
+    border-radius: 19px;
+    font-weight: 400;
     font-size: 0.88rem;
     transition: all 0.25s ease;
   }
 
   .nav-cta-btn a:hover {
-    background-color: #ff6488 !important;
+    background-color: #ea580c !important;
     transform: translateY(-1px);
   }
 
-  .mobile-toggle {
+  /* 手機漢堡按鈕 (#menu-toggle) */
+  .menu-toggle-btn {
     display: none;
     flex-direction: column;
-    gap: 5px;
+    justify-content: center;
+    gap: 6px;
     background: none;
     border: none;
     cursor: pointer;
     padding: 8px;
+    z-index: 1001;
   }
 
-  .mobile-toggle span {
-    width: 24px;
-    height: 3px;
+  .menu-toggle-btn .bar {
+    width: 26px;
+    height: 2.5px;
     background-color: #222222;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
+    border-radius: 2px;
   }
 
-  .mobile-dropdown-menu {
+  /* 📱 行動版側滑抽屜選單 (#menu-mobile) */
+  .menu-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(3px);
+    z-index: 1002;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .menu-backdrop.is-open {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .mobile-nav-drawer {
+    position: fixed;
+    top: 0;
+    right: -320px;
+    width: 300px;
+    max-width: 85%;
+    height: 100vh;
     background-color: #ffffff;
-    border-top: 1px solid #eeeeee;
-    border-bottom: 2px solid #ff6b00;
-    padding: 1rem 1.5rem;
+    border-left: 4px solid #ff6b00;
+    z-index: 1003;
+    box-shadow: -5px 0 25px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem 1.8rem;
+    box-sizing: border-box;
+    transition: right 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  .mobile-dropdown-menu ul {
+  .mobile-nav-drawer.is-open {
+    right: 0;
+  }
+
+  .mobile-drawer-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 1.2rem;
+    border-bottom: 1px solid #eeeeee;
+    margin-bottom: 1.2rem;
+  }
+
+  .mobile-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #222222;
+  }
+
+  .mobile-sheep-icon {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+  }
+
+  .btn-close-drawer {
+    background: none;
+    border: none;
+    font-size: 32px;
+    line-height: 1;
+    color: #888888;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .btn-close-drawer:hover {
+    color: #ff6b00;
+  }
+
+  .mobile-menu-links {
     list-style: none;
     padding: 0;
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 0.8rem;
+    gap: 0.2rem;
   }
 
-  .mobile-dropdown-menu a {
+  .mobile-menu-links li {
+    border-bottom: 1px solid #f4f4f4;
+  }
+
+  .mobile-menu-links a {
+    display: block;
     color: #333333;
     text-decoration: none;
-    font-size: 1rem;
-    font-weight: 700;
-    display: block;
-    padding: 6px 0;
+    font-size: 1.05rem;
+    font-weight: 400;
+    padding: 12px 0;
+    transition: color 0.2s ease;
+  }
+
+  .mobile-menu-links a:hover {
+    color: #ff6b00;
+  }
+
+  .mobile-cta-item {
+    border-bottom: none !important;
+    margin-top: 1rem;
+  }
+
+  .mobile-cta-item a {
+    background-color: #ff6b00;
+    color: #ffffff !important;
+    text-align: center;
+    border-radius: 4px;
+    padding: 10px 0;
+  }
+
+  @media (max-width: 960px) {
+    .main-menu {
+      display: none;
+    }
+    .menu-toggle-btn {
+      display: flex;
+    }
   }
   
+    /* 🌟 滑動進場動畫 (Scroll Reveal Animation) */
+  .reveal-ready {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1), transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .reveal-ready.revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
   /* 📜 3. Footer 樣式 (典雅大字號、去粗體、暖橙色底條) */
   .footer {
     position: relative;
