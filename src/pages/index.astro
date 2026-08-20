@@ -15,11 +15,11 @@ const allPosts = posts;
 const featuredPost = posts[0];
 
 
-// 1. 大標題等級的主題 Tab 分類 (嚴格一對一歸類，各大標籤文章絕不重複)
+// 1. 大標題等級的主題 Tab 分類 (三大類別：技術筆記 / 工具 / 其他)
 const mainTabCategories = [
   {
-    id: 'arch',
-    name: '網站架設',
+    id: 'tech',
+    name: '技術筆記',
     items: [
       {
         title: '【技術文章】技術筆記本（含系統資安專題）',
@@ -45,12 +45,6 @@ const mainTabCategories = [
         img: '/banners/presentation-design-logic.jpg?v=20260820light',
         cat: '前端設計'
       },
-    ],
-  },
-  {
-    id: 'tools',
-    name: '開源工具',
-    items: [
       {
         title: '【文章】學期結束後，收獲的 github 開源工具',
         excerpt: '暑假總結！精選 GitHub 實用開源專案、AI Agent 擴充、Proxy 代理與前端 UI 設計工具庫。',
@@ -62,8 +56,8 @@ const mainTabCategories = [
     ],
   },
   {
-    id: 'ovinas',
-    name: '獨有工具',
+    id: 'tools',
+    name: '工具',
     items: [
       {
         title: '【文章】NTUB 2026 通識資安稽核一條龍',
@@ -80,6 +74,20 @@ const mainTabCategories = [
         href: '/posts/ai-planner-past-exam-info/',
         img: '/banners/ai-planner-past-exam-info.jpg?v=20260820light',
         cat: '認證考試'
+      },
+    ],
+  },
+  {
+    id: 'other',
+    name: '其他',
+    items: [
+      {
+        title: '【工具】IG 收回工具 Batch',
+        excerpt: '批次收回 Instagram 私訊中你所傳送的訊息，Chrome 擴充套件免費下載。',
+        slug: 'ig-unsend-tool',
+        href: '/posts/ig-unsend-tool/',
+        img: '/banners/ig-unsend-tool.jpg?v=20260820light',
+        cat: '外掛工具'
       },
     ],
   },
