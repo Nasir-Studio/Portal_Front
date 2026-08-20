@@ -38,33 +38,7 @@ import BlogLayout from '../../layouts/BlogLayout.astro';
             </p>
           </div>
 
-          <!-- 核心專長與理念卡片網格 -->
-          <h2 class="about-section-h2">核心領域與專注方向</h2>
-          <div class="skills-grid">
-            <div class="skill-card">
-              <div class="skill-icon-bar" style="background-color: #ff6b00;"></div>
-              <h3>網站架設與現代前端</h3>
-              <p>專注於高效能 Web 架構、Astro / Svelte / Vue、響應式 RWD 佈局與極致純粹的排版美學。</p>
-            </div>
-
-            <div class="skill-card">
-              <div class="skill-icon-bar" style="background-color: #10b981;"></div>
-              <h3>系統資安與滲透稽核</h3>
-              <p>研究 CVSS v4.0 評估標準、OWASP & CWE 漏洞防護，落實安全合規檢測與自動化防禦腳本。</p>
-            </div>
-
-            <div class="skill-card">
-              <div class="skill-icon-bar" style="background-color: #0284c7;"></div>
-              <h3>邊緣運算與雲端部署</h3>
-              <p>善用 Cloudflare Pages、Edge Workers、PWA 離線快取與現代化 Serverless 邊緣基礎設施。</p>
-            </div>
-
-            <div class="skill-card">
-              <div class="skill-icon-bar" style="background-color: #8b5cf6;"></div>
-              <h3>企業痛點流程自動化</h3>
-              <p>將繁瑣的人工技術工作整合為一鍵式高效系統，大幅提升營運與維護流程的整體效能。</p>
-            </div>
-          </div>
+          
 
           <!-- 社群關注與文章探索 -->
           <div class="about-actions-row">
@@ -201,43 +175,7 @@ import BlogLayout from '../../layouts/BlogLayout.astro';
     margin: 0 0 1.2rem;
   }
 
-  .skills-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-    margin: 1.5rem 0 2.5rem;
-  }
-
-  .skill-card {
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 6px;
-    padding: 1.4rem 1.4rem 1.2rem;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .skill-icon-bar {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 3px;
-  }
-
-  .skill-card h3 {
-    font-size: 15.5px;
-    font-weight: 600;
-    color: #1e293b;
-    margin: 0 0 6px;
-  }
-
-  .skill-card p {
-    font-size: 13.5px;
-    color: #64748b;
-    line-height: 1.6;
-    margin: 0;
-  }
+  
 
   .about-actions-row {
     display: flex;
@@ -394,9 +332,7 @@ import BlogLayout from '../../layouts/BlogLayout.astro';
     .about-card-wrap {
       padding: 2rem 1.4rem;
     }
-    .skills-grid {
-      grid-template-columns: 1fr;
-    }
+    
     .about-actions-row {
       flex-direction: column;
     }
