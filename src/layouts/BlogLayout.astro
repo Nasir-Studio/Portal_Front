@@ -2,7 +2,7 @@
 import LiveChatWidget from '../components/LiveChatWidget.svelte';
 import posts from '../data/posts';
 
-const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程', description = '專注於網站架設、系統資安、前端工程與開源工具推薦。' } = Astro.props;
+const { title = 'OviNas — 網站架設、系統資安、筆記小分享', description = '專注於網站架設、系統資安、筆記小分享與開源工具推薦。' } = Astro.props;
 
 const searchIndexJson = JSON.stringify(
   posts.map((p) => ({
@@ -143,7 +143,7 @@ const searchIndexJson = JSON.stringify(
     <div class="mobile-drawer-header">
       <div class="mobile-brand">
         <img src="/sheep-hd.png" alt="OviNas 羊" class="mobile-sheep-icon" />
-        <span>OviNas 羊之誌</span>
+        <span>OviNas</span>
       </div>
       <button id="close-menu" class="btn-close-drawer" aria-label="關閉選單">&times;</button>
     </div>
@@ -182,7 +182,7 @@ const searchIndexJson = JSON.stringify(
             <p>
               目前的部落格還在處理樣式中！
             </p>
-            <h3>關注 OviNas 羊之誌</h3>
+            <h3>關注 OviNas</h3>
             <div class="social-links-row">
               <a href="https://github.com/nasircy" target="_blank" rel="noopener" class="social-btn gh-btn">GitHub</a>
               <a href="/blog/posts/" class="social-btn vip-btn">更多文章</a>
