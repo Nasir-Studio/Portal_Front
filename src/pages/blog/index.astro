@@ -24,22 +24,21 @@ const editorPicks = [
   posts.find(p => p.slug === 'github-open-source-tools') || posts[2],
 ];
 
-// 3. 主題閱讀 分類數據 (三大核心專題：網站架設、開源工具、OviNas 獨有工具)
+// 3. 主題閱讀 分類數據 (三大核心專案：網站架設、開源工具、OviNas 獨有工具)
 const topicCategories = [
   {
     id: 'arch',
     name: '網站架設',
     posts: [
       posts.find(p => p.slug === 'tech-notes-architecture'),
-      posts.find(p => p.slug === 'tech-notes-architecture'),
+      posts.find(p => p.slug === 'ntub-audit'),
       posts.find(p => p.slug === 'cf-pages-pwa-webpush'),
     ].filter(Boolean),
     listPosts: [
-      { title: '全端技術筆記：現代企業級 Web 架構規範與全端實踐', slug: 'tech-notes-architecture' },
-      { title: 'CVSS v4.0 漏洞滲透分級實務評估指南與威脅防護', slug: 'tech-notes-architecture' },
-      { title: 'NTUB 2026 通識資安稽核一條龍實務深入解析', slug: 'ntub-audit' },
-      { title: 'Cloudflare Pages 與 Edge Functions 邊緣部署實務', slug: 'cf-pages-pwa-webpush' },
-      { title: '簡報設計方式與工程師介面視覺傳達邏輯', slug: 'presentation-design-logic' },
+      { title: '【技術文章】技術筆記本（含系統資安專題）', slug: 'tech-notes-architecture' },
+      { title: '【文章】NTUB 2026 通識資安稽核一條龍', slug: 'ntub-audit' },
+      { title: '【CF Page】PWA WebPush 設計原理', slug: 'cf-pages-pwa-webpush' },
+      { title: '【文章】簡報的設計方式跟邏輯', slug: 'presentation-design-logic' },
     ],
   },
   {
@@ -51,10 +50,10 @@ const topicCategories = [
       posts.find(p => p.slug === 'presentation-design-logic'),
     ].filter(Boolean),
     listPosts: [
-      { title: '學期結束後收獲的 GitHub 開源工具與精選實用資源庫', slug: 'github-open-source-tools' },
-      { title: 'AI Agent 擴充、Skill 與智能路由專題深入解析', slug: 'github-open-source-tools' },
-      { title: '前端 UI/UX 設計、現代元件與動效靈感資源庫', slug: 'github-open-source-tools' },
-      { title: '代理伺服器 Proxy 與多環境防關聯指紋環境工具箱', slug: 'github-open-source-tools' },
+      { title: '【文章】學期結束後，收獲的 github 開源工具', slug: 'github-open-source-tools' },
+      { title: 'AI Agent 擴充、Skill 與 API', slug: 'github-open-source-tools' },
+      { title: '前端 UI/UX 設計與動效靈感', slug: 'github-open-source-tools' },
+      { title: 'Proxy List & Tools 代理工具推薦', slug: 'github-open-source-tools' },
     ],
   },
   {
@@ -66,9 +65,9 @@ const topicCategories = [
       posts.find(p => p.slug === 'ai-planner-past-exam-info'),
     ].filter(Boolean),
     listPosts: [
-      { title: 'IG 自動訊息收回工具 Batch（Chrome 擴充套件）', slug: 'ig-unsend-tool' },
-      { title: 'NTUB 學分學程查詢及預算學分', slug: 'ntub-credit-program' },
-      { title: 'AI 應用規劃師考古資訊', slug: 'ai-planner-past-exam-info' },
+      { title: '【工具】IG 收回工具 Batch', slug: 'ig-unsend-tool' },
+      { title: '【工具】NTUB學分學程查詢及預算學分', slug: 'ntub-credit-program' },
+      { title: '【文章】AI應用規劃師考古資訊', slug: 'ai-planner-past-exam-info' },
     ],
   },
 ];function getPostCategory(post: typeof posts[0]) {
