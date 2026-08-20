@@ -1,5 +1,5 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
+import BlogLayout from '../../layouts/BlogLayout.astro';
 import announcements from '../../data/announcements';
 
 export function getStaticPaths() {
@@ -11,110 +11,212 @@ export function getStaticPaths() {
 
 const { item } = Astro.props;
 const number = announcements.findIndex((a) => a.slug === item.slug) + 1;
-const backLink = '/#news';
 ---
 
-<BaseLayout title={`${item.title} ｜ OviNas`}>
-  <article class="article container">
-    <nav class="article-nav" aria-label="麵包屑">
-      <a href="/">首頁</a>
-      <span aria-hidden="true">／</span>
-      <a href={backLink}>最新消息</a>
-    </nav>
+<BlogLayout title={`${item.title} ｜ OviNas`} description="OviNas 站務公告與創站日記隨筆">
+  <div class="main-content news-detail-page">
+    <div class="container news-container">
 
-    <header class="article-header">
-      <h1 class="article-title">{item.title}</h1>
-      <p class="article-meta">公告第 {number} 號 / {item.date}</p>
-    </header>
+      <!-- 麵包屑導航 -->
+      <nav class="news-breadcrumbs" aria-label="麵包屑">
+        <a href="/">首頁</a>
+        <span class="sep">&gt;</span>
+        <a href="/#news">最新消息</a>
+        <span class="sep">&gt;</span>
+        <span class="current">{item.title}</span>
+      </nav>
 
-    <div class="article-body">
-      {item.content.split('\n\n').map((p) => (
-        <p>{p}</p>
-      ))}
+      <article class="news-article-card">
+        <header class="news-article-header">
+          <div class="news-badge-row">
+            <span class="news-badge">站務公告 · 第 {number} 號</span>
+            <span class="news-date">{item.date}</span>
+          </div>
+          <h1 class="news-title">{item.title}</h1>
+          <div class="news-author-meta">
+            <span>By <strong>OviNas 站長 Nasir</strong></span>
+            <span class="dot">·</span>
+            <span>站務隨筆與心情記錄</span>
+          </div>
+        </header>
+
+        <!-- 封面圖片 -->
+        <div class="news-cover-wrap">
+          <img src="/banners/hero-promo-v3.jpg?v=20260820light" alt={item.title} class="news-cover-img" />
+        </div>
+
+        <div class="news-body-content">
+          {item.content.split('\n\n').map((p) => (
+            <p>{p}</p>
+          ))}
+        </div>
+
+        <footer class="news-footer-actions">
+          <a href="/" class="btn-news-back">← 返回首頁</a>
+        </footer>
+      </article>
+
     </div>
-
-    <div class="article-foot">
-      <a class="article-back" href={backLink}>← 回最新消息</a>
-    </div>
-  </article>
-</BaseLayout>
+  </div>
+</BlogLayout>
 
 <style>
-  .article {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    margin-top: 2.4rem;
-    margin-bottom: 3.5rem;
-    padding-bottom: 2.4rem;
+  .news-detail-page {
+    background-color: #ffffff;
+    padding: 2.5rem 0 5rem;
   }
 
-  .article-nav {
+  .news-container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 1.25rem;
+  }
+
+  .news-breadcrumbs {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 1rem 1.6rem;
-    background: var(--bg-soft);
-    border-bottom: 1px solid var(--border);
-    font-size: 0.85rem;
-    letter-spacing: 0.1em;
-    color: var(--ink-3);
+    font-size: 0.88rem;
+    color: #64748b;
+    margin-bottom: 1.8rem;
   }
 
-  .article-nav a {
-    transition: color var(--t);
+  .news-breadcrumbs a {
+    color: #334155;
+    text-decoration: none;
+    transition: color 0.15s ease;
   }
 
-  .article-nav a:hover {
-    color: var(--ink);
+  .news-breadcrumbs a:hover {
+    color: #ff6b00;
   }
 
-  .article-header {
-    padding: 2.2rem 1.6rem 1.3rem;
-    border-bottom: 1px dashed var(--border);
+  .news-breadcrumbs .sep {
+    color: #94a3b8;
   }
 
-  .article-title {
-    font-family: var(--font-serif);
-    font-size: clamp(1.5rem, 4vw, 2rem);
+  .news-breadcrumbs .current {
+    color: #0f172a;
     font-weight: 600;
-    letter-spacing: 0.1em;
-    line-height: 1.4;
-    margin-bottom: 0.9rem;
   }
 
-  .article-meta {
-    font-size: 0.85rem;
-    letter-spacing: 0.12em;
-    color: var(--ink-3);
+  .news-article-card {
+    background: #ffffff;
+    border: 1.5px solid #0f172a;
+    box-shadow: 0 6px 24px rgba(15, 23, 42, 0.06);
+    padding: 2.5rem 2.8rem;
   }
 
-  .article-body {
-    padding: 1.7rem 1.6rem;
+  .news-article-header {
+    border-bottom: 1.5px solid #cbd5e1;
+    padding-bottom: 1.8rem;
+    margin-bottom: 2rem;
   }
 
-  .article-body p {
-    font-size: 1rem;
-    letter-spacing: 0.04em;
-    line-height: 2.1;
-    color: var(--ink-2);
+  .news-badge-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.8rem;
   }
 
-  .article-foot {
-    padding: 1.6rem 1.6rem 0;
-  }
-
-  .article-back {
+  .news-badge {
     display: inline-block;
-    font-size: 0.85rem;
-    letter-spacing: 0.15em;
-    color: var(--ink-3);
-    padding: 0.3rem 0;
-    border-bottom: 1px solid var(--border-strong);
-    transition: color var(--t), border-color var(--t);
+    background: #0f172a;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    padding: 3px 10px;
   }
 
-  .article-back:hover {
-    color: var(--ink);
-    border-color: var(--ink);
+  .news-date {
+    font-size: 0.88rem;
+    color: #64748b;
+    font-weight: 600;
+  }
+
+  .news-title {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #0f172a;
+    line-height: 1.35;
+    margin: 0.6rem 0 1rem;
+    letter-spacing: -0.01em;
+  }
+
+  .news-author-meta {
+    font-size: 0.88rem;
+    color: #64748b;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .news-author-meta strong {
+    color: #0f172a;
+  }
+
+  .news-author-meta .dot {
+    color: #cbd5e1;
+  }
+
+  .news-cover-wrap {
+    margin-bottom: 2.2rem;
+    border: 1.5px solid #0f172a;
+    overflow: hidden;
+  }
+
+  .news-cover-img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .news-body-content p {
+    font-size: 1.08rem;
+    line-height: 2.1;
+    color: #1e293b;
+    margin-bottom: 1.8rem;
+    letter-spacing: 0.02em;
+    text-align: justify;
+  }
+
+  .news-footer-actions {
+    border-top: 1.5px solid #cbd5e1;
+    padding-top: 1.8rem;
+    margin-top: 2rem;
+  }
+
+  .btn-news-back {
+    display: inline-block;
+    padding: 0.6rem 1.4rem;
+    background: #0f172a;
+    color: #ffffff !important;
+    font-size: 0.92rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-decoration: none;
+    border: 1.5px solid #0f172a;
+    transition: all 0.15s ease;
+  }
+
+  .btn-news-back:hover {
+    background: #ff6b00;
+    border-color: #ff6b00;
+    transform: translateY(-1px);
+  }
+
+  @media (max-width: 768px) {
+    .news-article-card {
+      padding: 1.5rem 1.2rem;
+    }
+    .news-title {
+      font-size: 1.6rem;
+    }
+    .news-body-content p {
+      font-size: 1rem;
+      line-height: 1.9;
+    }
   }
 </style>
