@@ -24,25 +24,33 @@ const editorPicks = [
   posts.find(p => p.slug === 'github-open-source-tools') || posts[2],
 ];
 
-// 3. 主題閱讀 分類數據
+// 3. 主題閱讀 分類數據 (精準對齊全站 9 篇真實最新文章)
 const topicCategories = [
   {
     id: 'sec',
     name: '系統資安',
-    posts: posts.filter(p => p.slug.includes('security') || p.slug.includes('audit')),
+    posts: [
+      posts.find(p => p.slug === 'security-research-report'),
+      posts.find(p => p.slug === 'ntub-audit'),
+      posts.find(p => p.slug === 'tech-notes-architecture'),
+    ].filter(Boolean),
     listPosts: [
       { title: 'CVSS v4.0 漏洞滲透分級實務評估指南', slug: 'security-research-report' },
       { title: 'OWASP Top 10 與 CWE 身分證編號對照手冊', slug: 'security-research-report' },
+      { title: 'NTUB 2026 通識資安稽核一條龍實務解析', slug: 'ntub-audit' },
       { title: '全端架構常見九大攻擊手法特徵防禦矩陣', slug: 'security-research-report' },
-      { title: '結構化風險日誌標準規範與 AI Agent 反擊', slug: 'security-research-report' },
     ],
   },
   {
     id: 'arch',
     name: '網站架設',
-    posts: posts.filter(p => p.slug.includes('architecture') || p.slug.includes('pwa') || p.slug.includes('windows')),
+    posts: [
+      posts.find(p => p.slug === 'tech-notes-architecture'),
+      posts.find(p => p.slug === 'cf-pages-pwa-webpush'),
+      posts.find(p => p.slug === 'github-open-source-tools'),
+    ].filter(Boolean),
     listPosts: [
-      { title: '現代企業級全端 Web 架構規範實踐', slug: 'tech-notes-architecture' },
+      { title: '全端技術筆記：現代企業級 Web 架構指南', slug: 'tech-notes-architecture' },
       { title: 'Cloudflare Pages 與 Edge Functions 邊緣部署實務', slug: 'cf-pages-pwa-webpush' },
       { title: 'PWA WebPush 離線推播與 Service Worker 快取機制', slug: 'cf-pages-pwa-webpush' },
       { title: '全端架構效能調校與極簡開發工作流實踐', slug: 'tech-notes-architecture' },
@@ -51,28 +59,35 @@ const topicCategories = [
   {
     id: 'fe',
     name: '前端工程',
-    posts: posts.filter(p => p.slug.includes('design') || p.slug.includes('front-end') || p.slug.includes('presentation')),
+    posts: [
+      posts.find(p => p.slug === 'presentation-design-logic'),
+      posts.find(p => p.slug === 'github-open-source-tools'),
+      posts.find(p => p.slug === 'cf-pages-pwa-webpush'),
+    ].filter(Boolean),
     listPosts: [
-      { title: '從零打造高質感自媒體部落格排版美學', slug: 'github-open-source-tools' },
-      { title: '響應式 RWD 佈局與貝茲曲線動畫實踐', slug: 'github-open-source-tools' },
-      { title: '簡報邏輯與工程師介面視覺傳達技巧', slug: 'presentation-design-logic' },
-      { title: 'TypeScript 與 Astro 現代靜態站點極速構建', slug: 'github-open-source-tools' },
+      { title: '簡報設計方式與工程師介面視覺傳達邏輯', slug: 'presentation-design-logic' },
+      { title: '前端 UI/UX 設計、現代元件與動效靈感資源庫', slug: 'github-open-source-tools' },
+      { title: 'Astro 輕量全端靜態站點極速構建實務', slug: 'github-open-source-tools' },
+      { title: 'Awwwards 與 GSAP 網頁流體動畫實踐靈感', slug: 'github-open-source-tools' },
     ],
   },
   {
     id: 'tools',
     name: '開源工具',
-    posts: posts.filter(p => p.slug.includes('tool') || p.slug.includes('proxy') || p.slug.includes('github') || p.slug.includes('ig')),
+    posts: [
+      posts.find(p => p.slug === 'github-open-source-tools'),
+      posts.find(p => p.slug === 'ig-unsend-tool'),
+      posts.find(p => p.slug === 'ntub-credit-program'),
+    ].filter(Boolean),
     listPosts: [
-      { title: '精選 GitHub 開發者神器與高效率工具箱', slug: 'github-open-source-tools' },
-      { title: '代理伺服器 Proxy 與多環境工具箱解析', slug: 'github-open-source-tools' },
-      { title: 'Instagram 訊息收回管理與 API 實作探討', slug: 'ig-unsend-tool' },
-      { title: 'AI 歷屆考古題索引與智慧讀書計畫系統', slug: 'ai-planner-past-exam-info' },
+      { title: '學期結束後收獲的 GitHub 開源工具全整理', slug: 'github-open-source-tools' },
+      { title: 'AI Agent 擴充、Skill 與智能路由專題解析', slug: 'github-open-source-tools' },
+      { title: 'Instagram 私訊批次收回管理工具（Chrome擴充）', slug: 'ig-unsend-tool' },
+      { title: 'NTUB 學分學程即時查詢與學分試算模組', slug: 'ntub-credit-program' },
+      { title: 'AI 應用規劃師歷屆考古題索引與測驗指南', slug: 'ai-planner-past-exam-info' },
     ],
   },
-];
-
-function getPostCategory(post: typeof posts[0]) {
+];function getPostCategory(post: typeof posts[0]) {
   if (post.slug.includes('security') || post.slug.includes('audit')) return { name: '系統資安', slug: 'security' };
   if (post.slug.includes('architecture') || post.slug.includes('pwa')) return { name: '架構伺服器', slug: 'architecture' };
   if (post.slug.includes('design') || post.slug.includes('front-end')) return { name: '前端設計', slug: 'design' };
