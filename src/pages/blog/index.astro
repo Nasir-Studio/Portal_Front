@@ -2,165 +2,165 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import posts from '../../data/posts';
 
-// 依照分類與精選排序
-const featuredPost = posts[0]; // 資安研究報告為焦點文章
-const regularPosts = posts;
+// 分類與文章整理
+const allPosts = posts;
+const featuredPost = posts[0]; // 第一篇作為置頂焦點
 
-const categories = [
-  { id: 'all', label: '全部文章', count: posts.length },
-  { id: 'security', label: '系統資安', count: posts.filter(p => p.slug.includes('security') || p.slug.includes('audit')).length },
-  { id: 'architecture', label: '架構與雲端', count: posts.filter(p => p.slug.includes('architecture') || p.slug.includes('pwa')).length },
-  { id: 'frontend', label: '前端與設計', count: posts.filter(p => p.slug.includes('design') || p.slug.includes('front-end')).length },
-  { id: 'tools', label: '開源工具', count: posts.filter(p => p.slug.includes('tool') || p.slug.includes('proxy')).length },
-  { id: 'campus', label: '校園專案', count: posts.filter(p => p.slug.includes('ntub') || p.slug.includes('exam')).length },
-];
+// 各分類文章過濾
+const securityPosts = posts.filter(p => p.slug.includes('security') || p.slug.includes('audit'));
+const archPosts = posts.filter(p => p.slug.includes('architecture') || p.slug.includes('pwa'));
+const designPosts = posts.filter(p => p.slug.includes('design') || p.slug.includes('front-end'));
+const toolsPosts = posts.filter(p => p.slug.includes('tool') || p.slug.includes('proxy') || p.slug.includes('github'));
+const campusPosts = posts.filter(p => p.slug.includes('ntub') || p.slug.includes('exam'));
 
-function getCategoryMeta(post: typeof posts[0]) {
+function getCategoryInfo(post: typeof posts[0]) {
   if (post.slug.includes('security') || post.slug.includes('audit')) {
-    return { tag: '系統資安', class: 'cat-security', color: '#c0392b' };
+    return { name: '系統資安', slug: 'security', color: '#0062eb' };
   }
   if (post.slug.includes('architecture') || post.slug.includes('pwa')) {
-    return { tag: '架構雲端', class: 'cat-arch', color: '#2980b9' };
+    return { name: '架構雲端', slug: 'architecture', color: '#0062eb' };
   }
   if (post.slug.includes('design') || post.slug.includes('front-end')) {
-    return { tag: '前端美學', class: 'cat-design', color: '#8e44ad' };
+    return { name: '前端設計', slug: 'design', color: '#0062eb' };
   }
-  if (post.slug.includes('tool') || post.slug.includes('proxy')) {
-    return { tag: '開源工具', class: 'cat-tools', color: '#27ae60' };
+  if (post.slug.includes('tool') || post.slug.includes('proxy') || post.slug.includes('github')) {
+    return { name: '開源工具', slug: 'tools', color: '#0062eb' };
   }
   if (post.slug.includes('ntub') || post.slug.includes('exam')) {
-    return { tag: '校園專案', class: 'cat-campus', color: '#d35400' };
+    return { name: '校園專案', slug: 'campus', color: '#0062eb' };
   }
-  return { tag: '技術隨筆', class: 'cat-general', color: '#34495e' };
+  return { name: '技術筆記', slug: 'general', color: '#0062eb' };
 }
 ---
 
-<BaseLayout title="部落格 ｜ OviNas 羊之誌 — 深度技術與設計精選">
-  <main class="blog-page">
-    <div class="container">
-      <!-- 🌟 1. Hero 頂部焦點區 (Magazine Split Hero) -->
-      <section class="blog-hero">
-        <div class="hero-intro">
-          <div class="hero-badge">
-            <span class="pulse-dot"></span>
-            <span>OviNas Journal 羊之誌</span>
-          </div>
-          <h1 class="hero-title">探索技術與設計的<br><span class="hero-title-accent">純粹美學</span></h1>
-          <p class="hero-desc">
-            收錄巨型架構拆解、企業資安防護、前端動效工程與實用開源工具心得。以白話文與實戰視角，記錄每一個值得深究的技術靈感。
-          </p>
+<BaseLayout title="部落格 ｜ OviNas 羊之誌 — 網站架設、系統資安與前端工程">
+  <div class="wp-blog-wrapper">
+    <!-- 頂部高對比裝飾藍條 -->
+    <div class="wp-top-stripe"></div>
 
-          <!-- 搜尋與統計 -->
-          <div class="hero-search-wrap">
-            <div class="search-input-box">
-              <svg class="search-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="11" cy="11" r="8"></circle>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-              </svg>
-              <input
-                id="blogSearchInput"
-                type="search"
-                placeholder="搜尋文章關鍵字、主題或標籤…"
-                autocomplete="off"
-              />
-            </div>
-            <span class="post-count-badge" id="postCountBadge">共 {posts.length} 篇精選文章</span>
+    <div class="wp-container">
+      <!-- 🔷 1. 經典 Hero 區塊 (左大標 + 右大型精選輪播圖) -->
+      <section class="content-hero-header">
+        <div class="hero-left">
+          <div class="hero-brand-tag">
+            <span class="tag-square">■</span>
+            <span>WordPress 風格專欄 · 羊之誌</span>
+          </div>
+          <h1 class="hero-main-title">OviNas<br>羊之誌</h1>
+          <h2 class="hero-sub-title">網站架設、系統資安、前端工程、開源工具</h2>
+          <div class="hero-cta-wrap">
+            <a href="#all-posts" class="wp-btn wp-btn-blue">瀏覽全部文章</a>
+            <a href="/vip/" class="wp-btn wp-btn-dark">VIP 專區</a>
           </div>
         </div>
 
-        <!-- 焦點大卡 (Featured Card) -->
-        <div class="hero-featured">
-          <article class="featured-card">
-            <a href={`/posts/${featuredPost.slug}/`} class="featured-img-wrap">
-              <div class="featured-cover-visual" data-theme="security">
-                <div class="cover-icon-bg">🛡️</div>
-                <div class="cover-lines"></div>
-                <span class="featured-ribbon">★ 本月焦點</span>
-                <span class="card-cat-pill cat-security">系統資安</span>
-              </div>
-            </a>
-            <div class="featured-body">
-              <div class="card-meta">
-                <span class="meta-date">{featuredPost.date}</span>
-                <span class="meta-dot">·</span>
-                <span class="meta-read">8 分鐘閱讀</span>
-              </div>
-              <h2 class="featured-title">
-                <a href={`/posts/${featuredPost.slug}/`}>{featuredPost.title}</a>
-              </h2>
-              <p class="featured-excerpt">{featuredPost.excerpt}</p>
-              <div class="card-foot">
-                <div class="author-info">
-                  <img src="/sheep-hd.png" alt="OviNas" class="author-avatar" width="28" height="28" />
-                  <span class="author-name">OviNas</span>
+        <div class="hero-right">
+          <div class="slider-wrap-header">
+            <div class="slider-one">
+              <a href={`/posts/${featuredPost.slug}/`}>
+                <div class="featured-img-container">
+                  <div class="visual-badge">★ 本期頭條推薦</div>
+                  <div class="geometric-decorations">
+                    <span class="geo-corner top-left"></span>
+                    <span class="geo-corner bottom-right"></span>
+                  </div>
+                  <!-- 半透明毛玻璃文字底條 (Classic WordPress Overlay) -->
+                  <div class="slider-caption-overlay">
+                    <span class="caption-cat">系統資安</span>
+                    <h3 class="caption-title">{featuredPost.title}</h3>
+                    <p class="caption-desc">{featuredPost.excerpt}</p>
+                  </div>
                 </div>
-                <a href={`/posts/${featuredPost.slug}/`} class="read-more-link">
-                  閱讀全文 <span class="arrow">→</span>
-                </a>
-              </div>
+              </a>
             </div>
-          </article>
+          </div>
         </div>
       </section>
 
-      <!-- 🏷️ 2. 分類篩選導航 (Category Tabs) -->
-      <nav class="category-nav" aria-label="文章分類篩選">
-        <div class="category-tabs" id="categoryTabs">
-          {categories.map((cat, idx) => (
-            <button
-              class={`cat-tab ${idx === 0 ? 'is-active' : ''}`}
-              data-category={cat.id}
-              type="button"
-            >
-              <span class="cat-label">{cat.label}</span>
-              <span class="cat-count">{cat.count}</span>
-            </button>
-          ))}
+      <!-- 🔍 2. 分類導航列與即時搜尋欄 (即時動態計數) -->
+      <section class="filter-search-bar" id="all-posts">
+        <div class="cat-pill-group" id="categoryFilter">
+          <button class="filter-tab is-active" data-filter="all" type="button">
+            全部文章 <span class="filter-count">({allPosts.length})</span>
+          </button>
+          <button class="filter-tab" data-filter="security" type="button">
+            系統資安 <span class="filter-count">({securityPosts.length})</span>
+          </button>
+          <button class="filter-tab" data-filter="architecture" type="button">
+            架構雲端 <span class="filter-count">({archPosts.length})</span>
+          </button>
+          <button class="filter-tab" data-filter="design" type="button">
+            前端設計 <span class="filter-count">({designPosts.length})</span>
+          </button>
+          <button class="filter-tab" data-filter="tools" type="button">
+            開源工具 <span class="filter-count">({toolsPosts.length})</span>
+          </button>
+          <button class="filter-tab" data-filter="campus" type="button">
+            校園專案 <span class="filter-count">({campusPosts.length})</span>
+          </button>
         </div>
-      </nav>
 
-      <!-- 📰 3. 主要文章區塊 + 側邊精選欄位 (Main Grid & Sidebar) -->
-      <div class="blog-layout">
-        <!-- 左側文章網格 (3-Column / 2-Column Responsive Card Grid) -->
-        <section class="posts-section">
-          <div class="posts-grid" id="postsGrid">
-            {regularPosts.map((post, idx) => {
-              const meta = getCategoryMeta(post);
+        <div class="search-box-wrap">
+          <input
+            id="searchInput"
+            type="search"
+            class="wp-search-input"
+            placeholder="輸入你想找的知識或關鍵字…"
+            autocomplete="off"
+          />
+          <button class="wp-search-btn" type="button" aria-label="搜尋">
+            搜尋
+          </button>
+        </div>
+      </section>
+
+      <!-- 📰 3. 主內容區（左側文章卡片列表 + 右側標準側欄） -->
+      <div class="main-content-layout">
+        <!-- 左側主版面 (70% 寬度) -->
+        <main class="content-left">
+          <!-- 區塊 1: 最新發布文章 (3 欄式 方形卡片網格) -->
+          <div class="post-area-head">
+            <h2 class="post-area-title" id="sectionTitle">精選文章</h2>
+            <span class="cat-read-all" id="postCountDisplay">顯示中: {allPosts.length} 篇</span>
+          </div>
+
+          <div class="post-list col3" id="postListContainer">
+            {allPosts.map((post, idx) => {
+              const cat = getCategoryInfo(post);
               return (
                 <article
-                  class="post-card"
-                  data-category={meta.class.replace('cat-', '')}
+                  class="wp-post-card"
+                  data-cat={cat.slug}
                   data-title={post.title.toLowerCase()}
                   data-excerpt={post.excerpt.toLowerCase()}
                 >
-                  <a href={`/posts/${post.slug}/`} class="card-img-wrap">
-                    <div class={`card-cover-visual ${meta.class}`}>
-                      <div class="card-watermark">{idx < 9 ? `0${idx + 1}` : idx + 1}</div>
-                      <span class={`card-cat-pill ${meta.class}`}>{meta.tag}</span>
-                    </div>
-                  </a>
+                  <div class="img-wrap">
+                    <!-- 方形俐落幾何裝飾層 -->
+                    <div class="bgs bgs-accent"></div>
+                    <a class="card-thumb-link" href={`/posts/${post.slug}/`}>
+                      <div class="card-thumb-visual" data-theme={cat.slug}>
+                        <span class="card-index-num">#{idx < 9 ? `0${idx + 1}` : idx + 1}</span>
+                        <div class="card-thumb-overlay">
+                          <span class="read-prompt">點擊閱讀</span>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
 
-                  <div class="card-body">
-                    <div class="card-meta">
-                      <span class="meta-date">{post.date}</span>
-                      <span class="meta-dot">·</span>
-                      <span class="meta-read">5 分鐘閱讀</span>
-                    </div>
+                  <div class="card-text-content">
+                    <ul class="post-categories">
+                      <li><a href="#" class="cat-link" data-cat-target={cat.slug}>{cat.name}</a></li>
+                    </ul>
 
-                    <h3 class="card-title">
+                    <h3 class="post-title">
                       <a href={`/posts/${post.slug}/`}>{post.title}</a>
                     </h3>
 
-                    <p class="card-excerpt">{post.excerpt}</p>
+                    <p class="post-excerpt">{post.excerpt}</p>
 
-                    <div class="card-foot">
-                      <div class="author-info">
-                        <img src="/sheep-hd.png" alt="OviNas" class="author-avatar" width="24" height="24" />
-                        <span class="author-name">OviNas</span>
-                      </div>
-                      <a href={`/posts/${post.slug}/`} class="read-more-link">
-                        閱讀 <span class="arrow">→</span>
-                      </a>
+                    <div class="post-meta-footer">
+                      <span class="post-date">{post.date}</span>
+                      <a href={`/posts/${post.slug}/`} class="post-read-more">詳細內容 »</a>
                     </div>
                   </div>
                 </article>
@@ -168,626 +168,666 @@ function getCategoryMeta(post: typeof posts[0]) {
             })}
           </div>
 
-          <!-- 無搜尋結果提示 -->
-          <div class="no-results" id="noResults" hidden>
-            <div class="no-results-icon">🐑</div>
-            <h3>找不到相符的文章</h3>
-            <p>請嘗試更換關鍵字或點選上方的「全部文章」分類。</p>
+          <div class="wp-empty-search" id="emptySearchNotice" style="display: none;">
+            <div class="empty-icon">🔍</div>
+            <h3>抱歉，找不到符合條件的文章！</h3>
+            <p>請嘗試使用其他關鍵字，或點選上方「全部文章」重新檢視。</p>
           </div>
-        </section>
+        </main>
 
-        <!-- 📌 右側精選專欄與作者資訊 (Sidebar) -->
-        <aside class="blog-sidebar">
-          <!-- 站長簡介卡片 -->
-          <div class="sidebar-widget author-widget">
-            <div class="author-card-header">
-              <div class="author-avatar-lg">
-                <img src="/sheep-hd.png" alt="OviNas" width="56" height="56" />
-              </div>
-              <div class="author-details">
-                <h4 class="author-card-name">OviNas</h4>
-                <p class="author-card-title">全端工程師 · 資安愛好者</p>
-                <div class="status-indicator">
-                  <span class="status-dot"></span>
-                  <span>Writing & Building</span>
-                </div>
-              </div>
+        <!-- 📌 右側經典側邊欄 (30% 寬度) -->
+        <aside class="content-sidebar">
+          <!-- 作者介紹框 (Side Author Box) -->
+          <div class="side-widget side-author-box">
+            <div class="author-photo-wrap">
+              <img class="author-photo" src="/sheep-hd.png" alt="OviNas" width="110" height="110" />
             </div>
-            <p class="author-bio">
-              專注於現代 Web 架構設計、高效能前端、系統資安稽核與 Cloudflare 邊緣技術。追求極致細膩的介面質感。
-            </p>
-            <div class="author-tags">
-              <span>#Astro</span>
-              <span>#Svelte</span>
-              <span>#TypeScript</span>
-              <span>#Security</span>
-              <span>#Python</span>
-            </div>
-          </div>
-
-          <!-- 熱門精選榜單 -->
-          <div class="sidebar-widget popular-widget">
-            <h3 class="widget-title">
-              <span class="widget-icon">🔥</span> 熱門精選文章
+            <h3 class="author-name">
+              OviNas <span class="eng-name">/ 站長專欄</span>
             </h3>
-            <ul class="popular-list">
-              {posts.slice(0, 4).map((p, idx) => (
-                <li class="popular-item">
-                  <span class="popular-rank">{idx + 1}</span>
-                  <div class="popular-info">
-                    <a href={`/posts/${p.slug}/`} class="popular-link">
-                      {p.title.replace(/【.*?】/, '')}
-                    </a>
-                    <span class="popular-date">{p.date}</span>
-                  </div>
-                </li>
-              ))}
+            <p class="author-desc">
+              專注於全端系統開發、現代化網站架設、資安滲透防護與效能優化。喜愛探索各類提升生產力的開源工具與極致設計。
+            </p>
+            <div class="author-btn-wrap">
+              <a href="/vip/" class="wp-btn wp-btn-blue-sm">加入 VIP 會員</a>
+            </div>
+          </div>
+
+          <!-- 熱門文章排行 (Popular Posts with Ranked Numbers) -->
+          <div class="side-widget popular-widget" id="popular-side">
+            <h3 class="side-widget-title">
+              <span class="title-square">■</span> 本站熱門排行
+            </h3>
+            <ul class="wpp-list">
+              {allPosts.slice(0, 5).map((p, idx) => {
+                const cat = getCategoryInfo(p);
+                return (
+                  <li class="wpp-item">
+                    <span class={`wpp-rank-badge rank-${idx + 1}`}>{idx + 1}</span>
+                    <div class="wpp-info">
+                      <a href={`/posts/${p.slug}/`} class="wpp-post-title">
+                        {p.title}
+                      </a>
+                      <span class="wpp-date">{p.date} · {cat.name}</span>
+                    </div>
+                  </li>
+                );
+              })}
             </ul>
           </div>
 
-          <!-- 快速分類標籤雲 -->
-          <div class="sidebar-widget tag-widget">
-            <h3 class="widget-title">
-              <span class="widget-icon">🏷️</span> 熱門探索標籤
+          <!-- 熱門標籤雲 (Tag Cloud) -->
+          <div class="side-widget tag-cloud-widget">
+            <h3 class="side-widget-title">
+              <span class="title-square">■</span> 熱門標籤探索
             </h3>
-            <div class="tag-cloud">
-              <a href="#" class="tag-pill" data-tag="資安"># 系統資安</a>
-              <a href="#" class="tag-pill" data-tag="架構"># 巨型專案架構</a>
-              <a href="#" class="tag-pill" data-tag="pwa"># PWA 與 WebPush</a>
-              <a href="#" class="tag-pill" data-tag="設計"># 簡報設計</a>
-              <a href="#" class="tag-pill" data-tag="前端"># 前端工程美學</a>
-              <a href="#" class="tag-pill" data-tag="代理"># 代理清單爬蟲</a>
-              <a href="#" class="tag-pill" data-tag="北商"># 北商學分學程</a>
-              <a href="#" class="tag-pill" data-tag="開源"># GitHub 精選工具</a>
+            <div class="wp-tag-cloud">
+              <button class="wp-tag-btn" data-search="資安" type="button"># 系統資安</button>
+              <button class="wp-tag-btn" data-search="架構" type="button"># 巨型架構</button>
+              <button class="wp-tag-btn" data-search="pwa" type="button"># PWA 應用</button>
+              <button class="wp-tag-btn" data-search="設計" type="button"># 前端設計</button>
+              <button class="wp-tag-btn" data-search="代理" type="button"># 代理清單</button>
+              <button class="wp-tag-btn" data-search="北商" type="button"># 北商學程</button>
+              <button class="wp-tag-btn" data-search="github" type="button"># 開源精選</button>
             </div>
           </div>
         </aside>
       </div>
     </div>
-  </main>
+  </div>
 </BaseLayout>
 
 <style>
-  .blog-page {
-    padding: 2.5rem 0 5rem;
-    position: relative;
-    z-index: 1;
+  /* 🌟 全局容器與經典 WordPress 配色 */
+  .wp-blog-wrapper {
+    background-color: #ffffff;
+    min-height: 100vh;
+    padding-bottom: 5rem;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: #333333;
   }
 
-  /* 🌟 1. Hero 頂部焦點區 */
-  .blog-hero {
-    display: grid;
-    grid-template-columns: 1fr 1.15fr;
-    gap: 3rem;
+  /* 頂部藍色標誌線條 */
+  .wp-top-stripe {
+    height: 5px;
+    background: #0062eb;
+    width: 100%;
+  }
+
+  .wp-container {
+    width: 100%;
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  /* 🔷 1. 經典 Hero 區塊 (Split Hero) */
+  .content-hero-header {
+    display: flex;
+    justify-content: space-between;
     align-items: center;
-    padding: 2.5rem 0 3.2rem;
-    border-bottom: 1px solid var(--border);
+    gap: 2.5rem;
+    padding: 3rem 0 2.5rem;
+    border-bottom: 1px solid #e7e7e7;
+    margin-bottom: 2rem;
   }
 
-  .hero-badge {
+  .hero-left {
+    flex: 0 0 38%;
+  }
+
+  .hero-brand-tag {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.35rem 0.85rem;
-    background: var(--bg-soft);
-    border: 1px solid var(--border);
-    border-radius: 999px;
-    font-size: 0.78rem;
-    letter-spacing: 0.12em;
-    font-weight: 600;
-    color: var(--ink);
-    margin-bottom: 1.2rem;
-  }
-
-  .pulse-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: #27ae60;
-    box-shadow: 0 0 0 2px rgba(39, 174, 96, 0.2);
-  }
-
-  .hero-title {
-    font-family: var(--font-serif);
-    font-size: 2.4rem;
-    line-height: 1.3;
+    gap: 0.4rem;
+    color: #0062eb;
     font-weight: 700;
-    letter-spacing: 0.08em;
-    color: var(--ink);
-    margin: 0 0 1rem;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    margin-bottom: 0.8rem;
   }
 
-  .hero-title-accent {
-    position: relative;
-    display: inline-block;
+  .tag-square {
+    font-size: 0.75rem;
   }
 
-  .hero-title-accent::after {
-    content: '';
-    position: absolute;
-    bottom: 4px;
-    left: 0;
-    width: 100%;
-    height: 8px;
-    background: rgba(28, 28, 28, 0.08);
-    z-index: -1;
-    border-radius: 2px;
+  .hero-main-title {
+    font-size: 2.8rem;
+    font-weight: 900;
+    line-height: 1.15;
+    color: #111111;
+    margin: 0 0 0.8rem;
+    letter-spacing: 2px;
   }
 
-  .hero-desc {
-    font-size: 0.96rem;
-    line-height: 1.7;
-    color: var(--ink-2);
+  .hero-sub-title {
+    font-size: 1.05rem;
+    font-weight: 400;
+    color: #666666;
+    line-height: 1.6;
     margin: 0 0 1.8rem;
-    max-width: 480px;
   }
 
-  .hero-search-wrap {
+  .hero-cta-wrap {
     display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
-    max-width: 440px;
+    gap: 0.8rem;
   }
 
-  .search-input-box {
+  .wp-btn {
+    display: inline-block;
+    padding: 12px 24px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    border-radius: 0px;
+    transition: all 0.2s ease;
+  }
+
+  .wp-btn-blue {
+    background-color: #0062eb;
+    color: #ffffff;
+    border: 1px solid #0062eb;
+  }
+
+  .wp-btn-blue:hover {
+    background-color: #0047bb;
+    color: #ffffff;
+  }
+
+  .wp-btn-dark {
+    background-color: #222222;
+    color: #ffffff;
+    border: 1px solid #222222;
+  }
+
+  .wp-btn-dark:hover {
+    background-color: #0062eb;
+    border-color: #0062eb;
+    color: #ffffff;
+  }
+
+  .hero-right {
+    flex: 0 0 58%;
+  }
+
+  .slider-wrap-header {
+    width: 100%;
     position: relative;
-    display: flex;
-    align-items: center;
   }
 
-  .search-icon {
+  .featured-img-container {
+    position: relative;
+    width: 100%;
+    height: 310px;
+    background: linear-gradient(135deg, #111827 0%, #1f2937 50%, #111827 100%);
+    border-radius: 0px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  }
+
+  .visual-badge {
     position: absolute;
-    left: 1rem;
-    color: var(--ink-3);
+    top: 1.2rem;
+    left: 1.2rem;
+    background-color: #0062eb;
+    color: #ffffff;
+    font-size: 0.82rem;
+    font-weight: 700;
+    padding: 6px 14px;
+    letter-spacing: 1px;
+    z-index: 2;
+  }
+
+  /* 幾何四角 (Square geometric corners) */
+  .geo-corner {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border-color: #f7d002;
+    border-style: solid;
     pointer-events: none;
   }
 
-  .search-input-box input {
+  .geo-corner.top-left {
+    top: 10px;
+    right: 10px;
+    border-width: 3px 3px 0 0;
+  }
+
+  .geo-corner.bottom-right {
+    bottom: 10px;
+    right: 10px;
+    border-width: 0 3px 3px 0;
+  }
+
+  /* 半透明毛玻璃文字底條 */
+  .slider-caption-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
     width: 100%;
-    padding: 0.8rem 1rem 0.8rem 2.7rem;
-    font-size: 0.92rem;
-    background: var(--surface);
-    border: 1px solid var(--border-strong);
-    border-radius: 10px;
-    color: var(--ink);
-    outline: none;
-    box-shadow: 0 2px 8px rgba(28, 28, 28, 0.04);
-    transition: all var(--t);
+    background-color: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(10px);
+    padding: 1.2rem 1.6rem;
+    color: #ffffff;
+    box-sizing: border-box;
+    transition: background-color 0.25s ease;
   }
 
-  .search-input-box input:focus {
-    border-color: var(--ink);
-    box-shadow: 0 0 0 3px rgba(28, 28, 28, 0.08);
+  .featured-img-container:hover .slider-caption-overlay {
+    background-color: rgba(0, 98, 235, 0.85);
   }
 
-  .post-count-badge {
+  .caption-cat {
+    display: inline-block;
+    color: #f7d002;
     font-size: 0.78rem;
-    color: var(--ink-3);
-    letter-spacing: 0.06em;
-    padding-left: 0.2rem;
-  }
-
-  /* 焦點大卡 */
-  .featured-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 8px 30px rgba(28, 28, 28, 0.07);
-    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .featured-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 14px 40px rgba(28, 28, 28, 0.12);
-  }
-
-  .featured-img-wrap {
-    display: block;
-    overflow: hidden;
-    position: relative;
-  }
-
-  .featured-cover-visual {
-    height: 220px;
-    background: linear-gradient(135deg, #1c1c1c 0%, #3a3a3a 100%);
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-  }
-
-  .cover-icon-bg {
-    font-size: 5rem;
-    opacity: 0.25;
-    transform: rotate(-10deg);
-  }
-
-  .featured-ribbon {
-    position: absolute;
-    top: 1rem;
-    left: 1rem;
-    background: #d97706;
-    color: #ffffff;
-    font-size: 0.75rem;
     font-weight: 700;
-    letter-spacing: 0.1em;
-    padding: 0.3rem 0.7rem;
-    border-radius: 999px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    margin-bottom: 0.3rem;
   }
 
-  .card-cat-pill {
-    position: absolute;
-    bottom: 1rem;
-    left: 1rem;
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    padding: 0.25rem 0.65rem;
-    border-radius: 6px;
-    background: rgba(255, 255, 255, 0.95);
-    color: var(--ink);
-    backdrop-filter: blur(8px);
-  }
-
-  .featured-body {
-    padding: 1.6rem 1.8rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-
-  .featured-title {
-    font-family: var(--font-serif);
-    font-size: 1.35rem;
+  .caption-title {
+    font-size: 1.25rem;
     font-weight: 700;
-    line-height: 1.4;
-    letter-spacing: 0.05em;
-    margin: 0;
-  }
-
-  .featured-title a {
-    color: var(--ink);
-    transition: color var(--t);
-  }
-
-  .featured-title a:hover {
-    color: #4a5568;
-  }
-
-  .featured-excerpt {
-    font-size: 0.88rem;
-    line-height: 1.65;
-    color: var(--ink-2);
-    margin: 0;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  /* 🏷️ 2. 分類篩選導航 */
-  .category-nav {
-    margin: 2.5rem 0 2rem;
-    overflow-x: auto;
-    padding-bottom: 0.4rem;
-  }
-
-  .category-tabs {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-  }
-
-  .cat-tab {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.45rem;
-    padding: 0.55rem 1.1rem;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 999px;
-    font-family: var(--font-serif);
-    font-size: 0.88rem;
-    font-weight: 600;
-    color: var(--ink-2);
-    cursor: pointer;
-    white-space: nowrap;
-    transition: all var(--t);
-  }
-
-  .cat-tab:hover {
-    background: var(--bg-soft);
-    color: var(--ink);
-    border-color: var(--ink-3);
-  }
-
-  .cat-tab.is-active {
-    background: var(--ink);
-    color: #ffffff;
-    border-color: var(--ink);
-    box-shadow: 0 4px 12px rgba(28, 28, 28, 0.15);
-  }
-
-  .cat-count {
-    font-size: 0.72rem;
-    padding: 0.1rem 0.4rem;
-    border-radius: 999px;
-    background: rgba(28, 28, 28, 0.08);
-  }
-
-  .cat-tab.is-active .cat-count {
-    background: rgba(255, 255, 255, 0.2);
+    line-height: 1.35;
+    margin: 0 0 0.4rem;
     color: #ffffff;
   }
 
-  /* 📰 3. 主版面 (文章網格 + 側邊欄) */
-  .blog-layout {
-    display: grid;
-    grid-template-columns: 1fr 320px;
-    gap: 2.8rem;
-    align-items: start;
-  }
-
-  /* 文章網格 (2 欄 / 3 欄) */
-  .posts-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.8rem;
-  }
-
-  .post-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 4px 16px rgba(28, 28, 28, 0.04);
-    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s;
-  }
-
-  .post-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 28px rgba(28, 28, 28, 0.08);
-    border-color: rgba(28, 28, 28, 0.3);
-  }
-
-  .card-img-wrap {
-    display: block;
-    overflow: hidden;
-  }
-
-  .card-cover-visual {
-    height: 160px;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #f4f4f0;
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .post-card:hover .card-cover-visual {
-    transform: scale(1.04);
-  }
-
-  /* 類別自訂視覺色調 */
-  .cat-security { background: linear-gradient(135deg, #2c3e50, #34495e); }
-  .cat-arch { background: linear-gradient(135deg, #1e3c72, #2a5298); }
-  .cat-design { background: linear-gradient(135deg, #4b1248, #f0c27b); }
-  .cat-tools { background: linear-gradient(135deg, #134e5e, #71b280); }
-  .cat-campus { background: linear-gradient(135deg, #ba8b02, #181818); }
-  .cat-general { background: linear-gradient(135deg, #434343, #000000); }
-
-  .card-watermark {
-    font-family: var(--font-serif);
-    font-size: 4rem;
-    font-weight: 900;
-    color: rgba(255, 255, 255, 0.15);
-    letter-spacing: 0.05em;
-  }
-
-  .card-body {
-    padding: 1.3rem 1.4rem;
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    gap: 0.65rem;
-  }
-
-  .card-meta {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    font-size: 0.78rem;
-    color: var(--ink-3);
-    letter-spacing: 0.05em;
-  }
-
-  .card-title {
-    font-family: var(--font-serif);
-    font-size: 1.12rem;
-    font-weight: 700;
-    line-height: 1.42;
-    letter-spacing: 0.04em;
-    margin: 0;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  .card-title a {
-    color: var(--ink);
-    transition: color var(--t);
-  }
-
-  .card-title a:hover {
-    color: #4a5568;
-  }
-
-  .card-excerpt {
-    font-size: 0.84rem;
-    line-height: 1.6;
-    color: var(--ink-2);
-    margin: 0;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    flex: 1;
-  }
-
-  .card-foot {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-top: 0.9rem;
-    margin-top: 0.4rem;
-    border-top: 1px dashed var(--border);
-  }
-
-  .author-info {
-    display: flex;
-    align-items: center;
-    gap: 0.45rem;
-  }
-
-  .author-avatar {
-    border-radius: 50%;
-    background: var(--bg-soft);
-    object-fit: contain;
-  }
-
-  .author-name {
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: var(--ink);
-  }
-
-  .read-more-link {
-    font-size: 0.82rem;
-    font-weight: 600;
-    color: var(--ink);
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25rem;
-    transition: gap 0.2s ease;
-  }
-
-  .read-more-link .arrow {
-    transition: transform 0.2s ease;
-  }
-
-  .post-card:hover .read-more-link .arrow {
-    transform: translateX(3px);
-  }
-
-  /* 側邊欄樣式 */
-  .blog-sidebar {
-    display: flex;
-    flex-direction: column;
-    gap: 1.8rem;
-  }
-
-  .sidebar-widget {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 1.5rem;
-    box-shadow: 0 4px 16px rgba(28, 28, 28, 0.04);
-  }
-
-  /* 作者卡片 */
-  .author-card-header {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 1rem;
-  }
-
-  .author-avatar-lg {
-    width: 56px;
-    height: 56px;
-    border-radius: 14px;
-    background: var(--bg-soft);
-    border: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-  }
-
-  .author-card-name {
-    font-family: var(--font-serif);
-    font-size: 1.15rem;
-    font-weight: 700;
-    margin: 0 0 0.2rem;
-    color: var(--ink);
-  }
-
-  .author-card-title {
-    font-size: 0.78rem;
-    color: var(--ink-3);
-    margin: 0 0 0.35rem;
-  }
-
-  .status-indicator {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    font-size: 0.72rem;
-    color: #27ae60;
-    font-weight: 600;
-  }
-
-  .status-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: #27ae60;
-  }
-
-  .author-bio {
+  .caption-desc {
     font-size: 0.85rem;
-    line-height: 1.6;
-    color: var(--ink-2);
-    margin: 0 0 1rem;
+    line-height: 1.5;
+    color: #dddddd;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
-  .author-tags {
+  /* 🔍 2. 篩選與搜尋列 */
+  .filter-search-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.2rem 0;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #e7e7e7;
+  }
+
+  .cat-pill-group {
     display: flex;
     flex-wrap: wrap;
     gap: 0.4rem;
   }
 
-  .author-tags span {
-    font-size: 0.75rem;
-    padding: 0.2rem 0.55rem;
-    background: var(--bg-soft);
-    border-radius: 6px;
-    color: var(--ink-2);
+  .filter-tab {
+    background-color: #f3f4f6;
+    color: #4b5563;
+    border: none;
+    padding: 8px 16px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 0px;
+    transition: all 0.2s ease;
   }
 
-  /* 熱門榜單 */
-  .widget-title {
-    font-family: var(--font-serif);
-    font-size: 1.02rem;
+  .filter-tab:hover {
+    background-color: #e5e7eb;
+    color: #111827;
+  }
+
+  .filter-tab.is-active {
+    background-color: #0062eb;
+    color: #ffffff;
+  }
+
+  .filter-count {
+    font-size: 0.78rem;
+    opacity: 0.85;
+  }
+
+  .search-box-wrap {
+    display: flex;
+    align-items: center;
+    flex: 0 0 320px;
+  }
+
+  .wp-search-input {
+    width: 100%;
+    padding: 9px 12px;
+    font-size: 0.88rem;
+    border: 1px solid #d1d5db;
+    border-right: none;
+    outline: none;
+    border-radius: 0px;
+    background: #ffffff;
+  }
+
+  .wp-search-input:focus {
+    border-color: #0062eb;
+  }
+
+  .wp-search-btn {
+    background-color: #0062eb;
+    color: #ffffff;
+    border: 1px solid #0062eb;
+    padding: 9px 18px;
+    font-size: 0.88rem;
     font-weight: 700;
-    letter-spacing: 0.08em;
-    color: var(--ink);
+    cursor: pointer;
+    border-radius: 0px;
+    transition: background-color 0.2s ease;
+  }
+
+  .wp-search-btn:hover {
+    background-color: #0047bb;
+  }
+
+  /* 📰 3. 主內容與側欄排版 */
+  .main-content-layout {
+    display: flex;
+    justify-content: space-between;
+    gap: 2.8rem;
+  }
+
+  .content-left {
+    flex: 0 0 calc(70% - 1.4rem);
+  }
+
+  .content-sidebar {
+    flex: 0 0 calc(30% - 1.4rem);
+  }
+
+  /* 標題欄條 (Classic post-area-head) */
+  .post-area-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    border-bottom: 3px solid #eeeeee;
+    transition: border-bottom 0.2s ease;
+  }
+
+  .post-area-head:hover {
+    border-bottom: 3px solid #f7d002;
+  }
+
+  .post-area-title {
+    background-color: #0062eb;
+    color: #ffffff;
+    display: inline-block;
+    padding: 12px 24px;
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin: 0;
+  }
+
+  .cat-read-all {
+    display: block;
+    color: #4b5563;
+    background-color: #eeeeee;
+    font-size: 0.88rem;
+    font-weight: 600;
+    padding: 12px 20px;
+    transition: background-color 0.2s ease;
+  }
+
+  .post-area-head:hover .cat-read-all {
+    background-color: #f7d002;
+    color: #111111;
+  }
+
+  /* 3 欄方形卡片網格 (post-list col3) */
+  .post-list.col3 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+
+  .wp-post-card {
+    background: #ffffff;
+    border-bottom: 2px solid #f3f4f6;
+    padding-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease;
+  }
+
+  .wp-post-card:hover {
+    transform: translateY(-3px);
+  }
+
+  .img-wrap {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    margin-bottom: 1rem;
+  }
+
+  .card-thumb-link {
+    display: block;
+  }
+
+  .card-thumb-visual {
+    width: 100%;
+    height: 180px;
+    background: #222222;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0px;
+    transition: background-color 0.3s ease;
+  }
+
+  .card-thumb-visual[data-theme="security"] { background: linear-gradient(135deg, #1e293b, #0f172a); }
+  .card-thumb-visual[data-theme="architecture"] { background: linear-gradient(135deg, #0369a1, #0c4a6e); }
+  .card-thumb-visual[data-theme="design"] { background: linear-gradient(135deg, #701a75, #4a044e); }
+  .card-thumb-visual[data-theme="tools"] { background: linear-gradient(135deg, #15803d, #14532d); }
+  .card-thumb-visual[data-theme="campus"] { background: linear-gradient(135deg, #b45309, #78350f); }
+
+  .card-index-num {
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: rgba(255, 255, 255, 0.18);
+    letter-spacing: 2px;
+  }
+
+  .card-thumb-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 98, 235, 0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+  }
+
+  .wp-post-card:hover .card-thumb-overlay {
+    opacity: 1;
+  }
+
+  .read-prompt {
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: 1px;
+    border: 2px solid #ffffff;
+    padding: 6px 16px;
+  }
+
+  /* 文章內文 */
+  .card-text-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  .post-categories {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 0.5rem;
+    display: flex;
+    gap: 0.4rem;
+  }
+
+  .cat-link {
+    color: #0062eb;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .cat-link:hover {
+    color: #0047bb;
+    text-decoration: underline;
+  }
+
+  .post-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    line-height: 1.4;
+    margin: 0 0 0.6rem;
+  }
+
+  .post-title a {
+    color: #222222;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .post-title a:hover {
+    color: #0062eb;
+  }
+
+  .post-excerpt {
+    font-size: 0.86rem;
+    line-height: 1.6;
+    color: #666666;
+    margin: 0 0 1rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    flex: 1;
+  }
+
+  .post-meta-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+    color: #999999;
+    border-top: 1px solid #eeeeee;
+    padding-top: 0.75rem;
+  }
+
+  .post-read-more {
+    color: #0062eb;
+    font-weight: 700;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .post-read-more:hover {
+    color: #0047bb;
+  }
+
+  /* 📌 側邊欄樣式 */
+  .side-widget {
+    background: #ffffff;
+    margin-bottom: 2.2rem;
+  }
+
+  /* 作者卡片 (Side Author Box) */
+  .side-author-box {
+    text-align: center;
+    border: 1px solid #e7e7e7;
+    padding: 2rem 1.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  }
+
+  .author-photo-wrap {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 1.2rem;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid #0062eb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f9f9f9;
+  }
+
+  .author-photo {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+  }
+
+  .author-name {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #111111;
+    margin: 0 0 0.8rem;
+  }
+
+  .author-name .eng-name {
+    font-size: 0.88rem;
+    font-weight: 400;
+    color: #999999;
+  }
+
+  .author-desc {
+    font-size: 0.86rem;
+    line-height: 1.6;
+    color: #666666;
+    margin: 0 0 1.2rem;
+  }
+
+  .wp-btn-blue-sm {
+    background-color: #0062eb;
+    color: #ffffff;
+    padding: 9px 20px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.2s ease;
+  }
+
+  .wp-btn-blue-sm:hover {
+    background-color: #0047bb;
+  }
+
+  /* 熱門文章側欄 (#popular-side) */
+  .side-widget-title {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: #111111;
     margin: 0 0 1.2rem;
     padding-bottom: 0.6rem;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 3px solid #222222;
     display: flex;
     align-items: center;
     gap: 0.4rem;
   }
 
-  .popular-list {
+  .side-widget-title .title-square {
+    color: #0062eb;
+    font-size: 0.85rem;
+  }
+
+  .wpp-list {
     list-style: none;
     padding: 0;
     margin: 0;
@@ -796,132 +836,162 @@ function getCategoryMeta(post: typeof posts[0]) {
     gap: 1rem;
   }
 
-  .popular-item {
+  .wpp-item {
     display: flex;
     align-items: flex-start;
-    gap: 0.8rem;
+    gap: 0.75rem;
+    padding-bottom: 0.9rem;
+    border-bottom: 1px solid #f0f0f0;
   }
 
-  .popular-rank {
-    font-family: var(--font-serif);
-    font-size: 1.15rem;
+  .wpp-rank-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    font-size: 0.8rem;
     font-weight: 800;
-    color: var(--ink-3);
-    min-width: 1.5rem;
-    line-height: 1.2;
+    background: #eeeeee;
+    color: #333333;
+    flex-shrink: 0;
   }
 
-  .popular-item:nth-child(1) .popular-rank { color: #d97706; }
-  .popular-item:nth-child(2) .popular-rank { color: #4b5563; }
-  .popular-item:nth-child(3) .popular-rank { color: #92400e; }
+  .wpp-rank-badge.rank-1 { background: #0062eb; color: #ffffff; }
+  .wpp-rank-badge.rank-2 { background: #f7d002; color: #111111; }
+  .wpp-rank-badge.rank-3 { background: #222222; color: #ffffff; }
 
-  .popular-info {
+  .wpp-info {
     display: flex;
     flex-direction: column;
     gap: 0.2rem;
   }
 
-  .popular-link {
-    font-size: 0.86rem;
-    font-weight: 600;
+  .wpp-post-title {
+    font-size: 0.88rem;
+    font-weight: 700;
     line-height: 1.4;
-    color: var(--ink);
-    transition: color var(--t);
+    color: #333333;
+    text-decoration: none;
+    transition: color 0.2s ease;
   }
 
-  .popular-link:hover {
-    color: #4a5568;
+  .wpp-post-title:hover {
+    color: #0062eb;
   }
 
-  .popular-date {
+  .wpp-date {
     font-size: 0.75rem;
-    color: var(--ink-3);
+    color: #999999;
   }
 
   /* 標籤雲 */
-  .tag-cloud {
+  .wp-tag-cloud {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: 0.4rem;
   }
 
-  .tag-pill {
-    font-size: 0.78rem;
-    padding: 0.35rem 0.75rem;
-    background: var(--bg-soft);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    color: var(--ink-2);
-    transition: all var(--t);
+  .wp-tag-btn {
+    background: #f3f4f6;
+    border: 1px solid #e5e7eb;
+    color: #4b5563;
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 0px;
+    transition: all 0.2s ease;
   }
 
-  .tag-pill:hover {
-    background: var(--ink);
+  .wp-tag-btn:hover {
+    background: #0062eb;
     color: #ffffff;
-    border-color: var(--ink);
+    border-color: #0062eb;
   }
 
-  .no-results {
-    grid-column: 1 / -1;
+  .wp-empty-search {
     text-align: center;
     padding: 4rem 1rem;
-    background: var(--surface);
-    border: 1px dashed var(--border-strong);
-    border-radius: 14px;
+    background: #f9fafb;
+    border: 1px dashed #d1d5db;
+    margin-top: 1.5rem;
   }
 
-  .no-results-icon {
-    font-size: 3rem;
-    margin-bottom: 0.8rem;
+  .empty-icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
   }
 
   /* 📱 RWD 響應式 */
   @media (max-width: 1024px) {
-    .blog-hero {
-      grid-template-columns: 1fr;
-      gap: 2rem;
+    .content-hero-header {
+      flex-direction: column;
+      align-items: flex-start;
     }
-    .blog-layout {
-      grid-template-columns: 1fr;
+    .hero-left, .hero-right {
+      flex: 0 0 100%;
+      width: 100%;
+    }
+    .main-content-layout {
+      flex-direction: column;
+    }
+    .content-left, .content-sidebar {
+      flex: 0 0 100%;
+      width: 100%;
     }
   }
 
   @media (max-width: 768px) {
-    .posts-grid {
+    .post-list.col3 {
       grid-template-columns: 1fr;
     }
-    .hero-title {
-      font-size: 1.85rem;
+    .filter-search-bar {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .search-box-wrap {
+      flex: 1;
     }
   }
 </style>
 
 <script>
-  // 🔍 即時搜尋與分類標籤篩選腳本
-  const searchInput = document.getElementById('blogSearchInput') as HTMLInputElement;
-  const categoryTabs = document.querySelectorAll('.cat-tab');
-  const postCards = document.querySelectorAll('.post-card');
-  const noResults = document.getElementById('noResults');
-  const countBadge = document.getElementById('postCountBadge');
+  // ⚡ 即時分類切換、搜尋與計數功能 (Dynamic Filtering & Real-time Counting)
+  const searchInput = document.getElementById('searchInput') as HTMLInputElement;
+  const filterTabs = document.querySelectorAll('.filter-tab');
+  const postCards = document.querySelectorAll('.wp-post-card');
+  const emptyNotice = document.getElementById('emptySearchNotice');
+  const countDisplay = document.getElementById('postCountDisplay');
+  const sectionTitle = document.getElementById('sectionTitle');
 
-  let activeCategory = 'all';
-  let searchQuery = '';
+  let currentCategory = 'all';
+  let currentSearchQuery = '';
 
-  function filterPosts() {
+  const categoryNames: Record<string, string> = {
+    all: '精選文章',
+    security: '系統資安文章',
+    architecture: '架構雲端文章',
+    design: '前端設計文章',
+    tools: '開源工具文章',
+    campus: '校園專案文章',
+  };
+
+  function updatePosts() {
     let visibleCount = 0;
 
     postCards.forEach((card) => {
       const el = card as HTMLElement;
-      const cardCategory = el.dataset.category || '';
-      const cardTitle = el.dataset.title || '';
-      const cardExcerpt = el.dataset.excerpt || '';
+      const cardCategory = el.getAttribute('data-cat') || '';
+      const cardTitle = el.getAttribute('data-title') || '';
+      const cardExcerpt = el.getAttribute('data-excerpt') || '';
 
-      const matchesCat = activeCategory === 'all' || cardCategory === activeCategory;
-      const matchesSearch = searchQuery === '' ||
-        cardTitle.includes(searchQuery) ||
-        cardExcerpt.includes(searchQuery);
+      const matchCategory = currentCategory === 'all' || cardCategory === currentCategory;
+      const matchSearch = currentSearchQuery === '' ||
+        cardTitle.includes(currentSearchQuery) ||
+        cardExcerpt.includes(currentSearchQuery);
 
-      if (matchesCat && matchesSearch) {
+      if (matchCategory && matchSearch) {
         el.style.display = 'flex';
         visibleCount++;
       } else {
@@ -929,44 +999,66 @@ function getCategoryMeta(post: typeof posts[0]) {
       }
     });
 
-    if (countBadge) {
-      countBadge.textContent = `共 ${visibleCount} 篇精選文章`;
+    // 更新計數顯示
+    if (countDisplay) {
+      countDisplay.textContent = `顯示中: ${visibleCount} 篇`;
     }
 
-    if (noResults) {
-      noResults.hidden = visibleCount > 0;
+    // 更新區塊標題
+    if (sectionTitle) {
+      sectionTitle.textContent = currentSearchQuery
+        ? `搜尋結果: 「${currentSearchQuery}」`
+        : (categoryNames[currentCategory] || '精選文章');
+    }
+
+    // 無結果提示
+    if (emptyNotice) {
+      emptyNotice.style.display = visibleCount === 0 ? 'block' : 'none';
     }
   }
 
-  // 分類切換
-  categoryTabs.forEach((tab) => {
+  // 1. 分類標籤點擊事件
+  filterTabs.forEach((tab) => {
     tab.addEventListener('click', () => {
-      categoryTabs.forEach((t) => t.classList.remove('is-active'));
+      filterTabs.forEach((t) => t.classList.remove('is-active'));
       tab.classList.add('is-active');
-      activeCategory = tab.getAttribute('data-category') || 'all';
-      filterPosts();
+      currentCategory = tab.getAttribute('data-filter') || 'all';
+      updatePosts();
     });
   });
 
-  // 即時搜尋
+  // 2. 搜尋框即時輸入
   if (searchInput) {
     searchInput.addEventListener('input', (e) => {
-      searchQuery = (e.target as HTMLInputElement).value.trim().toLowerCase();
-      filterPosts();
+      currentSearchQuery = (e.target as HTMLInputElement).value.trim().toLowerCase();
+      updatePosts();
     });
   }
 
-  // 點擊標籤雲快速過濾
-  document.querySelectorAll('.tag-pill').forEach((pill) => {
-    pill.addEventListener('click', (e) => {
-      e.preventDefault();
-      const tag = pill.getAttribute('data-tag') || '';
+  // 3. 標籤雲快速過濾
+  document.querySelectorAll('.wp-tag-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const query = btn.getAttribute('data-search') || '';
       if (searchInput) {
-        searchInput.value = tag;
-        searchQuery = tag.toLowerCase();
-        filterPosts();
-        searchInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        searchInput.value = query;
+        currentSearchQuery = query.toLowerCase();
+        updatePosts();
+        document.getElementById('all-posts')?.scrollIntoView({ behavior: 'smooth' });
       }
+    });
+  });
+
+  // 4. 卡片分類標籤點擊
+  document.querySelectorAll('.cat-link').forEach((link) => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = link.getAttribute('data-cat-target') || 'all';
+      filterTabs.forEach((tab) => {
+        if (tab.getAttribute('data-filter') === target) {
+          (tab as HTMLElement).click();
+          document.getElementById('all-posts')?.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
     });
   });
 </script>
