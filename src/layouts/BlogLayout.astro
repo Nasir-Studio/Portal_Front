@@ -44,18 +44,11 @@ const searchIndexJson = JSON.stringify(
   <!-- 🔷 1. 獨立 自媒體經典導覽列 (Main Header) -->
   <header id="main-header" class="main-header">
     <div class="container header-row">
-      <!-- 經典 75px 3D 浮動 Logo (帶有經典羊 Icon) -->
+      <!-- 🐑 經典 Logo：自然原版黑色羊標誌，無多餘橘色方形背景 -->
       <div class="logo">
-        <div class="img-wrap logo-img-wrap">
-          <div class="bgs bgs1"></div>
-          <div class="bgs bgs2"></div>
-          <div class="bgs bgs3"></div>
-          <div class="bgs bgs4"></div>
-          <a class="bgs bgs5 logo-link" href="/blog/" aria-label="返回部落格首頁">
-            <img src="/sheep-hd.png" alt="OviNas 羊" class="logo-sheep-icon" />
-          </a>
-        </div>
-        
+        <a class="logo-link" href="/blog/" aria-label="返回部落格首頁" title="OviNas 首頁">
+          <img src="/sheep-hd.png" alt="OviNas" class="logo-sheep-icon" width="52" height="52" />
+        </a>
       </div>
 
       <!-- 右側主選單 (含下拉選單、圓形切換鈕、膠囊按鈕) -->
@@ -927,67 +920,38 @@ const searchIndexJson = JSON.stringify(
     height: 72px;
   }
 
-  .logo {
+    .logo {
     display: flex;
     align-items: center;
-  }
-
-  /* 3D 浮動 75px 方塊 Logo (.bgs1 ~ .bgs5) */
-  .logo-img-wrap {
-    position: relative;
-    width: 70px;
-    height: 70px;
-    margin: 0;
-    flex-shrink: 0;
-    transition: all 0.25s ease;
-  }
-
-  .main-header.min-fixed .logo-img-wrap {
-    width: 52px;
-    height: 52px;
   }
 
   .logo-link {
-    width: 70px;
-    height: 70px;
-    background-color: #ff6b00;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
+    background: transparent;
     text-decoration: none;
-    border-radius: 6px;
-    transition: all 0.25s ease;
-  }
-
-  .main-header.min-fixed .logo-link {
-    width: 52px;
-    height: 52px;
+    padding: 0;
+    transition: transform 0.2s ease, opacity 0.2s ease;
   }
 
   .logo-sheep-icon {
-    width: 46px;
-    height: 46px;
+    width: 52px;
+    height: 52px;
     object-fit: contain;
-    filter: brightness(0) invert(1);
-    transition: transform 0.2s ease;
+    filter: none; /* 自然原版黑色羊，不反白，完全不需要橘色方塊 */
+    display: block;
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
 
   .main-header.min-fixed .logo-sheep-icon {
-    width: 34px;
-    height: 34px;
+    width: 42px;
+    height: 42px;
   }
 
-  .logo-img-wrap:hover .logo-link {
-    background-color: #222222;
-  }
-
-  .logo-img-wrap:hover .logo-sheep-icon {
+  .logo-link:hover .logo-sheep-icon {
     transform: scale(1.1);
   }
-
-  .logo-img-wrap .bgs1 { border-right: 0.6rem solid #ff6b00; }
-  .logo-img-wrap .bgs2 { border-top: 0.6rem solid #ff6b00; }
-  .logo-img-wrap .bgs3, .logo-img-wrap .bgs4 { background: #ff6b00; }
 
   
 
