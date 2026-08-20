@@ -21,26 +21,45 @@ const topicCategories = [
     id: 'sec',
     name: '系統資安',
     posts: posts.filter(p => p.slug.includes('security') || p.slug.includes('audit')),
+    listPosts: [
+      { title: 'CVSS v4.0 漏洞滲透分級實務評估指南', slug: 'security-research-report' },
+      { title: 'OWASP Top 10 與 CWE 身分證編號對照手冊', slug: 'security-research-report' },
+      { title: '全端架構常見九大攻擊手法特徵防禦矩陣', slug: 'security-research-report' },
+      { title: '結構化風險日誌標準規範與 AI Agent 反擊', slug: 'security-research-report' },
+    ],
   },
   {
     id: 'arch',
     name: '巨型架構',
     posts: posts.filter(p => p.slug.includes('architecture') || p.slug.includes('pwa') || p.slug.includes('windows')),
+    listPosts: [
+      { title: '現代企業級全端大型 Web 架構規範白皮書', slug: 'tech-notes-architecture' },
+      { title: 'Cloudflare Pages 與 Edge Functions 邊緣部署實務', slug: 'cf-pages-pwa-webpush' },
+      { title: 'PWA WebPush 離線推播與 Service Worker 快取機制', slug: 'cf-pages-pwa-webpush' },
+      { title: '高效能開發環境調校與極簡工作流指南', slug: 'windows-experience-freestyle' },
+    ],
   },
   {
     id: 'fe',
     name: '前端工程',
     posts: posts.filter(p => p.slug.includes('design') || p.slug.includes('front-end') || p.slug.includes('presentation')),
+    listPosts: [
+      { title: '從零打造高質感自媒體部落格排版美學', slug: 'front-end-design' },
+      { title: '響應式 RWD 佈局與貝茲曲線動畫實踐', slug: 'front-end-design' },
+      { title: '簡報邏輯與工程師介面視覺傳達技巧', slug: 'presentation-design-logic' },
+      { title: 'TypeScript 與 Astro 現代靜態站點極速構建', slug: 'front-end-design' },
+    ],
   },
   {
     id: 'tools',
     name: '開源工具',
     posts: posts.filter(p => p.slug.includes('tool') || p.slug.includes('proxy') || p.slug.includes('github') || p.slug.includes('ig')),
-  },
-  {
-    id: 'campus',
-    name: '專案實戰',
-    posts: posts.filter(p => p.slug.includes('ntub') || p.slug.includes('exam')),
+    listPosts: [
+      { title: '精選 GitHub 開發者神器與高效率工具箱', slug: 'github-open-source-tools' },
+      { title: '免費代理伺服器 Proxy 名單爬取與驗證模組', slug: 'proxy-list-tools' },
+      { title: 'Instagram 訊息收回管理與 API 實作探討', slug: 'ig-unsend-tool' },
+      { title: 'AI 歷屆考古題索引與智慧讀書計畫系統', slug: 'ai-planner-past-exam-info' },
+    ],
   },
 ];
 
@@ -216,11 +235,11 @@ function getPostCategory(post: typeof posts[0]) {
         </div>
       </section>
 
-      <!-- 📑 4. 經典「主題閱讀」區塊 (.content-area-cats-read) -->
-      <section class="content-area-cats-read">
+      <!-- 📑 4. 100% 精準對齊經典「主題閱讀」區塊 (.content-area-cats-read) -->
+      <div class="content-area-cats-read">
         <h2 class="post-area-title2">主題閱讀</h2>
 
-        <!-- 主題分類切換 Tab -->
+        <!-- 主題分類切換 Tab (灰色背景 + 暖橙色 Active) -->
         <div class="cat-tabs-wrap">
           <ul class="cat-tabs" id="topicTabs">
             {topicCategories.map((cat, idx) => (
@@ -231,12 +250,13 @@ function getPostCategory(post: typeof posts[0]) {
           </ul>
         </div>
 
-        <!-- 各主題圖文內容展示 (.switch-content) -->
+        <!-- 各主題展示 (.switch-content: 70% .pic-area + 30% .list-area) -->
         <div class="topic-contents-wrapper">
           {topicCategories.map((cat, idx) => (
             <div class={`switch-content ${idx === 0 ? 'active' : ''}`} id={`topic-${cat.id}`}>
+              <!-- 左側圖片區域 (70% 寬度) -->
               <div class="pic-area">
-                <!-- 左側主大圖 (64% 寬度) -->
+                <!-- 左側主圖 (64% 寬度) -->
                 {cat.posts[0] && (
                   <div class="pic-left">
                     <div class="img-wrap">
@@ -245,41 +265,42 @@ function getPostCategory(post: typeof posts[0]) {
                       <div class="bgs bgs3"></div>
                       <div class="bgs bgs4"></div>
                       <a class="bgs bgs5" href={`/posts/${cat.posts[0].slug}/`}>
-                        <div class="pic-main-img-box">
-                          <img src={`/banners/${cat.posts[0].slug}.jpg`} alt={cat.posts[0].title} class="topic-main-photo" />
-                          <div class="topic-img-title-overlay">
-                            <span>{cat.posts[0].title}</span>
-                          </div>
-                        </div>
+                        <img src={`/banners/${cat.posts[0].slug}.jpg`} alt={cat.posts[0].title} class="topic-cover-img" />
                       </a>
                     </div>
                   </div>
                 )}
 
-                <!-- 右側雙副圖 (33% 寬度) -->
+                <!-- 右側雙副圖 (30% 寬度) -->
                 <div class="pic-right">
                   {cat.posts.slice(1, 3).map((subPost) => (
-                    <div class="img-wrap sub-topic-wrap">
+                    <div class="img-wrap">
                       <div class="bgs bgs1"></div>
                       <div class="bgs bgs2"></div>
                       <div class="bgs bgs3"></div>
                       <div class="bgs bgs4"></div>
                       <a class="bgs bgs5" href={`/posts/${subPost.slug}/`}>
-                        <div class="pic-sub-img-box">
-                          <img src={`/banners/${subPost.slug}.jpg`} alt={subPost.title} class="topic-sub-photo" />
-                          <div class="topic-sub-title-overlay">
-                            <span>{subPost.title}</span>
-                          </div>
-                        </div>
+                        <img src={`/banners/${subPost.slug}.jpg`} alt={subPost.title} class="topic-cover-img" />
                       </a>
                     </div>
                   ))}
                 </div>
               </div>
+
+              <!-- 右側文字清單區域 (30% 寬度) -->
+              <div class="list-area">
+                <ul>
+                  {cat.listPosts.map((item) => (
+                    <li>
+                      <a href={`/posts/${item.slug}/`}>{item.title}</a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           ))}
         </div>
-      </section>
+      </div>
     </div>
   </div>
 </BlogLayout>
@@ -774,173 +795,127 @@ function getPostCategory(post: typeof posts[0]) {
     color: #ff6b00;
   }
 
-  /* 📑 4. 經典「主題閱讀」區塊樣式 (.content-area-cats-read) */
+  /* 📑 4. 100% 精準對齊經典「主題閱讀」區塊樣式 (.content-area-cats-read) */
   .content-area-cats-read {
     margin-bottom: 4rem;
   }
 
   .post-area-title2 {
     color: #333333;
-    font-size: 26px;
-    padding: 14px 25px;
+    font-size: 28px;
+    padding: 15px 25px;
     letter-spacing: 2px;
-    border-top: 1px solid #d1d5db;
-    border-bottom: 1px solid #d1d5db;
+    border-top: 1px solid #cccccc;
+    border-bottom: 1px solid #cccccc;
     text-align: center;
-    margin: 0 0 2rem;
+    display: block;
+    margin: 0 0 0;
     font-weight: 700;
   }
 
   .cat-tabs-wrap {
-    margin-bottom: 1.5rem;
+    margin-bottom: 0;
   }
 
-  .cat-tabs {
+  .content-area-cats-read ul.cat-tabs {
     display: flex;
-    list-style: none;
+    border-bottom: 1px solid #eeeeee;
+    flex-wrap: wrap;
     padding: 0;
     margin: 0;
-    border-bottom: 1px solid #e5e7eb;
-    background: #f9fafb;
+    list-style: none;
   }
 
-  .cat-tab-btn {
-    flex: 1;
-    text-align: center;
+  .content-area-cats-read ul.cat-tabs li {
     cursor: pointer;
-    color: #444444;
-    padding: 14px 18px;
+    color: #333333;
+    display: inline-block;
+    padding: 15px 25px;
+    letter-spacing: 2px;
+    background: #efefef;
+    border-right: 1px solid #dfdfdf;
     font-size: 16px;
     font-weight: 500;
-    background: #f3f4f6;
-    border-right: 1px solid #e5e7eb;
+    flex: 1;
+    text-align: center;
     transition: all 0.2s ease;
   }
 
-  .cat-tab-btn:last-child {
+  .content-area-cats-read ul.cat-tabs li:last-child {
     border-right: none;
   }
 
-  .cat-tab-btn:hover {
-    background-color: #e5e7eb;
-    color: #111111;
-  }
-
-  .cat-tab-btn.active {
+  .content-area-cats-read ul.cat-tabs li.active {
     background-color: #ff6b00;
     color: #ffffff;
   }
 
-  .switch-content {
+  .content-area-cats-read .switch-content {
     display: none;
-    animation: fadeIn 0.3s ease;
   }
 
-  .switch-content.active {
-    display: block;
-  }
-
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(6px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .pic-area {
+  .content-area-cats-read .switch-content.active {
     display: flex;
-    gap: 1.5rem;
+    justify-content: space-between;
+    margin-top: 25px;
   }
 
-  .pic-left {
-    width: 65%;
+  .content-area-cats-read .pic-area {
+    width: 70%;
+    display: flex;
   }
 
-  .pic-main-img-box {
-    position: relative;
-    width: 100%;
-    height: 380px;
-    overflow: hidden;
-    background: #111111;
+  .content-area-cats-read .pic-area .pic-left {
+    width: 64%;
+    margin-right: 15px;
   }
 
-  .topic-main-photo {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    transition: transform 0.3s ease;
-  }
-
-  .img-wrap:hover .topic-main-photo {
-    transform: scale(1.03);
-  }
-
-  .topic-img-title-overlay {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.75) 100%);
-    padding: 24px 20px 14px;
-    box-sizing: border-box;
-  }
-
-  .topic-img-title-overlay span {
-    color: #ffffff;
-    font-size: 20px;
-    font-weight: 700;
-    line-height: 1.35;
-  }
-
-  .pic-right {
-    width: 35%;
+  .content-area-cats-read .pic-area .pic-right {
+    width: 30%;
     display: flex;
     flex-direction: column;
-    gap: 1.2rem;
   }
 
-  .sub-topic-wrap {
-    margin-bottom: 0;
+  .content-area-cats-read .pic-area .pic-right .img-wrap:first-child {
+    margin-bottom: 14px;
   }
 
-  .pic-sub-img-box {
-    position: relative;
+  .topic-cover-img {
     width: 100%;
-    height: 180px;
-    overflow: hidden;
-    background: #111111;
-  }
-
-  .topic-sub-photo {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: auto;
     display: block;
-    transition: transform 0.3s ease;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
   }
 
-  .img-wrap:hover .topic-sub-photo {
-    transform: scale(1.04);
+  .content-area-cats-read .list-area {
+    width: 28%;
+    padding-left: 10px;
   }
 
-  .topic-sub-title-overlay {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.75) 100%);
-    padding: 14px 12px 8px;
-    box-sizing: border-box;
+  .content-area-cats-read .list-area ul {
+    margin: 10px 0;
+    padding: 0;
+    list-style: none;
   }
 
-  .topic-sub-title-overlay span {
-    color: #ffffff;
-    font-size: 14px;
-    font-weight: 700;
-    line-height: 1.3;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+  .content-area-cats-read .list-area ul li {
+    border-bottom: 1px solid #dddddd;
+  }
+
+  .content-area-cats-read .list-area ul li a {
+    display: inline-block;
+    padding: 7px 0;
+    line-height: 2rem;
+    color: #333333;
+    font-size: 15px;
+    text-decoration: none;
+    font-weight: 400;
+    transition: color 0.2s ease;
+  }
+
+  .content-area-cats-read .list-area ul li a:hover {
+    color: #ff6b00;
   }
 
   /* 📌 側邊欄樣式 */
@@ -1119,16 +1094,23 @@ function getPostCategory(post: typeof posts[0]) {
     .recommend-posts-grid {
       grid-template-columns: 1fr;
     }
-    .pic-area {
+    .content-area-cats-read .switch-content.active {
       flex-direction: column;
     }
-    .pic-left, .pic-right {
+    .content-area-cats-read .pic-area {
       width: 100%;
+      flex-direction: column;
     }
-    .cat-tabs {
-      flex-wrap: wrap;
+    .content-area-cats-read .pic-area .pic-left,
+    .content-area-cats-read .pic-area .pic-right {
+      width: 100%;
+      margin-right: 0;
     }
-    .cat-tab-btn {
+    .content-area-cats-read .list-area {
+      width: 100%;
+      padding-left: 0;
+    }
+    .content-area-cats-read ul.cat-tabs li {
       flex: 0 0 50%;
     }
   }
