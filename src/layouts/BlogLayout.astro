@@ -81,19 +81,6 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
               </ul>
             </li>
 
-            <!-- 經典圓形切換站點按鈕 (.nav-switch-site) -->
-            <li class="menu-item nav-switch-site">
-              <a href="#!" class="btn-round-portal" aria-label="切換服務站點" title="切換站點">
-                <span class="grid-icon">ⵘ</span>
-              </a>
-              <ul class="sub-menu switch-site-menu">
-                <li class="switch-item-portal"><a href="/">Portal 入口主站</a></li>
-                <li class="switch-item-shop"><a href="/shop/">周邊購物中心</a></li>
-                <li class="switch-item-cctv"><a href="/cctv/">即時影像 CCTV</a></li>
-                <li class="switch-item-vip"><a href="/vip/">VIP 站長專區</a></li>
-              </ul>
-            </li>
-
             <!-- 經典膠囊按鈕 (.nav-cta-btn) -->
             <li class="menu-item nav-cta-btn">
               <a href="/">返回 Portal 主站</a>
@@ -649,43 +636,6 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
     background-color: rgba(0, 0, 0, 0.12);
     color: #f7d002;
     padding-left: 26px;
-  }
-
-  /* 🔘 經典圓形切換站點按鈕 (.nav-switch-site) */
-  .nav-switch-site {
-    padding: 0 8px;
-  }
-
-  .btn-round-portal {
-    display: flex !important;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    border: 1.5px solid #444444;
-    border-radius: 50%;
-    color: #222222 !important;
-    transition: all 0.2s ease;
-  }
-
-  .grid-icon {
-    font-size: 20px;
-    line-height: 1;
-    position: relative;
-    top: -1px;
-  }
-
-  .nav-switch-site:hover .btn-round-portal {
-    border-color: #ff6b00;
-    color: #ff6b00 !important;
-    background-color: #fff7ed;
-    transform: rotate(90deg);
-  }
-
-  .switch-site-menu {
-    right: 0 !important;
-    left: auto !important;
-    min-width: 200px !important;
   }
 
   /* 💊 經典右側膠囊按鈕 (.nav-cta-btn) */
