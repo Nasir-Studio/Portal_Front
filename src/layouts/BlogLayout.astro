@@ -91,39 +91,59 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
   </div>
 
   <!-- 📜 3. 獨立 WordPress 風格頁尾 (Footer - 深度連結 Portal 主站體系) -->
-  <footer class="wp-footer">
-    <div class="container footer-grid">
-      <!-- 左側：文章版權宣告 -->
-      <div class="footer-col footer-about">
-        <h2 class="footer-heading">文章版權宣告</h2>
-        <div class="footer-text-body">
-          <p>
-            本站文章歡迎於非營利目的下合理引用，只需於引用處附上原文連結即可。謝謝對本站內容的認可。
-          </p>
+    <!-- 📜 3. 經典 WordPress 淺灰頁尾 + 亮藍底條 (.footer-content #eee + .bottom-bar #0062eb) -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="container footer-layout">
+        <!-- 左側：文章版權宣告 -->
+        <div class="footer-left">
+          <h2>文章版權宣告</h2>
+          <div class="content">
+            <p>
+              本部落格文字、圖片皆有版權，歡迎引用文章內容，只需於文章附上原文連結即可。謝謝對本部落格所提供資訊的認可。
+            </p>
+            <h3>關注 OviNas 羊之誌</h3>
+            <div class="social-links-row">
+              <a href="https://github.com/Nasir-VM" target="_blank" rel="noopener" class="social-btn gh-btn">GitHub</a>
+              <a href="/vip/" class="social-btn vip-btn">VIP 專區</a>
+              <a href="/" class="social-btn portal-btn">Portal 首頁</a>
+            </div>
+          </div>
         </div>
-      </div>
 
-      <!-- 右側：網站導覽連結 -->
-      <div class="footer-col footer-links">
-        <h2 class="footer-heading">快速導覽</h2>
-        <ul class="footer-nav-list">
-          <li><a href="/blog/">部落格首頁</a></li>
-          <li><a href="/blog/#all-posts">全部文章</a></li>
-          <li><a href="https://github.com/Nasir-VM" target="_blank" rel="noopener">GitHub 專頁</a></li>
-          <li><a href="/">返回 Portal 主站</a></li>
-        </ul>
+        <!-- 中間：聯絡與主站服務 -->
+        <div class="footer-center">
+          <h2>站長聯絡與交流</h2>
+          <div class="content">
+            <p>技術交流、系統開發或資安諮詢請來信：</p>
+            <p class="mail-p">
+              ✉️ <a href="mailto:hi@nasirlin.net">hi@nasirlin.net</a>
+            </p>
+            <p>各類主站便民服務與工具，請隨時點選主站首頁入口導覽。</p>
+          </div>
+        </div>
+
+        <!-- 右側：主題快速導覽標籤 (白底標籤按鈕) -->
+        <div class="footer-right">
+          <h2>主題快速導覽</h2>
+          <div class="content tag-buttons-wrap">
+            <a href="/blog/#all-posts">系統資安</a>
+            <a href="/blog/#all-posts">巨型架構</a>
+            <a href="/blog/#all-posts">前端工程</a>
+            <a href="/blog/#all-posts">PWA應用</a>
+            <a href="/blog/#all-posts">開源工具</a>
+            <a href="/blog/#all-posts">代理爬蟲</a>
+            <a href="/blog/#all-posts">自媒體</a>
+            <a href="/blog/#all-posts">WordPress</a>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- 底部版權條 -->
-    <div class="footer-bottom-bar">
-      <div class="container bottom-bar-inner">
-        <p class="copyright-text">© 2026 OviNas · All Rights Reserved.</p>
-        <div class="bottom-links">
-          <a href="/blog/">部落格</a>
-          <span>·</span>
-          <a href="/">主站首頁</a>
-        </div>
+    <!-- 底部皇家藍色版權條 -->
+    <div class="bottom-bar">
+      <div class="container bottom-bar-container">
+        Copyright &copy; 2026 OviNas | 羊之誌 | <a href="/">回 Portal 首頁</a> | <a href="/blog/">部落格</a>
       </div>
     </div>
   </footer>
@@ -344,89 +364,139 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
     padding: 6px 0;
   }
   
-  /* 📜 3. Footer 樣式 (極簡經典深黑藍) */
-  .wp-footer {
-    background-color: #161a22;
-    color: #cccccc;
-    padding-top: 3rem;
-    border-top: 5px solid #0062eb;
+  /* 📜 3. Footer 樣式 (100% 依據經典自媒體 #eee 淺灰 + #0062eb 亮藍底條) */
+  .footer {
+    position: relative;
+    font-size: 15px;
+    margin-top: 3rem;
   }
 
-  .footer-grid {
-    display: grid;
-    grid-template-columns: 1.5fr 1fr;
-    gap: 3rem;
-    padding-bottom: 2.5rem;
+  .footer .footer-content {
+    background-color: #eeeeee;
+    padding: 3.5em 0 3em;
+    color: #444444;
   }
 
-  .footer-heading {
-    font-size: 1.05rem;
-    font-weight: 800;
-    color: #ffffff;
-    margin: 0 0 1rem;
-    letter-spacing: 0.5px;
-    border-bottom: 2px solid #282f3d;
-    padding-bottom: 0.5rem;
-  }
-
-  .footer-text-body p {
-    font-size: 0.88rem;
-    line-height: 1.7;
-    color: #94a3b8;
-    margin: 0;
-  }
-
-  .footer-nav-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
-  }
-
-  .footer-nav-list a {
-    color: #94a3b8;
-    text-decoration: none;
-    font-size: 0.88rem;
-    transition: color 0.2s ease;
-  }
-
-  .footer-nav-list a:hover {
-    color: #38bdf8;
-  }
-
-  .footer-bottom-bar {
-    background-color: #0d1117;
-    padding: 1.2rem 0;
-    border-top: 1px solid #1e293b;
-  }
-
-  .bottom-bar-inner {
+  .footer-layout {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    font-size: 0.82rem;
-    color: #64748b;
+    gap: 2.5rem;
   }
 
-  .copyright-text {
-    margin: 0;
+  .footer .footer-left {
+    width: 44%;
   }
 
-  .bottom-links {
-    display: flex;
-    gap: 0.8rem;
+  .footer .footer-center {
+    width: 30%;
   }
 
-  .bottom-links a {
-    color: #94a3b8;
+  .footer .footer-right {
+    width: 26%;
+  }
+
+  .footer-content h2 {
+    border-left: 5px solid #0062eb;
+    padding-left: 10px;
+    margin-bottom: 0.6em;
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #222222;
+  }
+
+  .footer-content h3 {
+    margin: 1.2rem 0 0.5rem;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #222222;
+  }
+
+  .footer-content .content {
+    padding-left: 15px;
+    font-size: 0.9rem;
+    line-height: 1.7;
+  }
+
+  .footer-content p {
+    margin: 0 0 0.8rem;
+    color: #555555;
+  }
+
+  .footer-content a {
+    color: #0062eb;
     text-decoration: none;
-    transition: color 0.2s ease;
   }
 
-  .bottom-links a:hover {
+  .footer-content a:hover {
+    color: #ff6488;
+  }
+
+  .mail-p {
+    font-weight: 700;
+  }
+
+  .social-links-row {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.8rem;
+  }
+
+  .social-btn {
+    display: inline-block;
+    padding: 6px 14px;
+    background-color: #ffffff;
+    color: #0062eb !important;
+    border: 1px solid #d1d5db;
+    font-size: 0.84rem;
+    font-weight: 700;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+  }
+
+  .social-btn:hover {
+    background-color: #0062eb;
+    color: #ffffff !important;
+    border-color: #0062eb;
+  }
+
+  /* 白底方形標籤導覽 */
+  .tag-buttons-wrap a {
+    display: inline-block;
+    background-color: #ffffff;
+    padding: 4px 12px;
+    margin: 0 6px 6px 0;
+    color: #333333 !important;
+    font-size: 0.84rem;
+    border: 1px solid #e2e2e2;
+    transition: all 0.2s ease;
+  }
+
+  .tag-buttons-wrap a:hover {
+    background-color: #0062eb;
+    color: #ffffff !important;
+    border-color: #0062eb;
+  }
+
+  /* 底部亮藍底條 */
+  .footer .bottom-bar {
+    background-color: #0062eb;
+    padding: 1.1rem 0;
     color: #ffffff;
+    font-size: 0.86rem;
+    text-align: left;
+  }
+
+  .bottom-bar-container {
+    color: #ffffff;
+  }
+
+  .footer .bottom-bar a {
+    color: #ffffff;
+    text-decoration: underline;
+  }
+
+  .footer .bottom-bar a:hover {
+    color: #f7d002;
   }
 
   @media (max-width: 960px) {
@@ -436,14 +506,14 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
     .mobile-toggle {
       display: flex;
     }
-    .footer-grid {
-      grid-template-columns: 1fr;
-      gap: 1.8rem;
-    }
-    .bottom-bar-inner {
+    .footer-layout {
       flex-direction: column;
-      gap: 0.6rem;
-      text-align: center;
+      gap: 2rem;
+    }
+    .footer .footer-left,
+    .footer .footer-center,
+    .footer .footer-right {
+      width: 100%;
     }
   }
 </style>
