@@ -124,9 +124,17 @@ function getPostCategory(post: typeof posts[0]) {
           </div>
           <h2>OviNas <span class="eng-name">/ 站長專欄</span></h2>
           <p class="history">全端開發 · 巨型架構 · 系統資安</p>
-          <p class="author-bio">
-            專注於現代 Web 架構設計、高效能前端、系統資安滲透稽核與邊緣雲端技術。追求純粹細膩的排版美學。
-          </p>
+          <div class="author-bio">
+              <p>
+                從小對資訊抱有熱忱，從 Google 查詢時代轉向 AI 世代，面對學習與獲取資訊方式的改變，我始終一直持續 Update 我的資訊專業能力。時代轉變，像是 DOS 轉變成 Windows 一樣，很多東西懂需要重新學，這個資訊爆炸的世代，我不僅具備傳統電腦維修與程式設計能力，更擅長利用資訊解決企業的【痛點】。
+              </p>
+              <p>
+                許多企業目前仍以人工方式處理專業技術工作，而我喜歡發揮想像力，將流程與資訊系統整合，讓原本緩慢的效率獲得大幅提升！
+              </p>
+              <p>
+                而 Nasir 我不只對資訊感興趣，更斜槓於 <em>攝影</em> 與 <em>音樂</em>。跨域結合的思維，讓我能創造更多價值並發揮自身最大效益。
+              </p>
+            </div>
           <div class="side-btn-row">
             <a href="/vip/" class="btn-side-vip">加入 VIP 專區</a>
           </div>
@@ -461,6 +469,22 @@ function getPostCategory(post: typeof posts[0]) {
     margin: 0 0 0.8rem;
   }
 
+  .side-author-box .author-bio p {
+    font-size: 0.85rem;
+    line-height: 1.7;
+    color: #555555;
+    margin: 0 0 0.8rem;
+    font-weight: 400;
+    text-align: left;
+  }
+  .side-author-box .author-bio p:last-child {
+    margin-bottom: 1.2rem;
+  }
+  .side-author-box .author-bio em {
+    color: #16a34a;
+    font-style: normal;
+    font-weight: 500;
+  }
   .side-author-box .author-bio {
     font-size: 0.84rem;
     line-height: 1.6;
