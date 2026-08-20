@@ -160,6 +160,40 @@ function getPostCategory(post: typeof posts[0]) {
           </div>
         </div>
 
+          <!-- ⭐ 編輯精選 (緊湊精緻 3 欄並排，位於技術文章正下方) -->
+          <div class="editor-picks-compact-section">
+            <div class="post-area-head" style="margin-top: 2.5rem;">
+              <h2 class="post-area-title">編輯精選</h2>
+              <a href="/blog/posts/" class="cat-read-all">探索精選推薦</a>
+            </div>
+            <div class="picks-compact-grid">
+              {editorPicks.map((post) => {
+                const cat = getPostCategory(post);
+                return (
+                  <article class="pick-compact-card">
+                    <div class="img-wrap pick-img-wrap">
+                      <div class="bgs bgs1"></div>
+                      <div class="bgs bgs2"></div>
+                      <div class="bgs bgs3"></div>
+                      <div class="bgs bgs4"></div>
+                      <a class="bgs bgs5 pick-thumb-link" href={`/blog/posts/${post.slug}/`}>
+                        <div class="pick-img-box">
+                          <img src={`/banners/${post.slug}.jpg`} alt={post.title} class="pick-img" loading="lazy" />
+                        </div>
+                      </a>
+                    </div>
+                    <div class="pick-details">
+                      <span class="pick-cat">{cat.name}</span>
+                      <h3 class="pick-title">
+                        <a href={`/blog/posts/${post.slug}/`}>{post.title}</a>
+                      </h3>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+          </div>
+
         <!-- 📌 右側經典側邊欄 (Sidebar: 30% 寬度) -->
         <aside class="right sidebar-right">
           <!-- 站長專欄 -->
@@ -236,48 +270,7 @@ function getPostCategory(post: typeof posts[0]) {
         </aside>
       </div>
 
-      <!-- ⭐ 3. 經典「編輯精選」區塊 (.index-recommend-area) -->
-      <section class="index-recommend-area">
-        <div class="recommend-head-row">
-          <div class="author-photo">
-            <img src="/sheep-hd.png" alt="OviNas" width="70" height="70" />
-          </div>
-          <h2 class="recommend-title">編輯精選</h2>
-        </div>
-        <p class="recommend-desc">這裡挑了幾篇我自己寫得最深入、細節也最完整的實戰筆記，推薦給你慢慢看！</p>
-
-        <!-- 3 欄式精選文章卡片 -->
-        <div class="recommend-posts-grid">
-          {editorPicks.map((post) => {
-            const cat = getPostCategory(post);
-            return (
-              <article class="recommend-col-card">
-                <div class="onebox">
-                  <ul class="post-categories">
-                    <li><a href="/blog/posts/">{cat.name}</a></li>
-                  </ul>
-                  <div class="img-wrap">
-                    <div class="bgs bgs1"></div>
-                    <div class="bgs bgs2"></div>
-                    <div class="bgs bgs3"></div>
-                    <div class="bgs bgs4"></div>
-                    <a class="bgs bgs5 recommend-thumb-link" href={`/blog/posts/${post.slug}/`}>
-                      <div class="recommend-img-box">
-                        <img src={`/banners/${post.slug}.jpg`} alt={post.title} class="recommend-img" loading="lazy" />
-                      </div>
-                    </a>
-                  </div>
-                  <h3 class="post-title">
-                    <a href={`/blog/posts/${post.slug}/`}>{post.title}</a>
-                  </h3>
-                </div>
-              </article>
-            );
-          })}
-        </div>
-      </section>
-
-      <!-- 📑 4. 100% 精準對齊經典「主題閱讀」區塊 (.content-area-cats-read) -->
+      <!-- 📑 4. 主題閱讀區塊 (.content-area-cats-read) -->
       <div class="content-area-cats-read">
         <h2 class="post-area-title2">主題閱讀</h2>
 
@@ -1674,6 +1667,93 @@ function getPostCategory(post: typeof posts[0]) {
     margin: 0;
     text-align: right;
     font-style: italic;
+  }
+  /* ⭐ 緊湊型編輯精選樣式 */
+  .editor-picks-compact-section {
+    margin-bottom: 1.5rem;
+  }
+
+  .picks-compact-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 1rem;
+  }
+
+  .pick-compact-card {
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .pick-img-wrap {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    position: relative;
+  }
+
+  .pick-thumb-link {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .pick-img-box {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #111111;
+  }
+
+  .pick-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.25s ease;
+  }
+
+  .pick-img-wrap:hover .pick-img {
+    transform: scale(1.05);
+  }
+
+  .pick-details {
+    padding: 10px 0 0;
+  }
+
+  .pick-cat {
+    display: inline-block;
+    font-size: 11.5px;
+    color: #ff6b00;
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+
+  .pick-title {
+    font-size: 13.5px;
+    font-weight: 500;
+    line-height: 1.45;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .pick-title a {
+    color: #334155;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .pick-title a:hover {
+    color: #ff6b00;
+  }
+
+  @media (max-width: 680px) {
+    .picks-compact-grid {
+      grid-template-columns: 1fr;
+    }
   }
 </style>
 
