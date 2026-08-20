@@ -62,7 +62,7 @@
 </script>
 
 <div class="contact-widget-root">
-  <!-- 💬 懸浮 LiveChat 圖示按鈕 (俐落幾何造型) -->
+  <!-- 💬 懸浮 LiveChat 圖示按鈕 (純圓形、溫暖活力、無黑邊) -->
   {#if !isOpen}
     <button
       class="contact-launcher"
@@ -72,24 +72,24 @@
       title="聯絡站長 / 即時訊息"
     >
       <span class="launcher-icon" aria-hidden="true">
-        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square" stroke-linejoin="miter">
-          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor">
+          <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/>
         </svg>
       </span>
       <span class="live-status-dot"></span>
     </button>
   {/if}
 
-  <!-- ✉️ 俐落方正聯絡表單視窗 (無圓角、高對比俐落幾何) -->
+  <!-- ✉️ 現代俐落聯絡表單視窗 (無黑色粗邊框、圓角柔和、現代精緻) -->
   {#if isOpen}
     <div class="contact-window" role="dialog" aria-label="聯絡站長視窗">
       <!-- 標題列 -->
       <div class="contact-header">
         <div class="contact-header-info">
           <div class="header-avatar">
-            <img src="/sheep-hd.png" alt="OviNas" width="20" height="20" />
+            <img src="/sheep-hd.png" alt="OviNas" width="22" height="22" />
           </div>
-          <div class="header-title">聯絡 OviNas</div>
+          <div class="header-title">聯絡 Nasir / OviNas</div>
         </div>
         <button
           class="contact-close-btn"
@@ -101,55 +101,63 @@
         </button>
       </div>
 
-      <!-- 表單內容 -->
+      <!-- 內容區 -->
       <div class="contact-body">
+        <div class="status-badge-row">
+          <span class="online-indicator"></span>
+          <span class="status-desc">目前線上 · 站長即時收件</span>
+        </div>
+
         {#if formStatus === 'success'}
-          <div class="contact-feedback is-success">
-            <p class="feedback-title">✓ 訊息已成功送出！</p>
-            <p class="feedback-desc">感謝您的來信，我會盡快回覆您。</p>
+          <div class="status-feedback is-success">
+            <span class="fb-icon">✓</span>
+            <div class="fb-text">
+              <strong>訊息已成功送出！</strong>
+              <p>感謝您的來信，我會儘快回覆您。</p>
+            </div>
           </div>
         {:else if formStatus === 'error'}
-          <div class="contact-feedback is-error">
-            <p class="feedback-title">✕ 傳送失敗</p>
-            <p class="feedback-desc">請稍後再試，或直接來信至站長信箱。</p>
+          <div class="status-feedback is-error">
+            <span class="fb-icon">!</span>
+            <div class="fb-text">
+              <strong>發送失敗</strong>
+              <p>請稍後再試，或利用頁尾表單發送。</p>
+            </div>
           </div>
         {:else}
-          <form class="contact-form" on:submit={handleFormSubmit}>
-            <div class="field-group">
-              <label for="floating-contact-name">姓名 / 稱呼 *</label>
+          <form on:submit={handleFormSubmit} class="live-contact-form">
+            <div class="form-group">
+              <label for="contact-name">稱呼 / 姓名 *</label>
               <input
-                id="floating-contact-name"
+                id="contact-name"
                 type="text"
                 bind:value={name}
-                name="entry.57084769"
-                placeholder="您的姓名或暱稱"
                 required
+                placeholder="如何稱呼您？"
                 disabled={formStatus === 'submitting'}
               />
             </div>
 
-            <div class="field-group">
-              <label for="floating-contact-email">電子郵件 *</label>
+            <div class="form-group">
+              <label for="contact-email">電子郵件 *</label>
               <input
-                id="floating-contact-email"
+                id="contact-email"
                 type="email"
                 bind:value={email}
-                name="entry.135399445"
-                placeholder="example@email.com"
                 required
+                placeholder="您的 Email 信箱"
                 disabled={formStatus === 'submitting'}
               />
             </div>
 
-            <div class="field-group">
-              <label for="floating-contact-message">聯絡內容 *</label>
+            <div class="form-group">
+              <label for="contact-message">洽詢內容 / 訊息 *</label>
               <textarea
-                id="floating-contact-message"
+                id="contact-message"
                 bind:value={message}
-                name="entry.1753446536"
-                placeholder="請輸入您想詢問或交流的內容…"
-                rows="3"
                 required
+                rows="3"
+                placeholder="想交流的話題或問題…"
                 disabled={formStatus === 'submitting'}
               ></textarea>
             </div>
@@ -159,7 +167,11 @@
               class="contact-submit-btn"
               disabled={formStatus === 'submitting'}
             >
-              {formStatus === 'submitting' ? '正在傳送…' : '送出訊息'}
+              {#if formStatus === 'submitting'}
+                <span>傳送中…</span>
+              {:else}
+                <span>送出訊息 →</span>
+              {/if}
             </button>
           </form>
         {/if}
@@ -171,26 +183,27 @@
 <style>
   .contact-widget-root {
     position: fixed;
-    bottom: 24px;
     right: 24px;
-    z-index: 9999;
+    bottom: 24px;
+    z-index: 99999;
+    font-family: var(--font-sans, system-ui, -apple-system, sans-serif);
   }
 
-  /* 💬 懸浮 LiveChat 圓形泡泡圖示 (保持經典圓形) */
+  /* 💬 懸浮按鈕：純圓形、暖橙色、細緻高雅陰影、無黑色邊框 */
   .contact-launcher {
     appearance: none;
     background: #ff6b00;
     color: #ffffff;
     border: none;
     border-radius: 50%;
-    width: 56px;
-    height: 56px;
+    width: 54px;
+    height: 54px;
     padding: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: 0 6px 20px rgba(255, 107, 0, 0.4), 0 2px 6px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 6px 20px rgba(255, 107, 0, 0.38), 0 2px 6px rgba(0, 0, 0, 0.08);
     transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s, box-shadow 0.2s;
     position: relative;
   }
@@ -198,7 +211,7 @@
   .contact-launcher:hover {
     background: #ea580c;
     transform: translateY(-3px) scale(1.06);
-    box-shadow: 0 10px 25px rgba(255, 107, 0, 0.5);
+    box-shadow: 0 10px 24px rgba(255, 107, 0, 0.48);
   }
 
   .contact-launcher:active {
@@ -207,11 +220,11 @@
 
   .live-status-dot {
     position: absolute;
-    top: 4px;
-    right: 4px;
+    top: 3px;
+    right: 3px;
     width: 12px;
     height: 12px;
-    background-color: #22c55e;
+    background-color: #10b981;
     border: 2px solid #ffffff;
     border-radius: 50%;
   }
@@ -222,61 +235,61 @@
     justify-content: center;
   }
 
-  /* ✉️ 俐落方正聯絡表單視窗 (零圓角、高對比清晰邊框) */
+  /* ✉️ 現代聯絡表單視窗：純淨白底、淺灰柔邊、零黑色粗框 */
   .contact-window {
-    width: 300px;
+    width: 320px;
+    max-width: calc(100vw - 32px);
     background: #ffffff;
-    border: 2px solid #1e293b;
-    border-radius: 0px;
-    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.12), 0 2px 10px rgba(0, 0, 0, 0.04);
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    animation: contact-popup 0.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation: contact-popup 0.25s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
 
   @keyframes contact-popup {
     0% {
       opacity: 0;
-      transform: translateY(10px);
+      transform: translateY(12px) scale(0.97);
     }
     100% {
       opacity: 1;
-      transform: translateY(0);
+      transform: translateY(0) scale(1);
     }
   }
 
   .contact-header {
-    background-color: #10b981;
+    background: #ff6b00;
     color: #ffffff;
-    padding: 10px 12px;
+    padding: 12px 16px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 2px solid #059669;
   }
 
   .contact-header-info {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
   }
 
   .header-avatar {
-    width: 24px;
-    height: 24px;
+    width: 28px;
+    height: 28px;
     background: #ffffff;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 0px;
-    border: 1px solid #059669;
+    border-radius: 50%;
     flex-shrink: 0;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
   }
 
   .header-avatar img {
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
     object-fit: contain;
   }
 
@@ -284,93 +297,117 @@
     font-size: 14px;
     font-weight: 600;
     letter-spacing: 0.02em;
+    color: #ffffff;
   }
 
   .contact-close-btn {
-    background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
     color: #ffffff;
-    font-size: 12px;
-    width: 22px;
-    height: 22px;
-    border-radius: 0px;
+    font-size: 13px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.15s ease;
+    transition: background 0.15s ease;
   }
 
   .contact-close-btn:hover {
-    background: rgba(0, 0, 0, 0.2);
-    border-color: #ffffff;
+    background: rgba(255, 255, 255, 0.35);
   }
 
   .contact-body {
-    padding: 14px 14px 16px;
+    padding: 16px 18px 20px;
     background: #ffffff;
   }
 
-  .contact-form {
+  .status-badge-row {
     display: flex;
-    flex-direction: column;
-    gap: 10px;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed #f1f5f9;
   }
 
-  .field-group {
+  .online-indicator {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background-color: #10b981;
+  }
+
+  .status-desc {
+    font-size: 11.5px;
+    color: #64748b;
+    font-weight: 500;
+  }
+
+  .live-contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+  }
+
+  .form-group {
     display: flex;
     flex-direction: column;
     gap: 4px;
   }
 
-  .field-group label {
-    font-size: 12px;
+  .form-group label {
+    font-size: 11.5px;
+    color: #475569;
     font-weight: 500;
-    color: #1e293b;
   }
 
-  .field-group input,
-  .field-group textarea {
+  .form-group input,
+  .form-group textarea {
     width: 100%;
-    background: #ffffff;
-    border: 1.5px solid #64748b;
-    border-radius: 0px;
+    box-sizing: border-box;
     padding: 7px 10px;
-    font-family: inherit;
     font-size: 13px;
     color: #0f172a;
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
     outline: none;
-    box-sizing: border-box;
-    transition: border-color 0.15s;
+    font-family: inherit;
+    transition: border-color 0.15s, box-shadow 0.15s;
   }
 
-  .field-group input:focus,
-  .field-group textarea:focus {
-    border-color: #10b981;
-    box-shadow: 0 0 0 1px #10b981;
+  .form-group input:focus,
+  .form-group textarea:focus {
+    border-color: #ff6b00;
+    box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.12);
   }
 
-  .field-group textarea {
-    resize: vertical;
-    min-height: 60px;
-    line-height: 1.4;
+  .form-group textarea {
+    resize: none;
+    min-height: 64px;
   }
 
   .contact-submit-btn {
-    background: #10b981;
-    color: #ffffff;
-    border: 1.5px solid #059669;
-    border-radius: 0px;
-    padding: 9px 14px;
-    font-size: 13.5px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background 0.15s;
     margin-top: 4px;
+    padding: 9px;
+    background: #ff6b00;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+    text-align: center;
+    box-shadow: 0 3px 10px rgba(255, 107, 0, 0.25);
   }
 
-  .contact-submit-btn:hover:not(:disabled) {
-    background: #059669;
+  .contact-submit-btn:hover {
+    background: #ea580c;
+    transform: translateY(-1px);
   }
 
   .contact-submit-btn:disabled {
@@ -378,21 +415,49 @@
     cursor: not-allowed;
   }
 
-  .contact-feedback {
-    text-align: center;
-    padding: 24px 12px;
+  .status-feedback {
+    display: flex;
+    gap: 10px;
+    padding: 14px;
+    border-radius: 6px;
+    margin: 8px 0;
   }
 
-  .feedback-title {
-    font-size: 14.5px;
-    font-weight: 600;
-    color: #16a34a;
-    margin: 0 0 6px;
+  .status-feedback.is-success {
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    color: #166534;
   }
 
-  .feedback-desc {
-    font-size: 12.5px;
-    color: #475569;
+  .status-feedback.is-error {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #991b1b;
+  }
+
+  .fb-icon {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: currentColor;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 12px;
+    flex-shrink: 0;
+  }
+
+  .fb-text strong {
+    font-size: 13.5px;
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .fb-text p {
+    font-size: 12px;
     margin: 0;
+    opacity: 0.85;
   }
 </style>
