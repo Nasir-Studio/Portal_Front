@@ -89,7 +89,7 @@
           <div class="header-avatar">
             <img src="/sheep-hd.png" alt="OviNas" width="22" height="22" />
           </div>
-          <div class="header-title">聯絡 Nasir / OviNas</div>
+          <div class="header-title">聯絡 Nasir</div>
         </div>
         <button
           class="contact-close-btn"
@@ -103,10 +103,7 @@
 
       <!-- 內容區 -->
       <div class="contact-body">
-        <div class="status-badge-row">
-          <span class="online-indicator"></span>
-          <span class="status-desc">目前線上 · 站長即時收件</span>
-        </div>
+        
 
         {#if formStatus === 'success'}
           <div class="status-feedback is-success">
