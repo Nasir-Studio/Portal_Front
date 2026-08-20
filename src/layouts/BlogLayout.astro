@@ -38,17 +38,17 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
           <div class="bgs bgs2"></div>
           <div class="bgs bgs3"></div>
           <div class="bgs bgs4"></div>
-          <a class="bgs bgs5 logo-box-link" href="/blog/">
+          <a class="bgs bgs5 logo-link" href="/blog/">
             <span class="logo-text">羊之<br>誌</span>
           </a>
         </div>
-        <div class="logo-sub-title">
-          <a href="/blog/" class="site-title-link">OviNas 羊之誌</a>
-          <span class="site-desc-text">技術專欄 · 資安 · 架構 · 雲端實戰</span>
+        <div class="sub-txt">
+          <a href="/blog/" class="logo-site-name">OviNas 羊之誌</a>
+          <span class="logo-site-desc">網站架設 · 系統資安 · 前端工程</span>
         </div>
       </div>
 
-      <!-- 導覽選單與主站聯通 -->
+      <!-- 右側主選單 -->
       <div class="header-right">
         <nav class="main-menu" aria-label="部落格主選單">
           <ul>
@@ -57,13 +57,12 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
             <li><a href="/posts/security-research-report/">系統資安</a></li>
             <li><a href="/posts/tech-notes-architecture/">架構筆記</a></li>
             <li><a href="/posts/front-end-design/">前端工程</a></li>
-            <li><a href="/posts/github-open-source-tools/">開源精選</a></li>
-            <li><a href="/vip/" class="nav-highlight-link">VIP 專區</a></li>
-            <li><a href="/" class="back-portal-btn">← 回 Portal 首頁</a></li>
+            <li><a href="/posts/github-open-source-tools/">開源工具</a></li>
+            <li class="nav-cta-btn"><a href="/">返回 Portal 主站</a></li>
           </ul>
         </nav>
 
-        <!-- 手機漢堡選單按鈕 -->
+        <!-- 手機漢堡按鈕 -->
         <button id="mobileMenuToggle" class="mobile-toggle" aria-label="開啟選單">
           <span></span>
           <span></span>
@@ -80,12 +79,8 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
         <li><a href="/posts/security-research-report/">系統資安</a></li>
         <li><a href="/posts/tech-notes-architecture/">架構筆記</a></li>
         <li><a href="/posts/front-end-design/">前端工程</a></li>
-        <li><a href="/posts/github-open-source-tools/">開源精選</a></li>
-        <li><a href="/vip/">VIP 專區</a></li>
-        <li><a href="/reserve/">預約服務</a></li>
-        <li><a href="/badges/">證照專區</a></li>
-        <li><a href="/cctv/">即時影像</a></li>
-        <li><a href="/" class="back-portal-btn">← 回 Portal 首頁</a></li>
+        <li><a href="/posts/github-open-source-tools/">開源工具</a></li>
+        <li><a href="/">返回 Portal 主站</a></li>
       </ul>
     </div>
   </header>
@@ -175,7 +170,7 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
     padding: 0 1.5rem;
   }
 
-  /* 🔷 Header 樣式 */
+  /* 🔷 Header 樣式 (100% 還原經典自媒體比例) */
   .main-header {
     background-color: #ffffff;
     border-bottom: 1px solid #e7e7e7;
@@ -189,72 +184,82 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 85px;
+    height: 90px;
   }
 
   .logo {
     display: flex;
     align-items: center;
-    gap: 1rem;
   }
 
   /* 3D 浮動方塊 Logo (.bgs1 ~ .bgs5) */
   .logo-img-wrap {
     position: relative;
-    width: 52px;
-    height: 52px;
+    width: 60px;
+    height: 60px;
     margin: 0;
+    flex-shrink: 0;
   }
 
-  .logo-box-link {
-    width: 52px;
-    height: 52px;
+  .logo-link {
+    width: 60px;
+    height: 60px;
     background-color: #0062eb;
     display: flex;
     align-items: center;
     justify-content: center;
     text-decoration: none;
     color: #ffffff;
-    transition: all 0.2s ease;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
   }
 
   .logo-text {
-    font-size: 1.05rem;
+    font-size: 1.1rem;
     font-weight: 900;
-    line-height: 1.1;
+    line-height: 1.15;
     text-align: center;
     color: #ffffff;
     letter-spacing: 1px;
+    font-family: "Noto Sans TC", sans-serif;
   }
 
-  .logo-img-wrap:hover .logo-box-link {
+  .logo-img-wrap:hover .logo-link {
     background-color: #222222;
   }
 
-  .logo-sub-title {
+  .logo-img-wrap .bgs1 { border-right: 0.5rem solid #0062eb; }
+  .logo-img-wrap .bgs2 { border-top: 0.5rem solid #0062eb; }
+  .logo-img-wrap .bgs3, .logo-img-wrap .bgs4 { background: #0062eb; }
+
+  .sub-txt {
+    margin-left: 14px;
     display: flex;
     flex-direction: column;
   }
 
-  .site-title-link {
-    font-size: 1.3rem;
+  .logo-site-name {
+    font-size: 1.25rem;
     font-weight: 900;
     color: #111111;
     text-decoration: none;
     letter-spacing: 0.5px;
   }
 
-  .site-desc-text {
+  .logo-site-name:hover {
+    color: #0062eb;
+  }
+
+  .logo-site-desc {
     font-size: 0.78rem;
     color: #888888;
-    letter-spacing: 0.5px;
+    margin-top: 2px;
   }
 
   /* 導覽選單 */
   .header-right {
     display: flex;
     align-items: center;
-    gap: 1.5rem;
   }
 
   .main-menu ul {
@@ -263,39 +268,38 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
     margin: 0;
     display: flex;
     align-items: center;
-    gap: 1.3rem;
+    gap: 1.8rem;
   }
 
   .main-menu a {
-    color: #444444;
+    color: #555555;
     text-decoration: none;
     font-size: 0.95rem;
     font-weight: 700;
     transition: color 0.2s ease;
-    padding: 8px 0;
   }
 
   .main-menu a:hover {
-    color: #0062eb;
+    color: #ff6488;
   }
 
-  .nav-highlight-link {
-    color: #0062eb !important;
-    border-bottom: 2px solid #0062eb;
-  }
-
-  .back-portal-btn {
-    background-color: #f3f4f6;
-    color: #0062eb !important;
-    padding: 6px 14px !important;
-    border: 1px solid #e5e7eb;
-    transition: all 0.2s ease;
-  }
-
-  .back-portal-btn:hover {
+  /* 經典右側膠囊按鈕 (.nav-cta-btn) */
+  .nav-cta-btn a {
+    display: block;
     background-color: #0062eb;
     color: #ffffff !important;
-    border-color: #0062eb;
+    padding: 0 20px;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 0.88rem;
+    transition: all 0.25s ease;
+  }
+
+  .nav-cta-btn a:hover {
+    background-color: #ff6488 !important;
+    transform: translateY(-1px);
   }
 
   .mobile-toggle {
@@ -339,7 +343,7 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
     display: block;
     padding: 6px 0;
   }
-
+  
   /* 📜 3. Footer 樣式 (極簡經典深黑藍) */
   .wp-footer {
     background-color: #161a22;
