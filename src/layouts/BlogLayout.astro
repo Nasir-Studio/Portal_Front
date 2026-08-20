@@ -1472,4 +1472,13 @@ const searchIndexJson = JSON.stringify(
     .footer .footer-right {
       width: 100%;
     }
-  }</style>
+  }  /* 👆 全站互動式點擊指標與微動效 */
+  a, button, [role="button"], input[type="submit"], input[type="button"], .cat-tab-btn, .side-badge-link {
+    cursor: pointer !important;
+  }
+
+  a:active, button:active, .cat-tab-btn:active {
+    transform: scale(0.98);
+    transition: transform 0.08s ease;
+  }
+</style>

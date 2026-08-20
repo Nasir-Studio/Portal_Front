@@ -1651,22 +1651,24 @@ function getPostCategory(post: typeof posts[0]) {
     overflow: hidden;
   }
 
-  .side-badge-more-link {
+    .side-badge-more-link {
     display: block;
     text-align: center;
-    font-size: 13px;
-    color: #ff6b00;
+    font-size: 12.5px;
+    color: #64748b;
     text-decoration: none;
     font-weight: 500;
-    padding: 6px 0;
-    background: #fff7ed;
-    border: 1px solid #ffedd5;
-    border-radius: 4px;
-    transition: background 0.15s ease;
+    padding: 8px 0 2px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: color 0.15s ease;
   }
 
   .side-badge-more-link:hover {
-    background: #ffedd5;
+    color: #ff6b00;
+    background: transparent;
+    text-decoration: underline;
   }
 
   .side-quote-content {
