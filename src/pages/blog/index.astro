@@ -243,37 +243,25 @@ const topicCategories = [
             </div>
           </div>
 
-          <!-- 📊 網站計數器 (Website Counter) -->
+                    
+          <!-- 📊 網站計數器 (Website Counter - 即時真實造訪計數) -->
           <div class="side-popular-box side-counter-box" style="margin-top: 2rem;">
             <h2 class="side-counter-title">網站計數器</h2>
             <div class="side-counter-content">
-              <div class="counter-display-row">
-                <span class="counter-label">累計總造訪</span>
-                <div class="counter-digits">
-                  <span class="digit">0</span>
-                  <span class="digit">3</span>
-                  <span class="digit">8</span>
-                  <span class="digit">9</span>
-                  <span class="digit">2</span>
-                  <span class="digit">1</span>
-                </div>
-              </div>
-              <div class="counter-stats-grid">
-                <div class="stat-item">
-                  <span class="stat-name">今日瀏覽</span>
-                  <span class="stat-val">128</span>
-                </div>
-                <div class="stat-item">
-                  <span class="stat-name">昨日瀏覽</span>
-                  <span class="stat-val">295</span>
-                </div>
-                <div class="stat-item">
-                  <span class="stat-name">目前線上</span>
-                  <span class="stat-val stat-online">3</span>
-                </div>
+              <div class="counter-badge-wrap">
+                <a href="https://www.hitwebcounter.com" target="_blank" rel="noopener noreferrer" class="hitcounter-link" title="網站造訪計數器">
+                  <img
+                    src="https://www.hitwebcounter.com/counter/counter.php?page=21514902&style=0001&nbdigits=8&type=page"
+                    title="網站計數器"
+                    alt="網站造訪計數器"
+                    class="hitcounter-img"
+                    loading="lazy"
+                  />
+                </a>
               </div>
             </div>
           </div>
+
 
         </aside>
       </div>
@@ -1839,6 +1827,48 @@ const topicCategories = [
       height: 380px;
     }
   }
+
+  /* 📊 網站計數器樣式 */
+  .side-counter-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0 0 1rem;
+    padding-left: 8px;
+    border-left: 3px solid #ff6b00;
+  }
+
+  .side-counter-content {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    padding: 1.2rem 1rem;
+    border-radius: 4px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
+    text-align: center;
+  }
+
+  .counter-badge-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .hitcounter-link {
+    display: inline-block;
+    transition: transform 0.2s ease;
+  }
+
+  .hitcounter-link:hover {
+    transform: scale(1.04);
+  }
+
+  .hitcounter-img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    border-radius: 2px;
+  }
+
   /* 📊 網站計數器樣式 */
   .side-counter-title {
     font-size: 15px;
@@ -1920,6 +1950,46 @@ const topicCategories = [
 
   .stat-online {
     color: #10b981;
+  }
+  /* 📊 網站計數器樣式 */
+  .side-counter-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0 0 1rem;
+    padding-left: 8px;
+    border-left: 3px solid #ff6b00;
+  }
+
+  .side-counter-content {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    padding: 1.2rem 1rem;
+    border-radius: 4px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
+    text-align: center;
+  }
+
+  .counter-badge-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .hitcounter-link {
+    display: inline-block;
+    transition: transform 0.2s ease;
+  }
+
+  .hitcounter-link:hover {
+    transform: scale(1.04);
+  }
+
+  .hitcounter-img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    border-radius: 2px;
   }
 </style>
 
