@@ -3,6 +3,7 @@ import BlogLayout from '../../layouts/BlogLayout.astro';
 import posts from '../../data/posts';
 
 const allPosts = posts;
+const featuredPost = posts[0];
 
 function getPostCategory(post: typeof posts[0]) {
   if (post.slug.includes('security') || post.slug.includes('audit')) {
@@ -20,302 +21,272 @@ function getPostCategory(post: typeof posts[0]) {
   if (post.slug.includes('ntub') || post.slug.includes('exam')) {
     return { name: '專案實戰', slug: 'campus' };
   }
-  return { name: 'WordPress架站', slug: 'general' };
+  return { name: 'WordPress', slug: 'general' };
 }
 ---
 
-<BlogLayout title="全部文章列表 ｜ OviNas 羊之誌" description="網站架設、系統資安、前端工程、架構伺服器與外掛推薦文章列表。">
-  <div class="main-content">
-    <div class="container single-page-area">
-      <!-- 📖 左側主列表區域 (main.left: 68% 寬度，右側 1px 分隔線) -->
-      <main class="left">
-        <!-- 經典麵包屑導航 (Breadcrumbs) -->
-        <div class="breadcrumbs">
-          <a href="/blog/" class="home">首頁</a>
-          <span class="sep">&gt;</span>
-          <span class="current-crumb">文章列表</span>
+<BlogLayout title="OviNas 羊之誌 — 網站架設、系統資安、前端工程與外掛推薦" description="專注於網站架設、系統資安、前端工程與開源工具推薦。">
+  <div class="make9-page-wrapper">
+    <div class="container">
+      <!-- 🔷 1. 經典 Hero Header 區塊 (左側標題 + 右側 16:9 文青照片輪播焦點) -->
+      <section class="content-hero-header">
+        <div class="hero-left">
+          <h1 class="hero-brand">OviNas 羊之誌</h1>
+          <h2 class="hero-tagline">網站架設、系統資安、前端工程、外掛推薦</h2>
+          <a href="/posts/" class="btn-about">瀏覽全部文章</a>
         </div>
-
-        <!-- 經典列表標題 (archive-title: 大分類名稱 + 英文大寫 + 文章列表) -->
-        <h1 class="archive-title">
-          <span class="cat-name" id="archiveCatName">全部文章</span>
-          <span class="slug-name" id="archiveSlugName"> ALL POSTS </span>
-          <span class="title-suffix">文章列表</span>
-        </h1>
-
-        <!-- 🔍 分類切換按鈕組 -->
-        <div class="archive-filter-bar">
-          <button class="filter-tab is-active" data-cat="all" type="button">全部 ({allPosts.length})</button>
-          <button class="filter-tab" data-cat="security" type="button">系統資安 ({allPosts.filter(p => p.slug.includes('security') || p.slug.includes('audit')).length})</button>
-          <button class="filter-tab" data-cat="architecture" type="button">架構伺服器 ({allPosts.filter(p => p.slug.includes('architecture') || p.slug.includes('pwa')).length})</button>
-          <button class="filter-tab" data-cat="design" type="button">前端設計 ({allPosts.filter(p => p.slug.includes('design') || p.slug.includes('front-end')).length})</button>
-          <button class="filter-tab" data-cat="tools" type="button">外掛工具 ({allPosts.filter(p => p.slug.includes('tool') || p.slug.includes('proxy') || p.slug.includes('github')).length})</button>
-          <button class="filter-tab" data-cat="campus" type="button">專案實戰 ({allPosts.filter(p => p.slug.includes('ntub') || p.slug.includes('exam')).length})</button>
-        </div>
-
-        <!-- 📰 經典 WordPress 單欄文章流 (.post-list-loop article) -->
-        <div class="post-list-loop" id="postLoop">
-          {allPosts.map((post) => {
-            const cat = getPostCategory(post);
-            return (
-              <article
-                class="loop-article"
-                data-cat={cat.slug}
-                data-title={post.title.toLowerCase()}
-                data-excerpt={post.excerpt.toLowerCase()}
-              >
-                <!-- 1. 16:9 文青真實照片橫幅縮圖 (.img-wrap) -->
-                <div class="img-wrap loop-img-wrap">
-                  <a href={`/posts/${post.slug}/`}>
-                    <img
-                      src={`/banners/${post.slug}.jpg`}
-                      alt={post.title}
-                      class="attachment-post-loop"
-                      loading="lazy"
-                    />
-                  </a>
-                </div>
-
-                <!-- 2. 文章 Meta 資訊列 (.post-meta: BY 作者 | 日期 | 分類) -->
-                <div class="post-meta">
-                  <div class="post-author">
-                    BY <a href="/vip/">OviNas</a>
-                  </div>
-                  <p class="meta-sep">|</p>
-                  <div class="post-date">
-                    <span class="meta-icon">🕒</span> {post.date}
-                  </div>
-                  <p class="meta-sep">|</p>
-                  <ul class="post-categories">
-                    <li><a href="#" class="cat-filter-click" data-target-cat={cat.slug}>{cat.name}</a></li>
-                  </ul>
-                </div>
-
-                <!-- 3. 文章大標題 (.post-title) -->
-                <h3 class="post-title">
-                  <a href={`/posts/${post.slug}/`}>{post.title}</a>
-                </h3>
-
-                <!-- 4. 文章內文摘要 (.post-excerpt) -->
-                <p class="post-excerpt">{post.excerpt}</p>
-
-                <!-- 5. 繼續閱讀按鈕 (.read-more: 經典藍底按鈕，Hover 轉綠色) -->
-                <div class="read-more-wrap">
-                  <a href={`/posts/${post.slug}/`} class="read-more">繼續閱讀</a>
-                </div>
-              </article>
-            );
-          })}
-        </div>
-
-        <!-- 查無結果提示 -->
-        <div class="empty-results-box" id="emptyNotice" style="display: none;">
-          <h3>查無相關文章！</h3>
-          <p>請點選上方「全部」以瀏覽所有文章。</p>
-        </div>
-      </main>
-
-      <!-- 📌 右側經典側邊欄 (Sidebar: 28% 寬度) -->
-      <aside class="right sidebar-right">
-        <!-- 站長專欄 -->
-        <div class="side-author-box">
-          <div class="photo">
-            <img src="/sheep-hd.png" alt="OviNas" width="100" height="100" />
-          </div>
-          <h2>OviNas <span class="eng-name">/ 站長專欄</span></h2>
-          <p class="history">全端開發 · 巨型架構 · 系統資安</p>
-          <p class="author-bio">
-            專注於現代 Web 架構設計、高效能前端、系統資安滲透稽核與邊緣雲端技術。追求純粹細膩的排版美學。
-          </p>
-          <div class="side-btn-row">
-            <a href="/vip/" class="btn-side-vip">加入 VIP 專區</a>
-          </div>
-        </div>
-
-        <!-- 熱門排行側欄 (#popular-side: 75px 1:1 正方形真實文青照片微縮圖) -->
-        <div class="popular-posts" id="popular-side">
-          <h3 class="side-section-heading">熱門推薦文章</h3>
-          <ul class="wpp-list">
-            {allPosts.slice(0, 5).map((p, idx) => {
-              const cat = getPostCategory(p);
-              return (
-                <li class="wpp-item">
-                  <a href={`/posts/${p.slug}/`} class="wpp-thumb-link">
-                    <div class="wpp-thumbnail-box">
-                      <img src={`/banners/${p.slug}.jpg`} alt={p.title} class="wpp-thumb-img" />
+        <div class="hero-right">
+          <div class="slider-wrap-header">
+            <div class="slider-one">
+              <div class="img-wrap">
+                <div class="bgs bgs1"></div>
+                <div class="bgs bgs2"></div>
+                <div class="bgs bgs3"></div>
+                <div class="bgs bgs4"></div>
+                <a class="bgs bgs5 hero-featured-card" href={`/posts/${featuredPost.slug}/`}>
+                  <div class="featured-img-box">
+                    <img src={`/banners/${featuredPost.slug}.jpg`} alt={featuredPost.title} class="featured-real-photo" />
+                    <div class="slogan">
+                      <div class="slogan-text">{featuredPost.title}</div>
                     </div>
-                  </a>
-                  <div class="wpp-details">
-                    <a href={`/posts/${p.slug}/`} class="wpp-post-title">
-                      {p.title}
-                    </a>
-                    <span class="wpp-meta">{p.date} · {cat.name}</span>
                   </div>
-                </li>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 🔍 2. 分類導航列與即時搜尋欄 (即時動態計數) -->
+      <section class="make9-nav-bar" id="all-posts">
+        <div class="nav-pills-group" id="filterButtons">
+          <button class="nav-pill is-active" data-cat="all" type="button">
+            全部文章 <span class="pill-badge">({allPosts.length})</span>
+          </button>
+          <button class="nav-pill" data-cat="security" type="button">
+            系統資安 <span class="pill-badge">({allPosts.filter(p => p.slug.includes('security') || p.slug.includes('audit')).length})</span>
+          </button>
+          <button class="nav-pill" data-cat="architecture" type="button">
+            架構伺服器 <span class="pill-badge">({allPosts.filter(p => p.slug.includes('architecture') || p.slug.includes('pwa')).length})</span>
+          </button>
+          <button class="nav-pill" data-cat="design" type="button">
+            前端設計 <span class="pill-badge">({allPosts.filter(p => p.slug.includes('design') || p.slug.includes('front-end')).length})</span>
+          </button>
+          <button class="nav-pill" data-cat="tools" type="button">
+            外掛工具 <span class="pill-badge">({allPosts.filter(p => p.slug.includes('tool') || p.slug.includes('proxy') || p.slug.includes('github')).length})</span>
+          </button>
+          <button class="nav-pill" data-cat="campus" type="button">
+            專案實戰 <span class="pill-badge">({allPosts.filter(p => p.slug.includes('ntub') || p.slug.includes('exam')).length})</span>
+          </button>
+        </div>
+
+        <div class="make9-search-box">
+          <input
+            id="make9Search"
+            type="search"
+            class="search-input-field"
+            placeholder="輸入你想找的知識…"
+            autocomplete="off"
+          />
+          <button class="search-btn-field" type="button" aria-label="搜尋文章">
+            搜尋
+          </button>
+        </div>
+      </section>
+
+      <!-- 📰 3. 主內容區（左側文章卡片網格 + 右側標準側邊欄） -->
+      <div class="content-area-top">
+        <div class="left">
+          <!-- 區塊標題條 (經典 post-area-head) -->
+          <div class="post-area-head">
+            <h2 class="post-area-title" id="currentSectionTitle">精選文章</h2>
+            <a href="/posts/" class="cat-read-all" id="currentCountDisplay">共 {allPosts.length} 篇文章</a>
+          </div>
+
+          <!-- 2 欄式文章網格 (post-list col3) -->
+          <div class="post-list col3" id="postGrid">
+            {allPosts.map((post) => {
+              const cat = getPostCategory(post);
+              return (
+                <article
+                  class="make9-article-card"
+                  data-cat={cat.slug}
+                  data-title={post.title.toLowerCase()}
+                  data-excerpt={post.excerpt.toLowerCase()}
+                >
+                  <!-- 🎨 經典 3D 幾何 Hover 浮起遮罩層 (bgs1 ~ bgs5 + 16:9 文青照片) -->
+                  <div class="img-wrap">
+                    <div class="bgs bgs1"></div>
+                    <div class="bgs bgs2"></div>
+                    <div class="bgs bgs3"></div>
+                    <div class="bgs bgs4"></div>
+                    <a class="bgs bgs5 card-thumb-box" href={`/posts/${post.slug}/`}>
+                      <div class="card-thumb-photo-wrap">
+                        <img src={`/banners/${post.slug}.jpg`} alt={post.title} class="card-photo" loading="lazy" />
+                      </div>
+                    </a>
+                  </div>
+
+                  <ul class="post-categories">
+                    <li>
+                      <a href="#" class="cat-tag-link" data-target-cat={cat.slug}>{cat.name}</a>
+                    </li>
+                  </ul>
+
+                  <h3 class="post-title">
+                    <a href={`/posts/${post.slug}/`}>{post.title}</a>
+                  </h3>
+
+                  <p class="post-excerpt">{post.excerpt}</p>
+
+                  <div class="post-meta">
+                    <span class="post-date">{post.date}</span>
+                    <a href={`/posts/${post.slug}/`} class="read-more">閱讀更多</a>
+                  </div>
+                </article>
               );
             })}
-          </ul>
-        </div>
+          </div>
 
-        <!-- 熱門標籤 -->
-        <div class="tag-widget-box">
-          <h3 class="side-section-heading">熱門主題標籤</h3>
-          <div class="tag-cloud">
-            <button class="tag-pill" data-kw="資安" type="button">系統資安</button>
-            <button class="tag-pill" data-kw="架構" type="button">巨型架構</button>
-            <button class="tag-pill" data-kw="pwa" type="button">PWA</button>
-            <button class="tag-pill" data-kw="設計" type="button">前端設計</button>
-            <button class="tag-pill" data-kw="代理" type="button">代理爬蟲</button>
-            <button class="tag-pill" data-kw="北商" type="button">北商學程</button>
-            <button class="tag-pill" data-kw="github" type="button">開源精選</button>
+          <!-- 查無結果提示 -->
+          <div class="empty-results-box" id="emptyNotice" style="display: none;">
+            <h3>查無相關文章！</h3>
+            <p>請嘗試使用其他關鍵字搜尋，或點選上方「全部文章」。</p>
           </div>
         </div>
-      </aside>
+
+        <!-- 📌 右側經典側邊欄 (Sidebar) -->
+        <aside class="right sidebar-right">
+          <!-- 作者專欄 (Side Author Box) -->
+          <div class="side-author-box">
+            <div class="photo">
+              <img src="/sheep-hd.png" alt="OviNas" width="100" height="100" />
+            </div>
+            <h2>OviNas <span class="eng-name">/ 站長專欄</span></h2>
+            <p class="history">全端開發 · 巨型架構 · 系統資安</p>
+            <p class="author-bio">
+              專注於現代 Web 架構設計、高效能前端、系統資安滲透稽核與邊緣雲端技術。追求純粹細膩的排版美學。
+            </p>
+            <div class="side-btn-row">
+              <a href="/vip/" class="btn-side-vip">加入 VIP 專區</a>
+            </div>
+          </div>
+
+          <!-- 熱門排行側欄 (#popular-side: 75px 1:1 正方形真實文青照片微縮圖) -->
+          <div class="popular-posts" id="popular-side">
+            <h3 class="side-section-heading">熱門推薦文章</h3>
+            <ul class="wpp-list">
+              {allPosts.slice(0, 5).map((p, idx) => {
+                const cat = getPostCategory(p);
+                return (
+                  <li class="wpp-item">
+                    <a href={`/posts/${p.slug}/`} class="wpp-thumb-link">
+                      <div class="wpp-thumbnail-box">
+                        <img src={`/banners/${p.slug}.jpg`} alt={p.title} class="wpp-thumb-img" />
+                      </div>
+                    </a>
+                    <div class="wpp-details">
+                      <a href={`/posts/${p.slug}/`} class="wpp-post-title">
+                        {p.title}
+                      </a>
+                      <span class="wpp-meta">{p.date} · {cat.name}</span>
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+
+          <!-- 快速標籤探索 -->
+          <div class="tag-widget-box">
+            <h3 class="side-section-heading">熱門主題標籤</h3>
+            <div class="make9-tag-cloud">
+              <button class="tag-link-pill" data-kw="資安" type="button">系統資安</button>
+              <button class="tag-link-pill" data-kw="架構" type="button">巨型架構</button>
+              <button class="tag-link-pill" data-kw="pwa" type="button">PWA</button>
+              <button class="tag-link-pill" data-kw="設計" type="button">前端設計</button>
+              <button class="tag-link-pill" data-kw="代理" type="button">代理爬蟲</button>
+              <button class="tag-link-pill" data-kw="北商" type="button">北商學程</button>
+              <button class="tag-link-pill" data-kw="github" type="button">開源精選</button>
+            </div>
+          </div>
+        </aside>
+      </div>
     </div>
   </div>
 </BlogLayout>
 
 <style>
-  .main-content {
+  .make9-page-wrapper {
     background-color: #ffffff;
-    padding: 2rem 0 5rem;
+    padding: 1.5rem 0 5rem;
   }
 
-  .single-page-area {
+  /* 🔷 1. 經典 Hero 區塊 */
+  .content-hero-header {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    gap: 2.5rem;
+    padding: 2.5rem 0 2.8rem;
+    border-bottom: 1px solid #e7e7e7;
+    margin-bottom: 2rem;
   }
 
-  /* 📖 左側主列表 (68% 寬度，右側 1px solid #e2e2e2) */
-  .single-page-area main.left {
-    width: 68%;
-    padding-right: 3.5%;
-    border-right: 1px solid #e2e2e2;
+  .content-hero-header .hero-left {
+    flex: 0 0 38%;
   }
 
-  .single-page-area .right.sidebar-right {
-    width: 28%;
-    padding-top: 0.5rem;
-  }
-
-  /* 麵包屑 */
-  .breadcrumbs {
-    font-size: 14px;
-    color: #999999;
-    margin-bottom: 1.2rem;
-    font-weight: 400;
-  }
-
-  .breadcrumbs a {
-    color: #666666;
-    text-decoration: none;
-    font-weight: 400;
-  }
-
-  .breadcrumbs a:hover {
-    color: #ff6b00;
-  }
-
-  .breadcrumbs .sep {
-    margin: 0 5px;
-    color: #cccccc;
-  }
-
-  .breadcrumbs .current-crumb {
-    color: #333333;
-    font-weight: 400;
-  }
-
-  /* 列表大標題 (h1.archive-title) */
-  h1.archive-title {
-    font-size: 20px;
-    color: #333333;
-    margin: 0 0 1.5rem;
-    font-weight: 400;
-    line-height: 1.3;
-  }
-
-  h1.archive-title .cat-name {
-    font-size: 28px;
+  .hero-brand {
+    font-size: 2.6rem;
     font-weight: 700;
+    line-height: 1.2;
     color: #222222;
-  }
-
-  h1.archive-title .slug-name {
-    color: #aaaaaa;
-    margin: 0 5px 0 10px;
-    font-family: "Lato", sans-serif;
-    font-size: 16px;
+    margin: 0 0 0.8rem;
     letter-spacing: 1px;
   }
 
-  h1.archive-title .title-suffix {
-    font-size: 20px;
-    color: #555555;
-  }
-
-  /* 分類切換按鈕列 */
-  .archive-filter-bar {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-    margin-bottom: 2.5rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid #eeeeee;
-  }
-
-  .filter-tab {
-    background-color: #f3f4f6;
-    color: #555555;
-    border: none;
-    padding: 6px 14px;
-    font-size: 0.86rem;
+  .hero-tagline {
+    font-size: 1.05rem;
     font-weight: 400;
-    cursor: pointer;
-    border-radius: 0;
-    transition: all 0.2s ease;
+    color: #666666;
+    line-height: 1.6;
+    margin: 0 0 2rem;
   }
 
-  .filter-tab:hover {
-    background-color: #e5e7eb;
-    color: #111111;
-  }
-
-  .filter-tab.is-active {
+  .btn-about {
+    display: inline-block;
     background-color: #ff6b00;
     color: #ffffff;
+    padding: 11px 26px;
+    font-size: 0.95rem;
+    font-weight: 400;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
   }
 
-  /* 📰 經典 WordPress 單欄文章流 (.post-list-loop) */
-  .post-list-loop {
-    display: flex;
-    flex-direction: column;
+  .btn-about:hover {
+    background-color: #ea580c;
   }
 
-  .loop-article {
+  .content-hero-header .hero-right {
+    flex: 0 0 58%;
+  }
+
+  .slider-wrap-header {
     width: 100%;
-    margin-bottom: 3.5rem;
-    border-bottom: 1px solid #e7e7e7;
-    padding-bottom: 2.5rem;
+    position: relative;
   }
 
-  /* 16:9 照片橫幅 */
-  .loop-img-wrap {
+  .featured-img-box {
     position: relative;
     width: 100%;
-    height: 380px;
+    height: 300px;
+    background-color: #000000;
     overflow: hidden;
-    background-color: #f0f0f0;
-    margin-bottom: 1.2rem;
   }
 
-  .loop-img-wrap a {
-    display: block;
-    width: 100%;
-    height: 100%;
-  }
-
-  .attachment-post-loop {
+  .featured-real-photo {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -323,76 +294,335 @@ function getPostCategory(post: typeof posts[0]) {
     transition: transform 0.3s ease;
   }
 
-  .loop-img-wrap:hover .attachment-post-loop {
+  .img-wrap:hover .featured-real-photo {
     transform: scale(1.03);
   }
 
-  /* 文章 Meta 資訊列 (.post-meta) */
-  .post-meta {
+  .slogan {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    padding: 12px 20px;
+    box-sizing: border-box;
+    transition: background-color 0.2s ease;
+  }
+
+  .img-wrap:hover .slogan {
+    background-color: rgba(255, 107, 0, 0.88);
+  }
+
+  .slogan-text {
+    color: #ffffff;
+    font-size: 1.1rem;
+    font-weight: 400;
+    line-height: 1.4;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* 🎨 3D 幾何 Hover 浮動陰影層 (.bgs1 ~ .bgs5) */
+  .img-wrap {
+    position: relative;
+    width: 100%;
+    margin-bottom: 0.8rem;
+  }
+
+  .bgs {
+    transition: transform 0.15s ease;
+  }
+
+  .bgs1 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-top: 0.6rem solid rgba(0, 0, 0, 0);
+    border-bottom: 0.6rem solid rgba(0, 0, 0, 0);
+    border-right: 0.6rem solid #ff6b00;
+    transform-origin: left center;
+    transform: translateY(-0.6rem) scale(0);
+  }
+
+  .bgs2 {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 0;
+    height: 0;
+    border-left: 0.6rem solid rgba(0, 0, 0, 0);
+    border-right: 0.6rem solid rgba(0, 0, 0, 0);
+    border-top: 0.6rem solid #ff6b00;
+    transform-origin: center bottom;
+    transform: translateX(0.6rem) scale(0);
+  }
+
+  .bgs3 {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    background: #ff6b00;
+    transform-origin: 0px 100%;
+    width: 0.6rem;
+    transform: scaleX(0);
+  }
+
+  .bgs4 {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #ff6b00;
+    transform-origin: 0px 100%;
+    height: 0.6rem;
+    transform: scaleY(0);
+  }
+
+  a.bgs5 {
+    display: block;
+    text-decoration: none;
+  }
+
+  .img-wrap:hover .bgs1 {
+    transform: translateY(-0.6rem) scale(1);
+    transition-delay: 70ms;
+  }
+
+  .img-wrap:hover .bgs2 {
+    transform: translateX(0.6rem) scale(1);
+    transition-delay: 70ms;
+  }
+
+  .img-wrap:hover .bgs3 {
+    transform: scaleX(1);
+    transition-delay: 70ms;
+  }
+
+  .img-wrap:hover .bgs4 {
+    transform: scaleY(1);
+    transition-delay: 70ms;
+  }
+
+  .img-wrap:hover a.bgs5 {
+    transform: translate3d(0.6rem, -0.6rem, 0px);
+    transition-delay: 70ms;
+  }
+
+  article:nth-child(2n) .img-wrap .bgs1 { border-right: 0.6rem solid #f59e0b; }
+  article:nth-child(2n) .img-wrap .bgs2 { border-top: 0.6rem solid #f59e0b; }
+  article:nth-child(2n) .img-wrap .bgs3,
+  article:nth-child(2n) .img-wrap .bgs4 { background: #f59e0b; }
+
+  article:nth-child(3n) .img-wrap .bgs1 { border-right: 0.6rem solid #ff6b00; }
+  article:nth-child(3n) .img-wrap .bgs2 { border-top: 0.6rem solid #ff6b00; }
+  article:nth-child(3n) .img-wrap .bgs3,
+  article:nth-child(3n) .img-wrap .bgs4 { background: #ff6b00; }
+
+  /* 🔍 2. 分類導航與搜尋列 */
+  .make9-nav-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.2rem 0;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #e7e7e7;
+  }
+
+  .nav-pills-group {
     display: flex;
     flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .nav-pill {
+    background-color: #f3f4f6;
+    color: #555555;
+    border: none;
+    padding: 7px 15px;
+    font-size: 0.88rem;
+    font-weight: 400;
+    cursor: pointer;
+    border-radius: 0;
+    transition: all 0.2s ease;
+  }
+
+  .nav-pill:hover {
+    background-color: #e5e7eb;
+    color: #111111;
+  }
+
+  .nav-pill.is-active {
+    background-color: #ff6b00;
+    color: #ffffff;
+  }
+
+  .pill-badge {
+    font-size: 0.78rem;
+    opacity: 0.85;
+  }
+
+  .make9-search-box {
+    display: flex;
     align-items: center;
-    gap: 0.6rem;
-    font-size: 14px;
-    color: #999999;
-    margin: 0 0 0.8rem;
-    line-height: 25px;
+    flex: 0 0 320px;
+  }
+
+  .search-input-field {
+    width: 100%;
+    padding: 8px 12px;
+    font-size: 0.88rem;
+    border: 1px solid #d1d5db;
+    border-right: none;
+    outline: none;
+    border-radius: 0;
+    background: #ffffff;
+  }
+
+  .search-input-field:focus {
+    border-color: #ff6b00;
+  }
+
+  .search-btn-field {
+    background-color: #ff6b00;
+    color: #ffffff;
+    border: 1px solid #ff6b00;
+    padding: 8px 18px;
+    font-size: 0.88rem;
     font-weight: 400;
+    cursor: pointer;
+    border-radius: 0;
+    transition: background-color 0.2s ease;
   }
 
-  .post-meta a {
-    color: #666666;
-    text-decoration: none;
-    font-weight: 400;
-    transition: color 0.2s ease;
+  .search-btn-field:hover {
+    background-color: #ea580c;
   }
 
-  .post-meta a:hover {
-    color: #ff6b00;
+  /* 📰 3. 主內容與側邊欄排版 (content-area-top) */
+  .content-area-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 3rem;
   }
 
-  .post-author {
-    font-size: 14px;
-    color: #999999;
+  .content-area-top .left {
+    flex: 0 0 calc(70% - 1.5rem);
   }
 
-  .meta-sep {
-    color: #dddddd;
+  .content-area-top .right.sidebar-right {
+    flex: 0 0 calc(30% - 1.5rem);
+  }
+
+  .post-area-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    border-bottom: 3px solid #eeeeee;
+    transition: border-bottom 0.2s ease;
+  }
+
+  .post-area-head:hover {
+    border-bottom: 3px solid #ff6b00;
+  }
+
+  .post-area-title {
+    background-color: #ff6b00;
+    color: #ffffff;
+    display: inline-block;
+    padding: 10px 22px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 1px;
     margin: 0;
   }
 
+  .cat-read-all {
+    display: block;
+    color: #555555;
+    background-color: #eeeeee;
+    font-size: 0.86rem;
+    font-weight: 400;
+    padding: 10px 18px;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+  }
+
+  .post-area-head:hover .cat-read-all {
+    background-color: #ff6b00;
+    color: #ffffff;
+  }
+
+  /* 2 欄式文章網格 (post-list col3) */
+  .post-list.col3 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2.2rem;
+  }
+
+  .make9-article-card {
+    background: #ffffff;
+    border-bottom: 1px solid #e7e7e7;
+    padding-bottom: 1.8rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card-thumb-photo-wrap {
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
+    background: #f0f0f0;
+  }
+
+  .card-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+  }
+
+  .img-wrap:hover .card-photo {
+    transform: scale(1.04);
+  }
+
+  /* 文章標籤與文字 */
   .post-categories {
     list-style: none;
     padding: 0;
-    margin: 0;
-    display: inline-flex;
-    flex-wrap: wrap;
+    margin: 0.8rem 0 0.4rem;
+    display: flex;
   }
 
   .post-categories li {
-    display: inline-block;
+    background-color: #ff6b00;
+    padding: 2px 8px;
+    border-radius: 3px;
   }
 
-  .post-categories li:after {
-    content: ",";
-    margin: 0 5px;
-    color: #999999;
+  .cat-tag-link {
+    color: #ffffff;
+    font-size: 0.76rem;
+    font-weight: 400;
+    text-decoration: none;
   }
 
-  .post-categories li:last-child:after {
-    content: "";
-  }
-
-  /* 文章大標題 (.post-title) */
   .post-title {
-    font-size: 26px;
+    font-size: 1.15rem;
     font-weight: 700;
-    line-height: 1.35;
-    margin: 8px 0 12px;
+    line-height: 1.38;
+    margin: 6px 0 8px;
   }
 
   .post-title a {
-    color: #222222;
+    color: #333333;
     text-decoration: none;
     transition: color 0.2s ease;
   }
@@ -401,34 +631,41 @@ function getPostCategory(post: typeof posts[0]) {
     color: #ff6b00;
   }
 
-  /* 摘要 (.post-excerpt) */
   .post-excerpt {
-    font-size: 16px;
-    line-height: 1.75rem;
+    font-size: 0.86rem;
+    line-height: 1.6;
     color: #666666;
-    margin: 0 0 1.2rem;
+    margin: 0 0 1rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    flex: 1;
     font-weight: 400;
   }
 
-  /* 繼續閱讀按鈕 (.read-more) */
-  .read-more-wrap {
-    margin: 15px 0 5px;
+  .post-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+    font-size: 0.82rem;
+    color: #999999;
   }
 
   .read-more {
-    display: inline-block;
     background-color: #ff6b00;
-    color: #ffffff !important;
-    padding: 8px 36px;
-    font-size: 15px;
+    color: #ffffff;
+    padding: 5px 18px;
+    font-size: 0.82rem;
     font-weight: 400;
     text-decoration: none;
-    border-radius: 0;
     transition: all 0.2s ease;
   }
 
   .read-more:hover {
     background-color: #3bce89;
+    color: #ffffff;
   }
 
   /* 📌 側邊欄樣式 */
@@ -495,9 +732,10 @@ function getPostCategory(post: typeof posts[0]) {
     background-color: #ea580c;
   }
 
+  /* 熱門推薦文章 (#popular-side) */
   .popular-posts {
     margin-bottom: 2.5rem;
-    padding-top: 10px;
+    padding: 10px 0;
     border-top: 4px solid #222222;
   }
 
@@ -588,13 +826,13 @@ function getPostCategory(post: typeof posts[0]) {
     border-top: 4px solid #222222;
   }
 
-  .tag-cloud {
+  .make9-tag-cloud {
     display: flex;
     flex-wrap: wrap;
     gap: 0.4rem;
   }
 
-  .tag-pill {
+  .tag-link-pill {
     background-color: #f3f4f6;
     color: #555555;
     border: 1px solid #e5e7eb;
@@ -605,7 +843,7 @@ function getPostCategory(post: typeof posts[0]) {
     transition: all 0.2s ease;
   }
 
-  .tag-pill:hover {
+  .tag-link-pill:hover {
     background-color: #ff6b00;
     color: #ffffff;
     border-color: #ff6b00;
@@ -620,60 +858,93 @@ function getPostCategory(post: typeof posts[0]) {
     color: #888888;
   }
 
-  @media (max-width: 960px) {
-    .single-page-area {
+  @media (max-width: 1024px) {
+    .content-hero-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .content-hero-header .hero-left,
+    .content-hero-header .hero-right {
+      flex: 0 0 100%;
+      width: 100%;
+    }
+    .content-area-top {
       flex-direction: column;
     }
-    .single-page-area main.left,
-    .single-page-area .right.sidebar-right {
+    .content-area-top .left,
+    .content-area-top .right.sidebar-right {
+      flex: 0 0 100%;
       width: 100%;
-      border-right: none;
-      padding-right: 0;
     }
-    .loop-img-wrap {
-      height: 240px;
+  }
+
+  @media (max-width: 768px) {
+    .post-list.col3 {
+      grid-template-columns: 1fr;
+    }
+    .make9-nav-bar {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .make9-search-box {
+      flex: 1;
+    }
+    .hero-brand {
+      font-size: 2rem;
     }
   }
 </style>
 
 <script>
-  const filterTabs = document.querySelectorAll('.filter-tab');
-  const loopArticles = document.querySelectorAll('.loop-article');
+  const searchInput = document.getElementById('make9Search') as HTMLInputElement;
+  const filterTabs = document.querySelectorAll('.nav-pill');
+  const postCards = document.querySelectorAll('.make9-article-card');
   const emptyNotice = document.getElementById('emptyNotice');
-  const catNameEl = document.getElementById('archiveCatName');
-  const slugNameEl = document.getElementById('archiveSlugName');
-
-  const catMeta: Record<string, { name: string; slug: string }> = {
-    all: { name: '全部文章', slug: ' ALL POSTS ' },
-    security: { name: '系統資安', slug: ' SECURITY ' },
-    architecture: { name: '架構伺服器', slug: ' ARCHITECTURE ' },
-    design: { name: '前端設計', slug: ' FRONT-END DESIGN ' },
-    tools: { name: '外掛工具', slug: ' TOOLS ' },
-    campus: { name: '專案實戰', slug: ' PROJECTS ' },
-  };
+  const countDisplay = document.getElementById('currentCountDisplay');
+  const sectionTitle = document.getElementById('currentSectionTitle');
 
   let currentCategory = 'all';
+  let currentSearchQuery = '';
 
-  function filterPosts() {
+  const categoryNames: Record<string, string> = {
+    all: '精選文章',
+    security: '系統資安文章',
+    architecture: '架構伺服器文章',
+    design: '前端設計文章',
+    tools: '外掛工具文章',
+    campus: '專案實戰文章',
+  };
+
+  function updatePosts() {
     let visibleCount = 0;
 
-    loopArticles.forEach((article) => {
-      const el = article as HTMLElement;
+    postCards.forEach((card) => {
+      const el = card as HTMLElement;
       const cardCategory = el.getAttribute('data-cat') || '';
-      const match = currentCategory === 'all' || cardCategory === currentCategory;
+      const cardTitle = el.getAttribute('data-title') || '';
+      const cardExcerpt = el.getAttribute('data-excerpt') || '';
 
-      if (match) {
-        el.style.display = 'block';
+      const matchCategory = currentCategory === 'all' || cardCategory === currentCategory;
+      const matchSearch = currentSearchQuery === '' ||
+        cardTitle.includes(currentSearchQuery) ||
+        cardExcerpt.includes(currentSearchQuery);
+
+      if (matchCategory && matchSearch) {
+        el.style.display = 'flex';
         visibleCount++;
       } else {
         el.style.display = 'none';
       }
     });
 
-    if (catNameEl && slugNameEl) {
-      const meta = catMeta[currentCategory] || catMeta.all;
-      catNameEl.textContent = meta.name;
-      slugNameEl.textContent = meta.slug;
+    if (countDisplay) {
+      countDisplay.textContent = `共 ${visibleCount} 篇文章`;
+    }
+
+    if (sectionTitle) {
+      sectionTitle.textContent = currentSearchQuery
+        ? `搜尋結果: 「${currentSearchQuery}」`
+        : (categoryNames[currentCategory] || '精選文章');
     }
 
     if (emptyNotice) {
@@ -686,33 +957,39 @@ function getPostCategory(post: typeof posts[0]) {
       filterTabs.forEach((t) => t.classList.remove('is-active'));
       tab.classList.add('is-active');
       currentCategory = tab.getAttribute('data-cat') || 'all';
-      filterPosts();
+      updatePosts();
     });
   });
 
-  document.querySelectorAll('.cat-filter-click').forEach((link) => {
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      currentSearchQuery = (e.target as HTMLInputElement).value.trim().toLowerCase();
+      updatePosts();
+    });
+  }
+
+  document.querySelectorAll('.tag-link-pill').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const kw = btn.getAttribute('data-kw') || '';
+      if (searchInput) {
+        searchInput.value = kw;
+        currentSearchQuery = kw.toLowerCase();
+        updatePosts();
+        document.getElementById('all-posts')?.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
+
+  document.querySelectorAll('.cat-tag-link').forEach((link) => {
     link.addEventListener('click', (e) => {
       e.preventDefault();
       const target = link.getAttribute('data-target-cat') || 'all';
       filterTabs.forEach((tab) => {
         if (tab.getAttribute('data-cat') === target) {
           (tab as HTMLElement).click();
-          window.scrollTo({ top: 0, behavior: 'smooth' });
+          document.getElementById('all-posts')?.scrollIntoView({ behavior: 'smooth' });
         }
       });
-    });
-  });
-
-  document.querySelectorAll('.tag-pill').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const kw = btn.getAttribute('data-kw') || '';
-      // filter by category matching
-      if (kw === '資安') (document.querySelector('[data-cat="security"]') as HTMLElement)?.click();
-      else if (kw === '架構' || kw === 'pwa') (document.querySelector('[data-cat="architecture"]') as HTMLElement)?.click();
-      else if (kw === '設計') (document.querySelector('[data-cat="design"]') as HTMLElement)?.click();
-      else if (kw === '代理' || kw === 'github') (document.querySelector('[data-cat="tools"]') as HTMLElement)?.click();
-      else if (kw === '北商') (document.querySelector('[data-cat="campus"]') as HTMLElement)?.click();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
     });
   });
 </script>
