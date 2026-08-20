@@ -244,13 +244,18 @@ const catName = getCategoryName(item.category, item.slug);
             </div>
           </div>
 
-          <!-- 熱門排行側欄 (#popular-side) -->
+          <!-- 熱門排行側欄 (#popular-side - 經典 75px 正方形縮圖 + Lato 排行) -->
           <div class="popular-posts" id="popular-side">
             <h3 class="side-section-heading">熱門推薦文章</h3>
             <ul class="wpp-list">
               {posts.slice(0, 5).map((p, idx) => (
                 <li class="wpp-item">
-                  <span class={`wpp-rank rank-${idx + 1}`}>{idx + 1}</span>
+                  <a href={`/blog/${p.slug}/`} class="wpp-thumb-link">
+                    <div class="wpp-thumbnail-box">
+                      <span class={`wpp-rank-badge rank-${idx + 1}`}>{idx + 1}</span>
+                      <span class="wpp-thumb-symbol">#0{idx + 1}</span>
+                    </div>
+                  </a>
                   <div class="wpp-details">
                     <a href={`/blog/${p.slug}/`} class="wpp-post-title">
                       {p.title}
