@@ -81,7 +81,33 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
               </ul>
             </li>
 
-            <!-- 經典膠囊按鈕 (.nav-cta-btn) -->
+                    <!-- 🔍 經典搜尋框區塊 (.header-search + #search-toggle) -->
+        <div class="search-wrap-box">
+          <button id="searchToggle" class="btn-search-toggle" aria-label="展開搜尋框" title="搜尋文章">
+            <svg class="search-icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </button>
+          
+          <div id="headerSearchDropdown" class="header-search-form-wrap">
+            <form action="/blog/posts/" method="get" class="header-search-form" id="globalSearchForm">
+              <input
+                type="search"
+                name="q"
+                id="headerSearchInput"
+                class="header-search-input"
+                placeholder="輸入你想找的知識…"
+                autocomplete="off"
+              />
+              <button type="submit" class="header-search-submit">搜尋</button>
+            </form>
+            <!-- 即時搜尋下拉浮層 (Live Search Results) -->
+            <div id="liveSearchResults" class="live-search-results"></div>
+          </div>
+        </div>
+
+        <!-- 經典膠囊按鈕 (.nav-cta-btn) -->
             <li class="menu-item nav-cta-btn">
               <a href="/">返回 Portal 主站</a>
             </li>
@@ -109,6 +135,12 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
       <button id="close-menu" class="btn-close-drawer" aria-label="關閉選單">&times;</button>
     </div>
 
+        <div class="mobile-search-box">
+      <form action="/blog/posts/" method="get" class="mobile-search-form">
+        <input type="search" name="q" placeholder="搜尋文章或關鍵字…" class="mobile-search-input" />
+        <button type="submit" class="mobile-search-submit">搜尋</button>
+      </form>
+    </div>
     <ul class="mobile-menu-links">
       <li><a href="/blog/">首頁</a></li>
       <li><a href="/blog/posts/">全部文章列表</a></li>
@@ -281,6 +313,73 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
       }
     });
   }
+
+  // 5. 即時文章搜尋 (Header Search & Live Search)
+  const searchToggle = document.getElementById('searchToggle');
+  const searchDropdown = document.getElementById('headerSearchDropdown');
+  const searchInput = document.getElementById('headerSearchInput') as HTMLInputElement;
+  const liveResults = document.getElementById('liveSearchResults');
+
+  const searchArticles = [
+    { title: '【系統資安】資安研究報告', slug: 'security-research-report', cat: '系統資安', excerpt: 'CVSS v4.0 滲透分級、OWASP/CWE 標準與 AI 防禦' },
+    { title: '【系統資安】全端技術架構筆記', slug: 'tech-notes-architecture', cat: '架構伺服器', excerpt: '大型企業級技術規範與系統架構設計' },
+    { title: '【系統資安】Cloudflare Pages 與 PWA 部署實戰', slug: 'cf-pages-pwa-webpush', cat: '架構伺服器', excerpt: 'WebPush 離線推播與 Service Worker 快取' },
+    { title: '【系統資安】介面排版與簡報設計邏輯', slug: 'presentation-design-logic', cat: '前端設計', excerpt: '工程師的視覺傳達與資訊層次結構' },
+    { title: '【系統資安】前端工程與響應式美學', slug: 'front-end-design', cat: '前端設計', excerpt: 'RWD 響應式佈局與現代 CSS 動效' },
+    { title: '【系統資安】代理伺服器與爬蟲名單整合工具', slug: 'proxy-list-tools', cat: '外掛工具', excerpt: 'Proxy 名單即時抓取與代理驗證' },
+    { title: '【系統資安】北商大修課學分管理與選課規劃', slug: 'ntub-credit-program', cat: '專案實戰', excerpt: '大專院校學分計算與選課檢核系統' },
+    { title: '【系統資安】Instagram 訊息管理與收回偵測探討', slug: 'ig-unsend-tool', cat: '外掛工具', excerpt: '即時訊息快取與收回事件捕獲' },
+    { title: '【系統資安】AI 歷屆考古題資訊系統', slug: 'ai-planner-past-exam-info', cat: '專案實戰', excerpt: '智慧考古題索引與複習計畫' },
+    { title: '【系統資安】Windows 開發環境調校與 Freestyle 心得', slug: 'windows-experience-freestyle', cat: '架構伺服器', excerpt: 'WSL2 與現代開發環境極簡配置' },
+    { title: '【系統資安】精選 GitHub 開源工具箱', slug: 'github-open-source-tools', cat: '外掛工具', excerpt: '高效率開發者工具與開源專案推薦' },
+    { title: '【系統資安】校園系統稽核與安全性探討', slug: 'ntub-audit', cat: '系統資安', excerpt: '安全漏洞評估與滲透稽核實務' },
+  ];
+
+  searchToggle?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    searchDropdown?.classList.toggle('is-open');
+    searchToggle.classList.toggle('is-active');
+    if (searchDropdown?.classList.contains('is-open')) {
+      searchInput?.focus();
+    }
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!searchDropdown?.contains(e.target as Node) && !searchToggle?.contains(e.target as Node)) {
+      searchDropdown?.classList.remove('is-open');
+      searchToggle?.classList.remove('is-active');
+    }
+  });
+
+  searchInput?.addEventListener('input', () => {
+    const q = searchInput.value.trim().toLowerCase();
+    if (!liveResults) return;
+
+    if (q.length === 0) {
+      liveResults.innerHTML = '';
+      liveResults.classList.remove('has-results');
+      return;
+    }
+
+    const matches = searchArticles.filter(a => 
+      a.title.toLowerCase().includes(q) || 
+      a.cat.toLowerCase().includes(q) || 
+      a.excerpt.toLowerCase().includes(q)
+    );
+
+    if (matches.length > 0) {
+      liveResults.innerHTML = matches.map(m => `
+        <a href="/blog/posts/${m.slug}/" class="live-search-item">
+          <div class="live-search-title">${m.title}</div>
+          <div class="live-search-meta">${m.cat}</div>
+        </a>
+      `).join('');
+      liveResults.classList.add('has-results');
+    } else {
+      liveResults.innerHTML = '<div class="live-search-empty">找不到符合的相關文章</div>';
+      liveResults.classList.add('has-results');
+    }
+  });
 </script>
 <script>
   // 1. 頂部導覽列滾動縮小動效 (.min-fixed)
@@ -393,6 +492,73 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
       }
     });
   }
+
+  // 5. 即時文章搜尋 (Header Search & Live Search)
+  const searchToggle = document.getElementById('searchToggle');
+  const searchDropdown = document.getElementById('headerSearchDropdown');
+  const searchInput = document.getElementById('headerSearchInput') as HTMLInputElement;
+  const liveResults = document.getElementById('liveSearchResults');
+
+  const searchArticles = [
+    { title: '【系統資安】資安研究報告', slug: 'security-research-report', cat: '系統資安', excerpt: 'CVSS v4.0 滲透分級、OWASP/CWE 標準與 AI 防禦' },
+    { title: '【系統資安】全端技術架構筆記', slug: 'tech-notes-architecture', cat: '架構伺服器', excerpt: '大型企業級技術規範與系統架構設計' },
+    { title: '【系統資安】Cloudflare Pages 與 PWA 部署實戰', slug: 'cf-pages-pwa-webpush', cat: '架構伺服器', excerpt: 'WebPush 離線推播與 Service Worker 快取' },
+    { title: '【系統資安】介面排版與簡報設計邏輯', slug: 'presentation-design-logic', cat: '前端設計', excerpt: '工程師的視覺傳達與資訊層次結構' },
+    { title: '【系統資安】前端工程與響應式美學', slug: 'front-end-design', cat: '前端設計', excerpt: 'RWD 響應式佈局與現代 CSS 動效' },
+    { title: '【系統資安】代理伺服器與爬蟲名單整合工具', slug: 'proxy-list-tools', cat: '外掛工具', excerpt: 'Proxy 名單即時抓取與代理驗證' },
+    { title: '【系統資安】北商大修課學分管理與選課規劃', slug: 'ntub-credit-program', cat: '專案實戰', excerpt: '大專院校學分計算與選課檢核系統' },
+    { title: '【系統資安】Instagram 訊息管理與收回偵測探討', slug: 'ig-unsend-tool', cat: '外掛工具', excerpt: '即時訊息快取與收回事件捕獲' },
+    { title: '【系統資安】AI 歷屆考古題資訊系統', slug: 'ai-planner-past-exam-info', cat: '專案實戰', excerpt: '智慧考古題索引與複習計畫' },
+    { title: '【系統資安】Windows 開發環境調校與 Freestyle 心得', slug: 'windows-experience-freestyle', cat: '架構伺服器', excerpt: 'WSL2 與現代開發環境極簡配置' },
+    { title: '【系統資安】精選 GitHub 開源工具箱', slug: 'github-open-source-tools', cat: '外掛工具', excerpt: '高效率開發者工具與開源專案推薦' },
+    { title: '【系統資安】校園系統稽核與安全性探討', slug: 'ntub-audit', cat: '系統資安', excerpt: '安全漏洞評估與滲透稽核實務' },
+  ];
+
+  searchToggle?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    searchDropdown?.classList.toggle('is-open');
+    searchToggle.classList.toggle('is-active');
+    if (searchDropdown?.classList.contains('is-open')) {
+      searchInput?.focus();
+    }
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!searchDropdown?.contains(e.target as Node) && !searchToggle?.contains(e.target as Node)) {
+      searchDropdown?.classList.remove('is-open');
+      searchToggle?.classList.remove('is-active');
+    }
+  });
+
+  searchInput?.addEventListener('input', () => {
+    const q = searchInput.value.trim().toLowerCase();
+    if (!liveResults) return;
+
+    if (q.length === 0) {
+      liveResults.innerHTML = '';
+      liveResults.classList.remove('has-results');
+      return;
+    }
+
+    const matches = searchArticles.filter(a => 
+      a.title.toLowerCase().includes(q) || 
+      a.cat.toLowerCase().includes(q) || 
+      a.excerpt.toLowerCase().includes(q)
+    );
+
+    if (matches.length > 0) {
+      liveResults.innerHTML = matches.map(m => `
+        <a href="/blog/posts/${m.slug}/" class="live-search-item">
+          <div class="live-search-title">${m.title}</div>
+          <div class="live-search-meta">${m.cat}</div>
+        </a>
+      `).join('');
+      liveResults.classList.add('has-results');
+    } else {
+      liveResults.innerHTML = '<div class="live-search-empty">找不到符合的相關文章</div>';
+      liveResults.classList.add('has-results');
+    }
+  });
 </script>
 </body>
 </html>
@@ -432,6 +598,172 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 1.5rem;
+  }
+
+    /* 🔍 導覽列搜尋框樣式 (.search-wrap-box) */
+  .search-wrap-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-right: 8px;
+  }
+
+  .btn-search-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #666666;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+  }
+
+  .btn-search-toggle:hover,
+  .btn-search-toggle.is-active {
+    color: #ff6b00;
+    background-color: #fff7ed;
+  }
+
+  .header-search-form-wrap {
+    display: none;
+    position: absolute;
+    top: calc(100% + 14px);
+    right: 0;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+    border-radius: 6px;
+    padding: 12px 14px;
+    z-index: 1020;
+    width: 320px;
+    animation: fadeInDown 0.2s ease;
+  }
+
+  .header-search-form-wrap.is-open {
+    display: block;
+  }
+
+  .header-search-form {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .header-search-input {
+    flex: 1;
+    background-color: #f9fafb;
+    border: 1px solid #d1d5db;
+    padding: 8px 12px;
+    font-size: 14px;
+    color: #333333;
+    font-family: inherit;
+    border-radius: 4px;
+    outline: none;
+    transition: border-color 0.2s ease;
+  }
+
+  .header-search-input:focus {
+    border-color: #ff6b00;
+    background-color: #ffffff;
+  }
+
+  .header-search-submit {
+    background-color: #ff6b00;
+    color: #ffffff;
+    border: none;
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .header-search-submit:hover {
+    background-color: #ea580c;
+  }
+
+  /* 即時搜尋浮層 (Live Search) */
+  .live-search-results {
+    margin-top: 10px;
+    max-height: 260px;
+    overflow-y: auto;
+    border-top: 1px solid #f3f4f6;
+    padding-top: 8px;
+    display: none;
+  }
+
+  .live-search-results.has-results {
+    display: block;
+  }
+
+  .live-search-item {
+    display: block;
+    padding: 8px 10px;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.15s ease;
+  }
+
+  .live-search-item:hover {
+    background-color: #fff7ed;
+  }
+
+  .live-search-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: #222222;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .live-search-meta {
+    font-size: 11px;
+    color: #ff6b00;
+    margin-top: 2px;
+  }
+
+  .live-search-empty {
+    font-size: 13px;
+    color: #999999;
+    padding: 10px 8px;
+    text-align: center;
+  }
+
+  /* 手機版搜尋列 */
+  .mobile-search-box {
+    margin-bottom: 1.2rem;
+  }
+
+  .mobile-search-form {
+    display: flex;
+    gap: 6px;
+  }
+
+  .mobile-search-input {
+    flex: 1;
+    border: 1px solid #d1d5db;
+    padding: 8px 10px;
+    font-size: 14px;
+    border-radius: 4px;
+    outline: none;
+  }
+
+  .mobile-search-submit {
+    background-color: #ff6b00;
+    color: #ffffff;
+    border: none;
+    padding: 8px 14px;
+    font-size: 13px;
+    border-radius: 4px;
   }
 
   /* 🔷 Header 樣式 (100% 依據經典自媒體比例，含 75px Logo、灰字選單、下拉、圓形按鈕、毛玻璃透明) */

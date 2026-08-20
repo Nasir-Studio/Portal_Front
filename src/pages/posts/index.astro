@@ -290,6 +290,33 @@ function getPostCategory(post: typeof posts[0]) {
     color: #ffffff;
   }
 
+    /* 🔍 歸檔頁搜尋條樣式 */
+  .archive-search-bar {
+    margin-bottom: 2rem;
+  }
+  .archive-search-input {
+    width: 100%;
+    background-color: #f9fafb;
+    border: 1px solid #d1d5db;
+    padding: 12px 18px;
+    font-size: 15px;
+    color: #222222;
+    border-radius: 6px;
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.2s, background-color 0.2s;
+  }
+  .archive-search-input:focus {
+    border-color: #ff6b00;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.1);
+  }
+  .search-count-text {
+    font-size: 14px;
+    color: #ff6b00;
+    margin: 8px 0 0;
+    font-weight: 500;
+  }
   .post-list-loop {
     display: flex;
     flex-direction: column;
@@ -726,4 +753,50 @@ function getPostCategory(post: typeof posts[0]) {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
   });
+</script>
+
+
+<script>
+  // 🔍 文章列表即時搜尋篩選器
+  const params = new URLSearchParams(window.location.search);
+  const q = params.get('q')?.trim().toLowerCase() || '';
+  const searchInput = document.getElementById('archiveSearchInput') as HTMLInputElement;
+  const postCards = document.querySelectorAll('.loop-article');
+  const countText = document.getElementById('searchCountText');
+
+  function filterPosts(query: string) {
+    let visibleCount = 0;
+    postCards.forEach((card) => {
+      const title = card.querySelector('.post-title')?.textContent?.toLowerCase() || '';
+      const excerpt = card.querySelector('.post-excerpt')?.textContent?.toLowerCase() || '';
+      const cat = card.querySelector('.post-categories')?.textContent?.toLowerCase() || '';
+
+      if (!query || title.includes(query) || excerpt.includes(query) || cat.includes(query)) {
+        (card as HTMLElement).style.display = '';
+        visibleCount++;
+      } else {
+        (card as HTMLElement).style.display = 'none';
+      }
+    });
+
+    if (countText) {
+      if (query) {
+        countText.textContent = `搜尋「${query}」共找到 ${visibleCount} 篇相關文章`;
+        countText.style.display = 'block';
+      } else {
+        countText.style.display = 'none';
+      }
+    }
+  }
+
+  if (searchInput) {
+    if (q) {
+      searchInput.value = q;
+      filterPosts(q);
+    }
+
+    searchInput.addEventListener('input', () => {
+      filterPosts(searchInput.value.trim().toLowerCase());
+    });
+  }
 </script>
