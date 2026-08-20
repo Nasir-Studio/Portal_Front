@@ -19,7 +19,7 @@ const techPosts = posts.slice(0, 4);
 
 // 2. 編輯精選 (3 篇經典深度代表作)
 const editorPicks = [
-  posts.find(p => p.slug === 'security-research-report') || posts[0],
+  posts.find(p => p.slug === 'tech-notes-architecture') || posts[0],
   posts.find(p => p.slug === 'tech-notes-architecture') || posts[1],
   posts.find(p => p.slug === 'github-open-source-tools') || posts[2],
 ];
@@ -31,12 +31,12 @@ const topicCategories = [
     name: '網站架設',
     posts: [
       posts.find(p => p.slug === 'tech-notes-architecture'),
-      posts.find(p => p.slug === 'security-research-report'),
+      posts.find(p => p.slug === 'tech-notes-architecture'),
       posts.find(p => p.slug === 'cf-pages-pwa-webpush'),
     ].filter(Boolean),
     listPosts: [
       { title: '全端技術筆記：現代企業級 Web 架構規範與全端實踐', slug: 'tech-notes-architecture' },
-      { title: 'CVSS v4.0 漏洞滲透分級實務評估指南與威脅防護', slug: 'security-research-report' },
+      { title: 'CVSS v4.0 漏洞滲透分級實務評估指南與威脅防護', slug: 'tech-notes-architecture' },
       { title: 'NTUB 2026 通識資安稽核一條龍實務深入解析', slug: 'ntub-audit' },
       { title: 'Cloudflare Pages 與 Edge Functions 邊緣部署實務', slug: 'cf-pages-pwa-webpush' },
       { title: '簡報設計方式與工程師介面視覺傳達邏輯', slug: 'presentation-design-logic' },
