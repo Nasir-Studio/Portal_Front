@@ -539,5 +539,69 @@
 			min-width: 0;
 		}
 	}
+
+	.program-card {
+		background: #ffffff !important;
+		border: 1.5px solid #cbd5e1 !important;
+		border-radius: 0px !important;
+		padding: 14px 16px !important;
+		transition: all 0.15s ease;
+	}
+
+	.program-card:hover {
+		border-color: #0f172a !important;
+		background: #f8fafc !important;
+	}
+
+	.program-card.active {
+		border-color: #ff6b00 !important;
+		border-left: 4px solid #ff6b00 !important;
+		background: #fff7ed !important;
+	}
+
+	.program-name {
+		font-size: 15px !important;
+		font-weight: 700 !important;
+		color: #0f172a !important;
+	}
+
+	.program-detail {
+		background: #ffffff !important;
+		border: 1.5px solid #0f172a !important;
+		border-radius: 0px !important;
+		padding: 32px 36px !important;
+		box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
+	}
+
+	.req-item {
+		background: #f8fafc !important;
+		border: 1.5px solid #cbd5e1 !important;
+		padding: 14px 16px !important;
+	}
+
+	.table-wrap {
+		border: 1.5px solid #0f172a !important;
+		background: #ffffff;
+	}
+
+	table {
+		width: 100%;
+		border-collapse: collapse;
+	}
+
+	th {
+		background: #f1f5f9 !important;
+		color: #0f172a !important;
+		font-weight: 700 !important;
+		border-bottom: 1.5px solid #0f172a !important;
+		padding: 10px 14px;
+	}
+
+	td {
+		border-bottom: 1px solid #cbd5e1 !important;
+		padding: 10px 14px;
+		color: #1e293b !important;
+	}
+
 </style>
 </NtubLayout>
