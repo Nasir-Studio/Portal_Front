@@ -33,7 +33,7 @@ const files = [
     date: '2026-08-19 15:45',
     size: '8.4M',
     sizeBytes: 8808038,
-    desc: 'NTUB 通識資安稽核全套檢測工具包（弱掃/源碼/滲透）'
+    desc: '-'
   },
   {
     type: 'bat',
@@ -44,7 +44,7 @@ const files = [
     date: '2026-08-19 16:10',
     size: '2.4K',
     sizeBytes: 2457,
-    desc: 'Windows 系統環境資安基準檢測與演練通報腳本'
+    desc: '-'
   }
 ];
 ---
@@ -119,7 +119,7 @@ const files = [
                   <span class="m-size">💾 {file.size}</span>
                 </div>
               )}
-              <div class="m-desc">{file.desc}</div>
+              {file.desc && file.desc !== '-' && (<div class="m-desc">{file.desc}</div>)}
               <hr class="apache-hr m-divider" />
             </li>
           ))}
