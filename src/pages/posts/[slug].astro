@@ -939,3 +939,157 @@ const cat = getCategoryInfo(item.slug);
     });
   }
 </script>
+
+
+<style is:global>
+  /* 🖼️ 強制全站文章內文圖片 100% 自適應約束，徹底杜絕溢出 (Global HTML Injected Styles) */
+  .post-content {
+    max-width: 100%;
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+
+  .post-content img {
+    max-width: 100% !important;
+    height: auto !important;
+    max-height: 520px !important;
+    display: block !important;
+    margin: 2rem auto !important;
+    border-radius: 6px !important;
+    border: 1px solid #e5e7eb !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06) !important;
+    background-color: #ffffff !important;
+    box-sizing: border-box !important;
+    object-fit: contain !important;
+  }
+
+  .post-content p:has(img),
+  .post-content figure {
+    text-align: center;
+    margin: 2rem 0;
+    width: 100%;
+  }
+
+  .post-content p {
+    margin: 0 0 1.6em;
+    line-height: 1.8;
+  }
+
+  .post-content a {
+    color: #16a34a;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    font-weight: 400;
+  }
+
+  .post-content a:hover {
+    color: #15803d;
+  }
+
+  .post-content ul, .post-content ol {
+    margin: 0 0 1.8em;
+    padding-left: 2rem;
+  }
+
+  .post-content li {
+    margin-bottom: 0.6em;
+    line-height: 1.8;
+  }
+
+  .post-content code {
+    background-color: #f3f4f6;
+    color: #ea580c;
+    padding: 2px 6px;
+    font-size: 0.9em;
+    font-family: monospace;
+    border-radius: 3px;
+  }
+
+  .post-content pre {
+    background-color: #1e1e1e;
+    color: #e5e7eb;
+    padding: 1.4rem 1.6rem;
+    overflow-x: auto;
+    border-left: 4px solid #ff6b00;
+    margin: 1.8rem 0;
+    font-size: 14.5px;
+    line-height: 1.65;
+    border-radius: 4px;
+  }
+
+  /* 提示框 (.post-intro, .post-tips, .audit-tip, .audit-note, blockquote) */
+  .post-content blockquote,
+  .post-content .post-intro,
+  .post-content .post-tips {
+    background-color: #f8fafc;
+    border-left: 5px solid #16a34a;
+    padding: 1.4rem 1.6rem;
+    margin: 2rem 0;
+    color: #334155;
+    font-size: 15.5px;
+    line-height: 1.8;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .post-content .post-tips2,
+  .post-content .audit-note {
+    background-color: #fffbeb;
+    border-left: 5px solid #ff6b00;
+    padding: 1.4rem 1.6rem;
+    margin: 2rem 0;
+    color: #92400e;
+    font-size: 15px;
+    line-height: 1.8;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .post-content .audit-tip {
+    background-color: #f0fdf4;
+    border-left: 5px solid #16a34a;
+    padding: 1.4rem 1.6rem;
+    margin: 2rem 0;
+    color: #166534;
+    font-size: 15px;
+    line-height: 1.8;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .post-content .audit-dl {
+    display: inline-block;
+    background-color: #ff6b00;
+    color: #ffffff !important;
+    text-decoration: none !important;
+    padding: 10px 22px;
+    border-radius: 4px;
+    font-weight: 500;
+    margin: 1rem 0;
+    transition: background-color 0.2s ease;
+  }
+
+  .post-content .audit-dl:hover {
+    background-color: #ea580c;
+  }
+
+  /* 表格樣式 */
+  .post-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 2rem 0;
+    font-size: 14.5px;
+  }
+
+  .post-content th {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    padding: 10px 14px;
+    font-weight: 600;
+    text-align: left;
+    color: #1e293b;
+  }
+
+  .post-content td {
+    border: 1px solid #e2e8f0;
+    padding: 10px 14px;
+    color: #475569;
+  }
+</style>
