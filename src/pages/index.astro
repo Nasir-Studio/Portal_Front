@@ -14,8 +14,45 @@ import posts from '../data/posts';
 const allPosts = posts;
 const featuredPost = posts[0];
 
-// 1. 技術文章 (首頁頂部雙欄列表：最新 4 篇)
-const techPosts = posts.slice(0, 4);
+
+// 1. 大標題等級的主題 Tab 分類 (每類精準呈現 4 篇)
+const mainTabCategories = [
+  {
+    id: 'tech',
+    name: '技術文章',
+    posts: posts.slice(0, 4),
+  },
+  {
+    id: 'arch',
+    name: '網站架設',
+    posts: [
+      posts.find(p => p.slug === 'tech-notes-architecture'),
+      posts.find(p => p.slug === 'ntub-audit'),
+      posts.find(p => p.slug === 'cf-pages-pwa-webpush'),
+      posts.find(p => p.slug === 'presentation-design-logic'),
+    ].filter(Boolean),
+  },
+  {
+    id: 'tools',
+    name: '開源工具',
+    posts: [
+      posts.find(p => p.slug === 'github-open-source-tools'),
+      posts.find(p => p.slug === 'cf-pages-pwa-webpush'),
+      posts.find(p => p.slug === 'presentation-design-logic'),
+      posts.find(p => p.slug === 'ig-unsend-tool'),
+    ].filter(Boolean),
+  },
+  {
+    id: 'ovinas',
+    name: '獨有工具',
+    posts: [
+      posts.find(p => p.slug === 'ig-unsend-tool'),
+      posts.find(p => p.slug === 'ntub-credit-program'),
+      posts.find(p => p.slug === 'ai-planner-past-exam-info'),
+      posts.find(p => p.slug === 'github-open-source-tools'),
+    ].filter(Boolean),
+  },
+];
 
 // 2. 編輯精選 (3 篇經典深度代表作 - 三篇完全不同之旗艦文章)
 const editorPicks = [
@@ -113,64 +150,65 @@ const topicCategories = [
       <div class="content-area-top">
         <div class="left">
           <!-- 「技術文章」標題條 (.post-area-head) -->
-          <!-- 「技術文章」標題條 + 旁邊主題分類 Tab -->
-          <div class="post-area-head post-area-head-with-tabs">
-            <div class="head-left-group">
-              <h2 class="post-area-title">技術文章</h2>
-              <div class="tech-topic-tabs" id="techFilterTabs">
-                <button type="button" class="tech-tab-btn active" data-filter="all">全部</button>
-                <button type="button" class="tech-tab-btn" data-filter="arch">網站架設</button>
-                <button type="button" class="tech-tab-btn" data-filter="tools">開源工具</button>
-                <button type="button" class="tech-tab-btn" data-filter="ovinas">獨有工具</button>
-              </div>
+          <!-- 📑 大標題等級主題 Tab 列 (與「技術文章」同等大字體) -->
+          <div class="tech-main-tab-bar">
+            <div class="tech-main-tabs" id="techMainTabs">
+              {mainTabCategories.map((cat, idx) => (
+                <button
+                  type="button"
+                  class={`tech-main-tab-item ${idx === 0 ? 'active' : ''}`}
+                  data-target={`tab-pane-${cat.id}`}
+                >
+                  {cat.name}
+                </button>
+              ))}
             </div>
             <a href="/posts/" class="cat-read-all">查看全部 →</a>
           </div>
 
-          <!-- 2 欄式文章網格 (支援即時 Tab 篩選) -->
-          <div class="post-list col2" id="techPostsList">
-            {posts.map((post) => {
-              const cat = getPostCategory(post);
-              let topicGroup = 'arch';
-              if (post.slug.includes('tool') || post.slug.includes('github') || post.slug.includes('presentation')) {
-                topicGroup = 'tools';
-              }
-              if (post.slug.includes('unsend') || post.slug.includes('credit') || post.slug.includes('exam') || post.slug.includes('planner')) {
-                topicGroup = 'ovinas';
-              }
-              return (
-                <article class="post-card tech-post-card" data-topic={topicGroup} data-slug={post.slug}>
-                  <!-- 🎨 經典 3D 浮動 Hover 縮圖 -->
-                  <div class="img-wrap">
-                    <div class="bgs bgs1"></div>
-                    <div class="bgs bgs2"></div>
-                    <div class="bgs bgs3"></div>
-                    <div class="bgs bgs4"></div>
-                    <a class="bgs bgs5 card-thumb-link" href={`/posts/${post.slug}/`}>
-                      <div class="card-img-box">
-                        <img src={`/banners/${post.slug}.jpg?v=20260820light`} alt={post.title} class="card-img" loading="lazy" />
-                      </div>
-                    </a>
-                  </div>
+          <!-- 4 篇一頁的分類內容展示區 -->
+          <div class="tech-tab-panes-wrapper">
+            {mainTabCategories.map((cat, idx) => (
+              <div class={`tech-tab-pane ${idx === 0 ? 'active' : ''}`} id={`tab-pane-${cat.id}`}>
+                <div class="post-list col2">
+                  {cat.posts.slice(0, 4).map((post) => {
+                    const catMeta = getPostCategory(post);
+                    return (
+                      <article class="post-card">
+                        <!-- 🎨 3D 浮動 Hover 縮圖 -->
+                        <div class="img-wrap">
+                          <div class="bgs bgs1"></div>
+                          <div class="bgs bgs2"></div>
+                          <div class="bgs bgs3"></div>
+                          <div class="bgs bgs4"></div>
+                          <a class="bgs bgs5 card-thumb-link" href={`/posts/${post.slug}/`}>
+                            <div class="card-img-box">
+                              <img src={`/banners/${post.slug}.jpg?v=20260820light`} alt={post.title} class="card-img" loading="lazy" />
+                            </div>
+                          </a>
+                        </div>
 
-                  <!-- 分類標籤 -->
-                  <ul class="post-categories">
-                    <li><a href="/posts/">{cat.name}</a></li>
-                  </ul>
+                        <!-- 分類標籤 -->
+                        <ul class="post-categories">
+                          <li><a href="/posts/">{catMeta.name}</a></li>
+                        </ul>
 
-                  <!-- 文章標題 -->
-                  <h3 class="post-title">
-                    <a href={`/posts/${post.slug}/`}>{post.title}</a>
-                  </h3>
+                        <!-- 文章標題 -->
+                        <h3 class="post-title">
+                          <a href={`/posts/${post.slug}/`}>{post.title}</a>
+                        </h3>
 
-                  <!-- 摘要 -->
-                  <p class="post-excerpt">{post.excerpt}</p>
+                        <!-- 摘要 -->
+                        <p class="post-excerpt">{post.excerpt}</p>
 
-                  <!-- 閱讀更多按鈕 -->
-                  <a href={`/posts/${post.slug}/`} class="read-more">閱讀更多</a>
-                </article>
-              );
-            })}
+                        <!-- 閱讀更多按鈕 -->
+                        <a href={`/posts/${post.slug}/`} class="read-more">閱讀更多</a>
+                      </article>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
           </div>
 
           <!-- 📅 站長行事曆 (Google Calendar - 完美平衡左右欄位高度) -->
@@ -2059,6 +2097,66 @@ const topicCategories = [
     display: none !important;
   }
 
+
+  /* 📑 頂部大標題等級的主題 Tab 列 (字體大小與技術文章相同) */
+  .tech-main-tab-bar {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 0px;
+    flex-wrap: wrap;
+  }
+
+  .tech-main-tabs {
+    display: flex;
+    align-items: center;
+    gap: 1.8rem;
+    flex-wrap: wrap;
+  }
+
+  .tech-main-tab-item {
+    appearance: none;
+    background: transparent;
+    border: none;
+    font-family: inherit;
+    font-size: 1.35rem; /* 與原「技術文章」標題 100% 同等大小！ */
+    font-weight: 600;
+    color: #94a3b8;
+    padding: 0 0 10px 0;
+    margin-bottom: -2px;
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+    letter-spacing: 0.04em;
+    transition: all 0.2s ease;
+  }
+
+  .tech-main-tab-item:hover {
+    color: #ff6b00;
+  }
+
+  .tech-main-tab-item.active {
+    color: #0f172a;
+    font-weight: 700;
+    border-bottom-color: #ff6b00;
+  }
+
+  .tech-tab-pane {
+    display: none;
+  }
+
+  .tech-tab-pane.active {
+    display: block;
+    animation: tabFadeIn 0.25s ease both;
+  }
+
+  @keyframes tabFadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
 </style>
 
 <script>
@@ -2099,6 +2197,29 @@ const topicCategories = [
             card.classList.remove('is-hidden');
           } else {
             card.classList.add('is-hidden');
+          }
+        });
+      });
+    });
+  }
+
+
+  // 📑 大標題等級的主題 Tab 切換互動 (每頁四篇)
+  const mainTabButtons = document.querySelectorAll('#techMainTabs .tech-main-tab-item');
+  const mainTabPanes = document.querySelectorAll('.tech-tab-pane');
+
+  if (mainTabButtons.length > 0) {
+    mainTabButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        mainTabButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const targetId = btn.getAttribute('data-target');
+        mainTabPanes.forEach(pane => {
+          if (pane.id === targetId) {
+            pane.classList.add('active');
+          } else {
+            pane.classList.remove('active');
           }
         });
       });
