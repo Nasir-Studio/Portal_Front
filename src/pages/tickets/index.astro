@@ -443,6 +443,249 @@ import BlogLayout from '../../layouts/BlogLayout.astro';
   .upload-msg.err {
     color: #a33;
   }
+
+  /* 🎫 高對比工單專區與開新工單表單樣式 (Zero Border Radius) */
+  .btn {
+    display: inline-block;
+    padding: 0.65rem 1.4rem;
+    background: #0f172a;
+    color: #ffffff !important;
+    border: 1.5px solid #0f172a;
+    border-radius: 0px !important;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .btn:hover {
+    background: #ff6b00;
+    border-color: #ff6b00;
+    color: #ffffff !important;
+  }
+
+  .btn--sm {
+    padding: 0.5rem 1.1rem !important;
+    font-size: 0.88rem !important;
+  }
+
+  .btn--ghost {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    border: 1.5px solid #64748b !important;
+  }
+
+  .btn--ghost:hover {
+    background: #0f172a !important;
+    color: #ffffff !important;
+    border-color: #0f172a !important;
+  }
+
+  .new-ticket-wrap {
+    background: #ffffff !important;
+    border: 1.5px solid #0f172a !important;
+    border-radius: 0px !important;
+    margin-bottom: 1.8rem;
+    box-shadow: 0 8px 30px rgba(15, 23, 42, 0.08);
+    overflow: hidden;
+  }
+
+  .new-ticket-form {
+    padding: 1.6rem 1.8rem 1.8rem !important;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    background: #ffffff;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .field-label {
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: #334155;
+  }
+
+  .new-ticket-form input[type="text"],
+  .new-ticket-form textarea,
+  .reply-form textarea {
+    width: 100%;
+    box-sizing: border-box;
+    font-family: inherit;
+    font-size: 0.95rem;
+    padding: 0.75rem 0.9rem;
+    background: #ffffff;
+    border: 1.5px solid #cbd5e1;
+    border-radius: 0px !important;
+    color: #0f172a;
+    outline: none;
+    transition: all 0.15s ease;
+  }
+
+  .new-ticket-form input[type="text"]:focus,
+  .new-ticket-form textarea:focus,
+  .reply-form textarea:focus {
+    border-color: #ff6b00;
+    box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.15);
+  }
+
+  .upload-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    padding: 0.6rem 0;
+  }
+
+  .upload-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.65rem 1.2rem;
+    font-size: 0.88rem;
+    font-weight: 600;
+    background: #f1f5f9;
+    color: #1e293b;
+    border: 1.5px solid #94a3b8;
+    border-radius: 0px !important;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.15s ease;
+  }
+
+  .upload-label:hover {
+    background: #e2e8f0;
+    border-color: #0f172a;
+  }
+
+  .upload-label input[type='file'] {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .upload-msg {
+    font-size: 0.85rem;
+    color: #64748b;
+    font-weight: 500;
+  }
+
+  .ticket-row {
+    background: #ffffff !important;
+    border: 1.5px solid #cbd5e1 !important;
+    border-radius: 0px !important;
+    padding: 1.1rem 1.3rem !important;
+    transition: all 0.15s ease;
+  }
+
+  .ticket-row:hover {
+    background: #f8fafc !important;
+    border-color: #0f172a !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  }
+
+  .ticket-row-subject {
+    color: #0f172a !important;
+    font-weight: 600 !important;
+    font-size: 1.05rem !important;
+  }
+
+  .ticket-row-meta {
+    color: #64748b !important;
+    font-weight: 500;
+  }
+
+  .detail-card {
+    background: #ffffff !important;
+    border: 1.5px solid #0f172a !important;
+    border-radius: 0px !important;
+    box-shadow: 0 6px 24px rgba(15, 23, 42, 0.08);
+    overflow: hidden;
+  }
+
+  .detail-head {
+    background: #f1f5f9 !important;
+    border-bottom: 1.5px solid #0f172a !important;
+    padding: 1.2rem 1.4rem !important;
+  }
+
+  .detail-subject {
+    color: #0f172a !important;
+    font-weight: 700 !important;
+  }
+
+  .detail-meta {
+    color: #64748b !important;
+    font-weight: 500;
+  }
+
+  .detail-body {
+    padding: 1.4rem 1.5rem !important;
+    color: #1e293b !important;
+    line-height: 1.8;
+  }
+
+  .reply-list {
+    background: #f8fafc !important;
+    border-top: 1.5px solid #cbd5e1 !important;
+  }
+
+  .reply-item {
+    border-top: 1px solid #e2e8f0 !important;
+    padding: 1rem 1.5rem !important;
+  }
+
+  .reply-author {
+    color: #0f172a !important;
+    font-weight: 700 !important;
+  }
+
+  .reply-author.admin {
+    color: #0369a1 !important;
+    font-weight: 700 !important;
+  }
+
+  .status-badge {
+    font-weight: 600 !important;
+    border-width: 1.5px !important;
+    border-radius: 2px !important;
+  }
+
+  .status-open {
+    color: #0369a1 !important;
+    border-color: #0284c7 !important;
+    background: #e0f2fe !important;
+  }
+
+  .status-replied {
+    color: #15803d !important;
+    border-color: #22c55e !important;
+    background: #dcfce7 !important;
+  }
+
+  .status-closed {
+    color: #475569 !important;
+    border-color: #94a3b8 !important;
+    background: #f1f5f9 !important;
+  }
+
+  .book-actions {
+    display: flex;
+    gap: 0.8rem;
+    align-items: center;
+    margin-top: 0.5rem;
+  }
+
 </style>
 
 <script>
