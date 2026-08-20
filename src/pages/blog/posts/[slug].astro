@@ -107,6 +107,55 @@ const cat = getCategoryInfo(item.slug);
             </div>
           </div>
 
+                    <!-- ✉️ 每一篇文章底部的 Google Form 聯絡表單 (正式 entry 串接) -->
+          <div class="article-contact-section">
+            <h3 class="article-contact-title">聯絡站長 / 技術交流</h3>
+            <p class="article-contact-desc">
+              有任何架構疑問、系統資安諮詢或合作交流想法？歡迎填寫下方表單直接與我聯繫！
+            </p>
+            <form class="article-contact-form" id="articleContactForm">
+              <div class="form-row-2">
+                <div class="form-field">
+                  <label for="acName">姓名 / 稱呼 *</label>
+                  <input
+                    type="text"
+                    id="acName"
+                    name="entry.57084769"
+                    placeholder="您的姓名或暱稱"
+                    required
+                    class="form-input"
+                  />
+                </div>
+                <div class="form-field">
+                  <label for="acEmail">電子郵件 *</label>
+                  <input
+                    type="email"
+                    id="acEmail"
+                    name="entry.135399445"
+                    placeholder="your-email@example.com"
+                    required
+                    class="form-input"
+                  />
+                </div>
+              </div>
+              <div class="form-field">
+                <label for="acMsg">聯絡內容 / 諮詢訊息 *</label>
+                <textarea
+                  id="acMsg"
+                  name="entry.1753446536"
+                  placeholder="請輸入您想詢問或交流的內容…"
+                  rows="3"
+                  required
+                  class="form-input form-textarea"
+                ></textarea>
+              </div>
+              <div class="form-submit-row">
+                <button type="submit" id="acSubmitBtn" class="btn-article-submit">送出訊息</button>
+                <span id="acStatus" class="article-form-status"></span>
+              </div>
+            </form>
+          </div>
+
           <!-- 上一篇 / 下一篇導航 (prev-next-article) -->
           <div class="prev-next-article">
             {prevPost ? (
@@ -467,6 +516,126 @@ const cat = getCategoryInfo(item.slug);
     color: #475569;
   }
 
+    /* ✉️ 文章底部 Google Form 聯絡表單樣式 */
+  .article-contact-section {
+    background-color: #fafbfc;
+    border: 1px solid #e5e7eb;
+    border-top: 4px solid #ff6b00;
+    padding: 2rem 2.2rem;
+    margin: 3.5rem 0 2rem;
+    border-radius: 4px;
+  }
+
+  .article-contact-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #111111;
+    margin: 0 0 6px;
+  }
+
+  .article-contact-desc {
+    font-size: 14px;
+    color: #666666;
+    margin: 0 0 1.5rem;
+    line-height: 1.5;
+  }
+
+  .article-contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .form-row-2 {
+    display: flex;
+    gap: 16px;
+  }
+
+  .form-field {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .form-field label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #374151;
+  }
+
+  .form-input {
+    width: 100%;
+    background-color: #ffffff;
+    border: 1px solid #d1d5db;
+    padding: 9px 12px;
+    font-size: 14px;
+    color: #222222;
+    font-family: inherit;
+    border-radius: 4px;
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .form-input:focus {
+    border-color: #ff6b00;
+    box-shadow: 0 0 0 2px rgba(255, 107, 0, 0.1);
+  }
+
+  .form-textarea {
+    resize: vertical;
+    min-height: 80px;
+    line-height: 1.5;
+  }
+
+  .form-submit-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 4px;
+  }
+
+  .btn-article-submit {
+    background-color: #ff6b00;
+    color: #ffffff;
+    border: none;
+    padding: 9px 26px;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+
+  .btn-article-submit:hover {
+    background-color: #ea580c;
+  }
+
+  .btn-article-submit:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .article-form-status {
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  .article-form-status.is-success {
+    color: #16a34a;
+  }
+
+  .article-form-status.is-error {
+    color: #dc2626;
+  }
+
+  @media (max-width: 640px) {
+    .form-row-2 {
+      flex-direction: column;
+    }
+  }
+
   .post-footer-author {
     text-align: center;
     border: 1px solid #e7e7e7;
@@ -711,5 +880,62 @@ const cat = getCategoryInfo(item.slug);
     if (headings.length === 0) {
       document.getElementById('toc_container')?.remove();
     }
+  }
+
+  // ✉️ 文章底部 Google Form 送出邏輯
+  const acForm = document.getElementById('articleContactForm') as HTMLFormElement;
+  const acSubmitBtn = document.getElementById('acSubmitBtn') as HTMLButtonElement;
+  const acStatus = document.getElementById('acStatus');
+
+  const GOOGLE_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSeeWapjagLqPsg7i2y_TYhNq2xKW-nNFj6JywiqiDZ8Hkiheg/formResponse';
+
+  if (acForm) {
+    acForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = (document.getElementById('acName') as HTMLInputElement).value.trim();
+      const email = (document.getElementById('acEmail') as HTMLInputElement).value.trim();
+      const msg = (document.getElementById('acMsg') as HTMLTextAreaElement).value.trim();
+
+      if (!name || !email || !msg) return;
+
+      if (acSubmitBtn) {
+        acSubmitBtn.disabled = true;
+        acSubmitBtn.textContent = '傳送中…';
+      }
+
+      try {
+        const formData = new FormData();
+        formData.append('entry.57084769', name);
+        formData.append('entry.135399445', email);
+        formData.append('entry.1753446536', msg);
+
+        await fetch(GOOGLE_FORM_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          body: formData,
+        });
+
+        if (acStatus) {
+          acStatus.textContent = '✓ 訊息已成功送出，感謝您的聯繫！';
+          acStatus.className = 'article-form-status is-success';
+        }
+
+        acForm.reset();
+
+        setTimeout(() => {
+          if (acStatus) acStatus.textContent = '';
+        }, 5000);
+      } catch (err) {
+        if (acStatus) {
+          acStatus.textContent = '✕ 傳送失敗，請稍後再試。';
+          acStatus.className = 'article-form-status is-error';
+        }
+      } finally {
+        if (acSubmitBtn) {
+          acSubmitBtn.disabled = false;
+          acSubmitBtn.textContent = '送出訊息';
+        }
+      }
+    });
   }
 </script>
