@@ -1,4 +1,33 @@
 ---
+import quotes from '../../data/quotes';
+
+const today = new Date();
+const seed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
+const dailyQuote = quotes[seed % quotes.length];
+
+const badges = [
+  {
+    img: '/certs/adobe-premiere.png',
+    name: 'Adobe Premiere 數位影音',
+    url: 'https://www.credly.com/badges/3e176af8-edca-411e-8e52-6be837f644ac/public_url',
+  },
+  {
+    img: '/certs/its-python.png',
+    name: 'IT Specialist Python',
+    url: 'https://www.credly.com/badges/7b8bbe2a-3bbd-4fdc-8ffc-7696c35876aa/public_url',
+  },
+  {
+    img: '/certs/adobe-photoshop.png',
+    name: 'Adobe Photoshop 視覺設計',
+    url: 'https://www.credly.com/badges/4e2825dd-e2d1-4b42-922c-bdcb39fd899a/public_url',
+  },
+  {
+    img: '/certs/mos-powerpoint.png',
+    name: 'MOS PowerPoint 專家認證',
+    url: 'https://www.credly.com/badges/5b7beead-dc12-4bbd-83a2-1301db598b52/public_url',
+  },
+];
+
 import BlogLayout from '../../layouts/BlogLayout.astro';
 import posts from '../../data/posts';
 
@@ -26,8 +55,9 @@ function getCategoryInfo(slug: string) {
 }
 
 const cat = getCategoryInfo(item.slug);
----
 
+
+---
 <BlogLayout title={`${item.title} ｜ OviNas`} description={item.excerpt}>
   <div class="main-content forsingle">
     <div class="container single-page-area">
@@ -857,6 +887,108 @@ const cat = getCategoryInfo(item.slug);
       padding-right: 0;
     }
   }
+  /* 🏅 側邊欄資格認證與每日一句樣式 */
+  .side-badges-box, .side-quote-box {
+    background: #fafbfc;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    padding: 1.4rem;
+  }
+
+  .side-badges-title, .side-quote-title {
+    font-size: 1.15rem;
+    font-weight: 500;
+    color: #444444;
+    margin: 0 0 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #ff6b00;
+  }
+
+  .side-badges-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .side-badge-item {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+  }
+
+  .side-badge-item:hover {
+    border-color: #ff6b00;
+    transform: translateX(3px);
+  }
+
+  .side-badge-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    text-decoration: none;
+    color: #334155;
+  }
+
+  .side-badge-img {
+    width: 36px;
+    height: 36px;
+    object-fit: contain;
+    flex-shrink: 0;
+  }
+
+  .side-badge-name {
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1.35;
+    color: #475569;
+  }
+
+  .side-badge-more-link {
+    display: block;
+    text-align: center;
+    font-size: 13px;
+    color: #ff6b00;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 6px 0;
+    background: #fff7ed;
+    border: 1px solid #ffedd5;
+    border-radius: 4px;
+    transition: background 0.15s ease;
+  }
+
+  .side-badge-more-link:hover {
+    background: #ffedd5;
+  }
+
+  .side-quote-content {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-left: 3px solid #ff6b00;
+    padding: 1rem;
+    border-radius: 2px;
+  }
+
+  .side-quote-text {
+    font-size: 14px;
+    color: #334155;
+    line-height: 1.7;
+    margin: 0 0 8px;
+    font-weight: 400;
+  }
+
+  .side-quote-author {
+    font-size: 12px;
+    color: #64748b;
+    margin: 0;
+    text-align: right;
+    font-style: italic;
+  }
 </style>
 
 <script>
@@ -1091,5 +1223,107 @@ const cat = getCategoryInfo(item.slug);
     border: 1px solid #e2e8f0;
     padding: 10px 14px;
     color: #475569;
+  }
+  /* 🏅 側邊欄資格認證與每日一句樣式 */
+  .side-badges-box, .side-quote-box {
+    background: #fafbfc;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    padding: 1.4rem;
+  }
+
+  .side-badges-title, .side-quote-title {
+    font-size: 1.15rem;
+    font-weight: 500;
+    color: #444444;
+    margin: 0 0 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #ff6b00;
+  }
+
+  .side-badges-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .side-badge-item {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+  }
+
+  .side-badge-item:hover {
+    border-color: #ff6b00;
+    transform: translateX(3px);
+  }
+
+  .side-badge-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    text-decoration: none;
+    color: #334155;
+  }
+
+  .side-badge-img {
+    width: 36px;
+    height: 36px;
+    object-fit: contain;
+    flex-shrink: 0;
+  }
+
+  .side-badge-name {
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1.35;
+    color: #475569;
+  }
+
+  .side-badge-more-link {
+    display: block;
+    text-align: center;
+    font-size: 13px;
+    color: #ff6b00;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 6px 0;
+    background: #fff7ed;
+    border: 1px solid #ffedd5;
+    border-radius: 4px;
+    transition: background 0.15s ease;
+  }
+
+  .side-badge-more-link:hover {
+    background: #ffedd5;
+  }
+
+  .side-quote-content {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-left: 3px solid #ff6b00;
+    padding: 1rem;
+    border-radius: 2px;
+  }
+
+  .side-quote-text {
+    font-size: 14px;
+    color: #334155;
+    line-height: 1.7;
+    margin: 0 0 8px;
+    font-weight: 400;
+  }
+
+  .side-quote-author {
+    font-size: 12px;
+    color: #64748b;
+    margin: 0;
+    text-align: right;
+    font-style: italic;
   }
 </style>

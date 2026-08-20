@@ -1,4 +1,33 @@
 ---
+import quotes from '../../../data/quotes';
+
+const today = new Date();
+const seed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
+const dailyQuote = quotes[seed % quotes.length];
+
+const badges = [
+  {
+    img: '/certs/adobe-premiere.png',
+    name: 'Adobe Premiere 數位影音',
+    url: 'https://www.credly.com/badges/3e176af8-edca-411e-8e52-6be837f644ac/public_url',
+  },
+  {
+    img: '/certs/its-python.png',
+    name: 'IT Specialist Python',
+    url: 'https://www.credly.com/badges/7b8bbe2a-3bbd-4fdc-8ffc-7696c35876aa/public_url',
+  },
+  {
+    img: '/certs/adobe-photoshop.png',
+    name: 'Adobe Photoshop 視覺設計',
+    url: 'https://www.credly.com/badges/4e2825dd-e2d1-4b42-922c-bdcb39fd899a/public_url',
+  },
+  {
+    img: '/certs/mos-powerpoint.png',
+    name: 'MOS PowerPoint 專家認證',
+    url: 'https://www.credly.com/badges/5b7beead-dc12-4bbd-83a2-1301db598b52/public_url',
+  },
+];
+
 import BlogLayout from '../../../layouts/BlogLayout.astro';
 import posts from '../../../data/posts';
 
@@ -22,8 +51,9 @@ function getPostCategory(post: typeof posts[0]) {
   }
   return { name: 'WordPress架站', slug: 'general' };
 }
----
 
+
+---
 <BlogLayout title="全部文章列表 ｜ OviNas" description="網站架設、系統資安、筆記小分享、架構伺服器與外掛推薦文章列表。">
   <div class="main-content">
     <div class="container single-page-area">
@@ -136,6 +166,24 @@ function getPostCategory(post: typeof posts[0]) {
             <a href="#" class="btn-side-vip">更多</a>
           </div>
         </div>
+
+          <!-- 🏅 資格認證 (Badges) -->
+          <div class="side-popular-box side-badges-box" style="margin-top: 2rem;">
+            <h2 class="side-badges-title">資格認證</h2>
+            <ul class="side-badges-list">
+              {badges.map((b) => (
+                <li class="side-badge-item">
+                  <a href={b.url} target="_blank" rel="noopener noreferrer" class="side-badge-link" title={b.name}>
+                    <img src={b.img} alt={b.name} class="side-badge-img" loading="lazy" />
+                    <span class="side-badge-name">{b.name}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <a href="https://nasirlin.net" target="_blank" rel="noopener noreferrer" class="side-badge-more-link">
+              查看更多資格認證 ↗
+            </a>
+          </div>
 
         <!-- 熱門排行側欄 (#popular-side: 75px 1:1 正方形真實文青照片微縮圖) -->
         <div class="popular-posts" id="popular-side">
@@ -669,6 +717,108 @@ function getPostCategory(post: typeof posts[0]) {
     .loop-img-wrap {
       height: 240px;
     }
+  }
+  /* 🏅 側邊欄資格認證與每日一句樣式 */
+  .side-badges-box, .side-quote-box {
+    background: #fafbfc;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    padding: 1.4rem;
+  }
+
+  .side-badges-title, .side-quote-title {
+    font-size: 1.15rem;
+    font-weight: 500;
+    color: #444444;
+    margin: 0 0 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #ff6b00;
+  }
+
+  .side-badges-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .side-badge-item {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+  }
+
+  .side-badge-item:hover {
+    border-color: #ff6b00;
+    transform: translateX(3px);
+  }
+
+  .side-badge-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    text-decoration: none;
+    color: #334155;
+  }
+
+  .side-badge-img {
+    width: 36px;
+    height: 36px;
+    object-fit: contain;
+    flex-shrink: 0;
+  }
+
+  .side-badge-name {
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1.35;
+    color: #475569;
+  }
+
+  .side-badge-more-link {
+    display: block;
+    text-align: center;
+    font-size: 13px;
+    color: #ff6b00;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 6px 0;
+    background: #fff7ed;
+    border: 1px solid #ffedd5;
+    border-radius: 4px;
+    transition: background 0.15s ease;
+  }
+
+  .side-badge-more-link:hover {
+    background: #ffedd5;
+  }
+
+  .side-quote-content {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-left: 3px solid #ff6b00;
+    padding: 1rem;
+    border-radius: 2px;
+  }
+
+  .side-quote-text {
+    font-size: 14px;
+    color: #334155;
+    line-height: 1.7;
+    margin: 0 0 8px;
+    font-weight: 400;
+  }
+
+  .side-quote-author {
+    font-size: 12px;
+    color: #64748b;
+    margin: 0;
+    text-align: right;
+    font-style: italic;
   }
 </style>
 
