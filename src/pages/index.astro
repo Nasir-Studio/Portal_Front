@@ -15,13 +15,8 @@ const allPosts = posts;
 const featuredPost = posts[0];
 
 
-// 1. 大標題等級的主題 Tab 分類 (每類精準呈現 4 篇)
+// 1. 大標題等級的主題 Tab 分類 (三大主題：網站架設、開源工具、獨有工具，每類精選 4 篇)
 const mainTabCategories = [
-  {
-    id: 'tech',
-    name: '技術文章',
-    posts: posts.slice(0, 4),
-  },
   {
     id: 'arch',
     name: '網站架設',
@@ -61,53 +56,7 @@ const editorPicks = [
   posts.find(p => p.slug === 'github-open-source-tools') || posts[2],
 ];
 
-// 3. 主題閱讀 分類數據 (三大核心專案：網站架設、開源工具、OviNas 獨有工具)
-const topicCategories = [
-  {
-    id: 'arch',
-    name: '網站架設',
-    posts: [
-      posts.find(p => p.slug === 'tech-notes-architecture'),
-      posts.find(p => p.slug === 'ntub-audit'),
-      posts.find(p => p.slug === 'cf-pages-pwa-webpush'),
-    ].filter(Boolean),
-    listPosts: [
-      { title: '【技術文章】技術筆記本（含系統資安專題）', slug: 'tech-notes-architecture' },
-      { title: '【文章】NTUB 2026 通識資安稽核一條龍', slug: 'ntub-audit' },
-      { title: '【CF Page】PWA WebPush 設計原理', slug: 'cf-pages-pwa-webpush' },
-      { title: '【文章】簡報的設計方式跟邏輯', slug: 'presentation-design-logic' },
-    ],
-  },
-  {
-    id: 'tools',
-    name: '開源工具',
-    posts: [
-      posts.find(p => p.slug === 'github-open-source-tools'),
-      posts.find(p => p.slug === 'cf-pages-pwa-webpush'),
-      posts.find(p => p.slug === 'presentation-design-logic'),
-    ].filter(Boolean),
-    listPosts: [
-      { title: '【文章】學期結束後，收獲的 github 開源工具', slug: 'github-open-source-tools' },
-      { title: 'AI Agent 擴充、Skill 與 API', slug: 'github-open-source-tools' },
-      { title: '前端 UI/UX 設計與動效靈感', slug: 'github-open-source-tools' },
-      { title: 'Proxy List & Tools 代理工具推薦', slug: 'github-open-source-tools' },
-    ],
-  },
-  {
-    id: 'ovinas-tools',
-    name: 'OviNas 獨有工具',
-    posts: [
-      posts.find(p => p.slug === 'ig-unsend-tool'),
-      posts.find(p => p.slug === 'ntub-credit-program'),
-      posts.find(p => p.slug === 'ai-planner-past-exam-info'),
-    ].filter(Boolean),
-    listPosts: [
-      { title: '【工具】IG 收回工具 Batch', slug: 'ig-unsend-tool' },
-      { title: '【工具】NTUB學分學程查詢及預算學分', slug: 'ntub-credit-program' },
-      { title: '【文章】AI應用規劃師考古資訊', slug: 'ai-planner-past-exam-info' },
-    ],
-  },
-];function getPostCategory(post: typeof posts[0]) {
+function getPostCategory(post: typeof posts[0]) {
   if (post.slug.includes('security') || post.slug.includes('audit')) return { name: '系統資安', slug: 'security' };
   if (post.slug.includes('architecture') || post.slug.includes('pwa')) return { name: '架構伺服器', slug: 'architecture' };
   if (post.slug.includes('design') || post.slug.includes('front-end')) return { name: '前端設計', slug: 'design' };
@@ -332,73 +281,7 @@ const topicCategories = [
         </div>
       </section>
 
-      <!-- 📑 4. 主題閱讀區塊 (.content-area-cats-read) -->
-      <div class="content-area-cats-read">
-        <h2 class="post-area-title2">主題閱讀</h2>
-
-        <!-- 主題分類切換 Tab (灰色背景 + 暖橙色 Active) -->
-        <div class="cat-tabs-wrap">
-          <ul class="cat-tabs" id="topicTabs">
-            {topicCategories.map((cat, idx) => (
-              <li class={`cat-tab-btn ${idx === 0 ? 'active' : ''}`} data-target={cat.id}>
-                {cat.name}
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <!-- 各主題展示 (.switch-content: 70% .pic-area + 30% .list-area) -->
-        <div class="topic-contents-wrapper">
-          {topicCategories.map((cat, idx) => (
-            <div class={`switch-content ${idx === 0 ? 'active' : ''}`} id={`topic-${cat.id}`}>
-              <!-- 左側圖片區域 (70% 寬度) -->
-              <div class="pic-area">
-                <!-- 左側主圖 (64% 寬度) -->
-                {cat.posts[0] && (
-                  <div class="pic-left">
-                    <div class="img-wrap">
-                      <div class="bgs bgs1"></div>
-                      <div class="bgs bgs2"></div>
-                      <div class="bgs bgs3"></div>
-                      <div class="bgs bgs4"></div>
-                      <a class="bgs bgs5" href={`/posts/${cat.posts[0].slug}/`}>
-                        <img src={`/banners/${cat.posts[0].slug}.jpg?v=20260820light`} alt={cat.posts[0].title} class="topic-cover-img" />
-                      </a>
-                    </div>
-                  </div>
-                )}
-
-                <!-- 右側雙副圖 (30% 寬度) -->
-                <div class="pic-right">
-                  {cat.posts.slice(1, 3).map((subPost) => (
-                    <div class="img-wrap">
-                      <div class="bgs bgs1"></div>
-                      <div class="bgs bgs2"></div>
-                      <div class="bgs bgs3"></div>
-                      <div class="bgs bgs4"></div>
-                      <a class="bgs bgs5" href={`/posts/${subPost.slug}/`}>
-                        <img src={`/banners/${subPost.slug}.jpg?v=20260820light`} alt={subPost.title} class="topic-cover-img" />
-                      </a>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <!-- 右側文字清單區域 (30% 寬度) -->
-              <div class="list-area">
-                <ul>
-                  {cat.listPosts.map((item) => (
-                    <li>
-                      <a href={`/posts/${item.slug}/`}>{item.title}</a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          ))}
-        </div>
       </div>
-    </div>
   </div>
 </BlogLayout>
 
