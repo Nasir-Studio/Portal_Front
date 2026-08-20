@@ -21,21 +21,21 @@ function getPostCategory(post: typeof posts[0]) {
   if (post.slug.includes('ntub') || post.slug.includes('exam')) {
     return { name: '專案實戰', slug: 'campus' };
   }
-  return { name: 'WordPress', slug: 'general' };
+  return { name: 'WordPress架站', slug: 'general' };
 }
 ---
 
 <BlogLayout title="OviNas 羊之誌 — 網站架設、系統資安、前端工程與外掛推薦" description="專注於網站架設、系統資安、前端工程與開源工具推薦。">
-  <div class="make9-page-wrapper">
+  <div class="main-content">
     <div class="container">
-      <!-- 🔷 1. 經典 Hero Header 區塊 (左側標題 + 右側 16:9 文青照片輪播焦點) -->
+      <!-- 🔷 1. 經典 Hero Header 區塊 (左側 30% 灰色資訊方塊 + 右側 70% 16:9 焦點大圖) -->
       <section class="content-hero-header">
-        <div class="hero-left">
-          <h1 class="hero-brand">OviNas 羊之誌</h1>
-          <h2 class="hero-tagline">網站架設、系統資安、前端工程、外掛推薦</h2>
-          <a href="/posts/" class="btn-about">瀏覽全部文章</a>
+        <div class="left">
+          <h3>OviNas 羊之誌</h3>
+          <h2>網站架設、系統資安、前端工程</h2>
+          <a href="/posts/">查看全部文章</a>
         </div>
-        <div class="hero-right">
+        <div class="right">
           <div class="slider-wrap-header">
             <div class="slider-one">
               <div class="img-wrap">
@@ -43,11 +43,11 @@ function getPostCategory(post: typeof posts[0]) {
                 <div class="bgs bgs2"></div>
                 <div class="bgs bgs3"></div>
                 <div class="bgs bgs4"></div>
-                <a class="bgs bgs5 hero-featured-card" href={`/posts/${featuredPost.slug}/`}>
-                  <div class="featured-img-box">
-                    <img src={`/banners/${featuredPost.slug}.jpg`} alt={featuredPost.title} class="featured-real-photo" />
+                <a class="bgs bgs5 hero-featured-link" href={`/posts/${featuredPost.slug}/`}>
+                  <div class="featured-img-container">
+                    <img src={`/banners/${featuredPost.slug}.jpg`} alt={featuredPost.title} class="featured-main-img" />
                     <div class="slogan">
-                      <div class="slogan-text">{featuredPost.title}</div>
+                      <span class="slogan-text">{featuredPost.title}</span>
                     </div>
                   </div>
                 </a>
@@ -57,110 +57,61 @@ function getPostCategory(post: typeof posts[0]) {
         </div>
       </section>
 
-      <!-- 🔍 2. 分類導航列與即時搜尋欄 (即時動態計數) -->
-      <section class="make9-nav-bar" id="all-posts">
-        <div class="nav-pills-group" id="filterButtons">
-          <button class="nav-pill is-active" data-cat="all" type="button">
-            全部文章 <span class="pill-badge">({allPosts.length})</span>
-          </button>
-          <button class="nav-pill" data-cat="security" type="button">
-            系統資安 <span class="pill-badge">({allPosts.filter(p => p.slug.includes('security') || p.slug.includes('audit')).length})</span>
-          </button>
-          <button class="nav-pill" data-cat="architecture" type="button">
-            架構伺服器 <span class="pill-badge">({allPosts.filter(p => p.slug.includes('architecture') || p.slug.includes('pwa')).length})</span>
-          </button>
-          <button class="nav-pill" data-cat="design" type="button">
-            前端設計 <span class="pill-badge">({allPosts.filter(p => p.slug.includes('design') || p.slug.includes('front-end')).length})</span>
-          </button>
-          <button class="nav-pill" data-cat="tools" type="button">
-            外掛工具 <span class="pill-badge">({allPosts.filter(p => p.slug.includes('tool') || p.slug.includes('proxy') || p.slug.includes('github')).length})</span>
-          </button>
-          <button class="nav-pill" data-cat="campus" type="button">
-            專案實戰 <span class="pill-badge">({allPosts.filter(p => p.slug.includes('ntub') || p.slug.includes('exam')).length})</span>
-          </button>
-        </div>
-
-        <div class="make9-search-box">
-          <input
-            id="make9Search"
-            type="search"
-            class="search-input-field"
-            placeholder="輸入你想找的知識…"
-            autocomplete="off"
-          />
-          <button class="search-btn-field" type="button" aria-label="搜尋文章">
-            搜尋
-          </button>
-        </div>
-      </section>
-
-      <!-- 📰 3. 主內容區（左側文章卡片網格 + 右側標準側邊欄） -->
+      <!-- 📰 2. 主內容區 (左側 70% 雙欄卡片網格 + 右側 30% 標準側邊欄) -->
       <div class="content-area-top">
         <div class="left">
-          <!-- 區塊標題條 (經典 post-area-head) -->
+          <!-- 標題條 (.post-area-head) -->
           <div class="post-area-head">
-            <h2 class="post-area-title" id="currentSectionTitle">精選文章</h2>
-            <a href="/posts/" class="cat-read-all" id="currentCountDisplay">共 {allPosts.length} 篇文章</a>
+            <h2 class="post-area-title">精選文章</h2>
+            <a href="/posts/" class="cat-read-all">查看全部文章</a>
           </div>
 
-          <!-- 2 欄式文章網格 (post-list col3) -->
-          <div class="post-list col3" id="postGrid">
+          <!-- 2 欄式文章網格 (.post-list.col2) -->
+          <div class="post-list col2">
             {allPosts.map((post) => {
               const cat = getPostCategory(post);
               return (
-                <article
-                  class="make9-article-card"
-                  data-cat={cat.slug}
-                  data-title={post.title.toLowerCase()}
-                  data-excerpt={post.excerpt.toLowerCase()}
-                >
-                  <!-- 🎨 經典 3D 幾何 Hover 浮起遮罩層 (bgs1 ~ bgs5 + 16:9 文青照片) -->
+                <article class="post-card">
+                  <!-- 🎨 經典 3D 浮動 Hover 縮圖 (.img-wrap + .bgs1 ~ .bgs5) -->
                   <div class="img-wrap">
                     <div class="bgs bgs1"></div>
                     <div class="bgs bgs2"></div>
                     <div class="bgs bgs3"></div>
                     <div class="bgs bgs4"></div>
-                    <a class="bgs bgs5 card-thumb-box" href={`/posts/${post.slug}/`}>
-                      <div class="card-thumb-photo-wrap">
-                        <img src={`/banners/${post.slug}.jpg`} alt={post.title} class="card-photo" loading="lazy" />
+                    <a class="bgs bgs5 card-thumb-link" href={`/posts/${post.slug}/`}>
+                      <div class="card-img-box">
+                        <img src={`/banners/${post.slug}.jpg`} alt={post.title} class="card-img" loading="lazy" />
                       </div>
                     </a>
                   </div>
 
+                  <!-- 分類標籤 -->
                   <ul class="post-categories">
-                    <li>
-                      <a href="#" class="cat-tag-link" data-target-cat={cat.slug}>{cat.name}</a>
-                    </li>
+                    <li><a href="/posts/">{cat.name}</a></li>
                   </ul>
 
+                  <!-- 文章標題 -->
                   <h3 class="post-title">
                     <a href={`/posts/${post.slug}/`}>{post.title}</a>
                   </h3>
 
+                  <!-- 摘要 -->
                   <p class="post-excerpt">{post.excerpt}</p>
 
-                  <div class="post-meta">
-                    <span class="post-date">{post.date}</span>
-                    <a href={`/posts/${post.slug}/`} class="read-more">閱讀更多</a>
-                  </div>
+                  <!-- 閱讀更多按鈕 -->
+                  <a href={`/posts/${post.slug}/`} class="read-more">閱讀更多</a>
                 </article>
               );
             })}
           </div>
-
-          <!-- 查無結果提示 -->
-          <div class="empty-results-box" id="emptyNotice" style="display: none;">
-            <h3>查無相關文章！</h3>
-            <p>請嘗試使用其他關鍵字搜尋，或點選上方「全部文章」。</p>
-          </div>
         </div>
 
-        <!-- 📌 右側經典側邊欄 (Sidebar) -->
+        <!-- 📌 右側經典側邊欄 (Sidebar: 30% 寬度) -->
         <aside class="right sidebar-right">
-          <!-- 作者專欄 (Side Author Box) -->
+          <!-- 站長專欄 -->
           <div class="side-author-box">
             <div class="photo">
-              <img src="/sheep-hd.png" alt="OviNas" width="100" height="100" />
+              <img src="/sheep-hd.png" alt="OviNas" width="90" height="90" />
             </div>
             <h2>OviNas <span class="eng-name">/ 站長專欄</span></h2>
             <p class="history">全端開發 · 巨型架構 · 系統資安</p>
@@ -172,7 +123,7 @@ function getPostCategory(post: typeof posts[0]) {
             </div>
           </div>
 
-          <!-- 熱門排行側欄 (#popular-side: 75px 1:1 正方形真實文青照片微縮圖) -->
+          <!-- 熱門推薦文章 (#popular-side: 75px 1:1 正方形真實文青照片微縮圖) -->
           <div class="popular-posts" id="popular-side">
             <h3 class="side-section-heading">熱門推薦文章</h3>
             <ul class="wpp-list">
@@ -197,17 +148,18 @@ function getPostCategory(post: typeof posts[0]) {
             </ul>
           </div>
 
-          <!-- 快速標籤探索 -->
+          <!-- 熱門主題標籤 -->
           <div class="tag-widget-box">
-            <h3 class="side-section-heading">熱門主題標籤</h3>
-            <div class="make9-tag-cloud">
-              <button class="tag-link-pill" data-kw="資安" type="button">系統資安</button>
-              <button class="tag-link-pill" data-kw="架構" type="button">巨型架構</button>
-              <button class="tag-link-pill" data-kw="pwa" type="button">PWA</button>
-              <button class="tag-link-pill" data-kw="設計" type="button">前端設計</button>
-              <button class="tag-link-pill" data-kw="代理" type="button">代理爬蟲</button>
-              <button class="tag-link-pill" data-kw="北商" type="button">北商學程</button>
-              <button class="tag-link-pill" data-kw="github" type="button">開源精選</button>
+            <h3 class="side-section-heading">主題閱讀</h3>
+            <div class="tag-cloud">
+              <a href="/posts/" class="tag-pill">系統資安</a>
+              <a href="/posts/" class="tag-pill">巨型架構</a>
+              <a href="/posts/" class="tag-pill">PWA應用</a>
+              <a href="/posts/" class="tag-pill">前端設計</a>
+              <a href="/posts/" class="tag-pill">代理爬蟲</a>
+              <a href="/posts/" class="tag-pill">北商學程</a>
+              <a href="/posts/" class="tag-pill">開源精選</a>
+              <a href="/posts/" class="tag-pill">自媒體</a>
             </div>
           </div>
         </aside>
@@ -217,76 +169,95 @@ function getPostCategory(post: typeof posts[0]) {
 </BlogLayout>
 
 <style>
-  .make9-page-wrapper {
+  .main-content {
     background-color: #ffffff;
     padding: 1.5rem 0 5rem;
   }
 
-  /* 🔷 1. 經典 Hero 區塊 */
+  /* 🔷 1. 經典 Hero Header 區塊 (30% 左灰盒 + 70% 右大圖) */
   .content-hero-header {
     display: flex;
-    justify-content: space-between;
+    margin: 0 auto 2.5rem;
+    height: 340px;
+  }
+
+  .content-hero-header .left {
+    width: 30%;
+    background-color: #eeeeee;
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 2.5rem;
-    padding: 2.5rem 0 2.8rem;
-    border-bottom: 1px solid #e7e7e7;
-    margin-bottom: 2rem;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    box-sizing: border-box;
   }
 
-  .content-hero-header .hero-left {
-    flex: 0 0 38%;
-  }
-
-  .hero-brand {
-    font-size: 2.6rem;
+  .content-hero-header .left h3 {
+    font-size: 26px;
     font-weight: 700;
-    line-height: 1.2;
+    margin: 0 0 12px;
     color: #222222;
-    margin: 0 0 0.8rem;
-    letter-spacing: 1px;
   }
 
-  .hero-tagline {
-    font-size: 1.05rem;
+  .content-hero-header .left h2 {
+    font-size: 15px;
     font-weight: 400;
     color: #666666;
-    line-height: 1.6;
-    margin: 0 0 2rem;
+    margin: 0;
+    line-height: 1.5;
   }
 
-  .btn-about {
+  .content-hero-header .left a {
+    margin-top: 24px;
+    color: #222222;
     display: inline-block;
-    background-color: #ff6b00;
-    color: #ffffff;
-    padding: 11px 26px;
-    font-size: 0.95rem;
-    font-weight: 400;
+    border: 2px solid #222222;
+    padding: 0.35em 1.2em;
+    font-size: 16px;
+    font-weight: 500;
+    border-radius: 3px;
     text-decoration: none;
-    transition: background-color 0.2s ease;
+    transition: all 0.2s ease;
   }
 
-  .btn-about:hover {
-    background-color: #ea580c;
+  .content-hero-header .left a:hover {
+    background-color: #151d22;
+    border-color: #151d22;
+    color: #ffffff;
   }
 
-  .content-hero-header .hero-right {
-    flex: 0 0 58%;
+  .content-hero-header .right {
+    width: 70%;
+    height: 100%;
   }
 
   .slider-wrap-header {
     width: 100%;
-    position: relative;
+    height: 100%;
   }
 
-  .featured-img-box {
+  .slider-one {
+    width: 100%;
+    height: 100%;
+  }
+
+  .hero-featured-link {
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+  }
+
+  .featured-img-container {
     position: relative;
     width: 100%;
-    height: 300px;
-    background-color: #000000;
+    height: 340px;
+    background-color: #111111;
     overflow: hidden;
   }
 
-  .featured-real-photo {
+  .featured-main-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -294,31 +265,30 @@ function getPostCategory(post: typeof posts[0]) {
     transition: transform 0.3s ease;
   }
 
-  .img-wrap:hover .featured-real-photo {
+  .img-wrap:hover .featured-main-img {
     transform: scale(1.03);
   }
 
   .slogan {
     position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(5px);
-    padding: 12px 20px;
-    box-sizing: border-box;
-    transition: background-color 0.2s ease;
-  }
-
-  .img-wrap:hover .slogan {
-    background-color: rgba(255, 107, 0, 0.88);
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 85%;
+    text-align: center;
+    pointer-events: none;
   }
 
   .slogan-text {
+    display: inline-block;
+    font-size: 22px;
+    background-color: rgba(0, 0, 0, 0.65);
     color: #ffffff;
-    font-size: 1.1rem;
-    font-weight: 400;
+    letter-spacing: 2px;
+    padding: 10px 24px;
+    font-weight: 500;
     line-height: 1.4;
+    max-width: 90%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -328,7 +298,7 @@ function getPostCategory(post: typeof posts[0]) {
   .img-wrap {
     position: relative;
     width: 100%;
-    margin-bottom: 0.8rem;
+    margin-bottom: 0.5rem;
   }
 
   .bgs {
@@ -423,102 +393,22 @@ function getPostCategory(post: typeof posts[0]) {
   article:nth-child(3n) .img-wrap .bgs3,
   article:nth-child(3n) .img-wrap .bgs4 { background: #ff6b00; }
 
-  /* 🔍 2. 分類導航與搜尋列 */
-  .make9-nav-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1.5rem;
-    padding: 1.2rem 0;
-    margin-bottom: 2rem;
-    border-bottom: 1px solid #e7e7e7;
-  }
-
-  .nav-pills-group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-  }
-
-  .nav-pill {
-    background-color: #f3f4f6;
-    color: #555555;
-    border: none;
-    padding: 7px 15px;
-    font-size: 0.88rem;
-    font-weight: 400;
-    cursor: pointer;
-    border-radius: 0;
-    transition: all 0.2s ease;
-  }
-
-  .nav-pill:hover {
-    background-color: #e5e7eb;
-    color: #111111;
-  }
-
-  .nav-pill.is-active {
-    background-color: #ff6b00;
-    color: #ffffff;
-  }
-
-  .pill-badge {
-    font-size: 0.78rem;
-    opacity: 0.85;
-  }
-
-  .make9-search-box {
-    display: flex;
-    align-items: center;
-    flex: 0 0 320px;
-  }
-
-  .search-input-field {
-    width: 100%;
-    padding: 8px 12px;
-    font-size: 0.88rem;
-    border: 1px solid #d1d5db;
-    border-right: none;
-    outline: none;
-    border-radius: 0;
-    background: #ffffff;
-  }
-
-  .search-input-field:focus {
-    border-color: #ff6b00;
-  }
-
-  .search-btn-field {
-    background-color: #ff6b00;
-    color: #ffffff;
-    border: 1px solid #ff6b00;
-    padding: 8px 18px;
-    font-size: 0.88rem;
-    font-weight: 400;
-    cursor: pointer;
-    border-radius: 0;
-    transition: background-color 0.2s ease;
-  }
-
-  .search-btn-field:hover {
-    background-color: #ea580c;
-  }
-
-  /* 📰 3. 主內容與側邊欄排版 (content-area-top) */
+  /* 📰 2. 主內容區 (.content-area-top: 70% 左主欄 + 30% 右側邊欄) */
   .content-area-top {
     display: flex;
     justify-content: space-between;
-    gap: 3rem;
   }
 
   .content-area-top .left {
-    flex: 0 0 calc(70% - 1.5rem);
+    width: 68%;
+    padding-right: 3%;
   }
 
   .content-area-top .right.sidebar-right {
-    flex: 0 0 calc(30% - 1.5rem);
+    width: 28%;
   }
 
+  /* 標題條 (.post-area-head) */
   .post-area-head {
     display: flex;
     justify-content: space-between;
@@ -529,7 +419,7 @@ function getPostCategory(post: typeof posts[0]) {
   }
 
   .post-area-head:hover {
-    border-bottom: 3px solid #ff6b00;
+    border-bottom: 3px solid #f59e0b;
   }
 
   .post-area-title {
@@ -537,51 +427,49 @@ function getPostCategory(post: typeof posts[0]) {
     color: #ffffff;
     display: inline-block;
     padding: 10px 22px;
-    font-size: 1.05rem;
+    font-size: 18px;
     font-weight: 700;
-    letter-spacing: 1px;
     margin: 0;
   }
 
   .cat-read-all {
     display: block;
-    color: #555555;
+    color: #333333;
     background-color: #eeeeee;
-    font-size: 0.86rem;
+    font-size: 15px;
     font-weight: 400;
-    padding: 10px 18px;
+    padding: 10px 20px;
     text-decoration: none;
-    transition: background-color 0.2s ease;
+    transition: all 0.2s ease;
   }
 
-  .post-area-head:hover .cat-read-all {
-    background-color: #ff6b00;
-    color: #ffffff;
+  .cat-read-all:hover {
+    background-color: #f59e0b;
+    color: #111111;
   }
 
-  /* 2 欄式文章網格 (post-list col3) */
-  .post-list.col3 {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2.2rem;
+  /* 2 欄式文章網格 (.post-list.col2) */
+  .post-list.col2 {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
   }
 
-  .make9-article-card {
-    background: #ffffff;
-    border-bottom: 1px solid #e7e7e7;
-    padding-bottom: 1.8rem;
+  .post-card {
+    width: 48%;
+    margin-bottom: 2.5rem;
     display: flex;
     flex-direction: column;
   }
 
-  .card-thumb-photo-wrap {
+  .card-img-box {
     width: 100%;
-    height: 180px;
+    height: 190px;
     overflow: hidden;
     background: #f0f0f0;
   }
 
-  .card-photo {
+  .card-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -589,36 +477,33 @@ function getPostCategory(post: typeof posts[0]) {
     transition: transform 0.3s ease;
   }
 
-  .img-wrap:hover .card-photo {
+  .img-wrap:hover .card-img {
     transform: scale(1.04);
   }
 
-  /* 文章標籤與文字 */
   .post-categories {
     list-style: none;
-    padding: 0;
-    margin: 0.8rem 0 0.4rem;
-    display: flex;
+    padding: 8px 0 4px;
+    margin: 0;
+    color: #999999;
+    font-size: 13px;
   }
 
   .post-categories li {
-    background-color: #ff6b00;
-    padding: 2px 8px;
-    border-radius: 3px;
+    display: inline-block;
   }
 
-  .cat-tag-link {
-    color: #ffffff;
-    font-size: 0.76rem;
-    font-weight: 400;
+  .post-categories li a {
+    color: #ff6b00;
     text-decoration: none;
+    font-weight: 400;
   }
 
   .post-title {
-    font-size: 1.15rem;
+    font-size: 20px;
     font-weight: 700;
-    line-height: 1.38;
-    margin: 6px 0 8px;
+    line-height: 1.35;
+    margin: 4px 0 8px;
   }
 
   .post-title a {
@@ -632,7 +517,7 @@ function getPostCategory(post: typeof posts[0]) {
   }
 
   .post-excerpt {
-    font-size: 0.86rem;
+    font-size: 14px;
     line-height: 1.6;
     color: #666666;
     margin: 0 0 1rem;
@@ -640,32 +525,24 @@ function getPostCategory(post: typeof posts[0]) {
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    flex: 1;
     font-weight: 400;
-  }
-
-  .post-meta {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: auto;
-    font-size: 0.82rem;
-    color: #999999;
   }
 
   .read-more {
+    display: inline-block;
+    align-self: flex-start;
     background-color: #ff6b00;
-    color: #ffffff;
-    padding: 5px 18px;
-    font-size: 0.82rem;
+    color: #ffffff !important;
+    padding: 6px 28px;
+    font-size: 13px;
     font-weight: 400;
     text-decoration: none;
+    margin-top: auto;
     transition: all 0.2s ease;
   }
 
   .read-more:hover {
     background-color: #3bce89;
-    color: #ffffff;
   }
 
   /* 📌 側邊欄樣式 */
@@ -691,13 +568,13 @@ function getPostCategory(post: typeof posts[0]) {
 
   .side-author-box h2 {
     margin-bottom: 0.3rem;
-    font-size: 1.2rem;
+    font-size: 1.15rem;
     font-weight: 700;
     color: #222222;
   }
 
   .side-author-box h2 .eng-name {
-    font-size: 0.88rem;
+    font-size: 0.86rem;
     color: #999999;
     font-weight: 400;
   }
@@ -735,7 +612,7 @@ function getPostCategory(post: typeof posts[0]) {
   /* 熱門推薦文章 (#popular-side) */
   .popular-posts {
     margin-bottom: 2.5rem;
-    padding: 10px 0;
+    padding-top: 10px;
     border-top: 4px solid #222222;
   }
 
@@ -826,46 +703,36 @@ function getPostCategory(post: typeof posts[0]) {
     border-top: 4px solid #222222;
   }
 
-  .make9-tag-cloud {
+  .tag-cloud {
     display: flex;
     flex-wrap: wrap;
     gap: 0.4rem;
   }
 
-  .tag-link-pill {
+  .tag-pill {
     background-color: #f3f4f6;
     color: #555555;
     border: 1px solid #e5e7eb;
     padding: 5px 11px;
     font-size: 0.78rem;
     font-weight: 400;
-    cursor: pointer;
+    text-decoration: none;
     transition: all 0.2s ease;
   }
 
-  .tag-link-pill:hover {
+  .tag-pill:hover {
     background-color: #ff6b00;
     color: #ffffff;
     border-color: #ff6b00;
   }
 
-  .empty-results-box {
-    text-align: center;
-    padding: 3rem 1rem;
-    background: #f9fafb;
-    border: 1px dashed #d1d5db;
-    margin-top: 1.5rem;
-    color: #888888;
-  }
-
-  @media (max-width: 1024px) {
+  @media (max-width: 960px) {
     .content-hero-header {
       flex-direction: column;
-      align-items: flex-start;
+      height: auto;
     }
-    .content-hero-header .hero-left,
-    .content-hero-header .hero-right {
-      flex: 0 0 100%;
+    .content-hero-header .left,
+    .content-hero-header .right {
       width: 100%;
     }
     .content-area-top {
@@ -873,123 +740,14 @@ function getPostCategory(post: typeof posts[0]) {
     }
     .content-area-top .left,
     .content-area-top .right.sidebar-right {
-      flex: 0 0 100%;
+      width: 100%;
+      padding-right: 0;
+    }
+    .post-list.col2 {
+      flex-direction: column;
+    }
+    .post-card {
       width: 100%;
     }
   }
-
-  @media (max-width: 768px) {
-    .post-list.col3 {
-      grid-template-columns: 1fr;
-    }
-    .make9-nav-bar {
-      flex-direction: column;
-      align-items: stretch;
-    }
-    .make9-search-box {
-      flex: 1;
-    }
-    .hero-brand {
-      font-size: 2rem;
-    }
-  }
 </style>
-
-<script>
-  const searchInput = document.getElementById('make9Search') as HTMLInputElement;
-  const filterTabs = document.querySelectorAll('.nav-pill');
-  const postCards = document.querySelectorAll('.make9-article-card');
-  const emptyNotice = document.getElementById('emptyNotice');
-  const countDisplay = document.getElementById('currentCountDisplay');
-  const sectionTitle = document.getElementById('currentSectionTitle');
-
-  let currentCategory = 'all';
-  let currentSearchQuery = '';
-
-  const categoryNames: Record<string, string> = {
-    all: '精選文章',
-    security: '系統資安文章',
-    architecture: '架構伺服器文章',
-    design: '前端設計文章',
-    tools: '外掛工具文章',
-    campus: '專案實戰文章',
-  };
-
-  function updatePosts() {
-    let visibleCount = 0;
-
-    postCards.forEach((card) => {
-      const el = card as HTMLElement;
-      const cardCategory = el.getAttribute('data-cat') || '';
-      const cardTitle = el.getAttribute('data-title') || '';
-      const cardExcerpt = el.getAttribute('data-excerpt') || '';
-
-      const matchCategory = currentCategory === 'all' || cardCategory === currentCategory;
-      const matchSearch = currentSearchQuery === '' ||
-        cardTitle.includes(currentSearchQuery) ||
-        cardExcerpt.includes(currentSearchQuery);
-
-      if (matchCategory && matchSearch) {
-        el.style.display = 'flex';
-        visibleCount++;
-      } else {
-        el.style.display = 'none';
-      }
-    });
-
-    if (countDisplay) {
-      countDisplay.textContent = `共 ${visibleCount} 篇文章`;
-    }
-
-    if (sectionTitle) {
-      sectionTitle.textContent = currentSearchQuery
-        ? `搜尋結果: 「${currentSearchQuery}」`
-        : (categoryNames[currentCategory] || '精選文章');
-    }
-
-    if (emptyNotice) {
-      emptyNotice.style.display = visibleCount === 0 ? 'block' : 'none';
-    }
-  }
-
-  filterTabs.forEach((tab) => {
-    tab.addEventListener('click', () => {
-      filterTabs.forEach((t) => t.classList.remove('is-active'));
-      tab.classList.add('is-active');
-      currentCategory = tab.getAttribute('data-cat') || 'all';
-      updatePosts();
-    });
-  });
-
-  if (searchInput) {
-    searchInput.addEventListener('input', (e) => {
-      currentSearchQuery = (e.target as HTMLInputElement).value.trim().toLowerCase();
-      updatePosts();
-    });
-  }
-
-  document.querySelectorAll('.tag-link-pill').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const kw = btn.getAttribute('data-kw') || '';
-      if (searchInput) {
-        searchInput.value = kw;
-        currentSearchQuery = kw.toLowerCase();
-        updatePosts();
-        document.getElementById('all-posts')?.scrollIntoView({ behavior: 'smooth' });
-      }
-    });
-  });
-
-  document.querySelectorAll('.cat-tag-link').forEach((link) => {
-    link.addEventListener('click', (e) => {
-      e.preventDefault();
-      const target = link.getAttribute('data-target-cat') || 'all';
-      filterTabs.forEach((tab) => {
-        if (tab.getAttribute('data-cat') === target) {
-          (tab as HTMLElement).click();
-          document.getElementById('all-posts')?.scrollIntoView({ behavior: 'smooth' });
-        }
-      });
-    });
-  });
-</script>
