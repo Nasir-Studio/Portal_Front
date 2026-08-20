@@ -160,41 +160,7 @@ function getPostCategory(post: typeof posts[0]) {
           </div>
         </div>
 
-          <!-- ⭐ 編輯精選 (緊湊精緻 3 欄並排，位於技術文章正下方) -->
-          <div class="editor-picks-compact-section">
-            <div class="post-area-head" style="margin-top: 2.5rem;">
-              <h2 class="post-area-title">編輯精選</h2>
-              <a href="/blog/posts/" class="cat-read-all">探索精選推薦</a>
-            </div>
-            <div class="picks-compact-grid">
-              {editorPicks.map((post) => {
-                const cat = getPostCategory(post);
-                return (
-                  <article class="pick-compact-card">
-                    <div class="img-wrap pick-img-wrap">
-                      <div class="bgs bgs1"></div>
-                      <div class="bgs bgs2"></div>
-                      <div class="bgs bgs3"></div>
-                      <div class="bgs bgs4"></div>
-                      <a class="bgs bgs5 pick-thumb-link" href={`/blog/posts/${post.slug}/`}>
-                        <div class="pick-img-box">
-                          <img src={`/banners/${post.slug}.jpg`} alt={post.title} class="pick-img" loading="lazy" />
-                        </div>
-                      </a>
-                    </div>
-                    <div class="pick-details">
-                      <span class="pick-cat">{cat.name}</span>
-                      <h3 class="pick-title">
-                        <a href={`/blog/posts/${post.slug}/`}>{post.title}</a>
-                      </h3>
-                    </div>
-                  </article>
-                );
-              })}
-            </div>
-          </div>
-
-        <!-- 📌 右側經典側邊欄 (Sidebar: 30% 寬度) -->
+          <!-- 📌 右側經典側邊欄 (Sidebar: 30% 寬度) -->
         <aside class="right sidebar-right">
           <!-- 站長專欄 -->
           <div class="side-author-box">
