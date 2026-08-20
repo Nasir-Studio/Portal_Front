@@ -5,24 +5,17 @@ import posts from '../../data/posts';
 const allPosts = posts;
 const featuredPost = posts[0];
 
-function getPostCategory(post: typeof posts[0]) {
-  if (post.slug.includes('security') || post.slug.includes('audit')) {
-    return { name: '系統資安', slug: 'security' };
-  }
-  if (post.slug.includes('architecture') || post.slug.includes('pwa')) {
-    return { name: '架構伺服器', slug: 'architecture' };
-  }
-  if (post.slug.includes('design') || post.slug.includes('front-end')) {
-    return { name: '前端設計', slug: 'design' };
-  }
-  if (post.slug.includes('tool') || post.slug.includes('proxy') || post.slug.includes('github')) {
-    return { name: '外掛工具', slug: 'tools' };
-  }
-  if (post.slug.includes('ntub') || post.slug.includes('exam')) {
-    return { name: '專案實戰', slug: 'campus' };
-  }
-  return { name: 'WordPress架站', slug: 'general' };
-}
+const securityPosts = posts.filter(p => p.slug.includes('security') || p.slug.includes('audit'));
+const architecturePosts = posts.filter(p => p.slug.includes('architecture') || p.slug.includes('pwa') || p.slug.includes('windows'));
+const designPosts = posts.filter(p => p.slug.includes('design') || p.slug.includes('front-end') || p.slug.includes('presentation'));
+const toolPosts = posts.filter(p => p.slug.includes('tool') || p.slug.includes('proxy') || p.slug.includes('github') || p.slug.includes('ig'));
+
+const categorySections = [
+  { name: '系統資安', slug: 'security', posts: securityPosts },
+  { name: '架構伺服器', slug: 'architecture', posts: architecturePosts },
+  { name: '前端設計', slug: 'design', posts: designPosts },
+  { name: '外掛工具', slug: 'tools', posts: toolPosts },
+];
 ---
 
 <BlogLayout title="OviNas 羊之誌 — 網站架設、系統資安、前端工程與外掛推薦" description="專注於網站架設、系統資安、前端工程與開源工具推薦。">
@@ -57,53 +50,54 @@ function getPostCategory(post: typeof posts[0]) {
         </div>
       </section>
 
-      <!-- 📰 2. 主內容區 (左側 70% 雙欄卡片網格 + 右側 30% 標準側邊欄) -->
+      <!-- 📰 2. 主內容區 (左側 70% 多分類文章區塊 + 右側 30% 標準側邊欄) -->
       <div class="content-area-top">
         <div class="left">
-          <!-- 標題條 (.post-area-head) -->
-          <div class="post-area-head">
-            <h2 class="post-area-title">精選文章</h2>
-            <a href="/posts/" class="cat-read-all">查看全部文章</a>
-          </div>
+          {categorySections.map((sec) => (
+            <div class="category-block-section">
+              <!-- 分類標題條 (.post-area-head) -->
+              <div class="post-area-head">
+                <h2 class="post-area-title">{sec.name}</h2>
+                <a href="/posts/" class="cat-read-all">查看全部文章</a>
+              </div>
 
-          <!-- 2 欄式文章網格 (.post-list.col2) -->
-          <div class="post-list col2">
-            {allPosts.map((post) => {
-              const cat = getPostCategory(post);
-              return (
-                <article class="post-card">
-                  <!-- 🎨 經典 3D 浮動 Hover 縮圖 (.img-wrap + .bgs1 ~ .bgs5) -->
-                  <div class="img-wrap">
-                    <div class="bgs bgs1"></div>
-                    <div class="bgs bgs2"></div>
-                    <div class="bgs bgs3"></div>
-                    <div class="bgs bgs4"></div>
-                    <a class="bgs bgs5 card-thumb-link" href={`/posts/${post.slug}/`}>
-                      <div class="card-img-box">
-                        <img src={`/banners/${post.slug}.jpg`} alt={post.title} class="card-img" loading="lazy" />
-                      </div>
-                    </a>
-                  </div>
+              <!-- 2 欄式文章網格 (.post-list.col2) -->
+              <div class="post-list col2">
+                {sec.posts.map((post) => (
+                  <article class="post-card">
+                    <!-- 🎨 經典 3D 浮動 Hover 縮圖 (.img-wrap + .bgs1 ~ .bgs5) -->
+                    <div class="img-wrap">
+                      <div class="bgs bgs1"></div>
+                      <div class="bgs bgs2"></div>
+                      <div class="bgs bgs3"></div>
+                      <div class="bgs bgs4"></div>
+                      <a class="bgs bgs5 card-thumb-link" href={`/posts/${post.slug}/`}>
+                        <div class="card-img-box">
+                          <img src={`/banners/${post.slug}.jpg`} alt={post.title} class="card-img" loading="lazy" />
+                        </div>
+                      </a>
+                    </div>
 
-                  <!-- 分類標籤 -->
-                  <ul class="post-categories">
-                    <li><a href="/posts/">{cat.name}</a></li>
-                  </ul>
+                    <!-- 分類標籤 -->
+                    <ul class="post-categories">
+                      <li><a href="/posts/">{sec.name}</a></li>
+                    </ul>
 
-                  <!-- 文章標題 -->
-                  <h3 class="post-title">
-                    <a href={`/posts/${post.slug}/`}>{post.title}</a>
-                  </h3>
+                    <!-- 文章標題 -->
+                    <h3 class="post-title">
+                      <a href={`/posts/${post.slug}/`}>{post.title}</a>
+                    </h3>
 
-                  <!-- 摘要 -->
-                  <p class="post-excerpt">{post.excerpt}</p>
+                    <!-- 摘要 -->
+                    <p class="post-excerpt">{post.excerpt}</p>
 
-                  <!-- 閱讀更多按鈕 -->
-                  <a href={`/posts/${post.slug}/`} class="read-more">閱讀更多</a>
-                </article>
-              );
-            })}
-          </div>
+                    <!-- 閱讀更多按鈕 -->
+                    <a href={`/posts/${post.slug}/`} class="read-more">閱讀更多</a>
+                  </article>
+                ))}
+              </div>
+            </div>
+          ))}
         </div>
 
         <!-- 📌 右側經典側邊欄 (Sidebar: 30% 寬度) -->
@@ -127,28 +121,25 @@ function getPostCategory(post: typeof posts[0]) {
           <div class="popular-posts" id="popular-side">
             <h3 class="side-section-heading">熱門推薦文章</h3>
             <ul class="wpp-list">
-              {allPosts.slice(0, 5).map((p, idx) => {
-                const cat = getPostCategory(p);
-                return (
-                  <li class="wpp-item">
-                    <a href={`/posts/${p.slug}/`} class="wpp-thumb-link">
-                      <div class="wpp-thumbnail-box">
-                        <img src={`/banners/${p.slug}.jpg`} alt={p.title} class="wpp-thumb-img" />
-                      </div>
-                    </a>
-                    <div class="wpp-details">
-                      <a href={`/posts/${p.slug}/`} class="wpp-post-title">
-                        {p.title}
-                      </a>
-                      <span class="wpp-meta">{p.date} · {cat.name}</span>
+              {allPosts.slice(0, 5).map((p, idx) => (
+                <li class="wpp-item">
+                  <a href={`/posts/${p.slug}/`} class="wpp-thumb-link">
+                    <div class="wpp-thumbnail-box">
+                      <img src={`/banners/${p.slug}.jpg`} alt={p.title} class="wpp-thumb-img" />
                     </div>
-                  </li>
-                );
-              })}
+                  </a>
+                  <div class="wpp-details">
+                    <a href={`/posts/${p.slug}/`} class="wpp-post-title">
+                      {p.title}
+                    </a>
+                    <span class="wpp-meta">{p.date}</span>
+                  </div>
+                </li>
+              ))}
             </ul>
           </div>
 
-          <!-- 熱門主題標籤 -->
+          <!-- 主題閱讀標籤雲 -->
           <div class="tag-widget-box">
             <h3 class="side-section-heading">主題閱讀</h3>
             <div class="tag-cloud">
@@ -393,7 +384,7 @@ function getPostCategory(post: typeof posts[0]) {
   article:nth-child(3n) .img-wrap .bgs3,
   article:nth-child(3n) .img-wrap .bgs4 { background: #ff6b00; }
 
-  /* 📰 2. 主內容區 (.content-area-top: 70% 左主欄 + 30% 右側邊欄) */
+  /* 📰 2. 主內容區 (.content-area-top) */
   .content-area-top {
     display: flex;
     justify-content: space-between;
@@ -406,6 +397,10 @@ function getPostCategory(post: typeof posts[0]) {
 
   .content-area-top .right.sidebar-right {
     width: 28%;
+  }
+
+  .category-block-section {
+    margin-bottom: 3.5rem;
   }
 
   /* 標題條 (.post-area-head) */
