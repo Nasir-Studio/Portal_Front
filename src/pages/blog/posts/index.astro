@@ -1,32 +1,12 @@
 ---
 import quotes from '../../../data/quotes';
+import badges from '../../../data/badges';
 
 const today = new Date();
 const seed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
 const dailyQuote = quotes[seed % quotes.length];
 
-const badges = [
-  {
-    img: '/certs/adobe-premiere.png',
-    name: 'Adobe Premiere 數位影音',
-    url: 'https://www.credly.com/badges/3e176af8-edca-411e-8e52-6be837f644ac/public_url',
-  },
-  {
-    img: '/certs/its-python.png',
-    name: 'IT Specialist Python',
-    url: 'https://www.credly.com/badges/7b8bbe2a-3bbd-4fdc-8ffc-7696c35876aa/public_url',
-  },
-  {
-    img: '/certs/adobe-photoshop.png',
-    name: 'Adobe Photoshop 視覺設計',
-    url: 'https://www.credly.com/badges/4e2825dd-e2d1-4b42-922c-bdcb39fd899a/public_url',
-  },
-  {
-    img: '/certs/mos-powerpoint.png',
-    name: 'MOS PowerPoint 專家認證',
-    url: 'https://www.credly.com/badges/5b7beead-dc12-4bbd-83a2-1301db598b52/public_url',
-  },
-];
+
 
 import BlogLayout from '../../../layouts/BlogLayout.astro';
 import posts from '../../../data/posts';
@@ -718,19 +698,19 @@ function getPostCategory(post: typeof posts[0]) {
       height: 240px;
     }
   }
-  /* 🏅 側邊欄資格認證與每日一句樣式 */
+    /* 🏅 側邊欄資格認證與每日一句樣式 (雙欄並排、全部8個徽章完整呈現) */
   .side-badges-box, .side-quote-box {
     background: #fafbfc;
     border: 1px solid #e5e7eb;
     border-radius: 4px;
-    padding: 1.4rem;
+    padding: 1.2rem;
   }
 
   .side-badges-title, .side-quote-title {
     font-size: 1.15rem;
     font-weight: 500;
     color: #444444;
-    margin: 0 0 1rem;
+    margin: 0 0 0.9rem;
     padding-bottom: 0.5rem;
     border-bottom: 2px solid #ff6b00;
   }
@@ -739,9 +719,9 @@ function getPostCategory(post: typeof posts[0]) {
     list-style: none;
     padding: 0;
     margin: 0 0 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
   }
 
   .side-badge-item {
@@ -753,30 +733,39 @@ function getPostCategory(post: typeof posts[0]) {
 
   .side-badge-item:hover {
     border-color: #ff6b00;
-    transform: translateX(3px);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.06);
   }
 
   .side-badge-link {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 10px;
-    padding: 8px 10px;
+    text-align: center;
+    padding: 8px 4px;
     text-decoration: none;
     color: #334155;
+    height: 100%;
+    box-sizing: border-box;
+    gap: 6px;
   }
 
   .side-badge-img {
-    width: 36px;
-    height: 36px;
+    width: 44px;
+    height: 44px;
     object-fit: contain;
     flex-shrink: 0;
   }
 
   .side-badge-name {
-    font-size: 13px;
+    font-size: 11px;
     font-weight: 400;
-    line-height: 1.35;
+    line-height: 1.3;
     color: #475569;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
   .side-badge-more-link {
