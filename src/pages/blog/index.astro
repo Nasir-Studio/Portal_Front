@@ -213,6 +213,37 @@ const topicCategories = [
             </ul>
           </div>
 
+          <!-- 熱門推薦文章 (#popular-side: 75px 1:1 正方形真實文青照片微縮圖) -->
+          <div class="popular-posts" id="popular-side" style="margin-top: 2rem;">
+            <h3 class="side-section-heading">熱門推薦文章</h3>
+            <ul class="wpp-list">
+              {allPosts.slice(0, 5).map((p) => (
+                <li class="wpp-item">
+                  <a href={`/blog/posts/${p.slug}/`} class="wpp-thumb-link">
+                    <div class="wpp-thumbnail-box">
+                      <img src={`/banners/${p.slug}.jpg`} alt={p.title} class="wpp-thumb-img" />
+                    </div>
+                  </a>
+                  <div class="wpp-details">
+                    <a href={`/blog/posts/${p.slug}/`} class="wpp-post-title">
+                      {p.title}
+                    </a>
+                    <span class="wpp-meta">{p.date}</span>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <!-- 📜 每日一句 (Daily Quote) -->
+          <div class="side-popular-box side-quote-box" style="margin-top: 2rem;">
+            <h2 class="side-quote-title">每日一句</h2>
+            <div class="side-quote-content">
+              <p class="side-quote-text">「{dailyQuote.text}」</p>
+              <p class="side-quote-author">— {dailyQuote.author}</p>
+            </div>
+          </div>
+
         </aside>
       </div>
 
