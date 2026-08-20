@@ -96,17 +96,10 @@ const cat = getCategoryInfo(item.slug);
           </div>
 
           <!-- 文章內文排版 (綠色鏈結 #3bce89 + 橘色左粗條 H2 + 柔灰提示框 + 表格) -->
-                    <!-- 🔒 技術文章專屬門禁 (登入鎖 + 信用卡解鎖) - ONLY 技術筆記本 -->
+                              <!-- 🔒 技術文章專屬門禁 - ONLY 技術筆記本 -->
           {item.slug === 'tech-notes-architecture' && (
             <div id="tech-gate-wrap" class="tech-gate-wrap" style="display: none; margin: 1.5rem 0 2.5rem;">
-              <div class="tech-lock-card">
-                <div class="lock-card-header">
-                  <span class="lock-badge">🔒 VIP 技術文章門禁</span>
-                  <h3>本篇為【技術筆記本】深度架構篇</h3>
-                  <p>請使用下方快速登入（輸入任意帳密）或信用卡/模擬刷卡完成解鎖。</p>
-                </div>
-                <TechGate />
-              </div>
+              <TechGate />
             </div>
           )}
 
@@ -1033,6 +1026,88 @@ const cat = getCategoryInfo(item.slug);
     color: #64748b;
     margin: 0;
   }
+  /* 📊 網站計數器樣式 */
+  .side-counter-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0 0 1rem;
+    padding-left: 8px;
+    border-left: 3px solid #ff6b00;
+  }
+
+  .side-counter-content {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    padding: 1.1rem 1rem;
+    border-radius: 4px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
+  }
+
+  .counter-display-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding-bottom: 0.9rem;
+    border-bottom: 1px dashed #e2e8f0;
+  }
+
+  .counter-label {
+    font-size: 12px;
+    color: #64748b;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+
+  .counter-digits {
+    display: flex;
+    gap: 4px;
+  }
+
+  .counter-digits .digit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 28px;
+    background: #1e293b;
+    color: #f8fafc;
+    font-family: 'Courier New', Courier, monospace, monospace;
+    font-size: 15px;
+    font-weight: 700;
+    border-radius: 3px;
+    box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.3);
+  }
+
+  .counter-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-top: 0.9rem;
+    text-align: center;
+  }
+
+  .stat-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .stat-name {
+    font-size: 11.5px;
+    color: #64748b;
+  }
+
+  .stat-val {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #1e293b;
+  }
+
+  .stat-online {
+    color: #10b981;
+  }
 </style>
 
 <script>
@@ -1451,5 +1526,87 @@ const cat = getCategoryInfo(item.slug);
     font-size: 14px;
     color: #64748b;
     margin: 0;
+  }
+  /* 📊 網站計數器樣式 */
+  .side-counter-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0 0 1rem;
+    padding-left: 8px;
+    border-left: 3px solid #ff6b00;
+  }
+
+  .side-counter-content {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    padding: 1.1rem 1rem;
+    border-radius: 4px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
+  }
+
+  .counter-display-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding-bottom: 0.9rem;
+    border-bottom: 1px dashed #e2e8f0;
+  }
+
+  .counter-label {
+    font-size: 12px;
+    color: #64748b;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+
+  .counter-digits {
+    display: flex;
+    gap: 4px;
+  }
+
+  .counter-digits .digit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 28px;
+    background: #1e293b;
+    color: #f8fafc;
+    font-family: 'Courier New', Courier, monospace, monospace;
+    font-size: 15px;
+    font-weight: 700;
+    border-radius: 3px;
+    box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.3);
+  }
+
+  .counter-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-top: 0.9rem;
+    text-align: center;
+  }
+
+  .stat-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .stat-name {
+    font-size: 11.5px;
+    color: #64748b;
+  }
+
+  .stat-val {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #1e293b;
+  }
+
+  .stat-online {
+    color: #10b981;
   }
 </style>
