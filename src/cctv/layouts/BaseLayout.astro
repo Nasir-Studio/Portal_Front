@@ -31,17 +31,6 @@ const base = '/cctv';
   </script>
 </head>
 <body>
-  <div class="page-loader" id="pageLoader">
-    <div class="loader-inner">
-      <div class="loader-text">羊在偷看你</div>
-      <div class="loader-sub">台灣即時影像</div>
-      <div class="loader-bar-track">
-        <div class="loader-bar" id="loaderBar"></div>
-      </div>
-      <div class="loader-pct" id="loaderPct">0%</div>
-    </div>
-  </div>
-
   <header>
     <nav>
       <a href={`${base}/`} class="logo">
@@ -120,41 +109,6 @@ const base = '/cctv';
       }
       nav ul.open { display: flex; }
     }
-
-    .page-loader {
-      position: fixed; inset: 0; z-index: 9999;
-      background: var(--bg);
-      display: flex; align-items: center; justify-content: center;
-      transition: opacity 0.8s ease, visibility 0.8s ease;
-    }
-    .page-loader.hide {
-      opacity: 0; visibility: hidden; pointer-events: none;
-    }
-    .loader-inner { text-align: center; width: 200px; }
-    .loader-text {
-      font-family: var(--font-serif);
-      font-size: 1.4rem; letter-spacing: 0.25em;
-      color: var(--text); margin-bottom: 0.4rem;
-      font-weight: 400;
-    }
-    .loader-sub {
-      font-size: 0.6rem; color: var(--text-dim);
-      letter-spacing: 0.3em; margin-bottom: 2rem;
-    }
-    .loader-bar-track {
-      width: 100%; height: 1px;
-      background: var(--border); overflow: hidden;
-    }
-    .loader-bar {
-      width: 0%; height: 100%;
-      background: var(--accent);
-      transition: width 0.3s ease;
-    }
-    .loader-pct {
-      font-size: 0.65rem; color: var(--text-dim);
-      font-family: var(--font-mono);
-      margin-top: 0.75rem; letter-spacing: 0.1em;
-    }
   </style>
 
   <script>
@@ -171,47 +125,6 @@ const base = '/cctv';
           links.classList.toggle('open');
         });
       }
-
-      var loader = document.getElementById('pageLoader');
-      if (!loader) return;
-
-      if (sessionStorage.getItem('livecctv_loaded')) {
-        loader.remove();
-        return;
-      }
-
-      var bar = document.getElementById('loaderBar');
-      var pct = document.getElementById('loaderPct');
-      var progress = 0;
-      var steps = [
-        { target: 25, speed: 25 },
-        { target: 50, speed: 35 },
-        { target: 75, speed: 40 },
-        { target: 90, speed: 30 },
-        { target: 100, speed: 20 }
-      ];
-      var stepIdx = 0;
-
-      function tick() {
-        if (stepIdx >= steps.length) {
-          sessionStorage.setItem('livecctv_loaded', '1');
-          setTimeout(function() { loader.classList.add('hide'); }, 200);
-          setTimeout(function() { loader.remove(); }, 1000);
-          return;
-        }
-        var step = steps[stepIdx];
-        if (progress < step.target) {
-          progress += 1;
-          bar.style.width = progress + '%';
-          pct.textContent = progress + '%';
-          setTimeout(tick, step.speed);
-        } else {
-          stepIdx++;
-          setTimeout(tick, 150);
-        }
-      }
-
-      setTimeout(tick, 200);
     })();
   </script>
 
