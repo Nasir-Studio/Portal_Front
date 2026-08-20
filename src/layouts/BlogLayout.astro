@@ -159,15 +159,46 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
           </div>
         </div>
 
-        <!-- 中間：聯絡與主站服務 -->
+                <!-- 中間：聯絡站長 (Google Forms 表單串接) -->
         <div class="footer-center">
-          <h2>站長聯絡與交流</h2>
+          <h2>聯絡 OviNas</h2>
           <div class="content">
-            <p>技術交流、系統開發或資安諮詢請來信：</p>
-            <p class="mail-p">
-              ✉️ <a href="mailto:hi@nasirlin.net">hi@nasirlin.net</a>
-            </p>
-            <p>各類主站便民服務與工具，請隨時點選主站首頁入口導覽。</p>
+            <form id="footerContactForm" class="footer-contact-form">
+              <div class="footer-form-group">
+                <input
+                  type="text"
+                  id="fcName"
+                  name="entry.57084769"
+                  placeholder="稱呼 / 姓名 *"
+                  required
+                  class="footer-input"
+                />
+              </div>
+              <div class="footer-form-group">
+                <input
+                  type="email"
+                  id="fcEmail"
+                  name="entry.135399445"
+                  placeholder="電子郵件 *"
+                  required
+                  class="footer-input"
+                />
+              </div>
+              <div class="footer-form-group">
+                <textarea
+                  id="fcMsg"
+                  name="entry.1753446536"
+                  placeholder="技術交流、合作或提問內容… *"
+                  rows="2"
+                  required
+                  class="footer-input footer-textarea"
+                ></textarea>
+              </div>
+              <div class="footer-submit-row">
+                <button type="submit" id="fcSubmitBtn" class="footer-submit-btn">送出訊息</button>
+                <span id="fcStatus" class="footer-status-msg"></span>
+              </div>
+            </form>
           </div>
         </div>
 
@@ -206,7 +237,64 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
         toggleBtn.classList.toggle('is-active', isHidden);
       });
     }
-  </script>
+  
+  // 4. Footer Google Form 聯絡表單發送
+  const contactForm = document.getElementById('footerContactForm') as HTMLFormElement;
+  const submitBtn = document.getElementById('fcSubmitBtn') as HTMLButtonElement;
+  const statusMsg = document.getElementById('fcStatus');
+
+  const GOOGLE_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSeeWapjagLqPsg7i2y_TYhNq2xKW-nNFj6JywiqiDZ8Hkiheg/formResponse';
+
+  if (contactForm) {
+    contactForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = (document.getElementById('fcName') as HTMLInputElement).value.trim();
+      const email = (document.getElementById('fcEmail') as HTMLInputElement).value.trim();
+      const msg = (document.getElementById('fcMsg') as HTMLTextAreaElement).value.trim();
+
+      if (!name || !email || !msg) return;
+
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = '傳送中…';
+      }
+
+      try {
+        const formData = new FormData();
+        formData.append('entry.57084769', name);
+        formData.append('entry.135399445', email);
+        formData.append('entry.1753446536', msg);
+
+        await fetch(GOOGLE_FORM_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          body: formData,
+        });
+
+        if (statusMsg) {
+          statusMsg.textContent = '✓ 訊息已成功送出！';
+          statusMsg.className = 'footer-status-msg is-success';
+        }
+
+        contactForm.reset();
+
+        setTimeout(() => {
+          if (statusMsg) statusMsg.textContent = '';
+        }, 4000);
+      } catch (err) {
+        if (statusMsg) {
+          statusMsg.textContent = '✕ 傳送失敗，請稍後再試。';
+          statusMsg.className = 'footer-status-msg is-error';
+        }
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = '送出訊息';
+        }
+      }
+    });
+  }
+</script>
 <script>
   // 1. 頂部導覽列滾動縮小動效 (.min-fixed)
   const header = document.getElementById('main-header');
@@ -259,6 +347,63 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
     revealElements.forEach(el => {
       el.classList.add('reveal-ready');
       observer.observe(el);
+    });
+  }
+
+  // 4. Footer Google Form 聯絡表單發送
+  const contactForm = document.getElementById('footerContactForm') as HTMLFormElement;
+  const submitBtn = document.getElementById('fcSubmitBtn') as HTMLButtonElement;
+  const statusMsg = document.getElementById('fcStatus');
+
+  const GOOGLE_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSeeWapjagLqPsg7i2y_TYhNq2xKW-nNFj6JywiqiDZ8Hkiheg/formResponse';
+
+  if (contactForm) {
+    contactForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = (document.getElementById('fcName') as HTMLInputElement).value.trim();
+      const email = (document.getElementById('fcEmail') as HTMLInputElement).value.trim();
+      const msg = (document.getElementById('fcMsg') as HTMLTextAreaElement).value.trim();
+
+      if (!name || !email || !msg) return;
+
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = '傳送中…';
+      }
+
+      try {
+        const formData = new FormData();
+        formData.append('entry.57084769', name);
+        formData.append('entry.135399445', email);
+        formData.append('entry.1753446536', msg);
+
+        await fetch(GOOGLE_FORM_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          body: formData,
+        });
+
+        if (statusMsg) {
+          statusMsg.textContent = '✓ 訊息已成功送出！';
+          statusMsg.className = 'footer-status-msg is-success';
+        }
+
+        contactForm.reset();
+
+        setTimeout(() => {
+          if (statusMsg) statusMsg.textContent = '';
+        }, 4000);
+      } catch (err) {
+        if (statusMsg) {
+          statusMsg.textContent = '✕ 傳送失敗，請稍後再試。';
+          statusMsg.className = 'footer-status-msg is-error';
+        }
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = '送出訊息';
+        }
+      }
     });
   }
 </script>
@@ -723,6 +868,83 @@ const { title = 'OviNas 羊之誌 — 網站架設、系統資安與前端工程
   .reveal-ready.revealed {
     opacity: 1;
     transform: translateY(0);
+  }
+
+    /* ✉️ Footer 聯絡表單 (Google Form) */
+  .footer-contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 4px;
+  }
+
+  .footer-form-group {
+    width: 100%;
+  }
+
+  .footer-input {
+    width: 100%;
+    background-color: #ffffff;
+    border: 1px solid #d1d5db;
+    padding: 7px 10px;
+    font-size: 13px;
+    color: #333333;
+    font-family: inherit;
+    box-sizing: border-box;
+    outline: none;
+    border-radius: 0;
+    transition: border-color 0.2s ease;
+  }
+
+  .footer-input:focus {
+    border-color: #ff6b00;
+  }
+
+  .footer-textarea {
+    resize: vertical;
+    min-height: 52px;
+    line-height: 1.4;
+  }
+
+  .footer-submit-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 2px;
+  }
+
+  .footer-submit-btn {
+    background-color: #ff6b00;
+    color: #ffffff;
+    border: none;
+    padding: 6px 18px;
+    font-size: 13px;
+    font-weight: 400;
+    cursor: pointer;
+    border-radius: 0;
+    transition: background-color 0.2s ease;
+  }
+
+  .footer-submit-btn:hover {
+    background-color: #ea580c;
+  }
+
+  .footer-submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .footer-status-msg {
+    font-size: 12px;
+    font-weight: 400;
+  }
+
+  .footer-status-msg.is-success {
+    color: #16a34a;
+  }
+
+  .footer-status-msg.is-error {
+    color: #dc2626;
   }
 
   /* 📜 3. Footer 樣式 (典雅大字號、去粗體、暖橙色底條) */
