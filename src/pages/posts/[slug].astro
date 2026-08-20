@@ -31,9 +31,9 @@ const cat = getCategoryInfo(item.slug);
 <BlogLayout title={`${item.title} ｜ OviNas 羊之誌`} description={item.excerpt}>
   <div class="main-content forsingle">
     <div class="container single-page-area">
-      <!-- 📖 左側主文章區域 (70% 寬度，右側 1px 分隔線) -->
+      <!-- 📖 左側主文章區域 (68% 寬度，右側 1px 分隔線) -->
       <main class="left">
-        <!-- 經典麵包屑導航 (Breadcrumbs: 首頁 > 分類 > 子分類 > 文章標題) -->
+        <!-- 經典麵包屑導航 (Breadcrumbs) -->
         <div class="breadcrumbs">
           <a href="/blog/" class="home">首頁</a>
           <span class="sep">&gt;</span>
@@ -48,7 +48,7 @@ const cat = getCategoryInfo(item.slug);
           <!-- 文章大標題 (h1) -->
           <h1 class="single-post-h1">{item.title}</h1>
 
-          <!-- 經典文章 Meta 資訊欄 (.post-meta: By 作者 · 日期 · 更新時間 · 分類) -->
+          <!-- 文章 Meta 資訊欄 (.post-meta) -->
           <div class="post-meta">
             <div class="post-author">
               By <a href="/vip/">OviNas 站長</a>
@@ -119,56 +119,24 @@ const cat = getCategoryInfo(item.slug);
             ) : <div class="pn-empty"></div>}
           </div>
 
-          <!-- 💬 經典留言板與評論專區 (#comments & #respond) -->
+          <!-- 💬 留言與迴響專區 (#comments & #respond - 純淨真實無假留言) -->
           <div class="comments-area" id="comments">
             <div class="comments-head-row">
               <h3 class="comments-heading">
-                讀者留言與迴響 <span class="comments-count" id="commentCountBadge">(2)</span>
+                讀者迴響 <span class="comments-count" id="commentCountBadge">(0)</span>
               </h3>
             </div>
 
-            <!-- 留言清單 -->
+            <!-- 動態真實留言清單 (預設無假留言，發表後即時儲存於本機) -->
             <div class="commentlist" id="commentList">
-              <div class="comment-body">
-                <div class="comment-avatar">
-                  <div class="avatar-letter">A</div>
-                </div>
-                <div class="comment-content-wrap">
-                  <div class="comment-meta">
-                    <span class="comment-author">Alex Lin</span>
-                    <span class="comment-time">2 天前</span>
-                  </div>
-                  <div class="comment-text">
-                    文章中的架構解析非常到位，步驟與提示都很清楚，幫助很大！
-                  </div>
-                  <div class="reply">
-                    <a href="#respond" class="btn-reply" data-user="Alex Lin">回覆</a>
-                  </div>
-                </div>
-              </div>
-
-              <div class="comment-body is-author">
-                <div class="comment-avatar">
-                  <img src="/sheep-hd.png" alt="OviNas" width="45" height="45" />
-                </div>
-                <div class="comment-content-wrap">
-                  <div class="comment-meta">
-                    <span class="comment-author">OviNas <span class="author-badge">站長</span></span>
-                    <span class="comment-time">1 天前</span>
-                  </div>
-                  <div class="comment-text">
-                    感謝支持！後續還會推出更多系列筆記與實戰工具分享。
-                  </div>
-                  <div class="reply">
-                    <a href="#respond" class="btn-reply" data-user="OviNas">回覆</a>
-                  </div>
-                </div>
+              <div class="no-comment-wrap" id="noCommentNotice">
+                <p class="no-comment-text">目前尚無迴響，歡迎留下你的想法與心得！</p>
               </div>
             </div>
 
-            <!-- 發表留言表單 -->
+            <!-- 發表留言表單 (#respond) -->
             <div class="comment-respond" id="respond">
-              <h3 class="reply-title">發表您的迴響</h3>
+              <h3 class="reply-title">留下迴響</h3>
               <p class="comment-notes">電子郵件地址不會被公開。必填欄位標記為 <span class="required">*</span></p>
 
               <form id="commentForm" class="comment-form">
@@ -198,7 +166,7 @@ const cat = getCategoryInfo(item.slug);
         </article>
       </main>
 
-      <!-- 📌 右側側邊欄 (30% 寬度) -->
+      <!-- 📌 右側側邊欄 (28% 寬度) -->
       <aside class="right sidebar-right">
         <!-- 站長專欄 -->
         <div class="side-author-box">
@@ -240,7 +208,6 @@ const cat = getCategoryInfo(item.slug);
 </BlogLayout>
 
 <style>
-  /* 🌟 單篇文章經典版型樣式 */
   .main-content.forsingle {
     background-color: #ffffff;
     padding: 2rem 0 5rem;
@@ -262,7 +229,6 @@ const cat = getCategoryInfo(item.slug);
     padding-top: 1rem;
   }
 
-  /* 麵包屑導航 (.breadcrumbs) */
   .breadcrumbs {
     font-size: 14px;
     color: #999999;
@@ -289,7 +255,6 @@ const cat = getCategoryInfo(item.slug);
     font-weight: 700;
   }
 
-  /* 文章大標題 (h1) */
   .single-post-h1 {
     font-size: 2rem;
     font-weight: 800;
@@ -299,7 +264,6 @@ const cat = getCategoryInfo(item.slug);
     letter-spacing: 0.5px;
   }
 
-  /* 文章 Meta 資訊列 (.post-meta) */
   .post-meta {
     display: flex;
     flex-wrap: wrap;
@@ -338,7 +302,6 @@ const cat = getCategoryInfo(item.slug);
     color: #dddddd;
   }
 
-  /* 16:9 主圖 */
   .single-hero-img-wrap {
     margin-bottom: 2rem;
   }
@@ -371,7 +334,6 @@ const cat = getCategoryInfo(item.slug);
     margin: 0;
   }
 
-  /* 📑 內容索引 (#toc_container) */
   #toc_container {
     background-color: #f9f9f9;
     border: 1px solid #e7e7e7;
@@ -409,7 +371,6 @@ const cat = getCategoryInfo(item.slug);
     text-decoration: underline;
   }
 
-  /* 📖 文章內文排版美學 (.post-content) */
   .post-content {
     font-size: 16px;
     line-height: 2em;
@@ -481,7 +442,6 @@ const cat = getCategoryInfo(item.slug);
     color: #444444;
   }
 
-  /* 底部作者專欄 (.side-author-box) */
   .post-footer-author {
     text-align: center;
     border: 1px solid #e7e7e7;
@@ -530,7 +490,6 @@ const cat = getCategoryInfo(item.slug);
     margin: 0;
   }
 
-  /* 前後文章導航 (.prev-next-article) */
   .prev-next-article {
     display: flex;
     justify-content: space-between;
@@ -595,7 +554,21 @@ const cat = getCategoryInfo(item.slug);
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    margin-bottom: 2.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .no-comment-wrap {
+    background-color: #fafafa;
+    border: 1px dashed #dcdcdc;
+    padding: 1.5rem;
+    text-align: center;
+    border-radius: 4px;
+  }
+
+  .no-comment-text {
+    color: #888888;
+    font-size: 0.92rem;
+    margin: 0;
   }
 
   .comment-body {
@@ -604,11 +577,6 @@ const cat = getCategoryInfo(item.slug);
     background: #fdfdfd;
     border: 1px solid #e8e8e8;
     padding: 1.2rem;
-  }
-
-  .comment-body.is-author {
-    background: #f0f7ff;
-    border-left: 4px solid #0062eb;
   }
 
   .comment-avatar {
@@ -644,14 +612,6 @@ const cat = getCategoryInfo(item.slug);
     color: #111111;
   }
 
-  .author-badge {
-    background: #0062eb;
-    color: #ffffff;
-    font-size: 0.72rem;
-    padding: 1px 6px;
-    border-radius: 3px;
-  }
-
   .comment-time {
     font-size: 0.76rem;
     color: #999999;
@@ -665,20 +625,6 @@ const cat = getCategoryInfo(item.slug);
     margin-bottom: 0.5rem;
   }
 
-  .btn-reply {
-    color: #0062eb;
-    font-size: 0.8rem;
-    font-weight: 700;
-    text-decoration: none;
-    cursor: pointer;
-  }
-
-  .btn-reply:hover {
-    color: #ff6488;
-    text-decoration: underline;
-  }
-
-  /* 表單 */
   .comment-respond {
     background: #f9f9f9;
     border: 1px solid #e7e7e7;
@@ -762,7 +708,6 @@ const cat = getCategoryInfo(item.slug);
     margin-left: 1rem;
   }
 
-  /* 側邊欄 */
   .side-btn-wrap {
     margin-top: 1rem;
   }
@@ -931,26 +876,51 @@ const cat = getCategoryInfo(item.slug);
     }
   }
 
-  // 2. 互動式留言板
+  // 2. 乾淨真實留言機制 (支援本地真實即時留言)
   const commentForm = document.getElementById('commentForm') as HTMLFormElement;
   const commentList = document.getElementById('commentList');
+  const noCommentNotice = document.getElementById('noCommentNotice');
   const feedback = document.getElementById('feedbackMsg');
   const countBadge = document.getElementById('commentCountBadge');
 
-  document.querySelectorAll('.btn-reply').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.preventDefault();
-      const user = btn.getAttribute('data-user');
-      const textarea = document.getElementById('commentContent') as HTMLTextAreaElement;
-      if (textarea && user) {
-        textarea.value = `@${user} `;
-        textarea.focus();
-        document.getElementById('respond')?.scrollIntoView({ behavior: 'smooth' });
+  const storageKey = `comments_${window.location.pathname}`;
+
+  function loadComments() {
+    try {
+      const raw = localStorage.getItem(storageKey);
+      if (!raw) return;
+      const items = JSON.parse(raw);
+      if (Array.isArray(items) && items.length > 0 && commentList) {
+        if (noCommentNotice) noCommentNotice.style.display = 'none';
+        items.forEach(c => {
+          renderComment(c.author, c.content, c.time);
+        });
+        if (countBadge) countBadge.textContent = `(${items.length})`;
       }
-    });
-  });
+    } catch (err) {}
+  }
+
+  function renderComment(author: string, content: string, time: string) {
+    const newComment = document.createElement('div');
+    newComment.className = 'comment-body';
+    newComment.innerHTML = `
+      <div class="comment-avatar">
+        <div class="avatar-letter">${author.charAt(0).toUpperCase()}</div>
+      </div>
+      <div class="comment-content-wrap">
+        <div class="comment-meta">
+          <span class="comment-author">${author}</span>
+          <span class="comment-time">${time}</span>
+        </div>
+        <div class="comment-text">${content}</div>
+      </div>
+    `;
+    commentList?.appendChild(newComment);
+  }
 
   if (commentForm && commentList) {
+    loadComments();
+
     commentForm.addEventListener('submit', (e) => {
       e.preventDefault();
       const author = (document.getElementById('authorName') as HTMLInputElement).value.trim();
@@ -958,22 +928,19 @@ const cat = getCategoryInfo(item.slug);
 
       if (!author || !content) return;
 
-      const newComment = document.createElement('div');
-      newComment.className = 'comment-body';
-      newComment.innerHTML = `
-        <div class="comment-avatar">
-          <div class="avatar-letter">${author.charAt(0).toUpperCase()}</div>
-        </div>
-        <div class="comment-content-wrap">
-          <div class="comment-meta">
-            <span class="comment-author">${author}</span>
-            <span class="comment-time">剛剛</span>
-          </div>
-          <div class="comment-text">${content}</div>
-        </div>
-      `;
+      if (noCommentNotice) noCommentNotice.style.display = 'none';
 
-      commentList.appendChild(newComment);
+      renderComment(author, content, '剛剛');
+
+      // 存入 localStorage
+      try {
+        const raw = localStorage.getItem(storageKey) || '[]';
+        const items = JSON.parse(raw);
+        items.push({ author, content, time: '剛剛' });
+        localStorage.setItem(storageKey, JSON.stringify(items));
+        if (countBadge) countBadge.textContent = `(${items.length})`;
+      } catch (err) {}
+
       (document.getElementById('commentContent') as HTMLTextAreaElement).value = '';
 
       if (feedback) {
@@ -981,11 +948,6 @@ const cat = getCategoryInfo(item.slug);
         feedback.style.display = 'inline-block';
         setTimeout(() => { feedback.style.display = 'none'; }, 3000);
       }
-
-      const total = commentList.querySelectorAll('.comment-body').length;
-      if (countBadge) countBadge.textContent = `(${total})`;
-
-      newComment.scrollIntoView({ behavior: 'smooth' });
     });
   }
 </script>
