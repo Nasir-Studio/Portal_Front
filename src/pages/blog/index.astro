@@ -80,7 +80,7 @@ function getPostCategory(post: typeof posts[0]) {
         <div class="left">
           <h3>OviNas 羊之誌</h3>
           <h2>網站架設、系統資安、前端工程</h2>
-          <a href="/posts/">查看全部文章</a>
+          <a href="/blog/posts/">查看全部文章</a>
         </div>
         <div class="right">
           <div class="slider-wrap-header">
@@ -90,7 +90,7 @@ function getPostCategory(post: typeof posts[0]) {
                 <div class="bgs bgs2"></div>
                 <div class="bgs bgs3"></div>
                 <div class="bgs bgs4"></div>
-                <a class="bgs bgs5 hero-featured-link" href={`/posts/${featuredPost.slug}/`}>
+                <a class="bgs bgs5 hero-featured-link" href={`/blog/posts/${featuredPost.slug}/`}>
                   <div class="featured-img-container">
                     <img src={`/banners/${featuredPost.slug}.jpg`} alt={featuredPost.title} class="featured-main-img" />
                     <div class="slogan">
@@ -110,7 +110,7 @@ function getPostCategory(post: typeof posts[0]) {
           <!-- 「技術文章」標題條 (.post-area-head) -->
           <div class="post-area-head">
             <h2 class="post-area-title">技術文章</h2>
-            <a href="/posts/" class="cat-read-all">查看全部文章</a>
+            <a href="/blog/posts/" class="cat-read-all">查看全部文章</a>
           </div>
 
           <!-- 2 欄式文章網格 (.post-list.col2) -->
@@ -125,7 +125,7 @@ function getPostCategory(post: typeof posts[0]) {
                     <div class="bgs bgs2"></div>
                     <div class="bgs bgs3"></div>
                     <div class="bgs bgs4"></div>
-                    <a class="bgs bgs5 card-thumb-link" href={`/posts/${post.slug}/`}>
+                    <a class="bgs bgs5 card-thumb-link" href={`/blog/posts/${post.slug}/`}>
                       <div class="card-img-box">
                         <img src={`/banners/${post.slug}.jpg`} alt={post.title} class="card-img" loading="lazy" />
                       </div>
@@ -134,19 +134,19 @@ function getPostCategory(post: typeof posts[0]) {
 
                   <!-- 分類標籤 -->
                   <ul class="post-categories">
-                    <li><a href="/posts/">{cat.name}</a></li>
+                    <li><a href="/blog/posts/">{cat.name}</a></li>
                   </ul>
 
                   <!-- 文章標題 -->
                   <h3 class="post-title">
-                    <a href={`/posts/${post.slug}/`}>{post.title}</a>
+                    <a href={`/blog/posts/${post.slug}/`}>{post.title}</a>
                   </h3>
 
                   <!-- 摘要 -->
                   <p class="post-excerpt">{post.excerpt}</p>
 
                   <!-- 閱讀更多按鈕 -->
-                  <a href={`/posts/${post.slug}/`} class="read-more">閱讀更多</a>
+                  <a href={`/blog/posts/${post.slug}/`} class="read-more">閱讀更多</a>
                 </article>
               );
             })}
@@ -176,13 +176,13 @@ function getPostCategory(post: typeof posts[0]) {
             <ul class="wpp-list">
               {allPosts.slice(0, 5).map((p, idx) => (
                 <li class="wpp-item">
-                  <a href={`/posts/${p.slug}/`} class="wpp-thumb-link">
+                  <a href={`/blog/posts/${p.slug}/`} class="wpp-thumb-link">
                     <div class="wpp-thumbnail-box">
                       <img src={`/banners/${p.slug}.jpg`} alt={p.title} class="wpp-thumb-img" />
                     </div>
                   </a>
                   <div class="wpp-details">
-                    <a href={`/posts/${p.slug}/`} class="wpp-post-title">
+                    <a href={`/blog/posts/${p.slug}/`} class="wpp-post-title">
                       {p.title}
                     </a>
                     <span class="wpp-meta">{p.date}</span>
@@ -212,21 +212,21 @@ function getPostCategory(post: typeof posts[0]) {
               <article class="recommend-col-card">
                 <div class="onebox">
                   <ul class="post-categories">
-                    <li><a href="/posts/">{cat.name}</a></li>
+                    <li><a href="/blog/posts/">{cat.name}</a></li>
                   </ul>
                   <div class="img-wrap">
                     <div class="bgs bgs1"></div>
                     <div class="bgs bgs2"></div>
                     <div class="bgs bgs3"></div>
                     <div class="bgs bgs4"></div>
-                    <a class="bgs bgs5 recommend-thumb-link" href={`/posts/${post.slug}/`}>
+                    <a class="bgs bgs5 recommend-thumb-link" href={`/blog/posts/${post.slug}/`}>
                       <div class="recommend-img-box">
                         <img src={`/banners/${post.slug}.jpg`} alt={post.title} class="recommend-img" loading="lazy" />
                       </div>
                     </a>
                   </div>
                   <h3 class="post-title">
-                    <a href={`/posts/${post.slug}/`}>{post.title}</a>
+                    <a href={`/blog/posts/${post.slug}/`}>{post.title}</a>
                   </h3>
                 </div>
               </article>
@@ -264,7 +264,7 @@ function getPostCategory(post: typeof posts[0]) {
                       <div class="bgs bgs2"></div>
                       <div class="bgs bgs3"></div>
                       <div class="bgs bgs4"></div>
-                      <a class="bgs bgs5" href={`/posts/${cat.posts[0].slug}/`}>
+                      <a class="bgs bgs5" href={`/blog/posts/${cat.posts[0].slug}/`}>
                         <img src={`/banners/${cat.posts[0].slug}.jpg`} alt={cat.posts[0].title} class="topic-cover-img" />
                       </a>
                     </div>
@@ -279,7 +279,7 @@ function getPostCategory(post: typeof posts[0]) {
                       <div class="bgs bgs2"></div>
                       <div class="bgs bgs3"></div>
                       <div class="bgs bgs4"></div>
-                      <a class="bgs bgs5" href={`/posts/${subPost.slug}/`}>
+                      <a class="bgs bgs5" href={`/blog/posts/${subPost.slug}/`}>
                         <img src={`/banners/${subPost.slug}.jpg`} alt={subPost.title} class="topic-cover-img" />
                       </a>
                     </div>
@@ -292,7 +292,7 @@ function getPostCategory(post: typeof posts[0]) {
                 <ul>
                   {cat.listPosts.map((item) => (
                     <li>
-                      <a href={`/posts/${item.slug}/`}>{item.title}</a>
+                      <a href={`/blog/posts/${item.slug}/`}>{item.title}</a>
                     </li>
                   ))}
                 </ul>

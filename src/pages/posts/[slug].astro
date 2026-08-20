@@ -37,9 +37,9 @@ const cat = getCategoryInfo(item.slug);
         <div class="breadcrumbs">
           <a href="/blog/" class="home">首頁</a>
           <span class="sep">&gt;</span>
-          <a href="/posts/" class="taxonomy-cat">{cat.parent}</a>
+          <a href="/blog/posts/" class="taxonomy-cat">{cat.parent}</a>
           <span class="sep">&gt;</span>
-          <a href="/posts/" class="taxonomy-subcat">{cat.name}</a>
+          <a href="/blog/posts/" class="taxonomy-subcat">{cat.name}</a>
           <span class="sep">&gt;</span>
           <span class="current-post-name">{item.title}</span>
         </div>
@@ -61,7 +61,7 @@ const cat = getCategoryInfo(item.slug);
             </div>
             <div class="meta-divider">|</div>
             <ul class="post-categories">
-              <li><a href="/posts/">{cat.name}</a></li>
+              <li><a href="/blog/posts/">{cat.name}</a></li>
             </ul>
           </div>
 
@@ -102,14 +102,14 @@ const cat = getCategoryInfo(item.slug);
           <!-- 上一篇 / 下一篇導航 (prev-next-article) -->
           <div class="prev-next-article">
             {prevPost ? (
-              <a href={`/posts/${prevPost.slug}/`} class="pn-item prev">
+              <a href={`/blog/posts/${prevPost.slug}/`} class="pn-item prev">
                 <span class="pn-dir">« 上一篇文章</span>
                 <span class="pn-text">{prevPost.title}</span>
               </a>
             ) : <div class="pn-empty"></div>}
 
             {nextPost ? (
-              <a href={`/posts/${nextPost.slug}/`} class="pn-item next">
+              <a href={`/blog/posts/${nextPost.slug}/`} class="pn-item next">
                 <span class="pn-dir">下一篇文章 »</span>
                 <span class="pn-text">{nextPost.title}</span>
               </a>
@@ -138,13 +138,13 @@ const cat = getCategoryInfo(item.slug);
           <ul class="wpp-list">
             {posts.slice(0, 5).map((p, idx) => (
               <li class="wpp-item">
-                <a href={`/posts/${p.slug}/`} class="wpp-thumb-link">
+                <a href={`/blog/posts/${p.slug}/`} class="wpp-thumb-link">
                   <div class="wpp-thumbnail-box">
                     <img src={`/banners/${p.slug}.jpg`} alt={p.title} class="wpp-thumb-img" />
                   </div>
                 </a>
                 <div class="wpp-details">
-                  <a href={`/posts/${p.slug}/`} class="wpp-post-title">
+                  <a href={`/blog/posts/${p.slug}/`} class="wpp-post-title">
                     {p.title}
                   </a>
                   <span class="wpp-meta">{p.date}</span>
@@ -341,6 +341,20 @@ const cat = getCategoryInfo(item.slug);
     color: #222222;
     margin: 2em 0 0.8em;
     line-height: 1.35;
+  }
+
+  
+  /* 🖼️ 文章內文圖片限制與自媒體優化 */
+  .post-content img {
+    max-width: 100%;
+    max-height: 520px;
+    width: auto;
+    height: auto;
+    display: block;
+    margin: 2rem auto;
+    border-radius: 4px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    object-fit: contain;
   }
 
   .post-content p {
