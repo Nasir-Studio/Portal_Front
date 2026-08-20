@@ -261,7 +261,7 @@
   }
 
   .contact-header {
-    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    background-color: #10b981;
     color: #ffffff;
     padding: 12px 14px;
     display: flex;
