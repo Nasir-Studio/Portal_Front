@@ -368,21 +368,23 @@ const posts: Post[] = [
     title: '【文章】Front End Design ( 好看的推薦）',
     excerpt: '看到好看的設計前端就要收藏起來',
     content: `
+      <div class="note-box" style="background: #fff7ed; border-left: 4px solid #ff6b00; padding: 1.2rem; margin-bottom: 1.8rem; border-radius: 4px;">
+        <h4 style="margin: 0 0 0.5rem; color: #c2410c; font-size: 15px; font-weight: 500;">📌 內容整合公告</h4>
+        <p style="margin: 0; color: #431407; font-size: 13.5px; line-height: 1.6;">
+          本篇前端設計與動效靈感資源已全面擴充並整合至完整大補帖：
+          <a href="/blog/posts/github-open-source-tools/" style="color: #ff6b00; font-weight: 600; text-decoration: underline;">【文章】學期結束後，收獲的 github 開源工具與精選實戰資源庫</a>，歡迎前往探索更多精選神器！
+        </p>
+      </div>
       <p class="post-intro">
         看到好看的設計前端就要收藏起來：
       </p>
       <ul>
-        <li>Design Prompts <a href="https://www.designprompts.dev/" target="_blank" rel="noopener noreferrer">https://www.designprompts.dev/</a></li>
-        <li>21st.dev Sign-in 元件 <a href="https://21st.dev/community/components/s/sign-in" target="_blank" rel="noopener noreferrer">https://21st.dev/community/components/s/sign-in</a></li>
-        <li>Web Design Clip <a href="https://webdesignclip.com/" target="_blank" rel="noopener noreferrer">https://webdesignclip.com/</a></li>
-        <li>Awwwards 精選：圖片與幻燈片 <a href="https://www.awwwards.com/awwwards/collections/image-gallery-and-slideshows/" target="_blank" rel="noopener noreferrer">https://www.awwwards.com/awwwards/collections/image-gallery-and-slideshows/</a></li>
-        <li>Awwwards 精選：載入頁面 <a href="https://www.awwwards.com/awwwards/collections/loading-page/" target="_blank" rel="noopener noreferrer">https://www.awwwards.com/awwwards/collections/loading-page/</a></li>
-        <li>Awwwards 精選：Hover、游標與可愛互動 <a href="https://www.awwwards.com/awwwards/collections/hovers-cursors-and-cute-interactions/" target="_blank" rel="noopener noreferrer">https://www.awwwards.com/awwwards/collections/hovers-cursors-and-cute-interactions/</a></li>
-        <li>Awwwards 精選：選單 <a href="https://www.awwwards.com/awwwards/collections/menu/" target="_blank" rel="noopener noreferrer">https://www.awwwards.com/awwwards/collections/menu/</a></li>
-        <li>Awwwards <a href="https://www.awwwards.com/" target="_blank" rel="noopener noreferrer">https://www.awwwards.com/</a></li>
-        <li>Best Website Gallery <a href="https://bestwebsite.gallery/" target="_blank" rel="noopener noreferrer">https://bestwebsite.gallery/</a></li>
+        <li><strong>Design Prompts</strong>：設計提示詞與構想庫 <a href="https://www.designprompts.dev/" target="_blank" rel="noopener noreferrer">https://www.designprompts.dev/</a></li>
+        <li><strong>21st.dev Sign-in 元件</strong>：現代極簡登入介面 <a href="https://21st.dev/community/components/s/sign-in" target="_blank" rel="noopener noreferrer">https://21st.dev/community/components/s/sign-in</a></li>
+        <li><strong>Web Design Clip</strong>：日本高質感網站設計剪貼簿 <a href="https://webdesignclip.com/" target="_blank" rel="noopener noreferrer">https://webdesignclip.com/</a></li>
+        <li><strong>Awwwards 精選 Slideshow 動效</strong>：結合 GSAP 的流體幻燈片效果 <a href="https://www.awwwards.com/inspiration/slideshow-gsap-codegrid" target="_blank" rel="noopener noreferrer">https://www.awwwards.com/inspiration/slideshow-gsap-codegrid</a></li>
       </ul>
-    `,
+`,
   },
   {
     slug: 'proxy-list-tools',
@@ -391,16 +393,23 @@ const posts: Post[] = [
     title: '【文章】Proxy List & Tools 推薦',
     excerpt: '前一陣子在找代理，我的好朋朋364同學大力推薦這些，我還沒來得及研究，等研究完再來寫一篇文章好了！',
     content: `
+      <div class="note-box" style="background: #fff7ed; border-left: 4px solid #ff6b00; padding: 1.2rem; margin-bottom: 1.8rem; border-radius: 4px;">
+        <h4 style="margin: 0 0 0.5rem; color: #c2410c; font-size: 15px; font-weight: 500;">📌 內容整合公告</h4>
+        <p style="margin: 0; color: #431407; font-size: 13.5px; line-height: 1.6;">
+          本篇代理伺服器與指紋環境清單已全面整合至完整大補帖：
+          <a href="/blog/posts/github-open-source-tools/" style="color: #ff6b00; font-weight: 600; text-decoration: underline;">【文章】學期結束後，收獲的 github 開源工具與精選實戰資源庫</a>！
+        </p>
+      </div>
       <p class="post-intro">
-        前一陣子在找代理，我的好朋朋 364 同學大力推薦這些，我還沒來得及研究，等研究完再來寫一篇文章好了！
+        前一陣子在找代理，我的好朋朋 364 同學大力推薦這些，包含優質代理與指紋瀏覽器環境：
       </p>
       <ul>
-        <li>Proxy Seller <a href="https://proxy-seller.com/zh/" target="_blank" rel="noopener noreferrer">https://proxy-seller.com/zh/</a></li>
-        <li>Decodo <a href="https://decodo.com/#gref" target="_blank" rel="noopener noreferrer">https://decodo.com/#gref</a></li>
-        <li>Lumi Proxy <a href="https://www.lumiproxy.com/zh-hant/" target="_blank" rel="noopener noreferrer">https://www.lumiproxy.com/zh-hant/</a></li>
-        <li>AdsPower <a href="https://www.adspower.com/tc/" target="_blank" rel="noopener noreferrer">https://www.adspower.com/tc/</a></li>
+        <li><strong>Proxy Seller</strong>：專屬 IPv4/IPv6 與住宅代理 <a href="https://proxy-seller.com/zh/" target="_blank" rel="noopener noreferrer">https://proxy-seller.com/zh/</a></li>
+        <li><strong>Decodo</strong>：智慧代理與數據採集工具 <a href="https://decodo.com/#gref" target="_blank" rel="noopener noreferrer">https://decodo.com/#gref</a></li>
+        <li><strong>Lumi Proxy</strong>：全球高可用動態住宅代理 <a href="https://www.lumiproxy.com/zh-hant/" target="_blank" rel="noopener noreferrer">https://www.lumiproxy.com/zh-hant/</a></li>
+        <li><strong>AdsPower</strong>：多環境防關聯指紋瀏覽器 <a href="https://www.adspower.com/tc/" target="_blank" rel="noopener noreferrer">https://www.adspower.com/tc/</a></li>
       </ul>
-    `,
+`,
   },
   {
     slug: 'ntub-credit-program',
@@ -453,14 +462,21 @@ const posts: Post[] = [
     title: '【文章】新找到的玩意兒：利用 Win10 重新復刻 WinXP',
     excerpt: '我相信很多人是從 XP 時代過來的，我自己也是，我真的很常懷念 XP 的時代…',
     content: `
+      <div class="note-box" style="background: #fff7ed; border-left: 4px solid #ff6b00; padding: 1.2rem; margin-bottom: 1.8rem; border-radius: 4px;">
+        <h4 style="margin: 0 0 0.5rem; color: #c2410c; font-size: 15px; font-weight: 500;">📌 內容整合公告</h4>
+        <p style="margin: 0; color: #431407; font-size: 13.5px; line-height: 1.6;">
+          本篇 WinXP 復刻專案已整合至完整開源神器清單：
+          <a href="/blog/posts/github-open-source-tools/" style="color: #ff6b00; font-weight: 600; text-decoration: underline;">【文章】學期結束後，收獲的 github 開源工具與精選實戰資源庫</a>！
+        </p>
+      </div>
       <p>
         我相信很多人是從 XP 時代過來的，我自己也是，我真的很常懷念 XP 的時代，那個工具查找什麼的真的很方便，就是用習慣後，用 Win10（Win7 我也覺得很好用）Win11 就會覺得不習慣！前幾天找到一位國外大佬開發的利用 Win10 的核心改了主題等，變成 XP 的樣式，真的超有趣，我決定找時間來玩玩看！
       </p>
       <p>
-        連結如下
-        <a href="https://archive.org/details/windows-experience-freestyle/Freestyle%20Test%201-2023-02-11-10-55-14.png" target="_blank" rel="noopener noreferrer">https://archive.org/details/windows-experience-freestyle</a>
+        專案與映像檔載點：
+        <a href="https://archive.org/details/windows-experience-freestyle" target="_blank" rel="noopener noreferrer">https://archive.org/details/windows-experience-freestyle</a>
       </p>
-    `,
+`,
   },
   {
     slug: 'github-open-source-tools',
@@ -470,60 +486,91 @@ const posts: Post[] = [
     excerpt: '暑假即將開始了，同時這兩個學期也收獲很多，總結了一些有趣的工具，打算暑假來好好的研究一下！',
     content: `
       <p class="post-intro">
-        暑假即將開始了，同時這兩個學期也收獲很多，無論是跟好朋友一起討論還是說從 AI、IG 上面的人進行分享，總結了一些有趣的工具，打算暑假來好好的研究一下！
+        暑假即將開始了，同時這兩個學期也收獲很多！無論是跟好朋友一起討論、從 AI 獲取靈感，還是 IG、社群大佬們的精彩分享，我把這段時間蒐集到的高價值開源工具、前端設計靈感、網路代理與極客玩具做了一個完整的大整合與系統化分類，方便自己隨時查閱，也分享給有需要的朋友們一起研究！
       </p>
       <p>
-        這學期特別喜歡 Astro 框架，一方面他是一個全端的框架，另一個方面是他是蠻輕量的，也可以顧及安全！
+        這學期特別喜歡 Astro 框架，一方面他是一個全端的現代架構，另一方面非常輕量極速，也能兼顧安全性與極佳的自定義能力！
       </p>
-      <p>廢話不多說，我來把我的筆記貼上，暑假或是之後來好好摸索：</p>
+
       <h2>1. AI Agent 擴充、Skill 與 API</h2>
-      <p>我找到這些 Github 專案都是 AI Agent 或是 Skill（大部分呢可用於 Opencode）</p>
+      <p>這裡蒐集了許多實用的 AI Agent 擴充、Skill 腳本與 API 整合專案（大部分可用於 Opencode 或各類自動化工作流）：</p>
       <ul>
-        <li>caveman <a href="https://github.com/JuliusBrussee/caveman" target="_blank" rel="noopener noreferrer">https://github.com/JuliusBrussee/caveman</a></li>
-        <li>taste-skill <a href="https://github.com/Leonxlnx/taste-skill" target="_blank" rel="noopener noreferrer">https://github.com/Leonxlnx/taste-skill</a></li>
-        <li>OmniRoute <a href="https://github.com/diegosouzapw/OmniRoute" target="_blank" rel="noopener noreferrer">https://github.com/diegosouzapw/OmniRoute</a></li>
-        <li>graphiti <a href="https://github.com/getzep/graphiti" target="_blank" rel="noopener noreferrer">https://github.com/getzep/graphiti</a></li>
-        <li>deer-flow <a href="https://github.com/bytedance/deer-flow" target="_blank" rel="noopener noreferrer">https://github.com/bytedance/deer-flow</a></li>
-        <li>kilocode <a href="https://github.com/Kilo-Org/kilocode" target="_blank" rel="noopener noreferrer">https://github.com/Kilo-Org/kilocode</a></li>
-        <li>codeg <a href="https://github.com/xintaofei/codeg" target="_blank" rel="noopener noreferrer">https://github.com/xintaofei/codeg</a></li>
-        <li>Wegent <a href="https://github.com/wecode-ai/Wegent" target="_blank" rel="noopener noreferrer">https://github.com/wecode-ai/Wegent</a></li>
-        <li>oh-my-opencode <a href="https://github.com/opensoft/oh-my-opencode" target="_blank" rel="noopener noreferrer">https://github.com/opensoft/oh-my-opencode</a></li>
-        <li>notebooklm-skill <a href="https://github.com/claude-world/notebooklm-skill" target="_blank" rel="noopener noreferrer">https://github.com/claude-world/notebooklm-skill</a></li>
+        <li><strong>caveman</strong>：極簡純粹的 AI Agent 執行環境 <a href="https://github.com/JuliusBrussee/caveman" target="_blank" rel="noopener noreferrer">https://github.com/JuliusBrussee/caveman</a></li>
+        <li><strong>taste-skill</strong>：高品味 UI/UX 與代碼審查技能包 <a href="https://github.com/Leonxlnx/taste-skill" target="_blank" rel="noopener noreferrer">https://github.com/Leonxlnx/taste-skill</a></li>
+        <li><strong>OmniRoute</strong>：多模型與多端點智能路由分發器 <a href="https://github.com/diegosouzapw/OmniRoute" target="_blank" rel="noopener noreferrer">https://github.com/diegosouzapw/OmniRoute</a></li>
+        <li><strong>graphiti</strong>：為 AI Agent 構建時間感知動態知識圖譜 <a href="https://github.com/getzep/graphiti" target="_blank" rel="noopener noreferrer">https://github.com/getzep/graphiti</a></li>
+        <li><strong>deer-flow</strong>：字節跳動開源的輕量工作流引擎 <a href="https://github.com/bytedance/deer-flow" target="_blank" rel="noopener noreferrer">https://github.com/bytedance/deer-flow</a></li>
+        <li><strong>kilocode</strong>：現代化代碼生成與重構輔助工具 <a href="https://github.com/Kilo-Org/kilocode" target="_blank" rel="noopener noreferrer">https://github.com/Kilo-Org/kilocode</a></li>
+        <li><strong>codeg</strong>：命令列極速代碼產生器 <a href="https://github.com/xintaofei/codeg" target="_blank" rel="noopener noreferrer">https://github.com/xintaofei/codeg</a></li>
+        <li><strong>Wegent</strong>：協同式多 Agent 團隊開發框架 <a href="https://github.com/wecode-ai/Wegent" target="_blank" rel="noopener noreferrer">https://github.com/wecode-ai/Wegent</a></li>
+        <li><strong>oh-my-opencode</strong>：開箱即用的 Opencode 增強擴充套件庫 <a href="https://github.com/opensoft/oh-my-opencode" target="_blank" rel="noopener noreferrer">https://github.com/opensoft/oh-my-opencode</a></li>
+        <li><strong>notebooklm-skill</strong>：整合 Google NotebookLM 知識萃取能力的專屬技能 <a href="https://github.com/claude-world/notebooklm-skill" target="_blank" rel="noopener noreferrer">https://github.com/claude-world/notebooklm-skill</a></li>
       </ul>
-      <h2>2. 前端模板、使用者 Dashboard 模板跟與後台 Dashboard</h2>
-      <p>蠻多都是 Astro 模板、Bootstrap/Vue 後台管理介面，以及個人 Profile 的模板。</p>
+
+      <h2>2. 前端 UI/UX 設計、現代元件與動效靈感資源</h2>
+      <p>看到令人驚艷的前端設計與動效元件就要立刻收藏！以下整理了涵蓋現代登入介面、設計提示詞與高階動效庫的精選網站：</p>
       <ul>
-        <li>DataNova <a href="https://github.com/mearashadowfax/DataNova" target="_blank" rel="noopener noreferrer">https://github.com/mearashadowfax/DataNova</a></li>
-        <li>astro-shopify <a href="https://github.com/thomasKn/astro-shopify" target="_blank" rel="noopener noreferrer">https://github.com/thomasKn/astro-shopify</a></li>
-        <li>mizu-light-astro-theme <a href="https://github.com/oxygenna-themes/mizu-light-astro-theme" target="_blank" rel="noopener noreferrer">https://github.com/oxygenna-themes/mizu-light-astro-theme</a></li>
-        <li>astrosaas <a href="https://github.com/michael-andreuzza/astrosaas" target="_blank" rel="noopener noreferrer">https://github.com/michael-andreuzza/astrosaas</a></li>
-        <li>hub-itsteddydev <a href="https://github.com/tedevs0/hub-itsteddydev" target="_blank" rel="noopener noreferrer">https://github.com/tedevs0/hub-itsteddydev</a></li>
-        <li>bootstrap-admin-template <a href="https://github.com/asterodigital/bootstrap-admin-template" target="_blank" rel="noopener noreferrer">https://github.com/asterodigital/bootstrap-admin-template</a></li>
-        <li>soft-ui-dashboard <a href="https://github.com/creativetimofficial/soft-ui-dashboard" target="_blank" rel="noopener noreferrer">https://github.com/creativetimofficial/soft-ui-dashboard</a></li>
-        <li>adminkit <a href="https://github.com/adminkit/adminkit" target="_blank" rel="noopener noreferrer">https://github.com/adminkit/adminkit</a></li>
-        <li>coreui-free-bootstrap-admin-template <a href="https://github.com/coreui/coreui-free-bootstrap-admin-template" target="_blank" rel="noopener noreferrer">https://github.com/coreui/coreui-free-bootstrap-admin-template</a></li>
-        <li>simpleui <a href="https://github.com/newpanjing/simpleui" target="_blank" rel="noopener noreferrer">https://github.com/newpanjing/simpleui</a></li>
-        <li>front10 <a href="https://github.com/ntub-rental-passport/front10" target="_blank" rel="noopener noreferrer">https://github.com/ntub-rental-passport/front10</a></li>
-        <li>dashboard（Kubernetes 通用 Web UI）<a href="https://github.com/kubernetes-retired/dashboard" target="_blank" rel="noopener noreferrer">https://github.com/kubernetes-retired/dashboard</a></li>
-        <li>meijiasha.github.io（世新資傳 LINE BOT 作品展示）<a href="https://github.com/meijiasha/meijiasha.github.io" target="_blank" rel="noopener noreferrer">https://github.com/meijiasha/meijiasha.github.io</a></li>
+        <li><strong>Design Prompts</strong>：高質感設計提示詞與介面構想庫 <a href="https://www.designprompts.dev/" target="_blank" rel="noopener noreferrer">https://www.designprompts.dev/</a></li>
+        <li><strong>21st.dev Sign-in Components</strong>：現代極簡風格的精選登入/註冊元件庫 <a href="https://21st.dev/community/components/s/sign-in" target="_blank" rel="noopener noreferrer">https://21st.dev/community/components/s/sign-in</a></li>
+        <li><strong>Web Design Clip</strong>：日本精選高質感網站設計作品收集剪貼簿 <a href="https://webdesignclip.com/" target="_blank" rel="noopener noreferrer">https://webdesignclip.com/</a></li>
+        <li><strong>Awwwards 精選 Slideshow 效果</strong>：結合 GSAP 的頂級網頁幻燈片流體動畫 <a href="https://www.awwwards.com/inspiration/slideshow-gsap-codegrid" target="_blank" rel="noopener noreferrer">https://www.awwwards.com/inspiration/slideshow-gsap-codegrid</a></li>
+        <li><strong>GSAP (GreenSock)</strong>：Apple 官網級頂級絲滑網頁動畫 JavaScript 函式庫 <a href="https://github.com/greensock/GSAP" target="_blank" rel="noopener noreferrer">https://github.com/greensock/GSAP</a></li>
       </ul>
-      <h2>3. LeetCode 學習</h2>
-      <p>專注於 LeetCode 刷題資源與演算法解析。</p>
+
+      <h2>3. 現代前端模板、Dashboard 與後台介面</h2>
+      <p>包含 Astro 極速模板、Vue/Bootstrap 後台管理介面以及個人 Profile 專屬主題：</p>
       <ul>
-        <li>Leetcode-Solution-All <a href="https://github.com/fuxuemingzhu/Leetcode-Solution-All" target="_blank" rel="noopener noreferrer">https://github.com/fuxuemingzhu/Leetcode-Solution-All</a></li>
-        <li>LeetCodeJourney <a href="https://github.com/TheExplainthis/LeetCodeJourney" target="_blank" rel="noopener noreferrer">https://github.com/TheExplainthis/LeetCodeJourney</a></li>
+        <li><strong>DataNova</strong>：現代數據視覺化與儀表板模板 <a href="https://github.com/mearashadowfax/DataNova" target="_blank" rel="noopener noreferrer">https://github.com/mearashadowfax/DataNova</a></li>
+        <li><strong>astro-shopify</strong>：結合 Astro 與 Shopify 的超極速電商前端架構 <a href="https://github.com/thomasKn/astro-shopify" target="_blank" rel="noopener noreferrer">https://github.com/thomasKn/astro-shopify</a></li>
+        <li><strong>mizu-light-astro-theme</strong>：清爽簡約的 Astro 輕量級部落格主題 <a href="https://github.com/oxygenna-themes/mizu-light-astro-theme" target="_blank" rel="noopener noreferrer">https://github.com/oxygenna-themes/mizu-light-astro-theme</a></li>
+        <li><strong>astrosaas</strong>：專為 SaaS 產品打造的高轉換率 Landing Page 模板 <a href="https://github.com/michael-andreuzza/astrosaas" target="_blank" rel="noopener noreferrer">https://github.com/michael-andreuzza/astrosaas</a></li>
+        <li><strong>hub-itsteddydev</strong>：極簡現代個人作品集與技術入口 <a href="https://github.com/tedevs0/hub-itsteddydev" target="_blank" rel="noopener noreferrer">https://github.com/tedevs0/hub-itsteddydev</a></li>
+        <li><strong>soft-ui-dashboard</strong>：精緻質感的 Soft UI 現代後台管理面板 <a href="https://github.com/creativetimofficial/soft-ui-dashboard" target="_blank" rel="noopener noreferrer">https://github.com/creativetimofficial/soft-ui-dashboard</a></li>
+        <li><strong>adminkit</strong>：專業且開箱即用的 Bootstrap 5 響應式管理後台 <a href="https://github.com/adminkit/adminkit" target="_blank" rel="noopener noreferrer">https://github.com/adminkit/adminkit</a></li>
       </ul>
-      <h2>4. 應用程式或是其他專案等</h2>
-      <p>這裏是搜集到各式各樣的工具包</p>
+
+      <h2>4. 代理伺服器 Proxy 與網路環境工具箱</h2>
+      <p>在進行網路資料收集、爬蟲研究或跨地域測試時，穩定的代理伺服器與指紋隔離環境至關重要：</p>
       <ul>
-        <li>worldmonitor（全球情報儀表板）<a href="https://github.com/koala73/worldmonitor" target="_blank" rel="noopener noreferrer">https://github.com/koala73/worldmonitor</a></li>
-        <li>QGIS（開源地理資訊系統）<a href="https://github.com/qgis/QGIS" target="_blank" rel="noopener noreferrer">https://github.com/qgis/QGIS</a></li>
-        <li>GSAP（Apple 網頁動畫 JavaScript 函式庫）<a href="https://github.com/greensock/GSAP" target="_blank" rel="noopener noreferrer">https://github.com/greensock/GSAP</a></li>
-        <li>free-proxy-list（免費 ProxyList）<a href="https://github.com/proxifly/free-proxy-list" target="_blank" rel="noopener noreferrer">https://github.com/proxifly/free-proxy-list</a></li>
-        <li>mach（網頁 Fuzzing 安全測試工具）<a href="https://github.com/clickswave/mach" target="_blank" rel="noopener noreferrer">https://github.com/clickswave/mach</a></li>
-        <li>awesome-selfhosted（自架網路服務資源）<a href="https://github.com/awesome-selfhosted/awesome-selfhosted" target="_blank" rel="noopener noreferrer">https://github.com/awesome-selfhosted/awesome-selfhosted</a></li>
+        <li><strong>free-proxy-list (GitHub)</strong>：開源自動化免費 Proxy 清單抓取與驗證模組 <a href="https://github.com/proxifly/free-proxy-list" target="_blank" rel="noopener noreferrer">https://github.com/proxifly/free-proxy-list</a></li>
+        <li><strong>Proxy Seller</strong>：提供全球高品質專屬 IPv4/IPv6 與住宅代理服務 <a href="https://proxy-seller.com/zh/" target="_blank" rel="noopener noreferrer">https://proxy-seller.com/zh/</a></li>
+        <li><strong>Decodo</strong>：智慧代理與數據採集輔助工具 <a href="https://decodo.com/#gref" target="_blank" rel="noopener noreferrer">https://decodo.com/#gref</a></li>
+        <li><strong>Lumi Proxy</strong>：覆蓋全球海量節點的高可用動態住宅代理 <a href="https://www.lumiproxy.com/zh-hant/" target="_blank" rel="noopener noreferrer">https://www.lumiproxy.com/zh-hant/</a></li>
+        <li><strong>AdsPower</strong>：專業級多帳號指紋防關聯與獨立環境瀏覽器 <a href="https://www.adspower.com/tc/" target="_blank" rel="noopener noreferrer">https://www.adspower.com/tc/</a></li>
       </ul>
-    `,
+
+      <h2>5. 系統復古改造玩物：利用 Win10 核心重新復刻 WinXP</h2>
+      <p>
+        相信許多朋友是從 Windows XP 時代一路走過來的，我自己也是！偶爾總會懷念 XP 那個純粹、直覺且工具查找無比快速的經典時代。
+      </p>
+      <p>
+        前陣子在 Archive 發現了一位國外神人開發的 <strong>Windows Experience Freestyle</strong> 專案，巧妙利用 Windows 10 核心將介面、音效與系統主題 1:1 復刻為 WinXP 經典風格！既能享受 Win10 的硬體驅動與現代軟體相容性，又能重溫 XP 經典優雅的青草藍天主題，非常推薦極客玩家們在虛擬機或備用機中體驗：
+      </p>
+      <ul>
+        <li><strong>Windows Experience Freestyle 專案載點與映像檔</strong>：<a href="https://archive.org/details/windows-experience-freestyle" target="_blank" rel="noopener noreferrer">https://archive.org/details/windows-experience-freestyle</a></li>
+      </ul>
+
+      <h2>6. LeetCode 刷題與演算法精進</h2>
+      <p>專注於資料結構、演算法解題思維與高頻考題解析：</p>
+      <ul>
+        <li><strong>Leetcode-Solution-All</strong>：涵蓋各語言超詳盡 LeetCode 題解大全 <a href="https://github.com/fuxuemingzhu/Leetcode-Solution-All" target="_blank" rel="noopener noreferrer">https://github.com/fuxuemingzhu/Leetcode-Solution-All</a></li>
+        <li><strong>LeetCodeJourney</strong>：系統化圖解資料結構與演算法精華旅程 <a href="https://github.com/TheExplainthis/LeetCodeJourney" target="_blank" rel="noopener noreferrer">https://github.com/TheExplainthis/LeetCodeJourney</a></li>
+      </ul>
+
+      <h2>7. 實用工具、地理資訊與自架服務</h2>
+      <p>涵蓋網路安全測試、情報監控與強大的開源自架資源：</p>
+      <ul>
+        <li><strong>worldmonitor</strong>：即時全球情報與國際動態視覺化儀表板 <a href="https://github.com/koala73/worldmonitor" target="_blank" rel="noopener noreferrer">https://github.com/koala73/worldmonitor</a></li>
+        <li><strong>QGIS</strong>：業界標準開源地理資訊系統（GIS）軟體 <a href="https://github.com/qgis/QGIS" target="_blank" rel="noopener noreferrer">https://github.com/qgis/QGIS</a></li>
+        <li><strong>mach</strong>：高效能網頁 Fuzzing 與端點安全測試工具 <a href="https://github.com/clickswave/mach" target="_blank" rel="noopener noreferrer">https://github.com/clickswave/mach</a></li>
+        <li><strong>awesome-selfhosted</strong>：全球最完整的自託管（Self-hosted）開源服務索引清單 <a href="https://github.com/awesome-selfhosted/awesome-selfhosted" target="_blank" rel="noopener noreferrer">https://github.com/awesome-selfhosted/awesome-selfhosted</a></li>
+      </ul>
+
+      <h2>8. 總結與心得</h2>
+      <p>
+        技術的演進日新月異，從早期的架站技術到現今蓬勃發展的 AI Agent、現代化前端框架與雲端邊緣運算，持續保持好奇心與動手實踐的習慣是最珍貴的資產。希望這份開源工具與實戰資源大補帖能為大家的學習與開發流程帶來實質的幫助！
+      </p>
+`,
   },
   {
     slug: 'ntub-audit',
