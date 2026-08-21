@@ -7,14 +7,14 @@
 
 	const base = '/ntub';
 
-	// 當前選中之工作表 Tab ('all' 或 program.id 或 'custom' 或 'brochures')
-	let activeSheet = $state('all');
+	// 當前選中之工作表 Tab ('certificate' (證書總表) | 'all' (課程總表) | program.id | 'custom' | 'brochures')
+	let activeSheet = $state('certificate');
 	let searchQuery = $state('');
 	let selectedCell = $state('A1');
-	let formulaText = $state('=SUM(F2:F50)');
-	let showBrochureDetail = $state(true); // 是否展開學程簡章重點面板
+	let formulaText = $state('=CERTIFICATE_ELIGIBILITY_ALL()');
+	let showBrochureDetail = $state(true);
 
-	// 確保預設科係為資訊管理系
+	// 預設主修科係為資訊管理系
 	if (!$myDept) {
 		myDept.set('資訊管理系');
 	}
@@ -47,6 +47,79 @@
 
 	const currentProgram = $derived(
 		programs.find((p) => p.id === activeSheet) ?? programs[0]
+	);
+
+	// 🎓 9 大學程「修業證書取得資格」即時全自動試算統計
+	const certificateSummaries = $derived(() => {
+		return programs.map((p) => {
+			const earned = earnedCredits($checkedCourses, p);
+			const bd = breakdown($checkedCourses, p);
+			const reqTotal = p.requirement.total;
+			const reqMust = p.requirement.required ?? 0;
+			const eleMust = p.requirement.elective ?? 0;
+
+			// 計算跨系（外系）修課門數 (非 $myDept 所開設之已修課程)
+			const crossDeptCourses = p.courses.filter(
+				(c) => $checkedCourses.has(c.id) && ($myDept ? !c.unit.includes($myDept) : false)
+			);
+			const crossDeptCount = crossDeptCourses.length;
+
+			// 跨系條件判定
+			const passCross = !p.requirement.crossDept || crossDeptCount >= 1;
+			// 必修條件判定
+			const passReq = bd.required >= reqMust;
+			// 選修條件判定
+			const passEle = bd.elective >= eleMust;
+			// 總學分條件判定
+			const passTotal = earned >= reqTotal;
+
+			// 總證書資格取得判定 (全部條件皆滿足)
+			const isEligible = passTotal && passReq && passEle && passCross;
+
+			const remaining = Math.max(0, reqTotal - earned);
+			const progressPct = Math.min(100, Math.round((earned / reqTotal) * 100));
+
+			let statusText = '✓ 已符合申請證書資格！';
+			let reason = '';
+			if (!isEligible) {
+				const reasons: string[] = [];
+				if (!passTotal) reasons.push(`尚缺 ${remaining} 學分`);
+				if (!passReq) reasons.push(`必修缺 ${reqMust - bd.required} 學分`);
+				if (!passCross) reasons.push('需跨系修 1 門外系');
+				statusText = `尚未達標 (${reasons.join('、')})`;
+				reason = reasons.join('、');
+			}
+
+			return {
+				id: p.id,
+				name: p.name,
+				nameEn: p.nameEn,
+				kind: p.kind,
+				planningUnit: p.planningUnit,
+				reqTotal,
+				reqMust,
+				eleMust,
+				earned,
+				earnedReq: bd.required,
+				earnedEle: bd.elective,
+				crossDeptReq: p.requirement.crossDept,
+				crossDeptCount,
+				passCross,
+				passReq,
+				passEle,
+				passTotal,
+				isEligible,
+				remaining,
+				progressPct,
+				statusText,
+				reason
+			};
+		});
+	});
+
+	// 已取得資格之學程總數
+	const qualifiedCount = $derived(
+		certificateSummaries().filter((c) => c.isEligible).length
 	);
 
 	// 全校所有學程課程合併扁平化清單 (去重複)
@@ -108,7 +181,7 @@
 				isMine: $myDept ? c.unit.includes($myDept) : true,
 				isCustom: true
 			}));
-		} else if (activeSheet !== 'brochures') {
+		} else if (activeSheet !== 'certificate' && activeSheet !== 'brochures') {
 			const prog = currentProgram;
 			rows = prog.courses.map((c) => ({
 				id: c.id,
@@ -156,12 +229,12 @@
 			.filter((r) => r.checked && !r.isMine)
 			.reduce((sum, r) => sum + r.credits, 0);
 
-		let targetTotal = 128; // 預設大學部畢業學分標準
+		let targetTotal = 128;
 		let targetReq = 0;
 		let targetEle = 0;
 		let isProgramDone = false;
 
-		if (activeSheet !== 'all' && activeSheet !== 'custom' && activeSheet !== 'brochures') {
+		if (activeSheet !== 'all' && activeSheet !== 'custom' && activeSheet !== 'certificate' && activeSheet !== 'brochures') {
 			targetTotal = currentProgram.requirement.total;
 			targetReq = currentProgram.requirement.required ?? 0;
 			targetEle = currentProgram.requirement.elective ?? 0;
@@ -262,94 +335,96 @@
 		customCourses = customCourses.filter((c) => c.id !== id);
 	}
 
-	// 匯出當前所有工作表為真正 .xlsx 格式 Excel 試算表
-	async function exportToXLSX() {
+	// 📗 統一匯出單一完整多工作表 .xlsx Excel 試算表
+	async function exportToUnifiedXLSX() {
 		try {
 			const XLSX = await import('xlsx');
 			const wb = XLSX.utils.book_new();
 
-			const rows = displayedRows();
-			const sheetData = [
-				[`國立臺北商業大學 NTUB 學分修業試算表 — ${activeSheet === 'all' ? '全校總表' : (activeSheet === 'custom' ? '自訂修課' : currentProgram.name)}`],
-				['狀態', '課程代碼', '課程名稱', '開課系所', '修別', '學分數', '學期/年級', '備註與學程判定']
+			// Sheet 1: 🎓 證書資格審查總表 (含即時判定)
+			const certRows = [
+				['國立臺北商業大學 NTUB 學分學程暨微學程 — 修業證書資格審查總表'],
+				[`學生所屬主修科系基準：${$myDept}（其餘系所課程自動判定為跨系/外系）`],
+				[],
+				['項次', '學程名稱', '類別', '應修門檻', '已修學分', '必修門檻', '必修已修', '選修門檻', '選修已修', '跨系要求', '跨系門數', '證書取得資格判定']
 			];
 
-			rows.forEach((r) => {
-				sheetData.push([
-					r.checked ? '已修' : '未修',
-					r.code,
-					r.name,
-					r.unit,
-					r.type,
-					r.credits,
-					r.term,
-					r.notes
+			certificateSummaries().forEach((c, idx) => {
+				certRows.push([
+					idx + 1,
+					c.name,
+					c.kind,
+					c.reqTotal,
+					c.earned,
+					c.reqMust,
+					c.earnedReq,
+					c.eleMust,
+					c.earnedEle,
+					c.crossDeptReq ? '需跨系1門' : '無限制',
+					c.crossDeptCount,
+					c.isEligible ? '🟢 ✓ 符合資格 (可申請證書)' : `🔴 尚未達標 (${c.reason})`
 				]);
 			});
 
-			const stats = sheetStats();
-			sheetData.push([]);
-			sheetData.push(['--- 試算表統計彙總 ---']);
-			sheetData.push(['已修畢總學分', '', '', '', '', stats.earnedCreditsSum, '', `達成率: ${stats.progressPct}%`]);
-			sheetData.push(['核心必修學分', '', '', '', '', stats.requiredCreditsSum]);
-			sheetData.push(['專業選修學分', '', '', '', '', stats.electiveCreditsSum]);
-			sheetData.push(['本系修課學分', '', '', '', '', stats.myDeptCreditsSum]);
-			sheetData.push(['跨系修課學分', '', '', '', '', stats.crossDeptCreditsSum]);
+			const wsCert = XLSX.utils.aoa_to_sheet(certRows);
+			wsCert['!cols'] = [{ wch: 6 }, { wch: 28 }, { wch: 10 }, { wch: 12 }, { wch: 12 }, { wch: 12 }, { wch: 12 }, { wch: 12 }, { wch: 12 }, { wch: 14 }, { wch: 12 }, { wch: 32 }];
+			XLSX.utils.book_append_sheet(wb, wsCert, '🎓證書資格審查總表');
 
-			const ws = XLSX.utils.aoa_to_sheet(sheetData);
-			ws['!cols'] = [
-				{ wch: 12 },
-				{ wch: 14 },
-				{ wch: 32 },
-				{ wch: 18 },
-				{ wch: 10 },
-				{ wch: 10 },
-				{ wch: 14 },
-				{ wch: 30 }
+			// Sheet 2: 📋 全校課程總表
+			const allData = [
+				['國立臺北商業大學 NTUB 學分學程與各系課程總表'],
+				['狀態', '課程代碼', '課程名稱', '開課系所', '修別', '學分數', '開課學期', '所屬學程與備註']
 			];
+			for (const { course: c, programs: pList } of allCoursesFlat()) {
+				allData.push([
+					$checkedCourses.has(c.id) ? '已修' : '未修',
+					c.id.toUpperCase(),
+					c.name,
+					c.unit,
+					c.type === 'required' ? '必修' : '選修',
+					c.credits,
+					c.term || '全學年',
+					pList.join('、')
+				]);
+			}
+			const wsAll = XLSX.utils.aoa_to_sheet(allData);
+			wsAll['!cols'] = [{ wch: 10 }, { wch: 14 }, { wch: 32 }, { wch: 18 }, { wch: 10 }, { wch: 10 }, { wch: 14 }, { wch: 30 }];
+			XLSX.utils.book_append_sheet(wb, wsAll, '全校課程總表');
 
-			const title = (activeSheet === 'all' ? '全校課程總覽' : (activeSheet === 'custom' ? '自訂修課' : currentProgram.name.slice(0, 20)));
-			XLSX.utils.book_append_sheet(wb, ws, title);
+			// Sheet 3~11: 各學程獨立 Sheet
+			for (const p of programs) {
+				const pRows = [
+					[`國立臺北商業大學 — ${p.name} (${p.kind}) 修業學分試算表`],
+					[`門檻規定：總學分 ${p.requirement.total} 學分${p.requirement.required ? `，必修至少 ${p.requirement.required}` : ''}${p.requirement.elective ? `，選修至少 ${p.requirement.elective}` : ''}`],
+					[],
+					['狀態', '課程代碼', '課程名稱', '開課系所', '修別', '學分數', '開課學期', '本外系判定', '備註']
+				];
 
-			XLSX.writeFile(wb, `NTUB_學分修業試算表_${activeSheet}_${new Date().toISOString().slice(0, 10)}.xlsx`);
+				for (const c of p.courses) {
+					pRows.push([
+						$checkedCourses.has(c.id) ? '已修' : '未修',
+						c.id.toUpperCase(),
+						c.name,
+						c.unit,
+						c.type === 'required' ? '必修' : '選修',
+						c.credits,
+						c.term || '依學期開設',
+						c.unit.includes($myDept) ? `本系 (${$myDept})` : '外系/跨系',
+						c.category === 'core' ? '核心必修' : '專業選修'
+					]);
+				}
+
+				const wsProg = XLSX.utils.aoa_to_sheet(pRows);
+				wsProg['!cols'] = [{ wch: 10 }, { wch: 14 }, { wch: 30 }, { wch: 18 }, { wch: 10 }, { wch: 10 }, { wch: 14 }, { wch: 16 }, { wch: 20 }];
+				const sheetTitle = p.name.replace(/學分學程|微學程/g, '').slice(0, 28);
+				XLSX.utils.book_append_sheet(wb, wsProg, sheetTitle);
+			}
+
+			// 下載單一統一 .xlsx 檔案
+			XLSX.writeFile(wb, `NTUB_學分修業與證書資格試算表_${new Date().toISOString().slice(0, 10)}.xlsx`);
 		} catch (err) {
-			console.error('XLSX export fallback to CSV', err);
-			exportToCSV();
+			console.error('XLSX export failed', err);
 		}
-	}
-
-	// 匯出當前工作表為 CSV 試算表檔
-	function exportToCSV() {
-		const headers = ['狀態', '課程代碼', '課程名稱', '開課系所', '修別', '學分數', '學期/年級', '備註與學程'];
-		const rows = displayedRows().map((r) => [
-			r.checked ? '已修畢' : '未修',
-			r.code,
-			`"${r.name.replace(/"/g, '""')}"`,
-			`"${r.unit}"`,
-			r.type,
-			r.credits,
-			r.term,
-			`"${r.notes.replace(/"/g, '""')}"`
-		]);
-
-		const stats = sheetStats();
-		rows.push([]);
-		rows.push(['--- 試算表統計彙總 ---']);
-		rows.push(['總修畢學分', '', '', '', '', stats.earnedCreditsSum, '', `達成率: ${stats.progressPct}%`]);
-		rows.push(['必修已修', '', '', '', '', stats.requiredCreditsSum]);
-		rows.push(['選修已修', '', '', '', '', stats.electiveCreditsSum]);
-		rows.push(['本系學分', '', '', '', '', stats.myDeptCreditsSum]);
-		rows.push(['跨系學分', '', '', '', '', stats.crossDeptCreditsSum]);
-
-		const csvContent = '﻿' + [headers.join(','), ...rows.map((e) => e.join(','))].join('\n');
-		const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-		const url = URL.createObjectURL(blob);
-		const link = document.createElement('a');
-		link.setAttribute('href', url);
-		link.setAttribute('download', `NTUB_學分修業試算表_${activeSheet}_${new Date().toISOString().slice(0, 10)}.csv`);
-		document.body.appendChild(link);
-		link.click();
-		document.body.removeChild(link);
 	}
 </script>
 
@@ -358,9 +433,9 @@
 	<!-- 頁首說明與科系設定 -->
 	<div class="sheet-hero-row">
 		<div>
-			<h1 class="sheet-main-title">📊 NTUB 學分修業即時試算表</h1>
+			<h1 class="sheet-main-title">📊 NTUB 學分修業與證書資格即時試算表</h1>
 			<p class="sheet-sub-desc">
-				完整整併全校 9 大學分學程簡章要點、各系所開課清單與門檻試算。
+				全自動即時核算 9 大學分學程「修業證書取得資格」、必選修進度與跨系門檻。
 				{#if $currentUser}
 					<span class="user-badge">✓ 已登入雲端同步（{$currentUser.name}）</span>
 				{:else}
@@ -386,35 +461,35 @@
 
 	<!-- 🧮 試算表統計儀表板 (KPI Cards) -->
 	<div class="kpi-grid">
-		<div class="kpi-card highlight">
-			<div class="kpi-label">已修畢總學分 (SUM)</div>
-			<div class="kpi-val">{sheetStats().earnedCreditsSum} <small>/ 門檻 {sheetStats().targetTotal} 學分</small></div>
-			<div class="kpi-prog-track">
-				<div class="kpi-prog-bar" style="width: {sheetStats().progressPct}%;"></div>
-			</div>
-			<div class="kpi-sub-text">修業達成率：<strong>{sheetStats().progressPct}%</strong></div>
-		</div>
-
-		<div class="kpi-card">
-			<div class="kpi-label">核心必修學分 (REQUIRED)</div>
-			<div class="kpi-val">{sheetStats().requiredCreditsSum} <small>學分</small></div>
+		<div class="kpi-card highlight-cert">
+			<div class="kpi-label">🎓 證書資格達成總數</div>
+			<div class="kpi-val">{qualifiedCount} <small>/ 共 9 大學程</small></div>
 			<div class="kpi-sub-text">
-				{#if sheetStats().targetReq > 0}
-					門檻至少 {sheetStats().targetReq} 學分
+				{#if qualifiedCount > 0}
+					<span class="text-green-strong">✓ 已有 {qualifiedCount} 個學程符合申請資格！</span>
 				{:else}
-					依學程簡章規定
+					<span>尚在修習中，勾選已修課程自動試算</span>
 				{/if}
 			</div>
 		</div>
 
 		<div class="kpi-card">
-			<div class="kpi-label">專業選修學分 (ELECTIVE)</div>
-			<div class="kpi-val">{sheetStats().electiveCreditsSum} <small>學分</small></div>
+			<div class="kpi-label">當前檢視已修學分 (SUM)</div>
+			<div class="kpi-val">{sheetStats().earnedCreditsSum} <small>/ 門檻 {sheetStats().targetTotal} 學分</small></div>
+			<div class="kpi-prog-track">
+				<div class="kpi-prog-bar" style="width: {sheetStats().progressPct}%;"></div>
+			</div>
+			<div class="kpi-sub-text">達成率：<strong>{sheetStats().progressPct}%</strong> ｜ 尚缺 {sheetStats().remaining} 學分</div>
+		</div>
+
+		<div class="kpi-card">
+			<div class="kpi-label">必修 / 選修已修</div>
+			<div class="kpi-val">{sheetStats().requiredCreditsSum} <small class="text-slate">必</small> ｜ {sheetStats().electiveCreditsSum} <small class="text-slate">選</small></div>
 			<div class="kpi-sub-text">
-				{#if sheetStats().targetEle > 0}
-					門檻至少 {sheetStats().targetEle} 學分
+				{#if sheetStats().targetReq > 0}
+					必修門檻至少 {sheetStats().targetReq} 學分
 				{:else}
-					專業領域延伸
+					依各學程簡章規定
 				{/if}
 			</div>
 		</div>
@@ -423,18 +498,18 @@
 			<div class="kpi-label">本系 / 跨系（外系）修課比重</div>
 			<div class="kpi-val">{sheetStats().myDeptCreditsSum} <small class="text-slate">本系 ({$myDept})</small> ｜ {sheetStats().crossDeptCreditsSum} <small class="text-orange">外系/跨系</small></div>
 			<div class="kpi-sub-text">
-				基準：<strong>{$myDept}</strong>（其餘系所課程自動判定為外系）
+				基準：<strong>{$myDept}</strong>（其他系所自動判定為外系）
 			</div>
 		</div>
 	</div>
 
 	<!-- 📖 併入之學程簡章與設置要點面板 (當切換到特定學程時即時顯示) -->
-	{#if activeSheet !== 'all' && activeSheet !== 'custom' && activeSheet !== 'brochures'}
+	{#if activeSheet !== 'all' && activeSheet !== 'custom' && activeSheet !== 'certificate' && activeSheet !== 'brochures'}
 		<div class="program-brochure-card">
 			<div class="pbc-header" onclick={() => (showBrochureDetail = !showBrochureDetail)}>
 				<div class="pbc-title-group">
 					<span class="pbc-badge" class:micro={currentProgram.kind === '微學程'}>{currentProgram.kind}</span>
-					<h3 class="pbc-name">{currentProgram.name} — 簡章設置要點與修業規範</h3>
+					<h3 class="pbc-name">{currentProgram.name} — 簡章要點與證書資格規範</h3>
 					<span class="pbc-unit">規劃單位：{currentProgram.planningUnit} ｜ 參與教學：{currentProgram.participatingUnits.join('、')}</span>
 				</div>
 				<button class="pbc-toggle-btn">
@@ -450,7 +525,7 @@
 							<p class="pbc-block-text">{currentProgram.purpose}</p>
 						</div>
 						<div class="pbc-col">
-							<div class="pbc-block-title">🎯 修業門檻與條件</div>
+							<div class="pbc-block-title">🎯 修業門檻與證書條件</div>
 							<ul class="pbc-req-list">
 								<li>應修總學分：<strong>{currentProgram.requirement.total} 學分</strong></li>
 								{#if currentProgram.requirement.required !== undefined}
@@ -464,9 +539,9 @@
 							<p class="pbc-rule-desc">{currentProgram.requirement.detail}</p>
 						</div>
 						<div class="pbc-col">
-							<div class="pbc-block-title">📜 申請證明流程</div>
+							<div class="pbc-block-title">📜 證書申請與核發程序</div>
 							<p class="pbc-block-text">
-								學生修滿本學程規定之科目與學分後，檢具歷年成績表，經學程負責單位審核無誤，並經教務長與校長核定後，由教務處發給「<strong>{currentProgram.name}修業證明書</strong>」。
+								修滿本學程規定之科目與學分後，檢具歷年成績單，經學程負責單位審查無誤，並經教務長與校長核定後，由教務處核發正式「<strong>{currentProgram.name}修業證明書</strong>」。
 							</p>
 						</div>
 					</div>
@@ -488,43 +563,124 @@
 			</div>
 
 			<div class="tool-right-group">
-				<div class="sheet-search-wrap">
-					<input
-						type="text"
-						placeholder="🔍 搜尋課程名稱 / 代碼 / 系所…"
-						bind:value={searchQuery}
-						class="sheet-search-input"
-					/>
-					{#if searchQuery}
-						<button class="clear-search-btn" onclick={() => (searchQuery = '')}>✕</button>
-					{/if}
-				</div>
+				{#if activeSheet !== 'certificate' && activeSheet !== 'brochures'}
+					<div class="sheet-search-wrap">
+						<input
+							type="text"
+							placeholder="🔍 搜尋課程名稱 / 代碼 / 系所…"
+							bind:value={searchQuery}
+							class="sheet-search-input"
+						/>
+						{#if searchQuery}
+							<button class="clear-search-btn" onclick={() => (searchQuery = '')}>✕</button>
+						{/if}
+					</div>
 
-				<button class="sheet-btn primary" onclick={checkAllVisible} title="將目前所有顯示的課程全部勾選">
-					✓ 全部勾選
-				</button>
-				<button class="sheet-btn" onclick={uncheckAllVisible} title="清除目前所有勾選">
-					✕ 全部取消
-				</button>
-				{#if $myDept}
-					<button class="sheet-btn accent" onclick={checkMyDeptOnly} title="快速勾選所有屬於 {$myDept} 的課程">
-						⚡ 勾選本系課程
+					<button class="sheet-btn primary" onclick={checkAllVisible} title="將目前所有顯示的課程全部勾選">
+						✓ 全部勾選
 					</button>
+					<button class="sheet-btn" onclick={uncheckAllVisible} title="清除目前所有勾選">
+						✕ 全部取消
+					</button>
+					{#if $myDept}
+						<button class="sheet-btn accent" onclick={checkMyDeptOnly} title="快速勾選所有屬於 {$myDept} 的課程">
+							⚡ 勾選本系課程
+						</button>
+					{/if}
 				{/if}
-				<button class="sheet-btn export xlsx" onclick={exportToXLSX} title="即時產生並下載當前修課勾選之 Microsoft Excel (.xlsx) 檔案">
-					📗 匯出 .xlsx Excel
+
+				<!-- 統一單一 XLSX 匯出按鈕 -->
+				<button class="sheet-btn export xlsx" onclick={exportToUnifiedXLSX} title="將全校 9 大學程、證書資格審查總表與當前勾選狀態打包匯出為單一 Microsoft Excel (.xlsx) 檔案">
+					📗 匯出完整 Excel (.xlsx)
 				</button>
-				<button class="sheet-btn export" onclick={exportToCSV} title="匯出為標準 CSV 試算表格式">
-					📥 匯出 CSV
-				</button>
-				<a href="/downloads/NTUB_學分學程修業完整試算表.xlsx" download="NTUB_學分學程修業完整試算表.xlsx" class="sheet-btn template" title="下載官方完整 9 大學分學程多工作表 Excel 範本 (.xlsx)">
-					📂 完整範本 (.xlsx)
+				<a href="/downloads/NTUB_學分學程修業完整試算表.xlsx" download="NTUB_學分學程修業完整試算表.xlsx" class="sheet-btn template" title="下載官方預先建置之 12 大工作表統一 Excel 範本 (.xlsx)">
+					📂 完整範本檔 (.xlsx)
 				</a>
 			</div>
 		</div>
 
 		<!-- 2. 試算表資料格 (Data Grid Table) -->
-		{#if activeSheet === 'brochures'}
+		{#if activeSheet === 'certificate'}
+			<!-- 🎓 9 大學程證書取得資格審查總表 (Certificate Eligibility Dashboard) -->
+			<div class="cert-dashboard-view">
+				<div class="cdv-head-bar">
+					<div>
+						<h2>🎓 國立臺北商業大學 9 大學分學程 — 修業證書取得資格即時審查總表</h2>
+						<p>基準科系：<strong>{$myDept}</strong> ｜ 系統依據您的已修課程，自動即時審查各學程總學分、核心必修、專業選修與跨系門檻。</p>
+					</div>
+				</div>
+
+				<div class="cert-scorecard-table-wrap">
+					<table class="sheet-table cert-summary-table">
+						<thead>
+							<tr class="col-headers-row">
+								<th class="row-num-header">#</th>
+								<th style="width: 220px;">學程名稱</th>
+								<th style="width: 80px; text-align:center;">類別</th>
+								<th style="width: 100px; text-align:right;">應修總門檻</th>
+								<th style="width: 100px; text-align:right;">已修總學分</th>
+								<th style="width: 90px; text-align:right;">必修進度</th>
+								<th style="width: 90px; text-align:right;">選修進度</th>
+								<th style="width: 120px; text-align:center;">跨系修課判定</th>
+								<th style="width: 220px; text-align:center;">證書取得資格判定</th>
+								<th style="width: 120px; text-align:center;">操作</th>
+							</tr>
+						</thead>
+						<tbody>
+							{#each certificateSummaries() as item, idx (item.id)}
+								<tr class="sheet-row cert-row" class:is-pass={item.isEligible}>
+									<td class="row-num-cell">{idx + 1}</td>
+									<td class="cell font-bold">
+										{item.name}
+										<span class="cert-dept-tag">{item.planningUnit}</span>
+									</td>
+									<td class="cell cell-center">
+										<span class="tab-badge" class:micro={item.kind === '微學程'}>{item.kind}</span>
+									</td>
+									<td class="cell cell-credits font-mono">{item.reqTotal} 學分</td>
+									<td class="cell cell-credits font-mono" class:text-green={item.passTotal}>
+										<strong>{item.earned}</strong> 學分
+									</td>
+									<td class="cell cell-credits font-mono">
+										{item.earnedReq} / {item.reqMust || '無'}
+									</td>
+									<td class="cell cell-credits font-mono">
+										{item.earnedEle} / {item.eleMust || '無'}
+									</td>
+									<td class="cell cell-center">
+										{#if item.crossDeptReq}
+											{#if item.passCross}
+												<span class="cert-status-tag pass">✓ 已跨修 {item.crossDeptCount} 門</span>
+											{:else}
+												<span class="cert-status-tag fail">✕ 尚缺 1 門外系</span>
+											{/if}
+										{:else}
+											<span class="cert-status-tag neutral">無跨系限制</span>
+										{/if}
+									</td>
+									<td class="cell cell-center">
+										{#if item.isEligible}
+											<span class="cert-badge-result qualified">
+												🟢 ✓ 符合資格（可領證書）
+											</span>
+										{:else}
+											<span class="cert-badge-result pending">
+												🔴 尚未達標 ({item.reason})
+											</span>
+										{/if}
+									</td>
+									<td class="cell cell-center">
+										<button class="sheet-btn primary sm" onclick={() => { activeSheet = item.id; handleCellClick('A1', `=PROGRAM("${item.name}")`); }}>
+											修課勾選 →
+										</button>
+									</td>
+								</tr>
+							{/each}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		{:else if activeSheet === 'brochures'}
 			<!-- 📖 全校 9 大學程簡章總覽工作表 -->
 			<div class="brochure-sheet-view">
 				<div class="bsv-header">
@@ -593,10 +749,8 @@
 									class:is-mine={row.isMine}
 									onclick={() => handleCellClick(`C${idx + 2}`, `=COURSE_INFO("${row.code}", "${row.name}", ${row.credits})`)}
 								>
-									<!-- 列號 -->
 									<td class="row-num-cell">{idx + 1}</td>
 
-									<!-- A 欄：核取方塊 -->
 									<td class="cell cell-check" onclick={(e) => { e.stopPropagation(); toggleRowChecked(row); }}>
 										<input
 											type="checkbox"
@@ -610,10 +764,8 @@
 										</label>
 									</td>
 
-									<!-- B 欄：課程代碼 -->
 									<td class="cell cell-mono">{row.code}</td>
 
-									<!-- C 欄：課程名稱 -->
 									<td class="cell cell-name">
 										<strong>{row.name}</strong>
 										{#if row.isMine}
@@ -623,25 +775,20 @@
 										{/if}
 									</td>
 
-									<!-- D 欄：開課單位 -->
 									<td class="cell">{row.unit}</td>
 
-									<!-- E 欄：必選修 -->
 									<td class="cell cell-center">
 										<span class="type-badge" class:req={row.type === '必修'} class:ele={row.type === '選修'}>
 											{row.type}
 										</span>
 									</td>
 
-									<!-- F 欄：學分數 -->
 									<td class="cell cell-credits font-mono">
 										{row.credits}
 									</td>
 
-									<!-- G 欄：學期年級 -->
 									<td class="cell cell-term">{row.term}</td>
 
-									<!-- H 欄：備註與學程所屬 -->
 									<td class="cell cell-notes">
 										{row.notes}
 										{#if row.isCustom}
@@ -653,7 +800,6 @@
 						{/if}
 					</tbody>
 					<tfoot>
-						<!-- 試算表加總統計列 (Formula Summary Row) -->
 						<tr class="sheet-summary-row">
 							<td class="row-num-cell">Σ</td>
 							<td class="cell cell-center font-bold">已選 {sheetStats().checkedCount} 門</td>
@@ -702,11 +848,14 @@
 		<div class="sheet-tabs-bar">
 			<div class="sheet-tabs-scroll">
 				<button
-					class="sheet-tab-item brochure-tab"
-					class:active={activeSheet === 'brochures'}
-					onclick={() => { activeSheet = 'brochures'; handleCellClick('A1', '=BROCHURES_ALL()'); }}
+					class="sheet-tab-item cert-tab"
+					class:active={activeSheet === 'certificate'}
+					onclick={() => { activeSheet = 'certificate'; handleCellClick('A1', '=CERTIFICATE_EVALUATION()'); }}
 				>
-					📖 簡章與設置要點總覽
+					🎓 證書資格審查總表
+					{#if qualifiedCount > 0}
+						<span class="tab-badge qualified-badge">✓ {qualifiedCount} 可領</span>
+					{/if}
 				</button>
 
 				<button
@@ -714,7 +863,7 @@
 					class:active={activeSheet === 'all'}
 					onclick={() => { activeSheet = 'all'; handleCellClick('A1', '=FILTER(ALL_COURSES)'); }}
 				>
-					📋 總表 (全校課程總覽)
+					📋 全校課程總表
 				</button>
 
 				{#each programs as p}
@@ -729,11 +878,19 @@
 				{/each}
 
 				<button
+					class="sheet-tab-item brochure-tab"
+					class:active={activeSheet === 'brochures'}
+					onclick={() => { activeSheet = 'brochures'; handleCellClick('A1', '=BROCHURES_ALL()'); }}
+				>
+					📖 簡章設置要點
+				</button>
+
+				<button
 					class="sheet-tab-item custom-tab"
 					class:active={activeSheet === 'custom'}
 					onclick={() => { activeSheet = 'custom'; handleCellClick('A1', '=CUSTOM_USER_TABLE()'); }}
 				>
-					✏️ 自訂修課試算表 ({customCourses.length})
+					✏️ 自訂修課表 ({customCourses.length})
 				</button>
 			</div>
 		</div>
@@ -837,9 +994,9 @@
 		box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
 	}
 
-	.kpi-card.highlight {
-		border-color: #ff6b00;
-		background: #fffaf5;
+	.kpi-card.highlight-cert {
+		border-color: #16a34a;
+		background: #f0fdf4;
 	}
 
 	.kpi-label {
@@ -886,6 +1043,7 @@
 
 	.text-slate { color: #0f172a; font-weight: 600; }
 	.text-orange { color: #ea580c; font-weight: 600; }
+	.text-green-strong { color: #166534; font-weight: 700; }
 
 	/* 📖 簡章摘要卡片 */
 	.program-brochure-card {
@@ -1097,6 +1255,11 @@
 		transition: all 0.15s ease;
 	}
 
+	.sheet-btn.sm {
+		padding: 3px 8px;
+		font-size: 11.5px;
+	}
+
 	.sheet-btn:hover {
 		background: #f1f5f9;
 		border-color: #94a3b8;
@@ -1120,16 +1283,6 @@
 
 	.sheet-btn.accent:hover {
 		background: #ea580c;
-	}
-
-	.sheet-btn.export {
-		background: #166534;
-		color: #ffffff;
-		border-color: #166534;
-	}
-
-	.sheet-btn.export:hover {
-		background: #14532d;
 	}
 
 	.sheet-btn.export.xlsx {
@@ -1353,12 +1506,92 @@
 	.font-bold { font-weight: 700; }
 	.font-mono { font-family: monospace; }
 	.pass { color: #166534; }
+	.text-green { color: #16a34a !important; }
 
 	.empty-sheet-msg {
 		text-align: center !important;
 		padding: 3rem !important;
 		color: #94a3b8;
 		font-size: 14px;
+	}
+
+	/* 🎓 證書審查總表視圖樣式 */
+	.cert-dashboard-view {
+		padding: 1.2rem;
+		background: #ffffff;
+	}
+
+	.cdv-head-bar {
+		margin-bottom: 1.2rem;
+		padding-bottom: 0.8rem;
+		border-bottom: 1.5px solid #e2e8f0;
+	}
+
+	.cdv-head-bar h2 {
+		font-size: 1.3rem;
+		font-weight: 700;
+		color: #0f172a;
+		margin: 0 0 4px;
+	}
+
+	.cdv-head-bar p {
+		font-size: 13px;
+		color: #64748b;
+		margin: 0;
+	}
+
+	.cert-dept-tag {
+		display: block;
+		font-size: 11px;
+		font-weight: 400;
+		color: #64748b;
+		margin-top: 2px;
+	}
+
+	.cert-row.is-pass {
+		background: #f0fdf4;
+	}
+
+	.cert-status-tag {
+		font-size: 11px;
+		font-weight: 600;
+		padding: 2px 6px;
+		border-radius: 4px;
+	}
+
+	.cert-status-tag.pass {
+		background: #dcfce7;
+		color: #166534;
+	}
+
+	.cert-status-tag.fail {
+		background: #fee2e2;
+		color: #991b1b;
+	}
+
+	.cert-status-tag.neutral {
+		background: #f1f5f9;
+		color: #475569;
+	}
+
+	.cert-badge-result {
+		font-size: 12px;
+		font-weight: 700;
+		padding: 4px 8px;
+		border-radius: 4px;
+		display: inline-block;
+	}
+
+	.cert-badge-result.qualified {
+		background: #16a34a;
+		color: #ffffff;
+		box-shadow: 0 2px 6px rgba(22, 163, 74, 0.3);
+	}
+
+	.cert-badge-result.pending {
+		background: #fff7ed;
+		border: 1px solid #fed7aa;
+		color: #c2410c;
 	}
 
 	/* 📖 簡章工作表視圖 */
@@ -1537,6 +1770,11 @@
 		box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.04);
 	}
 
+	.sheet-tab-item.cert-tab {
+		color: #15803d;
+		font-weight: 700;
+	}
+
 	.sheet-tab-item.brochure-tab {
 		color: #0284c7;
 	}
@@ -1557,6 +1795,12 @@
 		background: #fff7ed;
 		border-color: #fed7aa;
 		color: #c2410c;
+	}
+
+	.tab-badge.qualified-badge {
+		background: #16a34a;
+		color: #ffffff;
+		font-weight: 700;
 	}
 
 	@media (max-width: 768px) {
