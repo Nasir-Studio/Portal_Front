@@ -56,22 +56,46 @@ import BlogLayout from '../../layouts/BlogLayout.astro';
             <h2 class="post-area-title">關於 Ovis Shop</h2>
           </div>
 
-          <div class="guide-content-box">
-            <section class="guide-section">
-              <h3 class="guide-h3">我們的理念</h3>
-              <p><strong>「物品價值，淋漓盡致」</strong> — 這是 Ovis Shop 的核心初衷。</p>
-              <p>每一件科技硬體與實用物資在製造時都凝聚了地球的資源與工程師的心血。我們相信，功能完好的硬體不該因為被升級換代而隨意閒置或浪費。Ovis Shop 致力於提供一個透明、乾淨且受嚴格檢測的物資流轉平台，讓優質良品找到需要它的新主人，實現循環永續。</p>
-            </section>
+          <!-- 精緻卡片佈局 -->
+          <div class="about-container">
+            <!-- 核心理念橫幅 -->
+            <div class="about-hero-box">
+              <span class="about-quote-tag">CORE PHILOSOPHY</span>
+              <h3 class="about-quote-title">「物品價值，淋漓盡致」</h3>
+              <p class="about-quote-desc">
+                每一件科技硬體與物資在生產時，都凝聚了地球的珍貴資源。我們深信，功能完好的硬體不該因升級換代而隨意閒置或浪費。Ovis Shop 致力於提供一個透明、乾淨且受嚴格檢測的物資流轉平台，讓優質良品找到需要它的新主人。
+              </p>
+            </div>
 
-            <section class="guide-section">
-              <h3 class="guide-h3">嚴格檢測與品質把關</h3>
-              <p>在 Ovis Shop 上架的每一件電腦周邊、零組件與科技配件，皆由站長親自進行實機運行測試與功能校驗，確保功能完全正常後才進行防撞包裝與上架流轉，提供清晰可靠的透明選購體驗。</p>
-            </section>
+            <!-- 三大核心特色卡片 -->
+            <div class="feature-grid">
+              <div class="feature-card">
+                <div class="feature-icon">🌱</div>
+                <h4 class="feature-title">綠色循環共享</h4>
+                <p class="feature-desc">推動閒置 3C 配件與零件流轉，延長電子產品生命週期，減少科技垃圾。</p>
+              </div>
 
-            <section class="guide-section">
-              <h3 class="guide-h3">聯絡站長</h3>
-              <p>若您對商品狀況、訂單有任何疑問，或有優質良品想進行交流，歡迎隨時透過 Email 與我們聯絡：<a href="mailto:hi@nasirlin.net" style="color:#ff6b00;">hi@nasirlin.net</a></p>
-            </section>
+              <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h4 class="feature-title">專業實機檢測</h4>
+                <p class="feature-desc">所有上架商品皆由站長親自進行實機運行測試與功能驗證，確保品質可靠。</p>
+              </div>
+
+              <div class="feature-card">
+                <div class="feature-icon">📦</div>
+                <h4 class="feature-title">透明安心包裝</h4>
+                <p class="feature-desc">採用多層防撞緩衝包裝並配合 7-11 店到店物流，保障寄送過程安全無虞。</p>
+              </div>
+            </div>
+
+            <!-- 聯絡方式區塊 -->
+            <div class="contact-box">
+              <h4 class="contact-title">聯絡站長</h4>
+              <p class="contact-desc">
+                若您對商品狀況、訂單有任何疑問，或有優質硬體良品想交流，歡迎隨時透過 Email 與我們聯絡：
+              </p>
+              <a href="mailto:hi@nasirlin.net" class="contact-email-link">hi@nasirlin.net →</a>
+            </div>
           </div>
         </div>
 
@@ -271,35 +295,118 @@ import BlogLayout from '../../layouts/BlogLayout.astro';
     line-height: 1.2;
   }
 
-  .guide-content-box {
+  /* 關於我們美化容器 */
+  .about-container {
     display: flex;
     flex-direction: column;
     gap: 2rem;
-    background: #ffffff;
+  }
+
+  .about-hero-box {
+    background: #fafafa;
     border: 1px solid #e2e8f0;
     padding: 2.2rem 2.4rem;
   }
 
-  .guide-section {
-    display: flex;
-    flex-direction: column;
-    gap: 0.8rem;
+  .about-quote-tag {
+    display: inline-block;
+    font-size: 0.76rem;
+    font-weight: 500;
+    color: #ff6b00;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
   }
 
-  .guide-h3 {
-    font-size: 1.12rem;
+  .about-quote-title {
+    font-size: 1.55rem;
+    font-weight: 500;
+    color: #0f172a;
+    margin: 0 0 1rem;
+    line-height: 1.3;
+  }
+
+  .about-quote-desc {
+    font-size: 0.95rem;
+    color: #475569;
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.2rem;
+  }
+
+  .feature-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    padding: 1.5rem 1.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    transition: all 0.15s ease;
+  }
+
+  .feature-card:hover {
+    border-color: #ff6b00;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+
+  .feature-icon {
+    font-size: 1.8rem;
+    line-height: 1;
+    margin-bottom: 0.2rem;
+  }
+
+  .feature-title {
+    font-size: 1.05rem;
     font-weight: 500;
     color: #0f172a;
     margin: 0;
-    border-left: 3px solid #ff6b00;
-    padding-left: 10px;
   }
 
-  .guide-content-box p {
-    font-size: 0.94rem;
+  .feature-desc {
+    font-size: 0.86rem;
+    color: #64748b;
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  .contact-box {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    padding: 1.8rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .contact-title {
+    font-size: 1.15rem;
+    font-weight: 500;
+    color: #0f172a;
+    margin: 0;
+  }
+
+  .contact-desc {
+    font-size: 0.92rem;
     color: #475569;
     line-height: 1.6;
     margin: 0;
+  }
+
+  .contact-email-link {
+    font-size: 0.95rem;
+    color: #ff6b00;
+    text-decoration: none;
+    font-weight: 500;
+    margin-top: 0.4rem;
+    align-self: flex-start;
+  }
+
+  .contact-email-link:hover {
+    text-decoration: underline;
   }
 
   .side-author-box {
@@ -361,6 +468,9 @@ import BlogLayout from '../../layouts/BlogLayout.astro';
     .content-area-top > .right.sidebar-right {
       width: 100%;
       margin-top: 3rem;
+    }
+    .feature-grid {
+      grid-template-columns: 1fr;
     }
   }
 </style>
