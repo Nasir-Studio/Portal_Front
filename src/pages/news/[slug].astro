@@ -661,7 +661,7 @@ const { item, prevPost, nextPost } = Astro.props;
   }
 
   .article-form-status.is-success {
-    color: #16a34a;
+    color: #ff6b00;
   }
 
   .article-form-status.is-error {
@@ -743,7 +743,7 @@ const { item, prevPost, nextPost } = Astro.props;
     margin-bottom: 1.2rem;
   }
   .side-author-box .author-bio em {
-    color: #16a34a;
+    color: #ff6b00;
     font-style: normal;
     font-weight: 500;
   }
@@ -1278,7 +1278,8 @@ const { item, prevPost, nextPost } = Astro.props;
       const li = document.createElement('li');
       const a = document.createElement('a');
       a.href = `#${id}`;
-      a.textContent = `${idx + 1}. ${h.textContent}`;
+      const headingText = (h.textContent || '').replace(/^\d+[.、\s]+/g, '').trim();
+      a.textContent = `${idx + 1}. ${headingText}`;
       li.appendChild(a);
       tocList.appendChild(li);
     });
@@ -1382,7 +1383,7 @@ const { item, prevPost, nextPost } = Astro.props;
   }
 
   .post-content a {
-    color: #16a34a;
+    color: #ff6b00;
     text-decoration: underline;
     text-underline-offset: 3px;
     font-weight: 400;
@@ -1428,7 +1429,7 @@ const { item, prevPost, nextPost } = Astro.props;
   .post-content .post-intro,
   .post-content .post-tips {
     background-color: #f8fafc;
-    border-left: 5px solid #16a34a;
+    border-left: 4px solid #cbd5e1;
     padding: 1.4rem 1.6rem;
     margin: 2rem 0;
     color: #334155;
@@ -1450,11 +1451,11 @@ const { item, prevPost, nextPost } = Astro.props;
   }
 
   .post-content .audit-tip {
-    background-color: #f0fdf4;
-    border-left: 5px solid #16a34a;
+    background-color: #f8fafc;
+    border-left: 4px solid #cbd5e1;
     padding: 1.4rem 1.6rem;
     margin: 2rem 0;
-    color: #166534;
+    color: #334155;
     font-size: 15px;
     line-height: 1.8;
     border-radius: 0 4px 4px 0;
