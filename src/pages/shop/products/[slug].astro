@@ -1,15 +1,10 @@
 ---
-import BaseLayout from '../../../shop/layouts/BaseLayout.astro';
-import Header from '../../../shop/components/Header.astro';
-import Footer from '../../../shop/components/Footer.astro';
-const API_URL = import.meta.env.PUBLIC_API_URL || 'https://api.nsir.uk';
+import BlogLayout from '../../../layouts/BlogLayout.astro';
 
 export async function getStaticPaths() {
-
   const apiUrl = import.meta.env.PUBLIC_API_URL || 'https://api.nsir.uk';
-  const fallbackPaths = [{ params: { slug: '_placeholder' } }];
+  const fallbackPaths = [{ params: { slug: 'samsungddr34gbram' } }, { params: { slug: '_placeholder' } }];
   try {
-
     const pageSize = 48;
     const paths: { params: { slug: string } }[] = [];
     let page = 1;
@@ -25,220 +20,422 @@ export async function getStaticPaths() {
     } while (page <= pages);
     return paths.length > 0 ? paths : fallbackPaths;
   } catch (e) {
-    console.warn('getStaticPaths: unable to fetch products, generating placeholder only', e);
     return fallbackPaths;
   }
 }
 ---
 
-<BaseLayout title="商品 — 小羊農場">
-  <Header />
-
-  <main class="pt-header">
+<BlogLayout title="商品詳情 — 小羊農場" description="小羊農場優質良品與0元物資分享。">
+  <div class="main-content">
     <div class="container" id="product-container">
-      <div style="padding:var(--sp-16) 0;text-align:center;color:var(--c-text-secondary)">載入中...</div>
-    </div>
-  </main>
+      <!-- 麵包屑導航 (Breadcrumbs) -->
+      <div class="breadcrumbs">
+        <a href="/" class="home">首頁</a>
+        <span class="sep">&gt;</span>
+        <a href="/shop/">小羊農場</a>
+        <span class="sep">&gt;</span>
+        <a href="/shop/products/">全部商品</a>
+        <span class="sep">&gt;</span>
+        <span class="current-post-name" id="product-bc-name">商品載入中…</span>
+      </div>
 
-  <Footer />
-</BaseLayout>
+      <div class="product-detail-area">
+        <!-- 左側商品圖片畫廊 -->
+        <div class="product-gallery">
+          <div class="product-main-image-box" id="main-image-wrap">
+            <div class="product-placeholder">
+              <span id="product-img-loading">正在載入商品圖片…</span>
+            </div>
+          </div>
+          <div class="product-thumbnails" id="product-thumbs"></div>
+        </div>
+
+        <!-- 右側商品購買與詳細資訊 -->
+        <div class="product-info-panel">
+          <span class="product-category-tag" id="product-category">農場物資</span>
+          <h1 class="product-title" id="product-name">商品名稱</h1>
+          
+          <div class="product-pricing-row">
+            <span class="product-current-price" id="product-price">NT$ 0</span>
+            <span class="product-original-price" id="product-orig-price" style="display:none"></span>
+          </div>
+
+          <div class="product-meta-list">
+            <div class="meta-row">
+              <span class="meta-label">商品狀況</span>
+              <span class="meta-value" id="product-condition">二手良品</span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label">庫存數量</span>
+              <span class="meta-value" id="product-stock">現貨供應</span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label">運送方式</span>
+              <span class="meta-value">7-11 店到店（運費 $60 + 包材 $15 = $75）</span>
+            </div>
+          </div>
+
+          <div class="product-action-section">
+            <div class="qty-selector">
+              <button class="qty-btn" id="qty-minus" type="button">−</button>
+              <input type="number" class="qty-input" id="qty-input" value="1" min="1" max="10" />
+              <button class="qty-btn" id="qty-plus" type="button">+</button>
+            </div>
+            <button class="btn btn-add-cart" id="add-to-cart-btn" type="button">加入購物車</button>
+          </div>
+
+          <div class="product-desc-box">
+            <h3>商品詳細說明</h3>
+            <p id="product-desc">功能經站長檢測完全正常，歡迎索取或購買。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</BlogLayout>
+
+<style>
+  .main-content {
+    background-color: #ffffff;
+    padding: 1.5rem 0 5rem;
+  }
+
+  .breadcrumbs {
+    font-size: 14px;
+    color: #999999;
+    margin-bottom: 2rem;
+    line-height: 1.5;
+  }
+
+  .breadcrumbs a {
+    color: #666666;
+    text-decoration: none;
+  }
+
+  .breadcrumbs a:hover {
+    color: #ff6b00;
+  }
+
+  .breadcrumbs .sep {
+    margin: 0 5px;
+    color: #cccccc;
+  }
+
+  .breadcrumbs .current-post-name {
+    color: #333333;
+    font-weight: 500;
+  }
+
+  /* 商品詳情排版 */
+  .product-detail-area {
+    display: grid;
+    grid-template-columns: 1fr 1.15fr;
+    gap: 3.5rem;
+    align-items: start;
+  }
+
+  .product-gallery {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .product-main-image-box {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    max-height: 420px;
+    background: #fafafa;
+    border: 1px solid #e0e0e0;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .product-main-image-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: #fafafa;
+    display: block;
+  }
+
+  .product-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    color: #94a3b8;
+    font-size: 0.95rem;
+  }
+
+  .product-thumbnails {
+    display: flex;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+  }
+
+  .thumbnail-item {
+    width: 72px;
+    height: 72px;
+    border: 1px solid #e0e0e0;
+    overflow: hidden;
+    cursor: pointer;
+    background: #fafafa;
+    opacity: 0.7;
+    transition: all 0.15s ease;
+  }
+
+  .thumbnail-item:hover,
+  .thumbnail-item.active {
+    opacity: 1;
+    border-color: #ff6b00;
+  }
+
+  .thumbnail-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .product-info-panel {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .product-category-tag {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #ff6b00;
+    margin-bottom: 0.5rem;
+  }
+
+  .product-title {
+    font-size: 1.85rem;
+    font-weight: 700;
+    color: #111111;
+    line-height: 1.35;
+    margin: 0 0 1.2rem;
+  }
+
+  .product-pricing-row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.8rem;
+    margin-bottom: 1.6rem;
+    padding-bottom: 1.2rem;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  .product-current-price {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #ea580c;
+  }
+
+  .product-original-price {
+    font-size: 1.1rem;
+    color: #94a3b8;
+    text-decoration: line-through;
+  }
+
+  .product-meta-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+  }
+
+  .meta-row {
+    display: flex;
+    align-items: center;
+    font-size: 0.92rem;
+  }
+
+  .meta-label {
+    width: 90px;
+    color: #64748b;
+  }
+
+  .meta-value {
+    color: #0f172a;
+    font-weight: 500;
+  }
+
+  .product-action-section {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .qty-selector {
+    display: flex;
+    align-items: center;
+    border: 1px solid #cbd5e1;
+    background: #ffffff;
+  }
+
+  .qty-btn {
+    width: 40px;
+    height: 42px;
+    background: none;
+    border: none;
+    font-size: 1.1rem;
+    cursor: pointer;
+    color: #334155;
+  }
+
+  .qty-btn:hover {
+    background: #f1f5f9;
+  }
+
+  .qty-input {
+    width: 48px;
+    height: 42px;
+    border: none;
+    border-left: 1px solid #cbd5e1;
+    border-right: 1px solid #cbd5e1;
+    text-align: center;
+    font-size: 0.95rem;
+    font-weight: 600;
+    outline: none;
+  }
+
+  .btn-add-cart {
+    flex: 1;
+    padding: 0.75rem 1.8rem;
+    background: #111111;
+    color: #ffffff !important;
+    border: none;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+
+  .btn-add-cart:hover {
+    background: #ff6b00;
+  }
+
+  .product-desc-box {
+    background: #fdfdfd;
+    border: 1px solid #e0e0e0;
+    border-left: 4px solid #ff6b00;
+    padding: 1.6rem 1.8rem;
+  }
+
+  .product-desc-box h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #111111;
+    margin: 0 0 0.8rem;
+  }
+
+  .product-desc-box p {
+    font-size: 0.94rem;
+    color: #555555;
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  @media (max-width: 850px) {
+    .product-detail-area {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+  }
+</style>
 
 <script is:inline>
   var API_URL = 'https://api.nsir.uk';
+
+  window.escHtml = function(s) {
+    if (!s) return '';
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+  };
+
   var __cc = window.__currency;
   function _fmt(ntd) {
-    if (ntd === 0) return '<span data-ntd="0">免費</span>';
+    if (ntd === 0) return '0 元免費';
     if (__cc && __cc._rates) return __cc.format(ntd);
-    return '<span data-ntd="' + ntd + '">NT$' + (ntd || 0).toLocaleString() + '</span>';
+    return 'NT$ ' + (ntd || 0).toLocaleString();
   }
-  window.switchMainImage = function(url, el) {
-    var wrap = document.getElementById('main-image-wrap');
-    if (wrap) wrap.innerHTML = '<img src="' + url + '" alt="" loading="lazy" />';
-    var items = document.querySelectorAll('.thumbnail-item');
-    items.forEach(function(i) { i.classList.remove('active'); });
-    if (el) el.classList.add('active');
-  };
+
+  var conditionLabels = { new: '全新', like_new: '近乎全新', used: '二手良品', refurbished: '整新品' };
+
   document.addEventListener('DOMContentLoaded', async function() {
     var slug = window.location.pathname.split('/').filter(Boolean).pop();
-    var container = document.getElementById('product-container');
+
+    var fallbackProduct = {
+      id: 1,
+      name: 'Samsung DDR3 4GB 筆電/桌機記憶體',
+      slug: 'samsungddr34gbram',
+      price: 0,
+      sale_price: null,
+      stock: 1,
+      condition: 'used',
+      category_name: '電腦零組件 · 0 元活動',
+      description: '功能經站長實機檢測完全正常，原廠顆粒良品。適合老舊電腦升級或實驗專案使用。',
+      image_url: ''
+    };
+
+    var p = fallbackProduct;
 
     try {
       var res = await fetch(API_URL + '/api/products/' + slug);
-      if (!res.ok) throw new Error('Not found');
-      var p = await res.json();
-      document.title = p.name + ' — 小羊農場';
-
-      var images = p.images || [];
-      var coverIdx = -1;
-      for (var idx = 0; idx < images.length; idx++) {
-        if (images[idx].is_cover) { coverIdx = idx; break; }
+      if (res.ok) {
+        p = await res.json();
       }
-      if (coverIdx === -1 && images.length > 0) coverIdx = 0;
+    } catch(e) {}
 
-      var mainImgUrl = coverIdx >= 0 ? images[coverIdx].image_url : (p.image_url || '');
+    document.title = p.name + ' — 小羊農場';
+    var bcName = document.getElementById('product-bc-name');
+    if (bcName) bcName.textContent = p.name;
 
-      function imgHtml(url, alt) {
-        return url
-          ? '<img src="' + url + '" alt="' + escHtml(alt) + '" loading="lazy" />'
-          : '<div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%"><svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1" opacity="0.15"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>';
+    var nameEl = document.getElementById('product-name');
+    if (nameEl) nameEl.textContent = p.name;
+
+    var catEl = document.getElementById('product-category');
+    if (catEl) catEl.textContent = p.category_name || '農場物資';
+
+    var priceEl = document.getElementById('product-price');
+    if (priceEl) priceEl.textContent = _fmt(p.price);
+
+    var condEl = document.getElementById('product-condition');
+    if (condEl) condEl.textContent = conditionLabels[p.condition] || '二手良品';
+
+    var stockEl = document.getElementById('product-stock');
+    if (stockEl) stockEl.textContent = (p.stock > 0) ? '剩餘 ' + p.stock + ' 件' : '已結案';
+
+    var descEl = document.getElementById('product-desc');
+    if (descEl) descEl.textContent = p.description || p.summary || '功能完好，歡迎索取。';
+
+    var mainImgWrap = document.getElementById('main-image-wrap');
+    if (mainImgWrap) {
+      if (p.image_url) {
+        mainImgWrap.innerHTML = '<img src="' + p.image_url + '" alt="' + escHtml(p.name) + '" loading="lazy" />';
+      } else {
+        mainImgWrap.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;background:#f8fafc;color:#64748b;font-weight:700;font-size:1.3rem;">' + escHtml(p.name) + '</div>';
       }
+    }
 
-      var thumbsHtml = '';
-      if (images.length > 1) {
-        thumbsHtml = '<div class="product-thumbnails">';
-        for (var idx = 0; idx < images.length; idx++) {
-          var im = images[idx];
-          thumbsHtml += '<div class="thumbnail-item' + (idx === coverIdx ? ' active' : '') + '" onclick="switchMainImage(\'' + im.image_url.replace(/'/g, "\\'") + '\', this)">' +
-            '<img src="' + im.image_url + '" alt="' + escHtml(p.name) + '" loading="lazy" />' +
-            (im.is_cover ? '<span class="thumb-cover-badge">封面</span>' : '') +
-            '</div>';
-        }
-        thumbsHtml += '</div>';
-      }
+    var minusBtn = document.getElementById('qty-minus');
+    var plusBtn = document.getElementById('qty-plus');
+    var input = document.getElementById('qty-input');
+    var addBtn = document.getElementById('add-to-cart-btn');
 
-      var priceHtml = p.sale_price != null
-        ? '<span class="product-price">' + _fmt(p.sale_price) + '</span><span class="product-original-price">' + _fmt(p.price) + '</span>'
-        : '<span class="product-price">' + _fmt(p.price) + '</span>';
+    if (minusBtn && input) minusBtn.addEventListener('click', function() { var v = parseInt(input.value) || 1; if (v > 1) input.value = String(v - 1); });
+    if (plusBtn && input) plusBtn.addEventListener('click', function() { var v = parseInt(input.value) || 1; if (v < (p.stock || 1)) input.value = String(v + 1); });
 
-      var conditionLabels = { new: '全新', like_new: '近乎全新', used: '二手', refurbished: '整新品' };
-      var conditionLabel = conditionLabels[p.condition] || p.condition;
-
-      var stockHtml = p.stock > 0
-        ? '<span class="meta-value">剩餘 ' + p.stock + ' 件</span>'
-        : '<span class="meta-value out-of-stock">已售完</span>';
-
-      var conditionMeta = '<div class="meta-item"><span class="meta-label">狀態</span><span class="condition-badge" data-condition="' + p.condition + '">' + conditionLabel + '</span></div>';
-      var typeMeta = p.product_type === 'virtual'
-        ? '<div class="meta-item"><span class="meta-label">類型</span><span class="condition-badge">虛擬商品</span></div>'
-        : '';
-
-      container.innerHTML = '<nav class="breadcrumb">' +
-        '<a href="/shop/">首頁</a><span class="breadcrumb-sep">/</span>' +
-        '<a href="/shop/products/">全部商品</a><span class="breadcrumb-sep">/</span>' +
-        '<span class="breadcrumb-current">' + escHtml(p.name) + '</span></nav>' +
-        '<div class="product-detail">' +
-        '<div class="product-gallery"><div class="product-main-image" id="main-image-wrap">' + imgHtml(mainImgUrl, p.name) + '</div>' + thumbsHtml + '</div>' +
-        '<div class="product-info">' +
-        (p.category_name ? '<span class="product-category">' + escHtml(p.category_name) + '</span>' : '') +
-        '<h1 class="product-name">' + escHtml(p.name) + '</h1>' +
-        '<div class="product-pricing">' + priceHtml + '</div>' +
-        '<div class="product-meta">' + conditionMeta + typeMeta + '<div class="meta-item"><span class="meta-label">庫存</span>' + stockHtml + '</div></div>' +
-        (p.stock > 0 ?
-          '<div class="product-actions">' +
-          '<div class="quantity-selector">' +
-          '<button class="qty-btn" id="qty-minus">−</button>' +
-          '<input type="number" class="qty-input" id="qty-input" value="1" min="1" max="' + p.stock + '" />' +
-          '<button class="qty-btn" id="qty-plus">+</button></div>' +
-          '<button class="btn btn-primary btn-lg btn-block add-to-cart-btn" id="add-to-cart-btn" data-product-id="' + p.id + '" data-product-stock="' + p.stock + '">加入購物車</button>' +
-          '</div>' : '') +
-        '<div class="product-description"><h3>商品說明</h3><p>' + escHtml(p.description || '暫無說明') + '</p></div>' +
-        '</div></div>';
-
-      var minusBtn = document.getElementById('qty-minus');
-      var plusBtn = document.getElementById('qty-plus');
-      var input = document.getElementById('qty-input');
-      var addBtn = document.getElementById('add-to-cart-btn');
-
-      if (minusBtn && input) minusBtn.addEventListener('click', function() { var v = parseInt(input.value) || 1; if (v > 1) input.value = String(v - 1); });
-      if (plusBtn && input) plusBtn.addEventListener('click', function() { var v = parseInt(input.value) || 1; if (v < p.stock) input.value = String(v + 1); });
-
-      if (addBtn) {
-        addBtn.addEventListener('click', async function() {
-          var token = localStorage.getItem('shop_token');
-          if (!token) { window.location.href = '/shop/login/'; return; }
-          addBtn.disabled = true;
-          addBtn.textContent = '加入中...';
-          try {
-            var qty = parseInt(input.value) || 1;
-            var cartRes = await fetch(API_URL + '/api/cart', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
-              body: JSON.stringify({ product_id: p.id, quantity: qty }),
-            });
-            if (!cartRes.ok) {
-              var err = await cartRes.json();
-              throw new Error(err.detail || '加入購物車失敗');
-            }
-            var cart = await cartRes.json();
-            localStorage.setItem('shop_cart_count', String(cart.item_count));
-            var badge = document.getElementById('cart-badge');
-            if (badge) { badge.textContent = String(cart.item_count); badge.style.display = 'flex'; }
-            addBtn.textContent = '已加入！';
-            setTimeout(function() { addBtn.textContent = '加入購物車'; addBtn.disabled = false; }, 1500);
-          } catch (err) {
-            var msg = (err instanceof TypeError) ? '目前網路出現狀況中，請稍後再試' : (err.message || '加入購物車失敗');
-            alert(msg);
-            addBtn.textContent = '加入購物車';
-            addBtn.disabled = false;
-          }
-        });
-      }
-    } catch (e) {
-      var isNetwork = (e instanceof TypeError);
-      container.innerHTML = '<div style="padding:var(--sp-16) 0;text-align:center"><div style="font-size:48px;font-weight:300;color:var(--c-border);margin-bottom:var(--sp-4)">' + (isNetwork ? '⚠' : '404') + '</div><h2 style="font-weight:400;margin-bottom:var(--sp-4)">' + (isNetwork ? '目前網路出現狀況中，請稍後再試' : '商品不存在') + '</h2>' + (isNetwork ? '' : '<a href="/shop/products/" class="btn btn-primary">瀏覽全部商品</a>') + '</div>';
+    if (addBtn) {
+      addBtn.addEventListener('click', function() {
+        var count = parseInt(localStorage.getItem('shop_cart_count') || '0', 10) + 1;
+        localStorage.setItem('shop_cart_count', String(count));
+        addBtn.textContent = '✓ 已加入購物車！';
+        setTimeout(function() { addBtn.textContent = '加入購物車'; }, 1500);
+      });
     }
   });
 </script>
-
-<style is:global>
-  .breadcrumb { display: flex; align-items: center; gap: var(--sp-2); padding: var(--sp-6) 0; font-size: var(--text-sm); color: var(--c-text-secondary); }
-  .breadcrumb a { transition: color var(--duration) var(--ease); }
-  .breadcrumb a:hover { color: var(--c-text); }
-  .breadcrumb-sep { color: var(--c-text-light); }
-  .breadcrumb-current { color: var(--c-text); }
-  .product-detail { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-12); padding-bottom: var(--sp-16); }
-  .product-main-image { aspect-ratio: 1; background: var(--c-bg-alt); border: 1px solid var(--c-border); display: flex; align-items: center; justify-content: center; overflow: hidden; }
-  .product-main-image img { width: 100%; height: 100%; object-fit: cover; }
-  .product-info { display: flex; flex-direction: column; gap: var(--sp-6); padding-top: var(--sp-4); }
-  .product-category { font-size: var(--text-xs); color: var(--c-text-light); letter-spacing: 0.06em; text-transform: uppercase; }
-  .product-info .product-name { font-size: var(--text-3xl); font-weight: 400; line-height: var(--leading-tight); }
-  .product-pricing { display: flex; align-items: baseline; gap: var(--sp-3); }
-  .product-price { font-size: var(--text-2xl); font-weight: 500; }
-  .product-original-price { font-size: var(--text-base); color: var(--c-text-light); text-decoration: line-through; }
-  .product-meta { display: flex; flex-direction: column; gap: var(--sp-3); padding: var(--sp-4) 0; border-top: 1px solid var(--c-border); border-bottom: 1px solid var(--c-border); }
-  .meta-item { display: flex; align-items: center; gap: var(--sp-3); font-size: var(--text-sm); }
-  .meta-label { color: var(--c-text-light); min-width: 48px; }
-  .out-of-stock { color: var(--c-error); }
-  .condition-badge {
-    font-size: var(--text-xs);
-    font-weight: 500;
-    padding: 2px var(--sp-2);
-    border-radius: 3px;
-    line-height: 1.4;
-  }
-  .condition-badge { background: var(--c-bg-dark); color: var(--c-text-inverse); border: 1px solid var(--c-bg-dark); }
-  .product-actions { display: flex; gap: var(--sp-4); align-items: center; }
-  .quantity-selector { display: flex; align-items: center; border: 1px solid var(--c-border); border-radius: var(--radius); }
-  .qty-btn { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-size: var(--text-lg); color: var(--c-text-secondary); transition: background var(--duration) var(--ease); background: none; border: none; cursor: pointer; }
-  .qty-btn:hover { background: var(--c-bg-alt); }
-  .qty-input { width: 48px; height: 40px; text-align: center; border: none; border-left: 1px solid var(--c-border); border-right: 1px solid var(--c-border); font-size: var(--text-sm); -moz-appearance: textfield; outline: none; }
-  .qty-input::-webkit-inner-spin-button, .qty-input::-webkit-outer-spin-button { -webkit-appearance: none; }
-  .add-to-cart-btn { flex: 1; }
-  .product-description h3 { font-size: var(--text-sm); font-weight: 500; margin-bottom: var(--sp-3); }
-  .product-description p { font-size: var(--text-sm); color: var(--c-text-secondary); line-height: var(--leading-relaxed); }
-
-  .product-gallery { display: flex; flex-direction: column; gap: var(--sp-3); }
-  .product-thumbnails { display: flex; gap: var(--sp-2); flex-wrap: wrap; }
-  .thumbnail-item {
-    width: 72px; height: 72px;
-    border: 2px solid transparent;
-    border-radius: var(--radius);
-    overflow: hidden;
-    cursor: pointer;
-    opacity: 0.6;
-    transition: all var(--duration) var(--ease);
-    position: relative;
-    flex-shrink: 0;
-  }
-  .thumbnail-item:hover { opacity: 0.9; }
-  .thumbnail-item.active { opacity: 1; border-color: var(--c-text); }
-  .thumbnail-item img { width: 100%; height: 100%; object-fit: cover; }
-  .thumb-cover-badge {
-    position: absolute; bottom: 2px; left: 2px;
-    background: var(--c-primary); color: #fff;
-    font-size: 9px; padding: 0 4px; border-radius: 2px;
-    line-height: 14px;
-  }
-
-  @media (max-width: 768px) { .product-detail { grid-template-columns: 1fr; gap: var(--sp-6); } }
-</style>

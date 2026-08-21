@@ -1,265 +1,569 @@
 ---
-import BaseLayout from '../../../shop/layouts/BaseLayout.astro';
-import Header from '../../../shop/components/Header.astro';
-import Footer from '../../../shop/components/Footer.astro';
-const API_URL = import.meta.env.PUBLIC_API_URL || 'https://api.nsir.uk';
+import BlogLayout from '../../../layouts/BlogLayout.astro';
 ---
 
-<BaseLayout title="全部商品 — 小羊農場">
-    <Header />
-
-  <main class="pt-header">
+<BlogLayout title="全部商品 — 小羊農場" description="小羊農場全部二手良品與0元物資分享列表。">
+  <div class="main-content">
     <div class="container">
-      <div class="page-header">
-        <h1>全部商品</h1>
-        <p class="text-secondary" id="product-count">載入中...</p>
+      <!-- 麵包屑導航 (Breadcrumbs) -->
+      <div class="breadcrumbs">
+        <a href="/" class="home">首頁</a>
+        <span class="sep">&gt;</span>
+        <a href="/shop/">小羊農場</a>
+        <span class="sep">&gt;</span>
+        <span class="current-post-name">全部商品</span>
       </div>
 
-      <div class="products-layout">
-        <aside class="sidebar hide-mobile">
-          <div class="filter-group">
-            <h3 class="filter-title">分類</h3>
-            <div id="category-filters">
-              <a href="/shop/products" class="filter-link active">全部</a>
+      <!-- 🔷 Hero Header -->
+      <section class="content-hero-header">
+        <div class="left">
+          <h3>PRODUCTS</h3>
+          <h2>農場全品項物資庫存</h2>
+          <a href="/shop/zero-price/" class="btn-about-hero">0 元免費活動</a>
+        </div>
+        <div class="right">
+          <div class="slider-wrap-header">
+            <div class="slider-one">
+              <div class="img-wrap">
+                <div class="bgs bgs1"></div>
+                <div class="bgs bgs2"></div>
+                <div class="bgs bgs3"></div>
+                <div class="bgs bgs4"></div>
+                <a class="bgs bgs5 hero-featured-link" href="/shop/">
+                  <div class="featured-img-container">
+                    <img src="/banners/hero-promo-v3.jpg?v=20260820light" alt="農場商品" class="featured-main-img" />
+                  </div>
+                </a>
+              </div>
             </div>
           </div>
-          <div class="filter-group">
-            <h3 class="filter-title">排序</h3>
-            <div id="sort-filters">
-              <a href="#" class="filter-link active" data-sort="newest">最新</a>
-              <a href="#" class="filter-link" data-sort="price_asc">價格：低到高</a>
-              <a href="#" class="filter-link" data-sort="price_desc">價格：高到低</a>
+        </div>
+      </section>
+
+      <!-- 📰 雙欄主內容區 -->
+      <div class="content-area-top">
+        <div class="left">
+          <!-- 📑 商城快捷分頁分類標籤 -->
+          <div class="tech-main-tab-bar">
+            <div class="tech-main-tabs">
+              <a href="/shop/products/" class="tech-main-tab-item active">全部商品</a>
+              <a href="/shop/zero-price/" class="tech-main-tab-item zero-tab">0元活動專區</a>
+              <a href="/shop/shopping-guide/" class="tech-main-tab-item">購物須知</a>
+              <a href="/shop/about/" class="tech-main-tab-item">關於我們</a>
             </div>
+          </div>
+
+          <div class="post-area-head">
+            <h2 class="post-area-title">全部二手良品清單</h2>
+            <span class="cal-sub-label">精選檢測良品，品質嚴格把關</span>
+          </div>
+
+          <!-- 商品卡片雙欄網格 -->
+          <div class="post-list col2" id="products-grid">
+            <article class="post-card">
+              <div class="img-wrap">
+                <a class="card-thumb-link" href="/shop/products/samsungddr34gbram/">
+                  <div class="card-img-box">
+                    <div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;background:#f8fafc;color:#64748b;font-weight:600;font-size:1.1rem;">
+                      Samsung DDR3 4GB
+                    </div>
+                  </div>
+                </a>
+              </div>
+              <ul class="post-categories">
+                <li><a href="/shop/zero-price/">電腦零組件 · 0 元活動</a></li>
+              </ul>
+              <h3 class="post-title">
+                <a href="/shop/products/samsungddr34gbram/">Samsung DDR3 4GB 筆電/桌機記憶體</a>
+              </h3>
+              <div class="shop-price-tag">0 元免費領取</div>
+              <p class="post-excerpt">功能經檢測完全正常，原廠晶粒良品，免費分享給有需要升級舊設備的朋友。</p>
+              <a href="/shop/products/samsungddr34gbram/" class="read-more">查看商品詳情 →</a>
+            </article>
+          </div>
+        </div>
+
+        <!-- 📌 右側側邊欄 -->
+        <aside class="right sidebar-right">
+          <div class="side-author-box">
+            <div class="photo">
+              <img src="/sheep-hd.png" alt="小羊農場" width="90" height="90" />
+            </div>
+            <h2>小羊農場 <span class="eng-name">/ Sheep Farm</span></h2>
+            <p class="history">物品流轉 · 零元分享 · 綠色循環</p>
+            <div class="side-btn-wrap">
+              <a href="/shop/about/" class="btn-vip">農場理念</a>
+            </div>
+          </div>
+
+          <div class="shop-side-box">
+            <h3 class="shop-side-title">商城服務指南</h3>
+            <ul class="shop-side-menu">
+              <li><a href="/shop/zero-price/">🎁 0 元免費領取專區</a></li>
+              <li><a href="/shop/products/">🛒 全部二手良品列表</a></li>
+              <li><a href="/shop/shopping-guide/">📖 7-11 寄送與購物流程</a></li>
+              <li><a href="/shop/cart/">🛍️ 查看我的購物車</a></li>
+              <li><a href="/shop/account/">👤 會員中心與訂單查詢</a></li>
+            </ul>
           </div>
         </aside>
-
-        <div class="products-grid">
-          <div class="mobile-filters hide-desktop">
-            <select class="form-input" id="mobile-sort">
-              <option value="newest">最新</option>
-              <option value="price_asc">價格：低到高</option>
-              <option value="price_desc">價格：高到低</option>
-            </select>
-          </div>
-
-          <div class="grid grid-3" id="products-grid">
-            <div class="text-center text-secondary" style="grid-column:1/-1;padding:var(--sp-16)">載入中...</div>
-          </div>
-
-          <div class="pagination" id="pagination"></div>
-        </div>
       </div>
     </div>
-  </main>
+  </div>
+</BlogLayout>
 
-  <Footer />
-</BaseLayout>
+<style>
+  .main-content {
+    background-color: #ffffff;
+    padding: 1.5rem 0 5rem;
+  }
+
+  .breadcrumbs {
+    font-size: 14px;
+    color: #999999;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+  }
+
+  .breadcrumbs a {
+    color: #666666;
+    text-decoration: none;
+  }
+
+  .breadcrumbs a:hover {
+    color: #ff6b00;
+  }
+
+  .breadcrumbs .sep {
+    margin: 0 5px;
+    color: #cccccc;
+  }
+
+  .breadcrumbs .current-post-name {
+    color: #333333;
+    font-weight: 500;
+  }
+
+  .content-hero-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    margin-bottom: 3.5rem;
+    border-bottom: 1px solid #e2e2e2;
+    padding-bottom: 3rem;
+  }
+
+  .content-hero-header .left {
+    width: 28%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-right: 2rem;
+  }
+
+  .content-hero-header .left h3 {
+    font-size: 1.1rem;
+    color: #ff6b00;
+    margin: 0 0 0.5rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+
+  .content-hero-header .left h2 {
+    font-size: 1.65rem;
+    line-height: 1.4;
+    color: #111111;
+    margin: 0 0 1.5rem;
+    font-weight: 700;
+  }
+
+  .btn-about-hero {
+    display: inline-block;
+    padding: 0.6rem 1.4rem;
+    background: #111111;
+    color: #ffffff !important;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    align-self: flex-start;
+    transition: background 0.15s ease;
+  }
+
+  .btn-about-hero:hover {
+    background: #ff6b00;
+  }
+
+  .content-hero-header .right {
+    width: 70%;
+  }
+
+  .slider-wrap-header {
+    width: 100%;
+  }
+
+  .slider-one .img-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    max-height: 380px;
+    background: #f0f0f0;
+  }
+
+  .hero-featured-link {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .featured-img-container {
+    width: 100%;
+    height: 100%;
+  }
+
+  .featured-main-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .content-area-top {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .content-area-top > .left {
+    width: 68%;
+    padding-right: 3.5%;
+    border-right: 1px solid #e2e2e2;
+  }
+
+  .content-area-top > .right.sidebar-right {
+    width: 28%;
+    padding-top: 0.5rem;
+  }
+
+  .tech-main-tab-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid #111111;
+    padding-bottom: 0.8rem;
+  }
+
+  .tech-main-tabs {
+    display: flex;
+    gap: 1.2rem;
+    align-items: center;
+  }
+
+  .tech-main-tab-item {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #888888;
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  .tech-main-tab-item:hover,
+  .tech-main-tab-item.active {
+    color: #111111;
+  }
+
+  .tech-main-tab-item.zero-tab {
+    color: #ea580c;
+  }
+
+  .post-area-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    border-bottom: 2px solid #111111;
+    padding-bottom: 0.6rem;
+    margin-bottom: 1.8rem;
+  }
+
+  .post-area-title {
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: #111111;
+    border-left: 5px solid #ff6b00;
+    padding-left: 12px;
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  .cal-sub-label {
+    font-size: 0.85rem;
+    color: #888888;
+  }
+
+  .post-list.col2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem 1.5rem;
+  }
+
+  .post-card {
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    padding: 1.2rem;
+    transition: border-color 0.15s ease;
+  }
+
+  .post-card:hover {
+    border-color: #ff6b00;
+  }
+
+  .post-card .img-wrap {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: #f8fafc;
+    margin-bottom: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #f1f5f9;
+  }
+
+  .card-thumb-link {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .card-img-box {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .post-card:hover .card-img {
+    transform: scale(1.04);
+  }
+
+  .post-categories {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 0.4rem;
+  }
+
+  .post-categories li a {
+    color: #ff6b00;
+    font-size: 0.82rem;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .post-title {
+    font-size: 1.12rem;
+    font-weight: 700;
+    line-height: 1.4;
+    margin: 0 0 0.5rem;
+  }
+
+  .post-title a {
+    color: #111111;
+    text-decoration: none;
+  }
+
+  .post-title a:hover {
+    color: #ff6b00;
+  }
+
+  .post-excerpt {
+    font-size: 0.88rem;
+    color: #666666;
+    line-height: 1.6;
+    margin: 0 0 0.9rem;
+    flex-grow: 1;
+  }
+
+  .shop-price-tag {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #ea580c;
+    margin-bottom: 0.6rem;
+  }
+
+  .read-more {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #ff6b00;
+    text-decoration: none;
+    align-self: flex-start;
+  }
+
+  .read-more:hover {
+    text-decoration: underline;
+  }
+
+  .side-author-box {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    padding: 1.8rem;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .side-author-box .photo img {
+    border-radius: 50%;
+    margin-bottom: 0.8rem;
+  }
+
+  .side-author-box h2 {
+    font-size: 1.2rem;
+    margin: 0 0 0.4rem;
+    color: #111111;
+  }
+
+  .side-author-box .history {
+    font-size: 0.85rem;
+    color: #888888;
+    margin: 0 0 1rem;
+  }
+
+  .side-author-box .btn-vip {
+    display: inline-block;
+    padding: 0.4rem 1.2rem;
+    background: #111111;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 0.85rem;
+  }
+
+  .shop-side-box {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    padding: 1.5rem;
+  }
+
+  .shop-side-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #111111;
+    border-bottom: 2px solid #111111;
+    padding-bottom: 0.6rem;
+    margin: 0 0 1.2rem;
+  }
+
+  .shop-side-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+
+  .shop-side-menu a {
+    font-size: 0.93rem;
+    color: #333333;
+    text-decoration: none;
+    transition: color 0.15s ease;
+    display: block;
+  }
+
+  .shop-side-menu a:hover {
+    color: #ff6b00;
+  }
+
+  @media (max-width: 900px) {
+    .content-hero-header {
+      flex-direction: column;
+    }
+    .content-hero-header .left {
+      width: 100%;
+      padding-right: 0;
+      margin-bottom: 1.5rem;
+    }
+    .content-hero-header .right {
+      width: 100%;
+    }
+    .content-area-top {
+      flex-direction: column;
+    }
+    .content-area-top > .left {
+      width: 100%;
+      padding-right: 0;
+      border-right: none;
+    }
+    .content-area-top > .right.sidebar-right {
+      width: 100%;
+      margin-top: 3rem;
+    }
+    .post-list.col2 {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
 
 <script is:inline>
   var API_URL = 'https://api.nsir.uk';
+
+  window.escHtml = function(s) {
+    if (!s) return '';
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+  };
+
   var __cc = window.__currency;
   function _fmt(ntd) {
-    if (ntd === 0) return '<span data-ntd="0">免費</span>';
+    if (ntd === 0) return '0 元免費';
     if (__cc && __cc._rates) return __cc.format(ntd);
-    return '<span data-ntd="' + ntd + '">NT$' + (ntd || 0).toLocaleString() + '</span>';
+    return 'NT$ ' + (ntd || 0).toLocaleString();
   }
-  var conditionLabels = { new: '全新', like_new: '近乎全新', used: '二手', refurbished: '整新品' };
-  var conditionNotes = {
-    new: '全新商品，原廠包裝未拆封',
-    like_new: '近乎全新，極輕微使用痕跡',
-    used: '此為二手商品，請確認狀況後索取',
-    refurbished: '整新品，功能經檢測正常',
-  };
-  function conditionNoteText(p) {
-    return conditionNotes[p.condition] || '請確認商品狀況後索取';
-  }
+
+  var conditionLabels = { new: '全新', like_new: '近乎全新', used: '二手良品', refurbished: '整新品' };
 
   document.addEventListener('DOMContentLoaded', async function() {
-    var params = new URLSearchParams(window.location.search);
-    var currentPage = parseInt(params.get('page') || '1');
-    var currentCategory = params.get('category') || '';
-    var currentSort = params.get('sort') || 'newest';
-    var currentSearch = params.get('search') || '';
+    var container = document.getElementById('products-grid');
+    if (!container) return;
 
-    function updateUrl() {
-      var qs = new URLSearchParams();
-      if (currentPage > 1) qs.set('page', String(currentPage));
-      if (currentCategory) qs.set('category', currentCategory);
-      if (currentSort !== 'newest') qs.set('sort', currentSort);
-      if (currentSearch) qs.set('search', currentSearch);
-      var url = '/products' + (qs.toString() ? '?' + qs : '');
-      window.history.replaceState({ page: currentPage, category: currentCategory, sort: currentSort, search: currentSearch }, '', url);
-    }
+    try {
+      var res = await fetch(API_URL + '/api/products?page_size=24&sort=newest');
+      if (res.ok) {
+        var data = await res.json();
+        if (data && data.items && data.items.length) {
+          container.innerHTML = data.items.map(function(p) {
+            var priceText = _fmt(p.price);
+            var imgHtml = p.image_url
+              ? '<img src="' + p.image_url + '" alt="' + escHtml(p.name) + '" class="card-img" loading="lazy" />'
+              : '<div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;background:#f8fafc;color:#64748b;font-weight:600;font-size:1.05rem;">' + escHtml(p.name) + '</div>';
 
-    function showGridLoading() {
-      var grid = document.getElementById('products-grid');
-      grid.style.opacity = '0.4';
-      grid.style.transition = 'opacity 0.15s ease';
-    }
-    function hideGridLoading() {
-      var grid = document.getElementById('products-grid');
-      grid.style.opacity = '1';
-    }
+            var condLabel = conditionLabels[p.condition] || '二手良品';
 
-    async function loadCategories() {
-      try {
-        var res = await fetch(API_URL + '/api/categories');
-        if (!res.ok) return;
-        var cats = await res.json();
-        var container = document.getElementById('category-filters');
-        var html = '<a href="#" class="filter-link' + (!currentCategory ? ' active' : '') + '" data-category="">全部</a>';
-        cats.forEach(function(c) {
-          var active = currentCategory === c.slug ? ' active' : '';
-          html += '<a href="#" class="filter-link' + active + '" data-category="' + c.slug + '">' + escHtml(c.name) + '</a>';
-        });
-        container.innerHTML = html;
-
-        container.querySelectorAll('.filter-link').forEach(function(link) {
-          link.addEventListener('click', function(e) {
-            e.preventDefault();
-            var cat = link.getAttribute('data-category') || '';
-            if (cat === currentCategory) return;
-            currentCategory = cat;
-            currentPage = 1;
-            updateUrl();
-            container.querySelectorAll('.filter-link').forEach(function(l) { l.classList.remove('active'); });
-            link.classList.add('active');
-            showGridLoading();
-            loadProducts();
-          });
-        });
-      } catch (e) {}
-    }
-
-    async function loadProducts() {
-      var grid = document.getElementById('products-grid');
-      var qs = new URLSearchParams();
-      qs.set('page', String(currentPage));
-      qs.set('page_size', '12');
-      if (currentCategory) qs.set('category', currentCategory);
-      if (currentSearch) qs.set('search', currentSearch);
-      if (currentSort) qs.set('sort', currentSort);
-
-      var cache = window.__apiCache;
-      try {
-        var data = cache
-          ? await cache.fetch(API_URL + '/api/products?' + qs, 'products_' + qs)
-          : await (await fetch(API_URL + '/api/products?' + qs)).json();
-        document.getElementById('product-count').textContent = '共 ' + data.total + ' 件商品';
-
-        if (!data.items.length) {
-          var emptyMsg = (currentCategory || currentSearch)
-            ? '<p>沒有符合條件的商品</p><a href="/shop/products" class="btn btn-secondary" style="margin-top:var(--sp-4)">清除篩選</a>'
-            : '<p>目前還沒有商品喔！可能需要再等等 🐑</p>';
-          grid.innerHTML = '<div class="text-center text-secondary" style="grid-column:1/-1;padding:var(--sp-16)">' + emptyMsg + '</div>';
-          document.getElementById('pagination').innerHTML = '';
-          hideGridLoading();
-          return;
+            return '<article class="post-card">' +
+              '<div class="img-wrap">' +
+              '<a class="card-thumb-link" href="/shop/products/' + p.slug + '/">' +
+              '<div class="card-img-box">' + imgHtml + '</div>' +
+              '</a>' +
+              '</div>' +
+              '<ul class="post-categories">' +
+              '<li><a href="/shop/products/' + p.slug + '/">' + escHtml(p.category_name || '農場物資') + ' · ' + condLabel + '</a></li>' +
+              '</ul>' +
+              '<h3 class="post-title">' +
+              '<a href="/shop/products/' + p.slug + '/">' + escHtml(p.name) + '</a>' +
+              '</h3>' +
+              '<div class="shop-price-tag">' + priceText + '</div>' +
+              '<p class="post-excerpt">' + escHtml(p.summary || p.description || '功能完好，歡迎探索詳細規格與狀況。') + '</p>' +
+              '<a href="/shop/products/' + p.slug + '/" class="read-more">查看商品詳情 →</a>' +
+              '</article>';
+          }).join('');
         }
-
-        grid.innerHTML = data.items.map(function(p) {
-          var priceHtml = p.sale_price != null
-            ? '<span style="font-weight:500">' + _fmt(p.sale_price) + '</span><span style="text-decoration:line-through;color:var(--c-text-light);font-size:var(--text-xs);margin-left:4px">' + _fmt(p.price) + '</span>'
-            : '<span style="font-weight:500">' + _fmt(p.price) + '</span>';
-          var imgHtml = p.image_url
-            ? '<img src="' + p.image_url + '" alt="' + escHtml(p.name) + '" style="width:100%;height:100%;object-fit:cover" />'
-            : '<div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%"><svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1" opacity="0.15"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>';
-          return '<a href="/shop/products/' + p.slug + '/" class="product-card">' +
-            '<div class="product-image">' + imgHtml + '</div>' +
-            '<div class="product-meta">' +
-            (p.category_name ? '<span class="product-category">' + escHtml(p.category_name) + '</span>' : '') +
-            '<h3 class="product-name">' + escHtml(p.name) + '</h3>' +
-            '<div class="product-price">' + priceHtml + '</div>' +
-            '<div class="product-condition-note">' + conditionNoteText(p) + '</div>' +
-            '</div></a>';
-        }).join('');
-
-        if (window.__loadingPreload) {
-          var urls = data.items.filter(function(p) { return p.image_url; }).map(function(p) { return p.image_url; });
-          window.__loadingPreload(urls);
-        }
-
-        var paginationHtml = '';
-        if (data.pages > 1) {
-          paginationHtml += '<button class="btn btn-secondary btn-sm"' + (currentPage <= 1 ? ' disabled' : '') + ' onclick="goPage(' + (currentPage - 1) + ')">← 上一頁</button>';
-          paginationHtml += '<span class="text-sm text-secondary">' + currentPage + ' / ' + data.pages + '</span>';
-          paginationHtml += '<button class="btn btn-secondary btn-sm"' + (currentPage >= data.pages ? ' disabled' : '') + ' onclick="goPage(' + (currentPage + 1) + ')">下一頁 →</button>';
-        }
-        document.getElementById('pagination').innerHTML = paginationHtml;
-        hideGridLoading();
-      } catch (e) {
-        grid.innerHTML = '<div class="text-center text-secondary" style="grid-column:1/-1;padding:var(--sp-16)">目前網路出現狀況中，請稍後再試</div>';
-        hideGridLoading();
       }
-    }
-
-    window.goPage = function(page) {
-      if (page < 1) return;
-      currentPage = page;
-      updateUrl();
-      showGridLoading();
-      loadProducts();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    };
-
-    document.querySelectorAll('#sort-filters .filter-link').forEach(function(link) {
-      link.addEventListener('click', function(e) {
-        e.preventDefault();
-        var sort = link.dataset.sort;
-        if (sort === currentSort) return;
-        currentSort = sort;
-        currentPage = 1;
-        updateUrl();
-        document.querySelectorAll('#sort-filters .filter-link').forEach(function(l) { l.classList.remove('active'); });
-        link.classList.add('active');
-        showGridLoading();
-        loadProducts();
-      });
-    });
-
-    var mobileSort = document.getElementById('mobile-sort');
-    if (mobileSort) {
-      mobileSort.value = currentSort;
-      mobileSort.addEventListener('change', function() {
-        var sort = this.value;
-        if (sort === currentSort) return;
-        currentSort = sort;
-        currentPage = 1;
-        updateUrl();
-        document.querySelectorAll('#sort-filters .filter-link').forEach(function(l) {
-          l.classList.toggle('active', l.dataset.sort === sort);
-        });
-        showGridLoading();
-        loadProducts();
-      });
-    }
-
-    loadCategories();
-    loadProducts();
+    } catch (e) {}
   });
 </script>
-
-<style>
-  .page-header {
-    padding: var(--sp-10) 0;
-    border-bottom: 1px solid var(--c-border);
-    margin-bottom: var(--sp-8);
-  }
-  .page-header h1 { font-size: var(--text-3xl); font-weight: 400; margin-bottom: var(--sp-2); }
-  .products-layout { display: grid; grid-template-columns: 200px 1fr; gap: var(--sp-10); padding-bottom: var(--sp-16); }
-  .sidebar { position: sticky; top: 80px; align-self: start; }
-  .filter-group { margin-bottom: var(--sp-8); }
-  .filter-title { font-size: var(--text-xs); font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: var(--c-text-light); margin-bottom: var(--sp-3); }
-  .filter-link { display: block; font-size: var(--text-sm); color: var(--c-text-secondary); padding: var(--sp-1) 0; transition: color var(--duration) var(--ease); }
-  .filter-link:hover, .filter-link.active { color: var(--c-text); }
-  .product-condition-note {
-    font-size: 10px;
-    color: var(--c-text-light);
-    margin-top: var(--sp-2);
-    line-height: 1.3;
-  }
-
-  .mobile-filters { margin-bottom: var(--sp-4); }
-  .pagination { display: flex; align-items: center; justify-content: center; gap: var(--sp-4); margin-top: var(--sp-10); padding-top: var(--sp-8); border-top: 1px solid var(--c-border); }
-  @media (max-width: 768px) { .products-layout { grid-template-columns: 1fr; gap: var(--sp-4); } }
-</style>
