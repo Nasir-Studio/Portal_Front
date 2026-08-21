@@ -148,7 +148,7 @@ function getPostCategory(post: typeof posts[0]) {
         </div>
 
           <!-- 🏅 資格認證 (Badges - 純淨展示，無多餘超連結) -->
-          <div class="side-popular-box side-badges-box" style="margin-top: 2rem;">
+          <div class="side-badges-box" style="margin-top: 2rem;">
             <h2 class="side-badges-title">資格認證</h2>
             <ul class="side-badges-list">
               {badges.map((b) => (
@@ -690,7 +690,12 @@ function getPostCategory(post: typeof posts[0]) {
     }
   }
     /* 🏅 側邊欄資格認證與每日一句樣式 (雙欄並排、全部8個徽章完整呈現) */
-  .side-badges-box, .side-quote-box {
+  .side-badges-box {
+    background: transparent;
+    border: none;
+    padding: 0;
+  }
+  .side-quote-box {
     background: #ffffff;
     border: 1px solid #e5e7eb;
     border-radius: 4px;
