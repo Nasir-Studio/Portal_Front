@@ -1,6 +1,7 @@
 ---
 import BlogLayout from '../../layouts/BlogLayout.astro';
 import announcements from '../../data/announcements';
+import posts from '../../data/posts';
 
 export function getStaticPaths() {
   return announcements.map((item) => ({
@@ -10,213 +11,580 @@ export function getStaticPaths() {
 }
 
 const { item } = Astro.props;
-const number = announcements.findIndex((a) => a.slug === item.slug) + 1;
+const popularPosts = posts.slice(0, 3);
 ---
 
 <BlogLayout title={`${item.title} ｜ OviNas`} description="OviNas 站務公告與創站日記隨筆">
-  <div class="main-content news-detail-page">
-    <div class="container news-container">
-
-      <!-- 麵包屑導航 -->
-      <nav class="news-breadcrumbs" aria-label="麵包屑">
-        <a href="/">首頁</a>
-        <span class="sep">&gt;</span>
-        <a href="/#news">最新消息</a>
-        <span class="sep">&gt;</span>
-        <span class="current">{item.title}</span>
-      </nav>
-
-      <article class="news-article-card">
-        <header class="news-article-header">
-          <div class="news-badge-row">
-            <span class="news-badge">站務公告 · 第 {number} 號</span>
-            <span class="news-date">{item.date}</span>
-          </div>
-          <h1 class="news-title">{item.title}</h1>
-          <div class="news-author-meta">
-            <span>By <strong>OviNas 站長 Nasir</strong></span>
-            <span class="dot">·</span>
-            <span>站務隨筆與心情記錄</span>
-          </div>
-        </header>
-
-        <!-- 封面圖片 -->
-        <div class="news-cover-wrap">
-          <img src="/banners/hero-promo-v3.jpg?v=20260820light" alt={item.title} class="news-cover-img" />
+  <div class="main-content forsingle">
+    <div class="container single-page-area">
+      <!-- 📖 左側主文章區域 (68% 寬度，右側 1px 分隔線) -->
+      <main class="left">
+        <!-- 經典麵包屑導航 (Breadcrumbs) -->
+        <div class="breadcrumbs">
+          <a href="/" class="home">首頁</a>
+          <span class="sep">&gt;</span>
+          <a href="/#news" class="taxonomy-cat">站務消息</a>
+          <span class="sep">&gt;</span>
+          <a href="/#news" class="taxonomy-subcat">公告隨筆</a>
+          <span class="sep">&gt;</span>
+          <span class="current-post-name">{item.title}</span>
         </div>
 
-        <div class="news-body-content">
-          {item.content.split('\n\n').map((p) => (
-            <p>{p}</p>
-          ))}
+        <article>
+          <!-- 文章大標題 (h1) -->
+          <h1 class="single-post-h1">{item.title}</h1>
+
+          <!-- 文章 Meta 資訊欄 (.post-meta) -->
+          <div class="post-meta">
+            <div class="post-author">
+              By <a href="/about/">OviNas 站長 Nasir</a>
+            </div>
+            <div class="post-date">
+              {item.date}
+            </div>
+            <div class="post-date-modified">
+              最後更新：{item.date}
+            </div>
+            <div class="meta-divider">|</div>
+            <ul class="post-categories">
+              <li><a href="/#news">站務公告</a></li>
+            </ul>
+          </div>
+
+          <!-- 經典 16:9 文青照片大圖展示 (.img-wrap) -->
+          <div class="img-wrap single-hero-img-wrap">
+            <div class="single-cover-box">
+              <img src="/banners/hero-promo-v3.jpg?v=20260820light" alt={item.title} class="single-cover-photo" />
+            </div>
+          </div>
+
+          <!-- 📑 內容索引目錄 (Table of Contents) -->
+          <div id="toc_container" class="no_bullets toc_numbered toc_title_center">
+            <p class="toc_title">內容索引</p>
+            <ul class="toc_list" id="tocList">
+              <li><a href="#section-diary">1. 創站隨筆與大學生活</a></li>
+              <li><a href="#section-origin">2. 為什麼叫做 OviNas？</a></li>
+            </ul>
+          </div>
+
+          <!-- 文章內文排版 (.post-content) -->
+          <div class="post-content" id="articleBody">
+            <h2 id="section-diary">創站隨筆與大學生活</h2>
+            <p>
+              決定用這個 Repo 來記錄自己的每一天，像是一本專屬的日記本。
+            </p>
+            <p>
+              也即將要邁入大三了，我覺得大學生活也即將過半了，在大學的這兩年下來，除了一方面是自己搬出來臺北北漂住，然後生存，課業方面，當然有擅長的跟非常不擅長的（像是數學 XD）而日常生活中除了讀書，我也覺得北部很有趣，在大學期間這兩年去了蠻多地方，也體驗蠻多事物，但偶爾也是會思考，我大學到底做了什麼，有沒有把時間效率最大化。
+            </p>
+            <p>
+              這個日記本，我覺得我會把無論是我的小專案、還是我的心情還是我的一些正在學習的東西，放上來，並且督促自己！讓自己越來越進步，不要讓大學生活渾渾噩噩跑掉了！
+            </p>
+
+            <h2 id="section-origin">為什麼叫做 OviNas？</h2>
+            <p>
+              那為什麼叫做 <strong>OviNas</strong> 呢？這個名字的由來：因為我的綽號叫小羊（<strong>Ovis</strong> 是羊的拉丁文），結合我的名字 <strong>Nasir</strong>，組合成 <strong>OviNas</strong> XDXD
+            </p>
+            <p>
+              這個也是 Nasir 我的第一篇開頭！歡迎各位來到我的個人天地與技術筆記本，讓我們一起持續學習與進步！
+            </p>
+          </div>
+
+          <!-- 底部作者專欄卡片 (Side Author Box) -->
+          <div class="side-author-box post-footer-author">
+            <div class="photo">
+              <img src="/sheep-hd.png" alt="OviNas" width="90" height="90" />
+            </div>
+            <h2>Nasir <span class="eng-name">/ OviNas 站長專欄</span></h2>
+            <p class="history">網站架設 · 系統資安 · 筆記小分享</p>
+            <div class="author-bio">
+              <p>
+                從小對資訊抱有熱忱，從 Google 查詢時代轉向 AI 世代，面對學習與獲取資訊方式的改變，我始終一直持續 Update 我的資訊專業能力。時代轉變，像是 DOS 轉變成 Windows 一樣，很多東西懂需要重新學，這個資訊爆炸的世代，我不僅具備傳統電腦維修與程式設計能力，更擅長利用資訊解決企業的【痛點】。
+              </p>
+              <p>
+                許多企業目前仍以人工方式處理專業技術工作，而我喜歡發揮想像力，將流程與資訊系統整合，讓原本緩慢的效率獲得大幅提升！
+              </p>
+            </div>
+          </div>
+
+          <!-- ✉️ 文章底部的聯絡表單 -->
+          <div class="article-contact-section">
+            <h3 class="article-contact-title">聯絡站長 / 交流反饋</h3>
+            <p class="article-contact-desc">
+              有任何想法或交流？歡迎填寫下方表單直接與我聯繫！
+            </p>
+            <form class="article-contact-form" id="articleContactForm">
+              <div class="form-row-2">
+                <div class="form-field">
+                  <label for="acName">姓名 / 稱呼 *</label>
+                  <input type="text" id="acName" name="entry.57084769" placeholder="您的姓名或暱稱" required class="form-input" />
+                </div>
+                <div class="form-field">
+                  <label for="acEmail">電子郵件 *</label>
+                  <input type="email" id="acEmail" name="entry.135399445" placeholder="your-email@example.com" required class="form-input" />
+                </div>
+              </div>
+              <div class="form-field">
+                <label for="acMsg">留言內容 *</label>
+                <textarea id="acMsg" name="entry.1753446536" placeholder="請輸入您想交流的內容…" rows="3" required class="form-input form-textarea"></textarea>
+              </div>
+              <div class="form-submit-row">
+                <button type="submit" id="acSubmitBtn" class="btn-article-submit">送出訊息</button>
+                <span id="acStatus" class="article-form-status"></span>
+              </div>
+            </form>
+          </div>
+
+          <!-- 上一篇 / 下一篇導航 -->
+          <div class="prev-next-article">
+            <a href="/" class="pn-item prev">
+              <span class="pn-dir">« 返回首頁</span>
+              <span class="pn-text">OviNas 首頁專欄</span>
+            </a>
+            <a href="/posts/tech-notes-architecture/" class="pn-item next">
+              <span class="pn-dir">下一篇推薦 »</span>
+              <span class="pn-text">【技術文章】技術筆記本</span>
+            </a>
+          </div>
+        </article>
+      </main>
+
+      <!-- 📌 右側側邊欄 (28% 寬度) -->
+      <aside class="right sidebar-right">
+        <!-- 站長專欄 -->
+        <div class="side-author-box">
+          <div class="photo">
+            <img src="/sheep-hd.png" alt="OviNas" width="90" height="90" />
+          </div>
+          <h2>OviNas <span class="eng-name">/ 站長</span></h2>
+          <p class="history">網站架設 · 系統資安 · 筆記小分享</p>
+          <div class="side-btn-wrap">
+            <a href="/about/" class="btn-vip">關於站長</a>
+          </div>
         </div>
 
-        <footer class="news-footer-actions">
-          <a href="/" class="btn-news-back">← 返回首頁</a>
-        </footer>
-      </article>
-
+        <!-- 熱門排行側欄 (#popular-side: 75px 1:1 正方形微縮圖) -->
+        <div class="popular-posts" id="popular-side">
+          <h3 class="popular-title">熱門推薦文章</h3>
+          <ul class="wpp-list">
+            {popularPosts.map((p) => (
+              <li class="wpp-item">
+                <a href={`/posts/${p.slug}/`} class="wpp-thumb-link">
+                  <div class="wpp-thumbnail-box">
+                    <img src={`/banners/${p.slug}.jpg?v=20260820light`} alt={p.title} class="wpp-thumb-img" />
+                  </div>
+                </a>
+                <div class="wpp-details">
+                  <a href={`/posts/${p.slug}/`} class="wpp-post-title">
+                    {p.title}
+                  </a>
+                  <span class="wpp-meta">{p.date}</span>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </aside>
     </div>
   </div>
 </BlogLayout>
 
 <style>
-  .news-detail-page {
+  .main-content.forsingle {
     background-color: #ffffff;
-    padding: 2.5rem 0 5rem;
+    padding: 2rem 0 5rem;
   }
 
-  .news-container {
-    max-width: 860px;
-    margin: 0 auto;
-    padding: 0 1.25rem;
-  }
-
-  .news-breadcrumbs {
+  .single-page-area {
     display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.88rem;
-    color: #64748b;
-    margin-bottom: 1.8rem;
+    justify-content: space-between;
   }
 
-  .news-breadcrumbs a {
-    color: #334155;
+  .single-page-area main.left {
+    width: 68%;
+    padding-right: 3.5%;
+    border-right: 1px solid #e2e2e2;
+  }
+
+  .single-page-area .right.sidebar-right {
+    width: 28%;
+    padding-top: 0.5rem;
+  }
+
+  .breadcrumbs {
+    font-size: 14px;
+    color: #999999;
+    margin-bottom: 1.2rem;
+    line-height: 1.5;
+    font-weight: 400;
+  }
+
+  .breadcrumbs a {
+    color: #666666;
     text-decoration: none;
-    transition: color 0.15s ease;
+    font-weight: 400;
   }
 
-  .news-breadcrumbs a:hover {
+  .breadcrumbs a:hover {
     color: #ff6b00;
   }
 
-  .news-breadcrumbs .sep {
-    color: #94a3b8;
+  .breadcrumbs .sep {
+    margin: 0 5px;
+    color: #cccccc;
   }
 
-  .news-breadcrumbs .current {
-    color: #0f172a;
-    font-weight: 600;
+  .breadcrumbs .current-post-name {
+    color: #333333;
+    font-weight: 400;
   }
 
-  .news-article-card {
-    background: #ffffff;
-    border: 1.5px solid #0f172a;
-    box-shadow: 0 6px 24px rgba(15, 23, 42, 0.06);
-    padding: 2.5rem 2.8rem;
-  }
-
-  .news-article-header {
-    border-bottom: 1.5px solid #cbd5e1;
-    padding-bottom: 1.8rem;
-    margin-bottom: 2rem;
-  }
-
-  .news-badge-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 0.8rem;
-  }
-
-  .news-badge {
-    display: inline-block;
-    background: #0f172a;
-    color: #ffffff;
-    font-size: 11px;
+  .single-post-h1 {
+    font-size: 2.1rem;
     font-weight: 700;
-    letter-spacing: 0.12em;
-    padding: 3px 10px;
-  }
-
-  .news-date {
-    font-size: 0.88rem;
-    color: #64748b;
-    font-weight: 600;
-  }
-
-  .news-title {
-    font-size: 2.2rem;
-    font-weight: 800;
-    color: #0f172a;
     line-height: 1.35;
-    margin: 0.6rem 0 1rem;
-    letter-spacing: -0.01em;
+    color: #222222;
+    margin: 0 0 0.8rem;
+    letter-spacing: 0.5px;
   }
 
-  .news-author-meta {
-    font-size: 0.88rem;
-    color: #64748b;
+  .post-meta {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    gap: 0.6rem;
+    gap: 0.8rem;
+    font-size: 13px;
+    color: #999999;
+    margin: 0 0 1.8rem;
+    line-height: 25px;
+    font-weight: 400;
   }
 
-  .news-author-meta strong {
-    color: #0f172a;
+  .post-author a {
+    color: #ff6b00;
+    font-weight: 400;
+    text-decoration: none;
   }
 
-  .news-author-meta .dot {
-    color: #cbd5e1;
+  .post-categories {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: inline-flex;
   }
 
-  .news-cover-wrap {
+  .post-categories li a {
+    color: #ff6b00;
+    font-weight: 400;
+    text-decoration: none;
+  }
+
+  .meta-divider {
+    color: #dddddd;
+  }
+
+  .single-hero-img-wrap {
     margin-bottom: 2.2rem;
-    border: 1.5px solid #0f172a;
-    overflow: hidden;
   }
 
-  .news-cover-img {
+  .single-cover-box {
     width: 100%;
-    height: auto;
+    aspect-ratio: 16 / 9;
+    max-height: 420px;
+    overflow: hidden;
+    background: #f0f0f0;
+  }
+
+  .single-cover-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     display: block;
   }
 
-  .news-body-content p {
-    font-size: 1.08rem;
-    line-height: 2.1;
-    color: #1e293b;
-    margin-bottom: 1.8rem;
-    letter-spacing: 0.02em;
-    text-align: justify;
+  #toc_container {
+    background-color: #f9f9f9;
+    border: 1px solid #e7e7e7;
+    border-left: 5px solid #ff6b00;
+    padding: 1.4rem 1.8rem;
+    margin: 2.2rem 0;
   }
 
-  .news-footer-actions {
-    border-top: 1.5px solid #cbd5e1;
-    padding-top: 1.8rem;
-    margin-top: 2rem;
-  }
-
-  .btn-news-back {
-    display: inline-block;
-    padding: 0.6rem 1.4rem;
-    background: #0f172a;
-    color: #ffffff !important;
-    font-size: 0.92rem;
+  .toc_title {
+    font-size: 1.1rem;
     font-weight: 700;
-    letter-spacing: 0.06em;
+    color: #111111;
+    margin: 0 0 0.8rem;
+  }
+
+  .toc_list {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .toc_list a {
+    color: #ff6b00;
     text-decoration: none;
-    border: 1.5px solid #0f172a;
-    transition: all 0.15s ease;
+    font-size: 0.95rem;
   }
 
-  .btn-news-back:hover {
-    background: #ff6b00;
+  .toc_list a:hover {
+    color: #ea580c;
+    text-decoration: underline;
+  }
+
+  .post-content {
+    font-size: 16.5px;
+    line-height: 2em;
+    color: #333333;
+    font-weight: 400;
+  }
+
+  .post-content h2 {
+    font-size: 23px;
+    font-weight: 700;
+    color: #111111;
+    border-left: 5px solid #ff6b00;
+    padding-left: 12px;
+    margin: 2.8em 0 1.2em;
+    line-height: 1.35;
+  }
+
+  .post-content p {
+    margin: 0 0 1.6em;
+  }
+
+  .post-footer-author {
+    margin-top: 3.5rem;
+    margin-bottom: 2.5rem;
+    padding: 2.2rem;
+    background: #fdfdfd;
+    border: 1px solid #e9ecef;
+  }
+
+  .side-author-box {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    padding: 1.8rem;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .side-author-box .photo img {
+    border-radius: 50%;
+    margin-bottom: 0.8rem;
+  }
+
+  .side-author-box h2 {
+    font-size: 1.2rem;
+    margin: 0 0 0.4rem;
+    color: #111111;
+  }
+
+  .side-author-box .history {
+    font-size: 0.85rem;
+    color: #888888;
+    margin: 0 0 1rem;
+  }
+
+  .side-author-box .btn-vip {
+    display: inline-block;
+    padding: 0.4rem 1.2rem;
+    background: #111111;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 0.85rem;
+  }
+
+  .popular-posts {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    padding: 1.5rem;
+  }
+
+  .popular-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #111111;
+    border-bottom: 2px solid #111111;
+    padding-bottom: 0.6rem;
+    margin: 0 0 1.2rem;
+  }
+
+  .wpp-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .wpp-item {
+    display: flex;
+    gap: 0.8rem;
+    align-items: center;
+  }
+
+  .wpp-thumbnail-box {
+    width: 65px;
+    height: 65px;
+    flex-shrink: 0;
+    overflow: hidden;
+    background: #f0f0f0;
+  }
+
+  .wpp-thumb-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .wpp-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .wpp-post-title {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #222222;
+    text-decoration: none;
+    line-height: 1.4;
+  }
+
+  .wpp-post-title:hover {
+    color: #ff6b00;
+  }
+
+  .wpp-meta {
+    font-size: 0.78rem;
+    color: #999999;
+  }
+
+  .article-contact-section {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    padding: 2rem 2.2rem;
+    margin: 3rem 0;
+  }
+
+  .article-contact-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 0.5rem;
+  }
+
+  .article-contact-desc {
+    font-size: 0.92rem;
+    color: #64748b;
+    margin: 0 0 1.4rem;
+  }
+
+  .form-row-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-bottom: 1rem;
+  }
+
+  .form-field label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #334155;
+  }
+
+  .form-input {
+    padding: 0.7rem 0.9rem;
+    border: 1px solid #cbd5e1;
+    font-size: 0.95rem;
+    color: #0f172a;
+    background: #ffffff;
+    font-family: inherit;
+    outline: none;
+  }
+
+  .form-input:focus {
     border-color: #ff6b00;
-    transform: translateY(-1px);
   }
 
-  @media (max-width: 768px) {
-    .news-article-card {
-      padding: 1.5rem 1.2rem;
+  .form-textarea {
+    resize: vertical;
+  }
+
+  .btn-article-submit {
+    padding: 0.65rem 1.6rem;
+    background: #0f172a;
+    color: #ffffff;
+    border: none;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+
+  .btn-article-submit:hover {
+    background: #ff6b00;
+  }
+
+  .prev-next-article {
+    display: flex;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid #eeeeee;
+  }
+
+  .pn-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    text-decoration: none;
+    max-width: 48%;
+  }
+
+  .pn-dir {
+    font-size: 0.8rem;
+    color: #999999;
+  }
+
+  .pn-text {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #222222;
+  }
+
+  .pn-item:hover .pn-text {
+    color: #ff6b00;
+  }
+
+  @media (max-width: 900px) {
+    .single-page-area {
+      flex-direction: column;
     }
-    .news-title {
-      font-size: 1.6rem;
+    .single-page-area main.left {
+      width: 100%;
+      padding-right: 0;
+      border-right: none;
     }
-    .news-body-content p {
-      font-size: 1rem;
-      line-height: 1.9;
+    .single-page-area .right.sidebar-right {
+      width: 100%;
+      margin-top: 3rem;
+    }
+    .form-row-2 {
+      grid-template-columns: 1fr;
     }
   }
 </style>
