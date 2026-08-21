@@ -7,11 +7,17 @@
 
 	const base = '/ntub';
 
-	// 當前選中之工作表 Tab ('all' 或 program.id 或 'custom')
+	// 當前選中之工作表 Tab ('all' 或 program.id 或 'custom' 或 'brochures')
 	let activeSheet = $state('all');
 	let searchQuery = $state('');
 	let selectedCell = $state('A1');
 	let formulaText = $state('=SUM(F2:F50)');
+	let showBrochureDetail = $state(true); // 是否展開學程簡章重點面板
+
+	// 確保預設科係為資訊管理系
+	if (!$myDept) {
+		myDept.set('資訊管理系');
+	}
 
 	// 自訂課程清單 (學生自由加入額外學分試算)
 	interface CustomCourse {
@@ -102,7 +108,7 @@
 				isMine: $myDept ? c.unit.includes($myDept) : true,
 				isCustom: true
 			}));
-		} else {
+		} else if (activeSheet !== 'brochures') {
 			const prog = currentProgram;
 			rows = prog.courses.map((c) => ({
 				id: c.id,
@@ -155,7 +161,7 @@
 		let targetEle = 0;
 		let isProgramDone = false;
 
-		if (activeSheet !== 'all' && activeSheet !== 'custom') {
+		if (activeSheet !== 'all' && activeSheet !== 'custom' && activeSheet !== 'brochures') {
 			targetTotal = currentProgram.requirement.total;
 			targetReq = currentProgram.requirement.required ?? 0;
 			targetEle = currentProgram.requirement.elective ?? 0;
@@ -262,7 +268,6 @@
 			const XLSX = await import('xlsx');
 			const wb = XLSX.utils.book_new();
 
-			// 1. 當前檢視表或全表
 			const rows = displayedRows();
 			const sheetData = [
 				[`國立臺北商業大學 NTUB 學分修業試算表 — ${activeSheet === 'all' ? '全校總表' : (activeSheet === 'custom' ? '自訂修課' : currentProgram.name)}`],
@@ -306,7 +311,6 @@
 			const title = (activeSheet === 'all' ? '全校課程總覽' : (activeSheet === 'custom' ? '自訂修課' : currentProgram.name.slice(0, 20)));
 			XLSX.utils.book_append_sheet(wb, ws, title);
 
-			// 下載真實 .xlsx 檔案
 			XLSX.writeFile(wb, `NTUB_學分修業試算表_${activeSheet}_${new Date().toISOString().slice(0, 10)}.xlsx`);
 		} catch (err) {
 			console.error('XLSX export fallback to CSV', err);
@@ -356,7 +360,7 @@
 		<div>
 			<h1 class="sheet-main-title">📊 NTUB 學分修業即時試算表</h1>
 			<p class="sheet-sub-desc">
-				完整整合北商大各系所課程與 9 大學分學程，支援即時公式加總、自訂修課與 CSV 匯出試算。
+				完整整併全校 9 大學分學程簡章要點、各系所開課清單與門檻試算。
 				{#if $currentUser}
 					<span class="user-badge">✓ 已登入雲端同步（{$currentUser.name}）</span>
 				{:else}
@@ -365,17 +369,16 @@
 			</p>
 		</div>
 
-		<!-- 科系快速篩選 -->
+		<!-- 科系快速篩選 (預設資訊管理系) -->
 		<div class="dept-quick-selector">
-			<span class="d-label">我的主修科系：</span>
+			<span class="d-label">主修科系（本系基準）：</span>
 			<select
 				class="d-select"
 				value={$myDept}
 				onchange={(e) => myDept.set(e.currentTarget.value)}
 			>
-				<option value="">-- 請選擇科系 (自動判斷本系/跨系) --</option>
 				{#each ALL_DEPTS as dept}
-					<option value={dept}>{dept}</option>
+					<option value={dept}>{dept} {dept === '資訊管理系' ? '★ (預設本系)' : ''}</option>
 				{/each}
 			</select>
 		</div>
@@ -417,17 +420,60 @@
 		</div>
 
 		<div class="kpi-card">
-			<div class="kpi-label">本系 / 跨系修課比重</div>
-			<div class="kpi-val">{sheetStats().myDeptCreditsSum} <small class="text-slate">本系</small> ｜ {sheetStats().crossDeptCreditsSum} <small class="text-orange">跨系</small></div>
+			<div class="kpi-label">本系 / 跨系（外系）修課比重</div>
+			<div class="kpi-val">{sheetStats().myDeptCreditsSum} <small class="text-slate">本系 ({$myDept})</small> ｜ {sheetStats().crossDeptCreditsSum} <small class="text-orange">外系/跨系</small></div>
 			<div class="kpi-sub-text">
-				{#if $myDept}
-					主修：{$myDept}
-				{:else}
-					※ 尚未選擇所屬科系
-				{/if}
+				基準：<strong>{$myDept}</strong>（其餘系所課程自動判定為外系）
 			</div>
 		</div>
 	</div>
+
+	<!-- 📖 併入之學程簡章與設置要點面板 (當切換到特定學程時即時顯示) -->
+	{#if activeSheet !== 'all' && activeSheet !== 'custom' && activeSheet !== 'brochures'}
+		<div class="program-brochure-card">
+			<div class="pbc-header" onclick={() => (showBrochureDetail = !showBrochureDetail)}>
+				<div class="pbc-title-group">
+					<span class="pbc-badge" class:micro={currentProgram.kind === '微學程'}>{currentProgram.kind}</span>
+					<h3 class="pbc-name">{currentProgram.name} — 簡章設置要點與修業規範</h3>
+					<span class="pbc-unit">規劃單位：{currentProgram.planningUnit} ｜ 參與教學：{currentProgram.participatingUnits.join('、')}</span>
+				</div>
+				<button class="pbc-toggle-btn">
+					{showBrochureDetail ? '收合簡章 ▲' : '展開簡章 ▼'}
+				</button>
+			</div>
+
+			{#if showBrochureDetail}
+				<div class="pbc-body">
+					<div class="pbc-grid-3">
+						<div class="pbc-col">
+							<div class="pbc-block-title">📌 設置宗旨</div>
+							<p class="pbc-block-text">{currentProgram.purpose}</p>
+						</div>
+						<div class="pbc-col">
+							<div class="pbc-block-title">🎯 修業門檻與條件</div>
+							<ul class="pbc-req-list">
+								<li>應修總學分：<strong>{currentProgram.requirement.total} 學分</strong></li>
+								{#if currentProgram.requirement.required !== undefined}
+									<li>必修門檻：至少 <strong>{currentProgram.requirement.required} 學分</strong></li>
+								{/if}
+								{#if currentProgram.requirement.elective !== undefined}
+									<li>選修門檻：至少 <strong>{currentProgram.requirement.elective} 學分</strong></li>
+								{/if}
+								<li>跨系修習：<strong>{currentProgram.requirement.crossDept ? '需至少跨系修習一門' : '無跨系限制'}</strong></li>
+							</ul>
+							<p class="pbc-rule-desc">{currentProgram.requirement.detail}</p>
+						</div>
+						<div class="pbc-col">
+							<div class="pbc-block-title">📜 申請證明流程</div>
+							<p class="pbc-block-text">
+								學生修滿本學程規定之科目與學分後，檢具歷年成績表，經學程負責單位審核無誤，並經教務長與校長核定後，由教務處發給「<strong>{currentProgram.name}修業證明書</strong>」。
+							</p>
+						</div>
+					</div>
+				</div>
+			{/if}
+		</div>
+	{/if}
 
 	<!-- 📊 試算表主介面 (Excel / Google Sheets 式表格框架) -->
 	<div class="spreadsheet-window">
@@ -478,117 +524,159 @@
 		</div>
 
 		<!-- 2. 試算表資料格 (Data Grid Table) -->
-		<div class="sheet-grid-wrapper">
-			<table class="sheet-table">
-				<thead>
-					<tr class="col-headers-row">
-						<th class="row-num-header">#</th>
-						<th class="col-header col-a">A <span class="col-sub">狀態</span></th>
-						<th class="col-header col-b">B <span class="col-sub">課程代碼</span></th>
-						<th class="col-header col-c">C <span class="col-sub">課程名稱</span></th>
-						<th class="col-header col-d">D <span class="col-sub">開課系所</span></th>
-						<th class="col-header col-e">E <span class="col-sub">修別</span></th>
-						<th class="col-header col-f">F <span class="col-sub">學分 (Credits)</span></th>
-						<th class="col-header col-g">G <span class="col-sub">學期 / 年級</span></th>
-						<th class="col-header col-h">H <span class="col-sub">備註 / 學程判定</span></th>
-					</tr>
-				</thead>
-				<tbody>
-					{#if displayedRows().length === 0}
-						<tr>
-							<td colspan="9" class="empty-sheet-msg">
-								無符合篩選條件的課程資料。
-							</td>
+		{#if activeSheet === 'brochures'}
+			<!-- 📖 全校 9 大學程簡章總覽工作表 -->
+			<div class="brochure-sheet-view">
+				<div class="bsv-header">
+					<h2>國立臺北商業大學 9 大學分學程暨微學程設置要點與簡章總覽</h2>
+					<p>收錄本校各學分學程之設置宗旨、修業門檻、參與教學單位與修業證明核發辦法。</p>
+				</div>
+
+				<div class="bsv-grid">
+					{#each programs as p}
+						<div class="bsv-card">
+							<div class="bsv-card-top">
+								<span class="bsv-badge" class:micro={p.kind === '微學程'}>{p.kind}</span>
+								<h3 class="bsv-title">{p.name}</h3>
+								<div class="bsv-en">{p.nameEn}</div>
+							</div>
+							<div class="bsv-row">
+								<span class="lbl">門檻學分</span>
+								<span class="val">總計 <strong>{p.requirement.total} 學分</strong>{p.requirement.required ? ` (必修至少 ${p.requirement.required})` : ''}</span>
+							</div>
+							<div class="bsv-row">
+								<span class="lbl">跨系要求</span>
+								<span class="val">{p.requirement.crossDept ? '需至少跨修一門' : '無限制'}</span>
+							</div>
+							<div class="bsv-row">
+								<span class="lbl">規劃單位</span>
+								<span class="val">{p.planningUnit}</span>
+							</div>
+							<div class="bsv-purpose-box">
+								<strong>宗旨：</strong>{p.purpose}
+							</div>
+							<button class="sheet-btn primary full" onclick={() => { activeSheet = p.id; handleCellClick('A1', `=PROGRAM("${p.name}")`); }}>
+								進入「{p.name}」試算表 →
+							</button>
+						</div>
+					{/each}
+				</div>
+			</div>
+		{:else}
+			<div class="sheet-grid-wrapper">
+				<table class="sheet-table">
+					<thead>
+						<tr class="col-headers-row">
+							<th class="row-num-header">#</th>
+							<th class="col-header col-a">A <span class="col-sub">狀態</span></th>
+							<th class="col-header col-b">B <span class="col-sub">課程代碼</span></th>
+							<th class="col-header col-c">C <span class="col-sub">課程名稱</span></th>
+							<th class="col-header col-d">D <span class="col-sub">開課系所</span></th>
+							<th class="col-header col-e">E <span class="col-sub">修別</span></th>
+							<th class="col-header col-f">F <span class="col-sub">學分 (Credits)</span></th>
+							<th class="col-header col-g">G <span class="col-sub">學期 / 年級</span></th>
+							<th class="col-header col-h">H <span class="col-sub">備註 / 本外系判定</span></th>
 						</tr>
-					{:else}
-						{#each displayedRows() as row, idx (row.id)}
-							<tr
-								class="sheet-row"
-								class:is-checked={row.checked}
-								class:is-mine={row.isMine}
-								onclick={() => handleCellClick(`C${idx + 2}`, `=COURSE_INFO("${row.code}", "${row.name}", ${row.credits})`)}
-							>
-								<!-- 列號 -->
-								<td class="row-num-cell">{idx + 1}</td>
-
-								<!-- A 欄：核取方塊 -->
-								<td class="cell cell-check" onclick={(e) => { e.stopPropagation(); toggleRowChecked(row); }}>
-									<input
-										type="checkbox"
-										checked={row.checked}
-										onchange={() => toggleRowChecked(row)}
-										class="sheet-checkbox"
-										id="chk-{row.id}"
-									/>
-									<label for="chk-{row.id}" class="check-label">
-										{row.checked ? '已修畢' : '未修'}
-									</label>
-								</td>
-
-								<!-- B 欄：課程代碼 -->
-								<td class="cell cell-mono">{row.code}</td>
-
-								<!-- C 欄：課程名稱 -->
-								<td class="cell cell-name">
-									<strong>{row.name}</strong>
-									{#if row.isMine}
-										<span class="mine-tag">本系</span>
-									{/if}
-								</td>
-
-								<!-- D 欄：開課單位 -->
-								<td class="cell">{row.unit}</td>
-
-								<!-- E 欄：必選修 -->
-								<td class="cell cell-center">
-									<span class="type-badge" class:req={row.type === '必修'} class:ele={row.type === '選修'}>
-										{row.type}
-									</span>
-								</td>
-
-								<!-- F 欄：學分數 -->
-								<td class="cell cell-credits font-mono">
-									{row.credits}
-								</td>
-
-								<!-- G 欄：學期年級 -->
-								<td class="cell cell-term">{row.term}</td>
-
-								<!-- H 欄：備註與學程所屬 -->
-								<td class="cell cell-notes">
-									{row.notes}
-									{#if row.isCustom}
-										<button class="del-row-btn" onclick={(e) => { e.stopPropagation(); removeCustomCourse(row.id); }} title="刪除此自訂列">✕</button>
-									{/if}
+					</thead>
+					<tbody>
+						{#if displayedRows().length === 0}
+							<tr>
+								<td colspan="9" class="empty-sheet-msg">
+									無符合篩選條件的課程資料。
 								</td>
 							</tr>
-						{/each}
-					{/if}
-				</tbody>
-				<tfoot>
-					<!-- 試算表加總統計列 (Formula Summary Row) -->
-					<tr class="sheet-summary-row">
-						<td class="row-num-cell">Σ</td>
-						<td class="cell cell-center font-bold">已選 {sheetStats().checkedCount} 門</td>
-						<td class="cell font-mono">=COUNTIF(A)</td>
-						<td class="cell font-bold">學分試算公式彙總加總列</td>
-						<td class="cell font-mono">{ $myDept ? $myDept : '全校' }</td>
-						<td class="cell cell-center font-mono">必: {sheetStats().requiredCreditsSum} / 選: {sheetStats().electiveCreditsSum}</td>
-						<td class="cell cell-credits total font-mono font-bold">
-							{sheetStats().earnedCreditsSum}
-						</td>
-						<td class="cell font-mono">/ 門檻 {sheetStats().targetTotal}</td>
-						<td class="cell font-bold" class:pass={sheetStats().earnedCreditsSum >= sheetStats().targetTotal}>
-							{#if sheetStats().earnedCreditsSum >= sheetStats().targetTotal}
-								✓ 已符合修業門檻！
-							{:else}
-								尚缺 {sheetStats().remaining} 學分
-							{/if}
-						</td>
-					</tr>
-				</tfoot>
-			</table>
-		</div>
+						{:else}
+							{#each displayedRows() as row, idx (row.id)}
+								<tr
+									class="sheet-row"
+									class:is-checked={row.checked}
+									class:is-mine={row.isMine}
+									onclick={() => handleCellClick(`C${idx + 2}`, `=COURSE_INFO("${row.code}", "${row.name}", ${row.credits})`)}
+								>
+									<!-- 列號 -->
+									<td class="row-num-cell">{idx + 1}</td>
+
+									<!-- A 欄：核取方塊 -->
+									<td class="cell cell-check" onclick={(e) => { e.stopPropagation(); toggleRowChecked(row); }}>
+										<input
+											type="checkbox"
+											checked={row.checked}
+											onchange={() => toggleRowChecked(row)}
+											class="sheet-checkbox"
+											id="chk-{row.id}"
+										/>
+										<label for="chk-{row.id}" class="check-label">
+											{row.checked ? '已修畢' : '未修'}
+										</label>
+									</td>
+
+									<!-- B 欄：課程代碼 -->
+									<td class="cell cell-mono">{row.code}</td>
+
+									<!-- C 欄：課程名稱 -->
+									<td class="cell cell-name">
+										<strong>{row.name}</strong>
+										{#if row.isMine}
+											<span class="mine-tag">本系 ({$myDept})</span>
+										{:else}
+											<span class="ext-tag">外系</span>
+										{/if}
+									</td>
+
+									<!-- D 欄：開課單位 -->
+									<td class="cell">{row.unit}</td>
+
+									<!-- E 欄：必選修 -->
+									<td class="cell cell-center">
+										<span class="type-badge" class:req={row.type === '必修'} class:ele={row.type === '選修'}>
+											{row.type}
+										</span>
+									</td>
+
+									<!-- F 欄：學分數 -->
+									<td class="cell cell-credits font-mono">
+										{row.credits}
+									</td>
+
+									<!-- G 欄：學期年級 -->
+									<td class="cell cell-term">{row.term}</td>
+
+									<!-- H 欄：備註與學程所屬 -->
+									<td class="cell cell-notes">
+										{row.notes}
+										{#if row.isCustom}
+											<button class="del-row-btn" onclick={(e) => { e.stopPropagation(); removeCustomCourse(row.id); }} title="刪除此自訂列">✕</button>
+										{/if}
+									</td>
+								</tr>
+							{/each}
+						{/if}
+					</tbody>
+					<tfoot>
+						<!-- 試算表加總統計列 (Formula Summary Row) -->
+						<tr class="sheet-summary-row">
+							<td class="row-num-cell">Σ</td>
+							<td class="cell cell-center font-bold">已選 {sheetStats().checkedCount} 門</td>
+							<td class="cell font-mono">=COUNTIF(A)</td>
+							<td class="cell font-bold">學分試算公式彙總加總列</td>
+							<td class="cell font-mono">本系: {$myDept}</td>
+							<td class="cell cell-center font-mono">必:{sheetStats().requiredCreditsSum} / 選:{sheetStats().electiveCreditsSum}</td>
+							<td class="cell cell-credits total font-mono font-bold">
+								{sheetStats().earnedCreditsSum}
+							</td>
+							<td class="cell font-mono">/ 門檻 {sheetStats().targetTotal}</td>
+							<td class="cell font-bold" class:pass={sheetStats().earnedCreditsSum >= sheetStats().targetTotal}>
+								{#if sheetStats().earnedCreditsSum >= sheetStats().targetTotal}
+									✓ 已符合修業門檻！
+								{:else}
+									尚缺 {sheetStats().remaining} 學分
+								{/if}
+							</td>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+		{/if}
 
 		<!-- 3. 自訂修課列新增面板 (Custom Row Adder) -->
 		{#if activeSheet === 'custom'}
@@ -613,6 +701,14 @@
 		<!-- 4. 試算表底部分頁標籤 (Sheet Tabs - 像 Google Sheets / Excel 底部分頁) -->
 		<div class="sheet-tabs-bar">
 			<div class="sheet-tabs-scroll">
+				<button
+					class="sheet-tab-item brochure-tab"
+					class:active={activeSheet === 'brochures'}
+					onclick={() => { activeSheet = 'brochures'; handleCellClick('A1', '=BROCHURES_ALL()'); }}
+				>
+					📖 簡章與設置要點總覽
+				</button>
+
 				<button
 					class="sheet-tab-item"
 					class:active={activeSheet === 'all'}
@@ -722,6 +818,7 @@
 		background: #ffffff;
 		color: #0f172a;
 		outline: none;
+		font-weight: 600;
 	}
 
 	/* 🧮 KPI Cards */
@@ -789,6 +886,113 @@
 
 	.text-slate { color: #0f172a; font-weight: 600; }
 	.text-orange { color: #ea580c; font-weight: 600; }
+
+	/* 📖 簡章摘要卡片 */
+	.program-brochure-card {
+		background: #ffffff;
+		border: 1.5px solid #0f172a;
+		border-radius: 6px;
+		margin-bottom: 1.2rem;
+		overflow: hidden;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+	}
+
+	.pbc-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 0.9rem 1.4rem;
+		background: #f8fafc;
+		border-bottom: 1px solid #e2e8f0;
+		cursor: pointer;
+	}
+
+	.pbc-title-group {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		flex-wrap: wrap;
+	}
+
+	.pbc-badge {
+		font-size: 11px;
+		font-weight: 700;
+		padding: 2px 7px;
+		background: #0f172a;
+		color: #ffffff;
+		border-radius: 3px;
+	}
+
+	.pbc-badge.micro {
+		background: #ff6b00;
+	}
+
+	.pbc-name {
+		font-size: 15px;
+		font-weight: 700;
+		color: #0f172a;
+		margin: 0;
+	}
+
+	.pbc-unit {
+		font-size: 12.5px;
+		color: #64748b;
+	}
+
+	.pbc-toggle-btn {
+		font-size: 12px;
+		font-weight: 600;
+		color: #ff6b00;
+		background: #fff7ed;
+		border: 1px solid #fed7aa;
+		padding: 4px 10px;
+		border-radius: 4px;
+		cursor: pointer;
+	}
+
+	.pbc-body {
+		padding: 1.4rem;
+	}
+
+	.pbc-grid-3 {
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr;
+		gap: 1.5rem;
+	}
+
+	.pbc-block-title {
+		font-size: 13.5px;
+		font-weight: 700;
+		color: #0f172a;
+		margin-bottom: 8px;
+		padding-bottom: 4px;
+		border-bottom: 1.5px solid #f1f5f9;
+	}
+
+	.pbc-block-text {
+		font-size: 13px;
+		color: #475569;
+		line-height: 1.6;
+		margin: 0;
+	}
+
+	.pbc-req-list {
+		list-style: none;
+		padding: 0;
+		margin: 0 0 8px;
+		font-size: 13px;
+		color: #334155;
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+	}
+
+	.pbc-rule-desc {
+		font-size: 12px;
+		color: #64748b;
+		margin: 0;
+		line-height: 1.5;
+	}
 
 	/* 📊 試算表視窗主體 */
 	.spreadsheet-window {
@@ -1075,6 +1279,16 @@
 		margin-left: 6px;
 	}
 
+	.ext-tag {
+		font-size: 10px;
+		font-weight: 600;
+		color: #ea580c;
+		background: #fff7ed;
+		padding: 1px 5px;
+		border-radius: 3px;
+		margin-left: 6px;
+	}
+
 	.cell-center {
 		text-align: center !important;
 	}
@@ -1145,6 +1359,100 @@
 		padding: 3rem !important;
 		color: #94a3b8;
 		font-size: 14px;
+	}
+
+	/* 📖 簡章工作表視圖 */
+	.brochure-sheet-view {
+		padding: 1.5rem;
+		background: #f8fafc;
+		max-height: 520px;
+		overflow-y: auto;
+	}
+
+	.bsv-header {
+		margin-bottom: 1.5rem;
+	}
+
+	.bsv-header h2 {
+		font-size: 1.3rem;
+		color: #0f172a;
+		margin: 0 0 4px;
+	}
+
+	.bsv-header p {
+		font-size: 13px;
+		color: #64748b;
+		margin: 0;
+	}
+
+	.bsv-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+		gap: 1.2rem;
+	}
+
+	.bsv-card {
+		background: #ffffff;
+		border: 1.5px solid #cbd5e1;
+		border-radius: 8px;
+		padding: 1.2rem;
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+		box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+	}
+
+	.bsv-badge {
+		font-size: 11px;
+		font-weight: 700;
+		background: #0f172a;
+		color: #ffffff;
+		padding: 2px 6px;
+		border-radius: 3px;
+	}
+
+	.bsv-badge.micro {
+		background: #ff6b00;
+	}
+
+	.bsv-title {
+		font-size: 15px;
+		font-weight: 700;
+		color: #0f172a;
+		margin: 4px 0 2px;
+	}
+
+	.bsv-en {
+		font-size: 11.5px;
+		color: #94a3b8;
+		margin-bottom: 4px;
+	}
+
+	.bsv-row {
+		display: flex;
+		justify-content: space-between;
+		font-size: 12.5px;
+		border-bottom: 1px solid #f1f5f9;
+		padding-bottom: 4px;
+	}
+
+	.bsv-row .lbl { color: #64748b; }
+	.bsv-row .val { color: #0f172a; font-weight: 600; }
+
+	.bsv-purpose-box {
+		font-size: 12px;
+		color: #475569;
+		background: #f8fafc;
+		padding: 8px;
+		border-radius: 4px;
+		line-height: 1.5;
+		margin-top: 4px;
+	}
+
+	.sheet-btn.full {
+		width: 100%;
+		text-align: center;
+		margin-top: auto;
 	}
 
 	/* 3. 自訂修課列面板 */
@@ -1229,6 +1537,10 @@
 		box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.04);
 	}
 
+	.sheet-tab-item.brochure-tab {
+		color: #0284c7;
+	}
+
 	.sheet-tab-item.custom-tab {
 		color: #ea580c;
 	}
@@ -1251,5 +1563,6 @@
 		.sheet-main-title { font-size: 1.3rem; }
 		.formula-box { min-width: 100%; }
 		.sheet-search-input { width: 100%; }
+		.pbc-grid-3 { grid-template-columns: 1fr; }
 	}
 </style>

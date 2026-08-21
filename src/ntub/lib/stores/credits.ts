@@ -10,7 +10,7 @@ const STORAGE_KEY = 'ntub-cource-checked';
 
 export const checkedCourses = writable<Set<string>>(new Set());
 
-export const myDept = writable<string>('');
+export const myDept = writable<string>('資訊管理系');
 
 const DEPT_KEY = 'ntub-cource-dept';
 
@@ -103,6 +103,7 @@ if (browser) {
 
 	const saved = localStorage.getItem(DEPT_KEY);
 	if (saved) myDept.set(saved);
+	else myDept.set('資訊管理系');
 	myDept.subscribe((v) => {
 		if (browser) localStorage.setItem(DEPT_KEY, v);
 		scheduleCloudWrite();
