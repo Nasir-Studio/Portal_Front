@@ -15,31 +15,34 @@ const popularPosts = posts.slice(0, 3);
         <span class="current-post-name">VIP 專區</span>
       </div>
 
-      <!-- 🔷 1. 經典 Hero Header 旗艦橫幅 -->
-      <section class="content-hero-header">
-        <div class="left">
-          <h3>VIP ZONE</h3>
-          <h2>VIP</h2>
-          <div class="hero-quick-btns">
-            <a href="#ticketSection" class="btn-about-hero">技術工單支援</a>
-            <a href="#calendarSection" class="btn-about-hero" style="background:#475569;">時段預約系統</a>
-          </div>
-        </div>
-        <div class="right">
+      <!-- 🔷 1. 左右交換 + 正方形 1:1 圖片之 Hero Header -->
+      <section class="content-hero-header hero-reversed">
+        <!-- 左側：1:1 正方形圖片 (Square Banner) -->
+        <div class="hero-square-col">
           <div class="slider-wrap-header">
             <div class="slider-one">
-              <div class="img-wrap">
+              <div class="img-wrap square-wrap">
                 <div class="bgs bgs1"></div>
                 <div class="bgs bgs2"></div>
                 <div class="bgs bgs3"></div>
                 <div class="bgs bgs4"></div>
                 <div class="bgs bgs5 hero-featured-link">
-                  <div class="featured-img-container">
-                    <img src="/banners/hero-promo-v3.jpg?v=20260820light" alt="OviNas VIP 專屬服務" class="featured-main-img" />
+                  <div class="featured-img-container square-img-container">
+                    <img src="/banners/hero-promo-v3.jpg?v=20260820light" alt="OviNas VIP" class="featured-main-img square-img" />
                   </div>
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+
+        <!-- 右側：VIP 標題與快捷按鈕 -->
+        <div class="hero-text-col">
+          <h3>VIP ZONE</h3>
+          <h2>VIP</h2>
+          <div class="hero-quick-btns">
+            <a href="#ticketSection" class="btn-about-hero">技術工單支援 ↓</a>
+            <a href="#calendarSection" class="btn-about-hero" style="background:#334155;">時段預約系統 ↓</a>
           </div>
         </div>
       </section>
@@ -198,25 +201,49 @@ const popularPosts = posts.slice(0, 3);
     font-weight: 500;
   }
 
-  /* 🔷 1. Hero Header 區塊 (完全比照首頁) */
-  .content-hero-header {
+  /* 🔷 1. 左右交換 + 正方形圖片之 Hero Header */
+  .content-hero-header.hero-reversed {
     display: flex;
-    justify-content: space-between;
-    align-items: stretch;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 3rem;
     margin-bottom: 3.5rem;
     border-bottom: 1px solid #e2e2e2;
     padding-bottom: 3rem;
   }
 
-  .content-hero-header .left {
-    width: 28%;
+  .hero-square-col {
+    width: 240px;
+    height: 240px;
+    flex-shrink: 0;
+  }
+
+  .square-wrap {
+    width: 240px !important;
+    height: 240px !important;
+    aspect-ratio: 1 / 1 !important;
+    max-height: 240px !important;
+    background: #f0f0f0;
+  }
+
+  .square-img-container {
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  .square-img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+  }
+
+  .hero-text-col {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding-right: 2rem;
   }
 
-  .content-hero-header .left h3 {
+  .hero-text-col h3 {
     font-size: 1.1rem;
     color: #ff6b00;
     margin: 0 0 0.5rem;
@@ -224,7 +251,7 @@ const popularPosts = posts.slice(0, 3);
     letter-spacing: 1px;
   }
 
-  .content-hero-header .left h2 {
+  .hero-text-col h2 {
     font-size: 2.2rem;
     line-height: 1.2;
     color: #111111;
@@ -234,17 +261,17 @@ const popularPosts = posts.slice(0, 3);
 
   .hero-quick-btns {
     display: flex;
-    gap: 0.6rem;
+    gap: 0.8rem;
     flex-wrap: wrap;
   }
 
   .btn-about-hero {
     display: inline-block;
-    padding: 0.55rem 1.2rem;
+    padding: 0.55rem 1.3rem;
     background: #111111;
     color: #ffffff !important;
     text-decoration: none;
-    font-size: 0.88rem;
+    font-size: 0.9rem;
     font-weight: 500;
     transition: background 0.15s ease;
   }
@@ -253,38 +280,11 @@ const popularPosts = posts.slice(0, 3);
     background: #ff6b00;
   }
 
-  .content-hero-header .right {
-    width: 70%;
-  }
-
-  .slider-wrap-header {
-    width: 100%;
-  }
-
-  .slider-one .img-wrap {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    max-height: 380px;
-    background: #f0f0f0;
-  }
-
   .hero-featured-link {
     display: block;
     width: 100%;
     height: 100%;
     overflow: hidden;
-  }
-
-  .featured-img-container {
-    width: 100%;
-    height: 100%;
-  }
-
-  .featured-main-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
   }
 
   /* 📰 2. 雙欄主內容區 (完全比照首頁) */
@@ -468,16 +468,9 @@ const popularPosts = posts.slice(0, 3);
     background: #f0fdf4;
   }
 
-  .ticket-body-preview {
-    font-size: 0.9rem;
-    color: #666666;
-    line-height: 1.6;
-    margin: 0 0 0.8rem;
-  }
-
   .ticket-meta {
-    font-size: 0.8rem;
-    color: #999999;
+    font-size: 0.82rem;
+    color: #888888;
   }
 
   /* 📅 行事曆與時段 */
@@ -731,17 +724,11 @@ const popularPosts = posts.slice(0, 3);
     color: #999999;
   }
 
-  @media (max-width: 900px) {
-    .content-hero-header {
+  @media (max-width: 850px) {
+    .content-hero-header.hero-reversed {
       flex-direction: column;
-    }
-    .content-hero-header .left {
-      width: 100%;
-      padding-right: 0;
-      margin-bottom: 1.5rem;
-    }
-    .content-hero-header .right {
-      width: 100%;
+      align-items: flex-start;
+      gap: 1.5rem;
     }
     .content-area-top {
       flex-direction: column;
@@ -791,10 +778,9 @@ const popularPosts = posts.slice(0, 3);
   type Ticket = {
     id: number;
     subject: string;
-    status: string;
-    createdAt: number;
-    updatedAt: number;
-    body?: string;
+    status: 'open' | 'resolved';
+    created_at: number;
+    updated_at: number;
   };
 
   const vipBody = document.querySelector('#vip-body');
@@ -875,9 +861,13 @@ const popularPosts = posts.slice(0, 3);
 
       const formData = new FormData(newTicketForm);
       try {
-        await api.post('/api/tickets', {
-          subject: (formData.get('subject') as string).trim(),
-          body: (formData.get('body') as string).trim(),
+        await api<{ ticket: { id: number } }>('/tickets', {
+          auth: true,
+          method: 'POST',
+          body: {
+            subject: (formData.get('subject') as string).trim(),
+            body: (formData.get('body') as string).trim(),
+          },
         });
         newTicketForm.reset();
         if (newTicketCard) newTicketCard.style.display = 'none';
@@ -895,10 +885,10 @@ const popularPosts = posts.slice(0, 3);
   async function loadTickets(): Promise<void> {
     if (ticketList === null) return;
     try {
-      const data = await api.get<{ tickets: Ticket[] }>('/api/tickets');
+      const data = await api<{ tickets: Ticket[] }>('/tickets', { auth: true });
       renderTickets(data.tickets || []);
     } catch {
-      ticketList.innerHTML = '<p class="slot-empty">無法載入工單紀錄。</p>';
+      ticketList.innerHTML = '<p class="slot-empty">無法載入工單紀錄，請檢查登入狀態。</p>';
     }
   }
 
@@ -917,13 +907,14 @@ const popularPosts = posts.slice(0, 3);
       const isOpen = t.status === 'open';
       const statusText = isOpen ? '處理中' : '已結案';
       const statusClass = isOpen ? 'open' : 'resolved';
+      const timeMs = (t.created_at || 0) * 1000;
 
       card.innerHTML = `
         <div class="ticket-card-head">
           <h4 class="ticket-subject">${escapeHtml(t.subject)}</h4>
           <span class="ticket-status-badge ${statusClass}">${statusText}</span>
         </div>
-        <div class="ticket-meta">工單編號 #${t.id} · 建立時間：${formatDateTime(t.createdAt)}</div>
+        <div class="ticket-meta">工單編號 #${t.id} · 建立時間：${formatDateTime(timeMs)}</div>
       `;
       ticketList.appendChild(card);
     }
@@ -933,14 +924,14 @@ const popularPosts = posts.slice(0, 3);
   async function loadSlots(): Promise<void> {
     if (slotList === null) return;
     try {
-      const data = await api.get<{ slots: Slot[] }>('/api/reservations/slots');
+      const data = await api<{ slots: Slot[] }>('/slots');
       const now = Date.now();
       const future = (data.slots || []).filter(
         (s) => s.active === 1 && s.startsAt + s.durationMinutes * 60 * 1000 > now,
       );
       renderSlots(future);
     } catch {
-      slotList.innerHTML = '<p class="slot-empty">無法載入時段，請稍後再試。</p>';
+      slotList.innerHTML = '<p class="slot-empty">目前尚無開放預約時段。</p>';
     }
   }
 
@@ -988,7 +979,7 @@ const popularPosts = posts.slice(0, 3);
         btn.className = 'btn btn--sm';
         btn.textContent = '預約此時段';
         btn.addEventListener('click', () => {
-          const existing = card.querySelector('.book-form');
+          const existing = card.querySelector('.ticket-form-card');
           if (existing !== null) {
             existing.remove();
             return;
@@ -1046,14 +1037,17 @@ const popularPosts = posts.slice(0, 3);
 
       const formData = new FormData(form);
       try {
-        await api.post('/api/reservations/book', {
-          slotId: slot.id,
-          name: (formData.get('name') as string).trim(),
-          email: (formData.get('email') as string).trim(),
-          note: (formData.get('note') as string || '').trim(),
+        await api('/reservations', {
+          method: 'POST',
+          body: {
+            slotId: slot.id,
+            name: (formData.get('name') as string).trim(),
+            email: (formData.get('email') as string).trim(),
+            note: (formData.get('note') as string || '').trim(),
+          },
         });
         msg.style.color = '#16a34a';
-        msg.textContent = '✓ 預約成功！已發送通知信件。';
+        msg.textContent = '✓ 預約成功！已發送確認信件。';
         msg.style.display = 'block';
         form.querySelector<HTMLElement>('.form-actions')!.style.display = 'none';
         loadSlots();
@@ -1073,7 +1067,7 @@ const popularPosts = posts.slice(0, 3);
   async function loadMineReservations(): Promise<void> {
     if (mineReservationsList === null) return;
     try {
-      const data = await api.get<{ reservations: Reservation[] }>('/api/reservations/mine');
+      const data = await api<{ reservations: Reservation[] }>('/reservations/mine', { auth: true });
       renderMineReservations(data.reservations || []);
     } catch {
       mineReservationsList.innerHTML = '<p class="slot-empty">無法載入預約紀錄。</p>';
