@@ -27,8 +27,13 @@ const searchIndexJson = JSON.stringify(
   <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex, notranslate, noai, noimageai" />
   <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
   <meta name="google-extended" content="noindex" />
-  <meta name="robots" content="noai, noimageai" />
-  <meta name="bingbot" content="noindex, nofollow" />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex, notranslate, noai, noimageai, nocache" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex, noai, noimageai" />
+  <meta name="bingbot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="ia_archiver" content="noindex, nofollow, noarchive" />
+  <meta name="archive.org_bot" content="noindex, nofollow, noarchive" />
+  <meta name="Wayback" content="noindex, nofollow, noarchive" />
+  <meta name="GPTBot" content="noindex, nofollow, noarchive" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{title}</title>
@@ -1042,61 +1047,52 @@ const searchIndexJson = JSON.stringify(
   <!-- 💬 右下角浮動 LiveChat 迷你聯絡表單 (Google Form) -->
   <LiveChatWidget client:idle />
 
-    <!-- 🌐 IP / 網域查詢互動彈窗 Modal (nasircy 移植) -->
+    <!-- 🌐 IP / 網域查詢簡約彈窗 -->
     <div id="ipLookupModal" class="ip-modal-backdrop" style="display: none;">
       <div class="ip-modal-dialog">
-        <button id="closeIpModalBtn" class="ip-modal-close" aria-label="關閉">✕</button>
-        
-        <div class="ip-modal-head">
-          <div class="ip-modal-icon-wrap">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ff6b00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10"></circle>
-              <line x1="2" y1="12" x2="22" y2="12"></line>
-              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-            </svg>
-          </div>
-          <h3 class="ip-modal-title">IP / 網域即時查詢</h3>
-          <p class="ip-modal-desc">查詢您的目前連線資訊，或輸入任何 IP / 網域名稱進行 DNS 解析</p>
+        <div class="ip-modal-top-bar">
+          <span class="ip-modal-top-title">連線資訊與 IP 查詢</span>
+          <button id="closeIpModalBtn" class="ip-modal-close" aria-label="關閉">✕</button>
         </div>
 
-        <!-- 目前使用者連線資訊卡片 -->
-        <div id="myIpCard" class="ip-info-card">
-          <div class="ip-card-label">您的目前連線</div>
-          <div id="myIpNum" class="ip-card-big-ip">載入中…</div>
-          <div class="ip-grid-two">
-            <div class="ip-grid-item">
-              <span class="ip-item-label">📍 位置</span>
-              <span id="myIpLoc" class="ip-item-val">-</span>
-            </div>
-            <div class="ip-grid-item">
-              <span class="ip-item-label">🏢 網路供應商 (ISP)</span>
-              <span id="myIpIsp" class="ip-item-val">-</span>
-            </div>
+        <!-- 目前使用者連線資訊 -->
+        <div class="ip-section-box">
+          <div class="ip-row-item">
+            <span class="ip-lbl">目前 IP</span>
+            <span id="myIpNum" class="ip-val font-mono">載入中…</span>
+          </div>
+          <div class="ip-row-item">
+            <span class="ip-lbl">所在位置</span>
+            <span id="myIpLoc" class="ip-val">-</span>
+          </div>
+          <div class="ip-row-item">
+            <span class="ip-lbl">網路供應商</span>
+            <span id="myIpIsp" class="ip-val">-</span>
           </div>
         </div>
 
         <!-- 搜尋表單 -->
         <form id="ipSearchForm" class="ip-search-form">
           <div class="ip-input-wrap">
-            <input type="text" id="ipSearchInput" placeholder="輸入 IP 或網域名稱 (例: 1.1.1.1 或 google.com)" class="ip-input" required autocomplete="off" />
+            <input type="text" id="ipSearchInput" placeholder="輸入 IP 或網域名稱 (例: 1.1.1.1, google.com)" class="ip-input" required autocomplete="off" />
             <button type="submit" id="ipSearchBtn" class="ip-submit-btn">查詢</button>
           </div>
           <div id="ipSearchStatus" class="ip-search-status"></div>
         </form>
 
         <!-- 搜尋結果區塊 -->
-        <div id="ipResultCard" class="ip-info-card result-card" style="display: none;">
-          <div id="ipResultTarget" class="ip-card-label">查詢結果</div>
-          <div id="ipResultNum" class="ip-card-big-ip">-</div>
-          <div class="ip-grid-two">
-            <div class="ip-grid-item">
-              <span class="ip-item-label">📍 位置</span>
-              <span id="ipResultLoc" class="ip-item-val">-</span>
-            </div>
-            <div class="ip-grid-item">
-              <span class="ip-item-label">🏢 網路供應商 (ISP)</span>
-              <span id="ipResultIsp" class="ip-item-val">-</span>
-            </div>
+        <div id="ipResultCard" class="ip-section-box result-box" style="display: none;">
+          <div class="ip-row-item">
+            <span class="ip-lbl" id="ipResultTarget">查詢目標</span>
+            <span id="ipResultNum" class="ip-val font-mono">-</span>
+          </div>
+          <div class="ip-row-item">
+            <span class="ip-lbl">位置</span>
+            <span id="ipResultLoc" class="ip-val">-</span>
+          </div>
+          <div class="ip-row-item">
+            <span class="ip-lbl">供應商</span>
+            <span id="ipResultIsp" class="ip-val">-</span>
           </div>
         </div>
       </div>
@@ -2025,40 +2021,42 @@ const searchIndexJson = JSON.stringify(
     border-radius: 2px;
   }
 
-  /* 🌐 底部 IP 查詢列樣式 */
+  /* 🌐 底部 IP 查詢列樣式 (極簡融入頁尾) */
   .footer-ip-lookup-bar {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    margin-top: 0.4rem;
-    padding: 3px 8px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
+    margin-top: 0.3rem;
+    padding: 2px 0;
     color: #94a3b8;
-    font-size: 11.5px;
+    font-size: 11px;
     cursor: pointer;
-    transition: all 0.2s ease;
+    background: transparent;
+    border: none;
+    transition: color 0.15s ease;
   }
 
   .footer-ip-lookup-bar:hover {
-    background: rgba(255, 255, 255, 0.12);
-    color: #f8fafc;
-    border-color: rgba(255, 255, 255, 0.25);
+    color: #f1f5f9;
   }
 
   .ip-globe-icon {
-    color: #ff6b00;
+    color: #64748b;
     flex-shrink: 0;
+    transition: color 0.15s ease;
   }
 
-  /* 🌐 IP 查詢彈窗 Modal */
+  .footer-ip-lookup-bar:hover .ip-globe-icon {
+    color: #ff6b00;
+  }
+
+  /* 🌐 簡約純淨彈窗 (非喧賓奪主的現代日系極簡風) */
   .ip-modal-backdrop {
     position: fixed;
     inset: 0;
     z-index: 9999;
-    background: rgba(15, 23, 42, 0.75);
-    backdrop-filter: blur(8px);
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(4px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -2068,132 +2066,92 @@ const searchIndexJson = JSON.stringify(
   .ip-modal-dialog {
     position: relative;
     width: 100%;
-    max-width: 500px;
+    max-width: 440px;
     background: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-    padding: 2rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+    padding: 1.4rem 1.5rem;
     box-sizing: border-box;
-    animation: ipFadeIn 0.2s ease-out;
+    font-size: 13.5px;
   }
 
-  @keyframes ipFadeIn {
-    from { opacity: 0; transform: scale(0.95); }
-    to { opacity: 1; transform: scale(1); }
+  .ip-modal-top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.2rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  .ip-modal-top-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #0f172a;
   }
 
   .ip-modal-close {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
     background: none;
     border: none;
-    font-size: 1.2rem;
+    font-size: 14px;
     color: #94a3b8;
     cursor: pointer;
-    padding: 4px 8px;
-    border-radius: 4px;
-    transition: color 0.15s ease;
+    padding: 2px 6px;
+    border-radius: 3px;
   }
 
   .ip-modal-close:hover {
     color: #0f172a;
+    background: #f1f5f9;
   }
 
-  .ip-modal-head {
-    text-align: center;
-    margin-bottom: 1.5rem;
-  }
-
-  .ip-modal-icon-wrap {
-    width: 48px;
-    height: 48px;
-    background: #fff7ed;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 0.8rem;
-  }
-
-  .ip-modal-title {
-    font-size: 1.3rem;
-    font-weight: 600;
-    color: #0f172a;
-    margin: 0 0 0.3rem;
-  }
-
-  .ip-modal-desc {
-    font-size: 0.85rem;
-    color: #64748b;
-    margin: 0;
-    line-height: 1.4;
-  }
-
-  .ip-info-card {
+  .ip-section-box {
     background: #f8fafc;
     border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    padding: 1.2rem;
-    margin-bottom: 1.2rem;
-    text-align: center;
+    border-radius: 4px;
+    padding: 0.8rem 1rem;
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
   }
 
-  .ip-info-card.result-card {
-    background: #eff6ff;
-    border-color: #bfdbfe;
+  .ip-section-box.result-box {
+    background: #ffffff;
+    border-color: #cbd5e1;
     margin-top: 1rem;
     margin-bottom: 0;
   }
 
-  .ip-card-label {
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: #ff6b00;
-    margin-bottom: 0.3rem;
+  .ip-row-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12.5px;
   }
 
-  .ip-card-big-ip {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #0f172a;
-    font-family: monospace, sans-serif;
-    margin-bottom: 0.8rem;
-  }
-
-  .ip-grid-two {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.8rem;
-    text-align: left;
-  }
-
-  .ip-grid-item {
-    background: #ffffff;
-    padding: 0.6rem 0.8rem;
-    border-radius: 6px;
-    border: 1px solid #e2e8f0;
-  }
-
-  .ip-item-label {
-    display: block;
-    font-size: 0.75rem;
+  .ip-lbl {
     color: #64748b;
-    margin-bottom: 2px;
   }
 
-  .ip-item-val {
-    display: block;
-    font-size: 0.85rem;
-    color: #1e293b;
+  .ip-val {
+    color: #0f172a;
     font-weight: 500;
+    max-width: 260px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    text-align: right;
+  }
+
+  .font-mono {
+    font-family: monospace;
+    font-size: 13px;
   }
 
   .ip-search-form {
-    margin-top: 0.5rem;
+    margin-top: 0.6rem;
   }
 
   .ip-input-wrap {
@@ -2203,32 +2161,31 @@ const searchIndexJson = JSON.stringify(
 
   .ip-input {
     flex: 1;
-    padding: 0.65rem 0.9rem;
+    padding: 7px 10px;
     border: 1px solid #cbd5e1;
-    border-radius: 6px;
-    font-size: 0.9rem;
+    border-radius: 4px;
+    font-size: 13px;
     outline: none;
-    transition: border-color 0.15s ease;
   }
 
   .ip-input:focus {
-    border-color: #ff6b00;
+    border-color: #0f172a;
   }
 
   .ip-submit-btn {
-    padding: 0.65rem 1.2rem;
-    background: #ff6b00;
+    padding: 7px 14px;
+    background: #0f172a;
     color: #ffffff;
     border: none;
-    border-radius: 6px;
-    font-size: 0.9rem;
+    border-radius: 4px;
+    font-size: 13px;
     font-weight: 500;
     cursor: pointer;
     transition: background 0.15s ease;
   }
 
   .ip-submit-btn:hover {
-    background: #ea580c;
+    background: #334155;
   }
 
   .ip-search-status {

@@ -1,8 +1,22 @@
-# Block ALL web crawlers and search engines
+# Block ALL web crawlers, search engines, and archive bots
 User-agent: *
 Disallow: /
 
-# Block Google Search Engine & Indexing Crawlers
+User-agent: ia_archiver
+Disallow: /
+
+User-agent: archive.org_bot
+Disallow: /
+
+User-agent: Wayback
+Disallow: /
+
+User-agent: archive.org
+Disallow: /
+
+User-agent: WaybackMachine
+Disallow: /
+
 User-agent: Googlebot
 Disallow: /
 
@@ -15,11 +29,9 @@ Disallow: /
 User-agent: Googlebot-Video
 Disallow: /
 
-# Block Google AI (Gemini / Bard training data crawler)
 User-agent: Google-Extended
 Disallow: /
 
-# Block OpenAI / ChatGPT Crawlers
 User-agent: GPTBot
 Disallow: /
 
@@ -29,7 +41,6 @@ Disallow: /
 User-agent: OAI-SearchBot
 Disallow: /
 
-# Block Anthropic / Claude Crawlers
 User-agent: anthropic-ai
 Disallow: /
 
@@ -39,30 +50,24 @@ Disallow: /
 User-agent: ClaudeBot
 Disallow: /
 
-# Block Common Crawl (used by almost all LLMs)
 User-agent: CCBot
 Disallow: /
 
-# Block Perplexity AI Crawler
 User-agent: PerplexityBot
 Disallow: /
 
-# Block ByteDance AI Crawler
 User-agent: Bytespider
 Disallow: /
 
-# Block Apple AI Crawler
 User-agent: Applebot-Extended
 Disallow: /
 
-# Block Meta / Facebook AI Crawler
 User-agent: FacebookBot
 Disallow: /
 
 User-agent: Meta-ExternalAgent
 Disallow: /
 
-# Block Microsoft Bing / Copilot
 User-agent: Bingbot
 Disallow: /
 

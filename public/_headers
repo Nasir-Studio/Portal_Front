@@ -1,5 +1,6 @@
 /*
-  X-Robots-Tag: noindex, nofollow, noarchive, nosnippet, noimageindex, notranslate, noai, noimageai
+  X-Robots-Tag: noindex, nofollow, noarchive, nosnippet, noimageindex, notranslate, noai, noimageai, nocache
+  Cache-Control: private, no-cache, no-store, must-revalidate
 
 /badges/manifest.webmanifest
   Content-Type: application/manifest+json

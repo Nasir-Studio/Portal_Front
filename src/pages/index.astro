@@ -344,13 +344,8 @@ function getPostCategory(post: typeof posts[0]) {
         </div>
       </section>
 
-      <!-- 🚀 Skills 技能技術跑馬燈 (雙向無限滾動) -->
+      <!-- 🚀 Skills 技能技術跑馬燈 (完全無邊框、無標題文字，純淨融入頁面) -->
       <section class="index-skills-section">
-        <div class="skills-head-row">
-          <span class="skills-badge-label">TECH STACK</span>
-          <h2 class="skills-title">專業技術與開發工具</h2>
-          <p class="skills-desc">跨領域的技術整合能力 · 系統架構 · 雲端部署 · 多媒體設計</p>
-        </div>
 
         <div class="skills-marquee-container">
           <!-- 第 1 排：正向滾動 -->
@@ -2172,12 +2167,11 @@ function getPostCategory(post: typeof posts[0]) {
 
   /* 🚀 技能技術跑馬燈樣式 (.index-skills-section) */
   .index-skills-section {
-    margin-top: 3.5rem;
-    padding: 3rem 1.5rem;
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.02);
+    margin-top: 2rem;
+    padding: 1.5rem 0 0.5rem;
+    background: transparent;
+    border: none;
+    box-shadow: none;
     overflow: hidden;
   }
 
