@@ -1,18 +1,12 @@
-
 import { writable, get } from 'svelte/store';
 const browser = true;
 import type { Program } from '$ntub/types';
-import { currentUser } from './auth';
-import { getFirestoreInstance } from '$ntub/firebase/client';
-import { doc, onSnapshot, setDoc, serverTimestamp } from 'firebase/firestore';
 
 const STORAGE_KEY = 'ntub-cource-checked';
+const DEPT_KEY = 'ntub-cource-dept';
 
 export const checkedCourses = writable<Set<string>>(new Set());
-
 export const myDept = writable<string>('資訊管理系');
-
-const DEPT_KEY = 'ntub-cource-dept';
 
 export const ALL_DEPTS = [
 	'企業管理系',
@@ -43,75 +37,18 @@ function persist() {
 	localStorage.setItem(STORAGE_KEY, JSON.stringify([...get(checkedCourses)]));
 }
 
-let unsubCloud: (() => void) | null = null;
-let writeTimer: ReturnType<typeof setTimeout> | null = null;
-
-let applyingCloud = false;
-
-function subscribeCloud(uid: string) {
-	unsubscribeCloud();
-	const db = getFirestoreInstance();
-	const ref = doc(db, 'credit_checks', uid);
-	unsubCloud = onSnapshot(
-		ref,
-		(snap) => {
-			if (!snap.exists()) return;
-			const data = snap.data();
-			const checked = data?.checked;
-			if (!Array.isArray(checked)) return;
-			applyingCloud = true;
-			checkedCourses.set(new Set(checked as string[]));
-			if (typeof data?.dept === 'string') myDept.set(data.dept);
-			applyingCloud = false;
-		},
-		(err) => {
-
-			console.error('credit_checks 同步失敗', err.message);
-		}
-	);
-}
-
-function unsubscribeCloud() {
-	if (unsubCloud) {
-		unsubCloud();
-		unsubCloud = null;
-	}
-}
-
-function scheduleCloudWrite() {
-	if (!browser || applyingCloud) return;
-	const u = get(currentUser);
-	if (!u) return;
-	if (writeTimer) clearTimeout(writeTimer);
-	writeTimer = setTimeout(() => {
-		const db = getFirestoreInstance();
-		setDoc(doc(db, 'credit_checks', u.uid), {
-			uid: u.uid,
-			checked: [...get(checkedCourses)],
-			dept: get(myDept),
-			updatedAt: serverTimestamp()
-		}).catch((err) => console.error('credit_checks 寫入失敗', err.message));
-	}, 400);
-}
-
 if (browser) {
 	checkedCourses.set(loadChecked());
 	checkedCourses.subscribe(() => {
 		persist();
-		scheduleCloudWrite();
 	});
 
 	const saved = localStorage.getItem(DEPT_KEY);
 	if (saved) myDept.set(saved);
 	else myDept.set('資訊管理系');
+
 	myDept.subscribe((v) => {
 		if (browser) localStorage.setItem(DEPT_KEY, v);
-		scheduleCloudWrite();
-	});
-
-	currentUser.subscribe((u) => {
-		if (u) subscribeCloud(u.uid);
-		else unsubscribeCloud();
 	});
 }
 

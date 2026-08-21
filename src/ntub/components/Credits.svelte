@@ -1,8 +1,7 @@
 <script lang="ts">
 	import { programs } from '$ntub/data';
 	import { checkedCourses, toggleCourse, earnedCredits, breakdown, myDept, ALL_DEPTS } from '$ntub/stores/credits';
-	import { currentUser } from '$ntub/stores/auth';
-	import type { Program, Course } from '$ntub/types';
+		import type { Program, Course } from '$ntub/types';
 	import NtubLayout from '../NtubLayout.svelte';
 
 	const base = '/ntub';
@@ -546,12 +545,7 @@
 		<div>
 			<h1 class="sheet-main-title">📊 NTUB 學分修業與證書資格大一統試算表</h1>
 			<p class="sheet-sub-desc">
-				全站所有學程證書判定、簡章規範、全校課程明細與自訂修課<strong>全部整合在同一個試算表中呈現</strong>，支援一鍵下載 Excel 隨處使用。
-				{#if $currentUser}
-					<span class="user-badge">✓ 已登入雲端同步（{$currentUser.name}）</span>
-				{:else}
-					<span class="user-badge guest">未登入：暫存於瀏覽器 · <a href="{base}/login">登入同步</a></span>
-				{/if}
+				全站所有學程證書判定、簡章規範、全校課程明細與自訂修課<strong>全部整合在同一個試算表中呈現</strong>，修課勾選狀態自動安全暫存於您的瀏覽器中，支援一鍵下載 Excel 試算表隨處離線使用。
 			</p>
 		</div>
 

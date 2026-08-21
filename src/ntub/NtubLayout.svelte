@@ -1,22 +1,15 @@
 <script lang="ts">
-  import { currentUser, authReady, logout } from '$ntub/stores/auth';
-
   const BASE = '/ntub';
 
   const navItems = [
     { path: `${BASE}/`, label: '簡章', en: 'Programs' },
-    { path: `${BASE}/credits`, label: '學分勾選', en: 'Credits' },
+    { path: `${BASE}/credits`, label: '修業試算表', en: 'Spreadsheet' },
   ];
 
   function isActive(path: string): boolean {
     const p = typeof window !== 'undefined' ? window.location.pathname : '';
     if (path === `${BASE}/`) return p === `${BASE}/` || p === BASE;
     return p.startsWith(path);
-  }
-
-  async function doLogout() {
-    await logout();
-    window.location.href = `${BASE}/`;
   }
 </script>
 
@@ -36,19 +29,6 @@
           <span class="ntub-nav-en">{item.en}</span>
         </a>
       {/each}
-      {#if $authReady}
-        {#if $currentUser}
-          <div class="ntub-user-chip" title={$currentUser.email ?? ''}>
-            <span class="ntub-user-name">{$currentUser.name}</span>
-            <button class="ntub-logout-btn" onclick={doLogout} aria-label="登出">登出</button>
-          </div>
-        {:else}
-          <a href={`${BASE}/login`} class="ntub-nav-link ntub-login-link">
-            <span class="ntub-nav-ja">登入</span>
-            <span class="ntub-nav-en">Sign in</span>
-          </a>
-        {/if}
-      {/if}
     </nav>
   </div>
 </header>
@@ -150,42 +130,6 @@
   .ntub-nav-link.active .ntub-nav-ja {
     color: #ff6b00;
     font-weight: 700;
-  }
-
-  .ntub-login-link {
-    border-color: #cbd5e1;
-    background: #f1f5f9;
-  }
-
-  .ntub-user-chip {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    background: #f8fafc;
-    border: 1.5px solid #cbd5e1;
-    padding: 0.4rem 0.8rem;
-  }
-
-  .ntub-user-name {
-    font-size: 0.88rem;
-    font-weight: 600;
-    color: #0f172a;
-  }
-
-  .ntub-logout-btn {
-    background: #fee2e2;
-    color: #dc2626;
-    border: 1px solid #fca5a5;
-    padding: 0.2rem 0.5rem;
-    font-size: 0.75rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.15s ease;
-  }
-
-  .ntub-logout-btn:hover {
-    background: #dc2626;
-    color: #ffffff;
   }
 
   .ntub-content {

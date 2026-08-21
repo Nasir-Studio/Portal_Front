@@ -22,6 +22,7 @@
   "type": "module",
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.3",
+    "firebase-admin": "^14.3.0",
     "tailwindcss": "^4.3.3"
   }
 }
