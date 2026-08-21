@@ -25,14 +25,14 @@ export async function getStaticPaths() {
 }
 ---
 
-<BlogLayout title="商品詳情 — 小羊農場" description="小羊農場優質良品與0元物資分享。">
+<BlogLayout title="商品詳情 — Ovis Shop" description="Ovis Shop優質良品與0元物資分享。">
   <div class="main-content">
     <div class="container" id="product-container">
       <!-- 麵包屑導航 (Breadcrumbs) -->
       <div class="breadcrumbs">
         <a href="/" class="home">首頁</a>
         <span class="sep">&gt;</span>
-        <a href="/shop/">小羊農場</a>
+        <a href="/shop/">Ovis Shop</a>
         <span class="sep">&gt;</span>
         <a href="/shop/products/">全部商品</a>
         <span class="sep">&gt;</span>
@@ -390,7 +390,7 @@ export async function getStaticPaths() {
       }
     } catch(e) {}
 
-    document.title = p.name + ' — 小羊農場';
+    document.title = p.name + ' — Ovis Shop';
     var bcName = document.getElementById('product-bc-name');
     if (bcName) bcName.textContent = p.name;
 

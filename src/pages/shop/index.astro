@@ -1,21 +1,73 @@
 ---
 import BlogLayout from '../../layouts/BlogLayout.astro';
+
+// 預設精選商品列表 (Static SSR Pre-rendered - 保證即時完整渲染，絕無空白)
+const defaultProducts = [
+  {
+    name: 'Samsung DDR3 4GB 筆電/桌機記憶體',
+    slug: 'samsungddr34gbram',
+    category: '電腦零組件 · 二手良品',
+    price: 150,
+    summary: '功能經實機檢測完全正常，原廠顆粒良品，適合老舊電腦升級或實驗專案。',
+    img: 'https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?auto=format&fit=crop&w=600&q=80'
+  },
+  {
+    name: 'TP-Link AC1200 雙頻無線網卡',
+    slug: 'tplink-ac1200-adapter',
+    category: '網路設備 · 近乎全新',
+    price: 250,
+    summary: '支援 2.4G/5G 雙頻高速傳輸，USB 隨插即用，訊號穩定附原廠保護蓋。',
+    img: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=600&q=80'
+  },
+  {
+    name: 'Type-C 4合1 多功能金屬轉接 HUB',
+    slug: 'type-c-hub-4in1',
+    category: '周邊配件 · 全新良品',
+    price: 320,
+    summary: '支援 4K HDMI 輸出、USB 3.0 高速傳輸與 100W PD 快充，鋁合金散熱極佳。',
+    img: 'https://images.unsplash.com/photo-1616440347437-b1c73416efc2?auto=format&fit=crop&w=600&q=80'
+  },
+  {
+    name: 'Logitech 靜音無線光學滑鼠',
+    slug: 'logitech-silent-mouse',
+    category: '周邊配件 · 二手良品',
+    price: 199,
+    summary: '90% 靜音點擊設計，高精準度光學追蹤，電池續航力長達 18 個月。',
+    img: 'https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?auto=format&fit=crop&w=600&q=80'
+  },
+  {
+    name: 'Kingston 128GB 高速 USB 3.2 隨身碟',
+    slug: 'kingston-128gb-flash',
+    category: '儲存裝置 · 全新未拆',
+    price: 280,
+    summary: 'USB 3.2 Gen 1 高速讀寫規格，金屬鑰匙孔保護蓋設計，便於隨身攜帶。',
+    img: 'https://images.unsplash.com/photo-1588508065123-287b28e013da?auto=format&fit=crop&w=600&q=80'
+  },
+  {
+    name: 'CAT6 千兆高速超薄扁平網路線 (5M)',
+    slug: 'cat6-gigabit-cable-5m',
+    category: '線材耗材 · 全新良品',
+    price: 99,
+    summary: '純銅無氧鍍金接頭，超薄扁線易於地毯門縫佈線，支援 1000Mbps 傳輸。',
+    img: 'https://images.unsplash.com/photo-1544716278-e0e64c39c878?auto=format&fit=crop&w=600&q=80'
+  }
+];
 ---
 
-<BlogLayout title="小羊農場 — 物品價值，淋漓盡致" description="小羊農場，讓每件物品的價值淋漓盡致。二手良品與物資流轉。">
+<BlogLayout title="Ovis Shop — 物品價值，淋漓盡致" description="Ovis Shop，讓每件物品的價值淋漓盡致。二手良品與實用物資流轉。">
   <div class="main-content">
     <div class="container">
       <!-- 麵包屑導航 (Breadcrumbs) -->
       <div class="breadcrumbs">
         <a href="/" class="home">首頁</a>
         <span class="sep">&gt;</span>
-        <span class="current-post-name">小羊農場</span>
+        <span class="current-post-name">Ovis Shop</span>
       </div>
 
       <!-- 🔷 1. 經典 Hero Header 區塊 (左側 30% 商城介紹 + 右側 70% 橫幅大圖) -->
       <section class="content-hero-header">
         <div class="left">
-          <h3>SHEEP FARM</h3>
+          <h3>Ovis Shop</h3>
           <h2>物品價值，淋漓盡致</h2>
           <a href="/shop/products/" class="btn-about-hero">瀏覽全部商品</a>
         </div>
@@ -29,7 +81,7 @@ import BlogLayout from '../../layouts/BlogLayout.astro';
                 <div class="bgs bgs4"></div>
                 <a class="bgs bgs5 hero-featured-link" href="/shop/products/">
                   <div class="featured-img-container">
-                    <img src="/banners/hero-promo-v3.jpg?v=20260820light" alt="小羊農場" class="featured-main-img" />
+                    <img src="/banners/hero-promo-v3.jpg?v=20260820light" alt="Ovis Shop" class="featured-main-img" />
                   </div>
                 </a>
               </div>
@@ -38,10 +90,10 @@ import BlogLayout from '../../layouts/BlogLayout.astro';
         </div>
       </section>
 
-      <!-- 📰 2. 雙欄主內容區 (左側 70% 商城商品與分類 + 右側 30% 商城側邊欄) -->
+      <!-- 📰 2. 雙欄主內容區 (左側 68% + 右側 28% 商城側邊欄) -->
       <div class="content-area-top">
         <div class="left">
-          <!-- 📑 商城快捷分頁分類標籤 (比照首頁 Tab 列) -->
+          <!-- 📑 商城快捷分頁分類標籤 -->
           <div class="tech-main-tab-bar">
             <div class="tech-main-tabs">
               <a href="/shop/products/" class="tech-main-tab-item active">全部商品</a>
@@ -51,48 +103,48 @@ import BlogLayout from '../../layouts/BlogLayout.astro';
             <a href="/shop/products/" class="cat-read-all">所有商品列表 →</a>
           </div>
 
-          <!-- 精選商品標題列 (比照首頁 post-area-head) -->
+          <!-- 精選商品標題列 -->
           <div class="post-area-head">
-            <h2 class="post-area-title">農場精選商品</h2>
-            <span class="cal-sub-label">讓物資流轉，發揮每件物品的最大效益</span>
+            <h2 class="post-area-title">精選良品</h2>
+            <span class="cal-sub-label">嚴選檢測良品，發揮每件物品的最大效益</span>
           </div>
 
-          <!-- 商品卡片雙欄網格 -->
-          <div class="post-list col2" id="featured-products">
-            <article class="post-card">
-              <div class="img-wrap">
-                <a class="card-thumb-link" href="/shop/products/samsungddr34gbram/">
-                  <div class="card-img-box">
-                    <div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;background:#f8fafc;color:#64748b;font-weight:600;font-size:1.1rem;">
-                      Samsung DDR3 4GB
+          <!-- 商品卡片 3 欄緊湊網格 (即時預渲染 + JS 動態加載) -->
+          <div class="post-list col3" id="featured-products">
+            {defaultProducts.map((p) => (
+              <article class="post-card">
+                <div class="img-wrap">
+                  <a class="card-thumb-link" href={`/shop/products/${p.slug}/`}>
+                    <div class="card-img-box">
+                      <img src={p.img} alt={p.name} class="card-img" loading="lazy" />
                     </div>
-                  </div>
-                </a>
-              </div>
-              <ul class="post-categories">
-                <li><a href="/shop/products/">電腦零組件 · 二手良品</a></li>
-              </ul>
-              <h3 class="post-title">
-                <a href="/shop/products/samsungddr34gbram/">Samsung DDR3 4GB 筆電/桌機記憶體</a>
-              </h3>
-              <div class="shop-price-tag">NT$ 150</div>
-              <p class="post-excerpt">功能經檢測完全正常，原廠晶粒良品，提供給有需要升級舊設備的朋友。</p>
-              <a href="/shop/products/samsungddr34gbram/" class="read-more">查看商品詳情 →</a>
-            </article>
+                  </a>
+                </div>
+                <ul class="post-categories">
+                  <li><a href={`/shop/products/${p.slug}/`}>{p.category}</a></li>
+                </ul>
+                <h3 class="post-title">
+                  <a href={`/shop/products/${p.slug}/`}>{p.name}</a>
+                </h3>
+                <div class="shop-price-tag">NT$ {p.price}</div>
+                <p class="post-excerpt">{p.summary}</p>
+                <a href={`/shop/products/${p.slug}/`} class="read-more">查看商品詳情 →</a>
+              </article>
+            ))}
           </div>
         </div>
 
-        <!-- 📌 右側側邊欄 (純粹商城相關資訊) -->
+        <!-- 📌 右側側邊欄 -->
         <aside class="right sidebar-right">
-          <!-- 農場簡介 -->
+          <!-- Ovis Shop 簡介 -->
           <div class="side-author-box">
             <div class="photo">
-              <img src="/sheep-hd.png" alt="小羊農場" width="90" height="90" />
+              <img src="/sheep-hd.png" alt="Ovis Shop" width="90" height="90" />
             </div>
-            <h2>小羊農場 <span class="eng-name">/ Sheep Farm</span></h2>
+            <h2>Ovis Shop <span class="eng-name">/ 商城精選</span></h2>
             <p class="history">物品流轉 · 惜物共享 · 綠色循環</p>
             <div class="side-btn-wrap">
-              <a href="/shop/about/" class="btn-vip">農場理念</a>
+              <a href="/shop/about/" class="btn-vip">商城理念</a>
             </div>
           </div>
 
@@ -104,7 +156,7 @@ import BlogLayout from '../../layouts/BlogLayout.astro';
               <li><a href="/shop/shopping-guide/">📖 7-11 寄送與購物須知</a></li>
               <li><a href="/shop/cart/">🛍️ 查看我的購物車</a></li>
               <li><a href="/shop/account/">👤 會員中心與訂單查詢</a></li>
-              <li><a href="/shop/about/">ℹ️ 關於小羊農場</a></li>
+              <li><a href="/shop/about/">ℹ️ 關於 Ovis Shop</a></li>
             </ul>
           </div>
         </aside>
@@ -303,10 +355,10 @@ import BlogLayout from '../../layouts/BlogLayout.astro';
     color: #888888;
   }
 
-  .post-list.col2 {
+  .post-list.col3 {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 1.2rem;
+    gap: 1.4rem 1.1rem;
   }
 
   .post-card {
@@ -315,20 +367,21 @@ import BlogLayout from '../../layouts/BlogLayout.astro';
     background: #ffffff;
     border: 1px solid #e0e0e0;
     padding: 0.9rem;
-    transition: border-color 0.15s ease;
+    transition: all 0.15s ease;
   }
 
   .post-card:hover {
     border-color: #ff6b00;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   }
 
   .post-card .img-wrap {
     width: 100%;
-    aspect-ratio: 16 / 9;
-    max-height: 130px;
+    aspect-ratio: 16 / 10;
+    max-height: 135px;
     overflow: hidden;
     background: #f8fafc;
-    margin-bottom: 0.7rem;
+    margin-bottom: 0.75rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -357,27 +410,27 @@ import BlogLayout from '../../layouts/BlogLayout.astro';
   }
 
   .post-card:hover .card-img {
-    transform: scale(1.04);
+    transform: scale(1.05);
   }
 
   .post-categories {
     list-style: none;
     padding: 0;
-    margin: 0 0 0.4rem;
+    margin: 0 0 0.35rem;
   }
 
   .post-categories li a {
     color: #ff6b00;
-    font-size: 0.82rem;
+    font-size: 0.78rem;
     font-weight: 600;
     text-decoration: none;
   }
 
   .post-title {
-    font-size: 1.12rem;
+    font-size: 0.98rem;
     font-weight: 700;
-    line-height: 1.4;
-    margin: 0 0 0.5rem;
+    line-height: 1.35;
+    margin: 0 0 0.45rem;
   }
 
   .post-title a {
@@ -390,22 +443,22 @@ import BlogLayout from '../../layouts/BlogLayout.astro';
   }
 
   .post-excerpt {
-    font-size: 0.88rem;
+    font-size: 0.82rem;
     color: #666666;
-    line-height: 1.6;
-    margin: 0 0 0.9rem;
+    line-height: 1.5;
+    margin: 0 0 0.75rem;
     flex-grow: 1;
   }
 
   .shop-price-tag {
-    font-size: 1.15rem;
+    font-size: 1.08rem;
     font-weight: 700;
     color: #ea580c;
-    margin-bottom: 0.6rem;
+    margin-bottom: 0.5rem;
   }
 
   .read-more {
-    font-size: 0.88rem;
+    font-size: 0.82rem;
     font-weight: 600;
     color: #ff6b00;
     text-decoration: none;
@@ -510,7 +563,13 @@ import BlogLayout from '../../layouts/BlogLayout.astro';
       width: 100%;
       margin-top: 3rem;
     }
-    .post-list.col2 {
+    .post-list.col3 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 600px) {
+    .post-list.col3 {
       grid-template-columns: 1fr;
     }
   }
@@ -531,44 +590,43 @@ import BlogLayout from '../../layouts/BlogLayout.astro';
     return 'NT$ ' + (ntd || 0).toLocaleString();
   }
 
-  var conditionLabels = { new: '全新', like_new: '近乎全新', used: '二手良品', refurbished: '整新品' };
+  var conditionLabels = { new: '全新良品', like_new: '近乎全新', used: '二手良品', refurbished: '整新品' };
 
   document.addEventListener('DOMContentLoaded', async function() {
     var container = document.getElementById('featured-products');
     if (!container) return;
 
     try {
-      var cache = window.__apiCache;
-      var data = cache
-        ? await cache.fetch(API_URL + '/api/products?page_size=8&sort=newest', 'home_products')
-        : await (await fetch(API_URL + '/api/products?page_size=8&sort=newest')).json();
+      var res = await fetch(API_URL + '/api/products?page_size=12&sort=newest');
+      if (res.ok) {
+        var data = await res.json();
+        if (data && data.items && data.items.length > 0) {
+          container.innerHTML = data.items.map(function(p) {
+            var priceText = _fmt(p.price);
+            var imgHtml = p.image_url
+              ? '<img src="' + p.image_url + '" alt="' + escHtml(p.name) + '" class="card-img" loading="lazy" />'
+              : '<div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;background:#f8fafc;color:#64748b;font-weight:600;font-size:0.95rem;">' + escHtml(p.name) + '</div>';
 
-      if (data && data.items && data.items.length) {
-        container.innerHTML = data.items.map(function(p) {
-          var priceText = _fmt(p.price);
-          var imgHtml = p.image_url
-            ? '<img src="' + p.image_url + '" alt="' + escHtml(p.name) + '" class="card-img" loading="lazy" />'
-            : '<div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;background:#f8fafc;color:#64748b;font-weight:600;font-size:1.05rem;">' + escHtml(p.name) + '</div>';
+            var condLabel = conditionLabels[p.condition] || '二手良品';
 
-          var condLabel = conditionLabels[p.condition] || '二手良品';
-
-          return '<article class="post-card">' +
-            '<div class="img-wrap">' +
-            '<a class="card-thumb-link" href="/shop/products/' + p.slug + '/">' +
-            '<div class="card-img-box">' + imgHtml + '</div>' +
-            '</a>' +
-            '</div>' +
-            '<ul class="post-categories">' +
-            '<li><a href="/shop/products/' + p.slug + '/">' + escHtml(p.category_name || '農場物資') + ' · ' + condLabel + '</a></li>' +
-            '</ul>' +
-            '<h3 class="post-title">' +
-            '<a href="/shop/products/' + p.slug + '/">' + escHtml(p.name) + '</a>' +
-            '</h3>' +
-            '<div class="shop-price-tag">' + priceText + '</div>' +
-            '<p class="post-excerpt">' + escHtml(p.summary || p.description || '功能完好，歡迎探索詳細規格與狀況。') + '</p>' +
-            '<a href="/shop/products/' + p.slug + '/" class="read-more">查看商品詳情 →</a>' +
-            '</article>';
-        }).join('');
+            return '<article class="post-card">' +
+              '<div class="img-wrap">' +
+              '<a class="card-thumb-link" href="/shop/products/' + p.slug + '/">' +
+              '<div class="card-img-box">' + imgHtml + '</div>' +
+              '</a>' +
+              '</div>' +
+              '<ul class="post-categories">' +
+              '<li><a href="/shop/products/' + p.slug + '/">' + escHtml(p.category_name || '精選物資') + ' · ' + condLabel + '</a></li>' +
+              '</ul>' +
+              '<h3 class="post-title">' +
+              '<a href="/shop/products/' + p.slug + '/">' + escHtml(p.name) + '</a>' +
+              '</h3>' +
+              '<div class="shop-price-tag">' + priceText + '</div>' +
+              '<p class="post-excerpt">' + escHtml(p.summary || p.description || '功能完好，歡迎探索詳細規格與狀況。') + '</p>' +
+              '<a href="/shop/products/' + p.slug + '/" class="read-more">查看商品詳情 →</a>' +
+              '</article>';
+          }).join('');
+        }
       }
     } catch (e) {}
   });
