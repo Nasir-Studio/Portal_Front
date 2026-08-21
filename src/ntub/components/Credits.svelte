@@ -373,19 +373,16 @@
 					{ f: `'${sheetName}'!F${summaryStartRow + 2}` },
 					p.requirement.crossDept ? '需跨修至少1門外系' : '無跨系限制',
 					{ f: `'${sheetName}'!F${summaryStartRow + 4}` },
-					{ f: `IF(AND(E${rowNum}>=D${rowNum}, G${rowNum}>=F${rowNum}, IF(J${rowNum}="需跨修至少1門外系", K${rowNum}>=1, TRUE)), "🟢 ✓ 符合資格 (可申請證書)", "🔴 尚未達標 (學分不足或缺跨系)")` },
+					{ f: `IF(AND(E${rowNum}>=D${rowNum}, G${rowNum}>=F${rowNum}, IF(J${rowNum}="需跨修至少1門外系", K${rowNum}>=1, TRUE)), "符合資格 (可申請證書)", "尚未達標 (學分不足或缺跨系)")` },
 					sheetName
 				]);
 			});
 
-			certRows.push([]);
-			certRows.push(['--- 💡 Google Sheets 使用指引 ---']);
-			certRows.push(['1. 本檔案匯入 Google Sheets 後，A 欄核取方塊（TRUE / FALSE）可直接點擊勾選，所有學程與總表加總公式皆會全自動即時更新！']);
-			certRows.push(['2. 點選底部分頁（Tab），即可個別切換全校總表、9 大學程專屬表與簡章規範。']);
+
 
 			const wsCert = XLSX.utils.aoa_to_sheet(certRows);
 			wsCert['!cols'] = [{ wch: 6 }, { wch: 28 }, { wch: 10 }, { wch: 14 }, { wch: 14 }, { wch: 14 }, { wch: 14 }, { wch: 14 }, { wch: 14 }, { wch: 18 }, { wch: 14 }, { wch: 34 }, { wch: 18 }];
-			XLSX.utils.book_append_sheet(wb, wsCert, '🎓證書資格審查總表');
+			XLSX.utils.book_append_sheet(wb, wsCert, '證書資格審查總表');
 
 			// ==========================================
 			// 2. Sheet 2: 📋全校課程總表 (含當前即時勾選狀態)
@@ -425,7 +422,7 @@
 
 			const wsAll = XLSX.utils.aoa_to_sheet(allData);
 			wsAll['!cols'] = [{ wch: 18 }, { wch: 14 }, { wch: 32 }, { wch: 18 }, { wch: 10 }, { wch: 10 }, { wch: 14 }, { wch: 16 }, { wch: 35 }];
-			XLSX.utils.book_append_sheet(wb, wsAll, '📋全校課程總表');
+			XLSX.utils.book_append_sheet(wb, wsAll, '全校課程總表');
 
 			// ==========================================
 			// 3. Sheet 3 ~ 11: 9 大學程各獨立工作表分頁
@@ -464,7 +461,7 @@
 				pData.push(['專業選修學分', '', '', '', '', { f: `SUMIFS(F${pStartRow}:F${pEndRow}, A${pStartRow}:A${pEndRow}, TRUE, E${pStartRow}:E${pEndRow}, "選修")` }, '', `選修門檻: ${p.requirement.elective || 0} 學分`]);
 				pData.push(['本系修課學分', '', '', '', '', { f: `SUMIFS(F${pStartRow}:F${pEndRow}, A${pStartRow}:A${pEndRow}, TRUE, H${pStartRow}:H${pEndRow}, "本系 (${$myDept})")` }]);
 				pData.push(['跨系修課門數', '', '', '', '', { f: `COUNTIFS(A${pStartRow}:A${pEndRow}, TRUE, H${pStartRow}:H${pEndRow}, "外系/跨系")` }, '', `跨系限制: ${p.requirement.crossDept ? '至少1門' : '無限制'}`]);
-				pData.push(['證書取得資格', '', '', '', '', { f: `IF(AND(F${pEndRow + 3}>=${p.requirement.total}, F${pEndRow + 4}>=${p.requirement.required || 0}, IF("${p.requirement.crossDept}"="true", F${pEndRow + 7}>=1, TRUE)), "🟢 ✓ 符合資格 (可申請證書)", "🔴 尚未達標 (學分不足或缺跨系)")` }]);
+				pData.push(['證書取得資格', '', '', '', '', { f: `IF(AND(F${pEndRow + 3}>=${p.requirement.total}, F${pEndRow + 4}>=${p.requirement.required || 0}, IF("${p.requirement.crossDept}"="true", F${pEndRow + 7}>=1, TRUE)), "符合資格 (可申請證書)", "尚未達標 (學分不足或缺跨系)")` }]);
 
 				const wsProg = XLSX.utils.aoa_to_sheet(pData);
 				wsProg['!cols'] = [{ wch: 18 }, { wch: 14 }, { wch: 32 }, { wch: 18 }, { wch: 10 }, { wch: 10 }, { wch: 14 }, { wch: 16 }, { wch: 25 }];
@@ -499,7 +496,7 @@
 
 			const wsBrochure = XLSX.utils.aoa_to_sheet(brochureRows);
 			wsBrochure['!cols'] = [{ wch: 25 }, { wch: 10 }, { wch: 16 }, { wch: 25 }, { wch: 12 }, { wch: 12 }, { wch: 12 }, { wch: 18 }, { wch: 45 }, { wch: 45 }];
-			XLSX.utils.book_append_sheet(wb, wsBrochure, '📖簡章設置要點');
+			XLSX.utils.book_append_sheet(wb, wsBrochure, '簡章設置要點');
 
 			// ==========================================
 			// 5. Sheet 13: ✏️自訂學分表
@@ -532,7 +529,7 @@
 
 			const wsCustom = XLSX.utils.aoa_to_sheet(customData);
 			wsCustom['!cols'] = [{ wch: 18 }, { wch: 14 }, { wch: 30 }, { wch: 18 }, { wch: 10 }, { wch: 10 }, { wch: 12 }, { wch: 20 }];
-			XLSX.utils.book_append_sheet(wb, wsCustom, '✏️自訂學分表');
+			XLSX.utils.book_append_sheet(wb, wsCustom, '自訂學分表');
 
 			// 寫入並下載多工作表 .xlsx
 			XLSX.writeFile(wb, `NTUB_學分修業與證書資格試算表_${new Date().toISOString().slice(0, 10)}.xlsx`);
