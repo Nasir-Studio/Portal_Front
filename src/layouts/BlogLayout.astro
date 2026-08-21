@@ -1317,11 +1317,11 @@ const searchIndexJson = JSON.stringify(
 
   .mobile-sub-menu {
     list-style: none;
-    padding: 0.2rem 0 0.4rem 1.1rem !important;
-    margin: 0 0 0.5rem !important;
+    padding: 0 0 0.4rem 1.2rem !important;
+    margin: 0 !important;
     display: none;
-    background: #fafafa;
-    border-left: 1.5px solid #e2e8f0;
+    background: transparent !important;
+    border: none !important;
   }
 
   .mobile-has-sub.is-active .mobile-sub-menu {
@@ -1329,24 +1329,19 @@ const searchIndexJson = JSON.stringify(
   }
 
   .mobile-sub-menu li {
-    border-bottom: 1px solid #f1f5f9 !important;
-  }
-
-  .mobile-sub-menu li:last-child {
-    border-bottom: none !important;
+    border: none !important;
   }
 
   .mobile-sub-menu a {
-    padding: 0.6rem 0.6rem !important;
-    font-size: 0.93rem !important;
+    padding: 0.45rem 0 !important;
+    font-size: 0.96rem !important;
     color: #64748b !important;
     font-weight: 400 !important;
-    transition: all 0.15s ease;
+    transition: color 0.15s ease;
   }
 
   .mobile-sub-menu a:hover {
     color: #0f172a !important;
-    padding-left: 0.9rem !important;
   }
 
   .mobile-menu-links a {
