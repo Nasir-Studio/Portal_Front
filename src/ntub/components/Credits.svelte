@@ -320,100 +320,224 @@
 		customCourses = customCourses.filter((c) => c.id !== id);
 	}
 
-	// 📗 一鍵匯出大一統單一工作表 .xlsx 試算表（可在任何 Excel / Google Sheets 離線使用）
+	// 📗 匯出完全支援 Google Sheets / Excel 之「13 大多工作表分頁」+「核取方塊」.xlsx 檔案
 	async function exportMasterXLSX() {
 		try {
 			const XLSX = await import('xlsx');
 			const wb = XLSX.utils.book_new();
 
-			const masterData: any[][] = [
-				['國立臺北商業大學 NTUB 學分學程修業與證書資格全方位即時試算表 (大一統單一試算表)'],
-				[`基準科系：${$myDept}（開課單位非資管系者自動判定為跨系/外系） ｜ 本試算表可直接於 Excel / Google Sheets 離線使用`],
+			// 輔助函式：產生標準 Boolean 核取方塊儲存格
+			function boolCell(val: boolean) {
+				return { t: 'b', v: Boolean(val) };
+			}
+
+			// ==========================================
+			// 1. Sheet 1: 🎓證書資格審查總表 (含連動公式)
+			// ==========================================
+			const certRows: any[][] = [
+				['國立臺北商業大學 NTUB 學分學程暨微學程 — 修業證書資格審查總表 (Google Sheets 專用)'],
+				[`基準科系：${$myDept}（開課單位非資管系者自動判定為跨系/外系） ｜ 勾選各分頁核取方塊自動即時連動加總`],
 				[],
-				['=========================================================================================================='],
-				['【第一部分：全校 9 大學分學程修業證書取得資格審查總表】'],
-				['=========================================================================================================='],
-				['項次', '學程名稱', '學程類別', '應修總門檻', '已修總學分', '核心必修門檻', '必修已修', '專業選修門檻', '選修已修', '跨系修課要求', '跨系已修門數', '證書取得資格判定']
+				[
+					'項次',
+					'學程名稱',
+					'學程類別',
+					'應修總門檻',
+					'已修總學分',
+					'核心必修門檻',
+					'必修已修',
+					'專業選修門檻',
+					'選修已修',
+					'跨系要求',
+					'跨系已修門數',
+					'證書取得資格判定 (公式即時連動)',
+					'所屬工作表分頁'
+				]
 			];
 
-			certificateSummaries().forEach((c, idx) => {
-				masterData.push([
+			programs.forEach((p, idx) => {
+				const sheetName = p.name.replace(/學分學程|微學程/g, '').slice(0, 25);
+				const rowNum = idx + 5;
+				const courseCount = p.courses.length;
+				const summaryStartRow = courseCount + 6;
+
+				certRows.push([
 					idx + 1,
-					c.name,
-					c.kind,
-					c.reqTotal,
-					c.earned,
-					c.reqMust,
-					c.earnedReq,
-					c.eleMust,
-					c.earnedEle,
-					c.crossDeptReq ? '需跨修至少1門外系' : '無跨系限制',
-					c.crossDeptCount,
-					c.isEligible ? '🟢 ✓ 符合資格 (可申請證書)' : `🔴 尚未達標 (${c.reason})`
+					p.name,
+					p.kind,
+					p.requirement.total,
+					{ f: `='${sheetName}'!F${summaryStartRow}` },
+					p.requirement.required || 0,
+					{ f: `='${sheetName}'!F${summaryStartRow + 1}` },
+					p.requirement.elective || 0,
+					{ f: `='${sheetName}'!F${summaryStartRow + 2}` },
+					p.requirement.crossDept ? '需跨修至少1門外系' : '無跨系限制',
+					{ f: `='${sheetName}'!F${summaryStartRow + 4}` },
+					{ f: `=IF(AND(E${rowNum}>=D${rowNum}, G${rowNum}>=F${rowNum}, IF(J${rowNum}="需跨修至少1門外系", K${rowNum}>=1, TRUE)), "🟢 ✓ 符合資格 (可申請證書)", "🔴 尚未達標 (學分不足或缺跨系)")` },
+					sheetName
 				]);
 			});
 
-			masterData.push([]);
-			masterData.push(['==========================================================================================================']);
-			masterData.push(['【第二部分：各學程簡章設置要點與修業證明申請流程指引】']);
-			masterData.push(['==========================================================================================================']);
-			programs.forEach((p) => {
-				masterData.push([
-					`📌 ${p.name} (${p.kind})`,
-					`規劃單位: ${p.planningUnit}`,
-					`門檻: 總計 ${p.requirement.total} 學分 (必修 ${p.requirement.required || 0} / 選修 ${p.requirement.elective || 0})`,
-					`跨系限制: ${p.requirement.crossDept ? '需跨系至少一門' : '無'}`,
-					`設置宗旨: ${p.purpose}`,
-					`申請辦法: 學生修滿本學程規定之科目與學分後，檢具歷年成績表經主辦單位審查、教務長與校長核定後，由教務處發給修業證明書。`
-				]);
-			});
+			certRows.push([]);
+			certRows.push(['--- 💡 Google Sheets 使用指引 ---']);
+			certRows.push(['1. 本檔案匯入 Google Sheets 後，A 欄核取方塊（TRUE / FALSE）可直接點擊勾選，所有學程與總表加總公式皆會全自動即時更新！']);
+			certRows.push(['2. 點選底部分頁（Tab），即可個別切換全校總表、9 大學程專屬表與簡章規範。']);
 
-			masterData.push([]);
-			masterData.push(['==========================================================================================================']);
-			masterData.push(['【第三部分：全校完整課程明細修業試算表 (勾選「已修」/「未修」自動連動)】']);
-			masterData.push(['==========================================================================================================']);
-			masterData.push(['修業狀態', '課程代碼', '課程名稱', '開課系所', '修別', '學分數', '學期/年級', '本系/外系判定', '所屬學程與備註']);
+			const wsCert = XLSX.utils.aoa_to_sheet(certRows);
+			wsCert['!cols'] = [{ wch: 6 }, { wch: 28 }, { wch: 10 }, { wch: 14 }, { wch: 14 }, { wch: 14 }, { wch: 14 }, { wch: 14 }, { wch: 14 }, { wch: 18 }, { wch: 14 }, { wch: 34 }, { wch: 18 }];
+			XLSX.utils.book_append_sheet(wb, wsCert, '🎓證書資格審查總表');
 
-			displayedRows().forEach((r) => {
-				masterData.push([
-					r.checked ? '已修' : '未修',
-					r.code,
-					r.name,
-					r.unit,
-					r.type,
-					r.credits,
-					r.term,
-					r.isMine ? `本系 (${$myDept})` : '外系/跨系',
-					r.programNames
-				]);
-			});
-
-			const stats = globalStats();
-			masterData.push([]);
-			masterData.push(['--- 試算表即時加總統計列 ---']);
-			masterData.push(['已修總學分合計', '', '', '', '', stats.earnedCreditsSum, '', `畢業達成率: ${stats.gradPct}%`]);
-			masterData.push(['核心必修已修', '', '', '', '', stats.requiredCreditsSum]);
-			masterData.push(['專業選修已修', '', '', '', '', stats.electiveCreditsSum]);
-			masterData.push(['本系 (資管) 學分', '', '', '', '', stats.myDeptCreditsSum]);
-			masterData.push(['外系 (跨系) 學分', '', '', '', '', stats.crossDeptCreditsSum]);
-
-			const ws = XLSX.utils.aoa_to_sheet(masterData);
-			ws['!cols'] = [
-				{ wch: 22 },
-				{ wch: 16 },
-				{ wch: 34 },
-				{ wch: 20 },
-				{ wch: 14 },
-				{ wch: 12 },
-				{ wch: 14 },
-				{ wch: 18 },
-				{ wch: 45 }
+			// ==========================================
+			// 2. Sheet 2: 📋全校課程總表 (含當前即時勾選狀態)
+			// ==========================================
+			const allData: any[][] = [
+				['國立臺北商業大學 NTUB 學分學程與各系課程總表'],
+				['A 欄為核取方塊 (TRUE 已修 / FALSE 未修) ｜ 開課單位非資管系者自動為跨系/外系'],
+				[],
+				['修業狀態 (核取方塊)', '課程代碼', '課程名稱', '開課系所', '修別', '學分數', '開課學期', '本系/外系判定', '所屬學分學程']
 			];
 
-			XLSX.utils.book_append_sheet(wb, ws, 'NTUB學分修業大一統總表');
+			const allStartRow = 5;
+			allCoursesFlat().forEach(({ course: c, programs: pList }) => {
+				const isChecked = $checkedCourses.has(c.id);
+				const isMine = c.unit.includes($myDept);
+				allData.push([
+					boolCell(isChecked),
+					c.id.toUpperCase(),
+					c.name,
+					c.unit,
+					c.type === 'required' ? '必修' : '選修',
+					c.credits,
+					c.term || '全學年',
+					isMine ? `本系 (${$myDept})` : '外系/跨系',
+					pList.join('、')
+				]);
+			});
+			const allEndRow = allStartRow + allCoursesFlat().length - 1;
+
+			allData.push([]);
+			allData.push(['--- 試算表全域加總統計列 ---']);
+			allData.push(['已修總學分合計', '', '', '', '', { f: `=SUMIF(A${allStartRow}:A${allEndRow}, TRUE, F${allStartRow}:F${allEndRow})` }, '', '大學部畢業門檻: 128 學分']);
+			allData.push(['核心必修已修', '', '', '', '', { f: `=SUMIFS(F${allStartRow}:F${allEndRow}, A${allStartRow}:A${allEndRow}, TRUE, E${allStartRow}:E${allEndRow}, "必修")` }]);
+			allData.push(['專業選修已修', '', '', '', '', { f: `=SUMIFS(F${allStartRow}:F${allEndRow}, A${allStartRow}:A${allEndRow}, TRUE, E${allStartRow}:E${allEndRow}, "選修")` }]);
+			allData.push(['本系 (資管) 學分', '', '', '', '', { f: `=SUMIFS(F${allStartRow}:F${allEndRow}, A${allStartRow}:A${allEndRow}, TRUE, H${allStartRow}:H${allEndRow}, "本系 (${$myDept})")` }]);
+			allData.push(['外系 (跨系) 學分', '', '', '', '', { f: `=SUMIFS(F${allStartRow}:F${allEndRow}, A${allStartRow}:A${allEndRow}, TRUE, H${allStartRow}:H${allEndRow}, "外系/跨系")` }]);
+
+			const wsAll = XLSX.utils.aoa_to_sheet(allData);
+			wsAll['!cols'] = [{ wch: 18 }, { wch: 14 }, { wch: 32 }, { wch: 18 }, { wch: 10 }, { wch: 10 }, { wch: 14 }, { wch: 16 }, { wch: 35 }];
+			XLSX.utils.book_append_sheet(wb, wsAll, '📋全校課程總表');
+
+			// ==========================================
+			// 3. Sheet 3 ~ 11: 9 大學程各獨立工作表分頁
+			// ==========================================
+			for (const p of programs) {
+				const pData: any[][] = [
+					[`國立臺北商業大學 — ${p.name} (${p.kind}) 修業學分試算表`],
+					[`設置要點與門檻：總學分至少 ${p.requirement.total} 學分${p.requirement.required ? `，必修至少 ${p.requirement.required} 學分` : ''}${p.requirement.elective ? `，選修至少 ${p.requirement.elective} 學分` : ''}${p.requirement.crossDept ? '，需至少跨修一門外系' : ''}`],
+					[`規劃設置單位：${p.planningUnit} ｜ 參與教學：${p.participatingUnits.join('、')}`],
+					[],
+					['修業狀態 (核取方塊)', '課程代碼', '課程名稱', '開課系所', '修別', '學分數', '開課學期', '本系/外系判定', '學程分類與備註']
+				];
+
+				const pStartRow = 6;
+				p.courses.forEach((c) => {
+					const isChecked = $checkedCourses.has(c.id);
+					const isMine = c.unit.includes($myDept);
+					pData.push([
+						boolCell(isChecked),
+						c.id.toUpperCase(),
+						c.name,
+						c.unit,
+						c.type === 'required' ? '必修' : '選修',
+						c.credits,
+						c.term || '依學期開設',
+						isMine ? `本系 (${$myDept})` : '外系/跨系',
+						c.category === 'core' ? '核心必修' : (c.category === 'advanced' ? '進階專業' : '專業選修')
+					]);
+				});
+				const pEndRow = pStartRow + p.courses.length - 1;
+
+				pData.push([]);
+				pData.push(['--- 學程試算統計加總列 ---']);
+				pData.push(['已修畢總學分', '', '', '', '', { f: `=SUMIF(A${pStartRow}:A${pEndRow}, TRUE, F${pStartRow}:F${pEndRow})` }, '', `門檻標準: ${p.requirement.total} 學分`]);
+				pData.push(['核心必修學分', '', '', '', '', { f: `=SUMIFS(F${pStartRow}:F${pEndRow}, A${pStartRow}:A${pEndRow}, TRUE, E${pStartRow}:E${pEndRow}, "必修")` }, '', `必修門檻: ${p.requirement.required || 0} 學分`]);
+				pData.push(['專業選修學分', '', '', '', '', { f: `=SUMIFS(F${pStartRow}:F${pEndRow}, A${pStartRow}:A${pEndRow}, TRUE, E${pStartRow}:E${pEndRow}, "選修")` }, '', `選修門檻: ${p.requirement.elective || 0} 學分`]);
+				pData.push(['本系修課學分', '', '', '', '', { f: `=SUMIFS(F${pStartRow}:F${pEndRow}, A${pStartRow}:A${pEndRow}, TRUE, H${pStartRow}:H${pEndRow}, "本系 (${$myDept})")` }]);
+				pData.push(['跨系修課門數', '', '', '', '', { f: `=COUNTIFS(A${pStartRow}:A${pEndRow}, TRUE, H${pStartRow}:H${pEndRow}, "外系/跨系")` }, '', `跨系限制: ${p.requirement.crossDept ? '至少1門' : '無限制'}`]);
+				pData.push(['證書取得資格', '', '', '', '', { f: `=IF(AND(F${pEndRow + 3}>=${p.requirement.total}, F${pEndRow + 4}>=${p.requirement.required || 0}, IF("${p.requirement.crossDept}"="true", F${pEndRow + 7}>=1, TRUE)), "🟢 ✓ 符合資格 (可申請證書)", "🔴 尚未達標 (學分不足或缺跨系)")` }]);
+
+				const wsProg = XLSX.utils.aoa_to_sheet(pData);
+				wsProg['!cols'] = [{ wch: 18 }, { wch: 14 }, { wch: 32 }, { wch: 18 }, { wch: 10 }, { wch: 10 }, { wch: 14 }, { wch: 16 }, { wch: 25 }];
+				const sheetTitle = p.name.replace(/學分學程|微學程/g, '').slice(0, 25);
+				XLSX.utils.book_append_sheet(wb, wsProg, sheetTitle);
+			}
+
+			// ==========================================
+			// 4. Sheet 12: 📖簡章設置要點
+			// ==========================================
+			const brochureRows: any[][] = [
+				['國立臺北商業大學 9 大學分學程與微學程簡章設置要點暨修業證明申請流程指引'],
+				['資料來源：北商大官方簡章與教務處計畫書公告'],
+				[],
+				['學程名稱', '學程類別', '規劃設置單位', '參與教學單位', '應修總門檻', '必修門檻', '選修門檻', '跨系修課要求', '設置宗旨與核心目標', '修業證書申請辦法']
+			];
+
+			programs.forEach((p) => {
+				brochureRows.push([
+					p.name,
+					p.kind,
+					p.planningUnit,
+					p.participatingUnits.join('、'),
+					`${p.requirement.total} 學分`,
+					p.requirement.required ? `${p.requirement.required} 學分` : '依規定',
+					p.requirement.elective ? `${p.requirement.elective} 學分` : '依規定',
+					p.requirement.crossDept ? '需至少跨修一門外系' : '無跨系限制',
+					p.purpose,
+					'修滿規定學分後，檢具歷年成績表經主辦單位審查無誤，並經教務長與校長核定後，由教務處發給修業證明書。'
+				]);
+			});
+
+			const wsBrochure = XLSX.utils.aoa_to_sheet(brochureRows);
+			wsBrochure['!cols'] = [{ wch: 25 }, { wch: 10 }, { wch: 16 }, { wch: 25 }, { wch: 12 }, { wch: 12 }, { wch: 12 }, { wch: 18 }, { wch: 45 }, { wch: 45 }];
+			XLSX.utils.book_append_sheet(wb, wsBrochure, '📖簡章設置要點');
+
+			// ==========================================
+			// 5. Sheet 13: ✏️自訂學分表
+			// ==========================================
+			const customData: any[][] = [
+				['個人自訂修課與畢業學分試算表 (可自由新增通識與選修)'],
+				['A 欄為核取方塊 (TRUE 已修 / FALSE 未修)'],
+				[],
+				['修業狀態 (核取方塊)', '課程代碼', '課程名稱', '開課單位/系所', '修別', '學分數', '學期', '備註']
+			];
+
+			customCourses.forEach((c) => {
+				customData.push([
+					boolCell(c.checked),
+					c.code,
+					c.name,
+					c.unit,
+					c.type,
+					c.credits,
+					c.term,
+					'自訂修課'
+				]);
+			});
+
+			const customStart = 5;
+			const customEnd = customStart + customCourses.length - 1;
+			customData.push([]);
+			customData.push(['--- 畢業學分試算統計 ---']);
+			customData.push(['已修總學分小計', '', '', '', '', { f: `=SUMIF(A${customStart}:A${customEnd}, TRUE, F${customStart}:F${customEnd})` }, '', '畢業門檻: 128 學分']);
+
+			const wsCustom = XLSX.utils.aoa_to_sheet(customData);
+			wsCustom['!cols'] = [{ wch: 18 }, { wch: 14 }, { wch: 30 }, { wch: 18 }, { wch: 10 }, { wch: 10 }, { wch: 12 }, { wch: 20 }];
+			XLSX.utils.book_append_sheet(wb, wsCustom, '✏️自訂學分表');
+
+			// 寫入並下載多工作表 .xlsx
 			XLSX.writeFile(wb, `NTUB_學分修業與證書資格試算表_${new Date().toISOString().slice(0, 10)}.xlsx`);
 		} catch (err) {
-			console.error('XLSX export failed', err);
+			console.error('XLSX multi-sheet export failed', err);
 		}
 	}
 </script>
