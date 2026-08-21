@@ -1,118 +1,398 @@
 ---
-import BaseLayout from '../../shop/layouts/BaseLayout.astro';
-import Header from '../../shop/components/Header.astro';
-import Footer from '../../shop/components/Footer.astro';
+import BlogLayout from '../../layouts/BlogLayout.astro';
 ---
 
-<BaseLayout title="購物須知 — 小羊農場">
-  <Header />
-
-  <main class="pt-header">
+<BlogLayout title="購物須知 — Ovis Shop" description="Ovis Shop 購物流程、7-11 物流寄送與訂單處理須知。">
+  <div class="main-content">
     <div class="container">
-      <div class="content-page">
-        <h1>購物須知</h1>
+      <!-- 麵包屑導航 -->
+      <div class="breadcrumbs">
+        <a href="/" class="home">首頁</a>
+        <span class="sep">&gt;</span>
+        <a href="/shop/">Ovis Shop</a>
+        <span class="sep">&gt;</span>
+        <span class="current-post-name">購物須知</span>
+      </div>
 
-        <section>
-          <h2>關於小羊農場</h2>
-          <p>小羊農場是一個以「物品價值，淋漓盡致」為理念的分享平台。我們鼓勵將不再需要的物品分享給有需要的人，讓每件物品都能發揮最大的價值。</p>
-        </section>
+      <!-- 🔷 1. Hero Header -->
+      <section class="content-hero-header">
+        <div class="left">
+          <h3>Ovis Shop</h3>
+          <h2>購物流程與物流須知</h2>
+          <a href="/shop/products/" class="btn-about-hero">瀏覽全部商品</a>
+        </div>
+        <div class="right">
+          <div class="slider-wrap-header">
+            <div class="slider-one">
+              <div class="img-wrap">
+                <div class="bgs bgs1"></div>
+                <div class="bgs bgs2"></div>
+                <div class="bgs bgs3"></div>
+                <div class="bgs bgs4"></div>
+                <a class="bgs bgs5 hero-featured-link" href="/shop/products/">
+                  <div class="featured-img-container">
+                    <img src="/banners/hero-promo-v3.jpg?v=20260820light" alt="Ovis Shop" class="featured-main-img" />
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-        <section>
-          <h2>如何索取物品</h2>
-          <ol>
-            <li><strong>瀏覽商品</strong> — 在「全部商品」頁面瀏覽所有可索取的商品。</li>
-            <li><strong>加入購物車</strong> — 將感興趣的商品加入購物車。</li>
-            <li><strong>結帳</strong> — 填寫收件資訊並提交訂單。</li>
-            <li><strong>等待通知</strong> — 賣家確認後，商品將會出貨。</li>
-          </ol>
-        </section>
+      <!-- 📰 2. 雙欄主內容區 -->
+      <div class="content-area-top">
+        <div class="left">
+          <!-- 📑 商城快捷分頁分類標籤 -->
+          <div class="tech-main-tab-bar">
+            <div class="tech-main-tabs">
+              <a href="/shop/products/" class="tech-main-tab-item">全部商品</a>
+              <a href="/shop/shopping-guide/" class="tech-main-tab-item active">購物須知</a>
+              <a href="/shop/about/" class="tech-main-tab-item">關於我們</a>
+            </div>
+          </div>
 
-        <section>
-          <h2>運費說明</h2>
-          <p>商品本身為 <strong>0 元</strong>，無需支付任何商品費用。</p>
-          <p>如需寄送，僅需負擔 <strong>7-11 運費 $75（運費 $60 + 包材 $15）</strong>。</p>
-          <p>部分商品可能提供面交選項，請於商品頁面查看詳細資訊。</p>
-        </section>
+          <div class="post-area-head">
+            <h2 class="post-area-title">購物與出貨規範</h2>
+          </div>
 
-        <section>
-          <h2>訂單處理</h2>
-          <ul>
-            <li>訂單提交後，賣家將在 1-3 個工作天內確認。</li>
-            <li>確認後商品將透過 7-11 交貨便寄出。</li>
-            <li>請確保收件資訊填寫正確，若因資訊錯誤導致無法送達，買家需自行負擔重寄運費。</li>
-          </ul>
-        </section>
+          <div class="guide-content-box">
+            <section class="guide-section">
+              <h3 class="guide-h3">1. 選購與下單流程</h3>
+              <ol class="guide-ol">
+                <li><strong>挑選商品</strong>：於商品列表或首頁瀏覽檢測良品，點擊進入商品詳情頁。</li>
+                <li><strong>加入購物車</strong>：確認商品規格與庫存後，點擊「加入購物車」。</li>
+                <li><strong>填寫收件資訊</strong>：填寫 7-11 取件門市、收件人真實姓名與聯絡電話。</li>
+                <li><strong>完成訂單</strong>：提交訂單後，系統將發送訂單確認通知。</li>
+              </ol>
+            </section>
 
-        <section>
-          <h2>取消訂單</h2>
-          <p>如需取消訂單，請在賣家確認前於「我的訂單」頁面取消。若訂單已確認出貨，請聯絡客服協助處理。</p>
-        </section>
+            <section class="guide-section">
+              <h3 class="guide-h3">2. 運費與配送方式</h3>
+              <p>全站商品一律採用 <strong>7-11 店到店交貨便</strong> 寄送：</p>
+              <ul class="guide-ul">
+                <li><strong>配送運費</strong>：每筆訂單統一為 NT$ 75（包含 7-11 本島運費 NT$ 60 + 防撞緩衝包材費 NT$ 15）。</li>
+                <li><strong>配送時間</strong>：寄出後約 2-3 個工作天送達您指定的 7-11 門市，屆時將有簡訊通知取件。</li>
+              </ul>
+            </section>
 
-        <section>
-          <h2>注意事項</h2>
-          <ul>
-            <li>所有商品皆為二手物品，請確認商品狀況後再索取。</li>
-            <li>請勿隨意下單後不取貨，多次違規將限制使用權限。</li>
-            <li>如有任何問題，請透過「聯絡方式」與我們聯繫。</li>
-          </ul>
-        </section>
+            <section class="guide-section">
+              <h3 class="guide-h3">3. 訂單處理與出貨時間</h3>
+              <ul class="guide-ul">
+                <li>訂單建立後，站長將在 1-2 個工作天內完成功能覆檢與防撞包裝並出貨。</li>
+                <li>出貨後您可於「會員中心」查詢訂單包裹即時配送進度。</li>
+              </ul>
+            </section>
+
+            <section class="guide-section">
+              <h3 class="guide-h3">4. 商品狀態與保障</h3>
+              <ul class="guide-ul">
+                <li>所有上架二手良品均由站長親自實機檢測確認功能正常。</li>
+                <li>二手物品若有外觀微小使用痕跡皆會在商品詳情中註明，請於下單前詳閱規格。</li>
+                <li>若收到商品有非人為之重大功能瑕疵，請於到貨 3 日內透過 VIP 問題工單與我們聯絡協助。</li>
+              </ul>
+            </section>
+          </div>
+        </div>
+
+        <!-- 📌 右側側邊欄 -->
+        <aside class="right sidebar-right">
+          <div class="side-author-box">
+            <div class="photo">
+              <img src="/sheep-hd.png" alt="Ovis Shop" width="90" height="90" />
+            </div>
+            <h2>Ovis Shop <span class="eng-name">/ 商城精選</span></h2>
+            <p class="history">物品流轉 · 惜物共享 · 綠色循環</p>
+            <div class="side-btn-wrap">
+              <a href="/shop/about/" class="btn-vip">商城理念</a>
+            </div>
+          </div>
+        </aside>
       </div>
     </div>
-  </main>
+  </div>
+</BlogLayout>
 
-  <Footer />
-</BaseLayout>
-
-<style>
-  .content-page {
-    max-width: 720px;
-    margin: 0 auto;
-    padding: var(--sp-12) 0 var(--sp-20);
+<style is:global>
+  .main-content {
+    background-color: #ffffff;
+    padding: 1.5rem 0 5rem;
   }
 
-  .content-page h1 {
-    font-size: var(--text-3xl);
-    font-weight: 400;
-    margin-bottom: var(--sp-10);
-    padding-bottom: var(--sp-6);
-    border-bottom: 1px solid var(--c-border);
+  .breadcrumbs {
+    font-size: 14px;
+    color: #999999;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
   }
 
-  .content-page section {
-    margin-bottom: var(--sp-10);
+  .breadcrumbs a {
+    color: #666666;
+    text-decoration: none;
   }
 
-  .content-page h2 {
-    font-size: var(--text-xl);
-    font-weight: 500;
-    margin-bottom: var(--sp-4);
+  .breadcrumbs a:hover {
+    color: #ff6b00;
   }
 
-  .content-page p {
-    font-size: var(--text-sm);
-    line-height: var(--leading-relaxed);
-    color: var(--c-text-secondary);
-    margin-bottom: var(--sp-3);
+  .breadcrumbs .sep {
+    margin: 0 5px;
+    color: #cccccc;
   }
 
-  .content-page ul,
-  .content-page ol {
-    padding-left: var(--sp-6);
-    font-size: var(--text-sm);
-    line-height: var(--leading-relaxed);
-    color: var(--c-text-secondary);
-  }
-
-  .content-page li {
-    margin-bottom: var(--sp-2);
-  }
-
-  .content-page strong {
-    color: var(--c-text);
+  .breadcrumbs .current-post-name {
+    color: #333333;
     font-weight: 500;
   }
 
-  @media (max-width: 768px) {
-    .content-page { padding: var(--sp-8) var(--sp-4) var(--sp-16); }
+  .content-hero-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    margin-bottom: 3.5rem;
+    border-bottom: 1px solid #e2e2e2;
+    padding-bottom: 3rem;
+  }
+
+  .content-hero-header .left {
+    width: 28%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-right: 2rem;
+  }
+
+  .content-hero-header .left h3 {
+    font-size: 1.1rem;
+    color: #ff6b00;
+    margin: 0 0 0.5rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+  }
+
+  .content-hero-header .left h2 {
+    font-size: 1.65rem;
+    line-height: 1.4;
+    color: #111111;
+    margin: 0 0 1.5rem;
+    font-weight: 500;
+  }
+
+  .btn-about-hero {
+    display: inline-block;
+    padding: 0.6rem 1.4rem;
+    background: #111111;
+    color: #ffffff !important;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    align-self: flex-start;
+    transition: background 0.15s ease;
+  }
+
+  .btn-about-hero:hover {
+    background: #ff6b00;
+  }
+
+  .content-hero-header .right {
+    width: 70%;
+  }
+
+  .slider-wrap-header {
+    width: 100%;
+  }
+
+  .slider-one .img-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    max-height: 380px;
+    background: #f0f0f0;
+  }
+
+  .hero-featured-link {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .featured-img-container {
+    width: 100%;
+    height: 100%;
+  }
+
+  .featured-main-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .content-area-top {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .content-area-top > .left {
+    width: 68%;
+    padding-right: 3.5%;
+    border-right: 1px solid #e2e2e2;
+  }
+
+  .content-area-top > .right.sidebar-right {
+    width: 28%;
+    padding-top: 0.5rem;
+  }
+
+  .tech-main-tab-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid #111111;
+    padding-bottom: 0.8rem;
+  }
+
+  .tech-main-tabs {
+    display: flex;
+    gap: 1.2rem;
+    align-items: center;
+  }
+
+  .tech-main-tab-item {
+    font-size: 1.15rem;
+    font-weight: 500;
+    color: #888888;
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  .tech-main-tab-item:hover,
+  .tech-main-tab-item.active {
+    color: #111111;
+  }
+
+  .post-area-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    border-bottom: 2px solid #111111;
+    padding-bottom: 0.6rem;
+    margin-bottom: 1.8rem;
+  }
+
+  .post-area-title {
+    font-size: 1.45rem;
+    font-weight: 500;
+    color: #111111;
+    border-left: 5px solid #ff6b00;
+    padding-left: 12px;
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  .guide-content-box {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    padding: 2.2rem 2.4rem;
+  }
+
+  .guide-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .guide-h3 {
+    font-size: 1.12rem;
+    font-weight: 500;
+    color: #0f172a;
+    margin: 0;
+    border-left: 3px solid #ff6b00;
+    padding-left: 10px;
+  }
+
+  .guide-ol,
+  .guide-ul {
+    padding-left: 1.3rem;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    font-size: 0.94rem;
+    color: #475569;
+    line-height: 1.6;
+  }
+
+  .guide-content-box p {
+    font-size: 0.94rem;
+    color: #475569;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .side-author-box {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    padding: 1.8rem;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .side-author-box .photo img {
+    border-radius: 50%;
+    margin-bottom: 0.8rem;
+  }
+
+  .side-author-box h2 {
+    font-size: 1.2rem;
+    margin: 0 0 0.4rem;
+    color: #111111;
+    font-weight: 500;
+  }
+
+  .side-author-box .history {
+    font-size: 0.85rem;
+    color: #888888;
+    margin: 0 0 1rem;
+  }
+
+  .side-author-box .btn-vip {
+    display: inline-block;
+    padding: 0.4rem 1.2rem;
+    background: #111111;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+  }
+
+  @media (max-width: 900px) {
+    .content-hero-header {
+      flex-direction: column;
+    }
+    .content-hero-header .left {
+      width: 100%;
+      padding-right: 0;
+      margin-bottom: 1.5rem;
+    }
+    .content-hero-header .right {
+      width: 100%;
+    }
+    .content-area-top {
+      flex-direction: column;
+    }
+    .content-area-top > .left {
+      width: 100%;
+      padding-right: 0;
+      border-right: none;
+    }
+    .content-area-top > .right.sidebar-right {
+      width: 100%;
+      margin-top: 3rem;
+    }
   }
 </style>
