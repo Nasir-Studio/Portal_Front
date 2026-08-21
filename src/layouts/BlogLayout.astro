@@ -209,23 +209,53 @@ const searchIndexJson = JSON.stringify(
               <p class="footer-quote-author">— {dailyQuote.author}</p>
             </div>
 
+            <!-- 🌐 底部 IP / 網域查詢元件 (來自 nasircy 專案) -->
+            <div class="footer-ip-lookup-bar" id="openIpModalBtn" role="button" tabindex="0" title="點擊開啟 IP / 網域即時查詢工具">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ip-globe-icon">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="2" y1="12" x2="22" y2="12"></line>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+              </svg>
+              <span id="footerIpText" class="footer-ip-text">正在取得連線資訊…</span>
+            </div>
+
             <div class="footer-meta-bottom-row">
               <div class="social-links-row">
+                <!-- GitHub -->
                 <a href="https://github.com/nasircy" target="_blank" rel="noopener noreferrer" class="footer-icon-btn" title="關注 GitHub @nasircy" aria-label="GitHub">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
                   </svg>
                 </a>
-                <a href="/posts/" class="footer-icon-btn" title="探索所有專欄文章" aria-label="更多文章">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+
+                <!-- YouTube -->
+                <a href="https://www.youtube.com/@jimmypiano" target="_blank" rel="noopener noreferrer" class="footer-icon-btn footer-btn-yt" title="關注 YouTube @jimmypiano" aria-label="YouTube">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
                   </svg>
                 </a>
-                <a href="/" class="footer-icon-btn" title="返回 Portal 首頁" aria-label="Portal 首頁">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+
+                <!-- LinkedIn -->
+                <a href="https://www.linkedin.com/in/nasirlincy" target="_blank" rel="noopener noreferrer" class="footer-icon-btn" title="LinkedIn @nasirlincy" aria-label="LinkedIn">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                  </svg>
+                </a>
+
+                <!-- Instagram -->
+                <a href="https://instagram.com/hayashiiii__" target="_blank" rel="noopener noreferrer" class="footer-icon-btn" title="Instagram @hayashiiii__" aria-label="Instagram">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                  </svg>
+                </a>
+
+                <!-- Email -->
+                <a href="mailto:hi@nasirlin.net" class="footer-icon-btn" title="來信聯繫 hi@nasirlin.net" aria-label="Email">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                    <polyline points="22,6 12,13 2,6"></polyline>
                   </svg>
                 </a>
               </div>
@@ -558,7 +588,130 @@ const searchIndexJson = JSON.stringify(
       }
     });
   }
-  </script>
+  
+  // 🌐 底部 IP 查詢與彈窗互動邏輯 (nasircy 移植)
+  (function() {
+    var myIpData = null;
+    var footerIpEl = document.getElementById('footerIpText');
+    var openBtn = document.getElementById('openIpModalBtn');
+    var modal = document.getElementById('ipLookupModal');
+    var closeBtn = document.getElementById('closeIpModalBtn');
+    var form = document.getElementById('ipSearchForm');
+    var searchInput = document.getElementById('ipSearchInput');
+    var searchStatus = document.getElementById('ipSearchStatus');
+    var resultCard = document.getElementById('ipResultCard');
+
+    function formatISP(org) {
+      if (!org) return '未知供應商';
+      var parts = org.split(' ');
+      if (parts.length > 1 && parts[0].indexOf('AS') === 0) {
+        parts.shift();
+        return parts.join(' ');
+      }
+      return org;
+    }
+
+    function formatLoc(data) {
+      return [data.city, data.region, data.country].filter(Boolean).join(', ') || '未知位置';
+    }
+
+    // 取得當前使用者 IP
+    fetch('https://ipinfo.io/json')
+      .then(function(res) { return res.json(); })
+      .then(function(data) {
+        if (data && data.ip) {
+          myIpData = data;
+          var isp = formatISP(data.org);
+          if (isp.length > 16) isp = isp.substring(0, 16) + '…';
+          if (footerIpEl) footerIpEl.textContent = 'IP：' + data.ip + ' ｜ ' + isp;
+
+          var numEl = document.getElementById('myIpNum');
+          var locEl = document.getElementById('myIpLoc');
+          var ispEl = document.getElementById('myIpIsp');
+          if (numEl) numEl.textContent = data.ip;
+          if (locEl) locEl.textContent = formatLoc(data);
+          if (ispEl) ispEl.textContent = formatISP(data.org);
+        }
+      })
+      .catch(function() {
+        if (footerIpEl) footerIpEl.textContent = '無法取得連線資訊';
+      });
+
+    if (openBtn && modal) {
+      openBtn.addEventListener('click', function() {
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+      });
+    }
+
+    if (closeBtn && modal) {
+      closeBtn.addEventListener('click', function() {
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+      });
+    }
+
+    if (modal) {
+      modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+          modal.style.display = 'none';
+          document.body.style.overflow = '';
+        }
+      });
+    }
+
+    if (form && searchInput) {
+      form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        var query = searchInput.value.trim();
+        if (!query) return;
+
+        searchStatus.textContent = '查詢中…';
+        searchStatus.style.color = '#ff6b00';
+        if (resultCard) resultCard.style.display = 'none';
+
+        var isDomain = /[a-zA-Z]/.test(query);
+        var targetIP = query;
+
+        try {
+          if (isDomain) {
+            var dnsRes = await fetch('https://dns.google/resolve?name=' + encodeURIComponent(query) + '&type=A');
+            var dnsData = await dnsRes.json();
+            if (dnsData.Status === 0 && dnsData.Answer) {
+              var aRec = dnsData.Answer.find(function(r) { return r.type === 1; });
+              if (aRec) {
+                targetIP = aRec.data;
+              } else {
+                throw new Error('找不到 A 紀錄');
+              }
+            } else {
+              throw new Error('DNS 解析錯誤');
+            }
+          }
+
+          var ipRes = await fetch('https://ipinfo.io/' + targetIP + '/json');
+          if (ipRes.ok) {
+            var data = await ipRes.json();
+            searchStatus.textContent = '';
+            if (resultCard) {
+              resultCard.style.display = 'block';
+              document.getElementById('ipResultTarget').textContent = isDomain ? query + '（' + data.ip + '）' : '查詢結果';
+              document.getElementById('ipResultNum').textContent = data.ip;
+              document.getElementById('ipResultLoc').textContent = formatLoc(data);
+              document.getElementById('ipResultIsp').textContent = formatISP(data.org);
+            }
+          } else {
+            throw new Error('無法取得 IP 資訊');
+          }
+        } catch(err) {
+          searchStatus.style.color = '#ef4444';
+          searchStatus.textContent = err.message || '查詢失敗，請檢查輸入';
+        }
+      });
+    }
+  })();
+
+</script>
 <script>
   // 1. 頂部導覽列滾動毛玻璃動效 (防抖與防高度跳變，杜絕跳針閃爍)
   const header = document.getElementById('main-header');
@@ -762,10 +915,194 @@ const searchIndexJson = JSON.stringify(
       liveResults.classList.add('has-results');
     }
   });
+
+  // 🌐 底部 IP 查詢與彈窗互動邏輯 (nasircy 移植)
+  (function() {
+    var myIpData = null;
+    var footerIpEl = document.getElementById('footerIpText');
+    var openBtn = document.getElementById('openIpModalBtn');
+    var modal = document.getElementById('ipLookupModal');
+    var closeBtn = document.getElementById('closeIpModalBtn');
+    var form = document.getElementById('ipSearchForm');
+    var searchInput = document.getElementById('ipSearchInput');
+    var searchStatus = document.getElementById('ipSearchStatus');
+    var resultCard = document.getElementById('ipResultCard');
+
+    function formatISP(org) {
+      if (!org) return '未知供應商';
+      var parts = org.split(' ');
+      if (parts.length > 1 && parts[0].indexOf('AS') === 0) {
+        parts.shift();
+        return parts.join(' ');
+      }
+      return org;
+    }
+
+    function formatLoc(data) {
+      return [data.city, data.region, data.country].filter(Boolean).join(', ') || '未知位置';
+    }
+
+    // 取得當前使用者 IP
+    fetch('https://ipinfo.io/json')
+      .then(function(res) { return res.json(); })
+      .then(function(data) {
+        if (data && data.ip) {
+          myIpData = data;
+          var isp = formatISP(data.org);
+          if (isp.length > 16) isp = isp.substring(0, 16) + '…';
+          if (footerIpEl) footerIpEl.textContent = 'IP：' + data.ip + ' ｜ ' + isp;
+
+          var numEl = document.getElementById('myIpNum');
+          var locEl = document.getElementById('myIpLoc');
+          var ispEl = document.getElementById('myIpIsp');
+          if (numEl) numEl.textContent = data.ip;
+          if (locEl) locEl.textContent = formatLoc(data);
+          if (ispEl) ispEl.textContent = formatISP(data.org);
+        }
+      })
+      .catch(function() {
+        if (footerIpEl) footerIpEl.textContent = '無法取得連線資訊';
+      });
+
+    if (openBtn && modal) {
+      openBtn.addEventListener('click', function() {
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+      });
+    }
+
+    if (closeBtn && modal) {
+      closeBtn.addEventListener('click', function() {
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+      });
+    }
+
+    if (modal) {
+      modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+          modal.style.display = 'none';
+          document.body.style.overflow = '';
+        }
+      });
+    }
+
+    if (form && searchInput) {
+      form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        var query = searchInput.value.trim();
+        if (!query) return;
+
+        searchStatus.textContent = '查詢中…';
+        searchStatus.style.color = '#ff6b00';
+        if (resultCard) resultCard.style.display = 'none';
+
+        var isDomain = /[a-zA-Z]/.test(query);
+        var targetIP = query;
+
+        try {
+          if (isDomain) {
+            var dnsRes = await fetch('https://dns.google/resolve?name=' + encodeURIComponent(query) + '&type=A');
+            var dnsData = await dnsRes.json();
+            if (dnsData.Status === 0 && dnsData.Answer) {
+              var aRec = dnsData.Answer.find(function(r) { return r.type === 1; });
+              if (aRec) {
+                targetIP = aRec.data;
+              } else {
+                throw new Error('找不到 A 紀錄');
+              }
+            } else {
+              throw new Error('DNS 解析錯誤');
+            }
+          }
+
+          var ipRes = await fetch('https://ipinfo.io/' + targetIP + '/json');
+          if (ipRes.ok) {
+            var data = await ipRes.json();
+            searchStatus.textContent = '';
+            if (resultCard) {
+              resultCard.style.display = 'block';
+              document.getElementById('ipResultTarget').textContent = isDomain ? query + '（' + data.ip + '）' : '查詢結果';
+              document.getElementById('ipResultNum').textContent = data.ip;
+              document.getElementById('ipResultLoc').textContent = formatLoc(data);
+              document.getElementById('ipResultIsp').textContent = formatISP(data.org);
+            }
+          } else {
+            throw new Error('無法取得 IP 資訊');
+          }
+        } catch(err) {
+          searchStatus.style.color = '#ef4444';
+          searchStatus.textContent = err.message || '查詢失敗，請檢查輸入';
+        }
+      });
+    }
+  })();
+
 </script>
   <!-- 💬 右下角浮動 LiveChat 迷你聯絡表單 (Google Form) -->
   <LiveChatWidget client:idle />
-</body>
+
+    <!-- 🌐 IP / 網域查詢互動彈窗 Modal (nasircy 移植) -->
+    <div id="ipLookupModal" class="ip-modal-backdrop" style="display: none;">
+      <div class="ip-modal-dialog">
+        <button id="closeIpModalBtn" class="ip-modal-close" aria-label="關閉">✕</button>
+        
+        <div class="ip-modal-head">
+          <div class="ip-modal-icon-wrap">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ff6b00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="2" y1="12" x2="22" y2="12"></line>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+            </svg>
+          </div>
+          <h3 class="ip-modal-title">IP / 網域即時查詢</h3>
+          <p class="ip-modal-desc">查詢您的目前連線資訊，或輸入任何 IP / 網域名稱進行 DNS 解析</p>
+        </div>
+
+        <!-- 目前使用者連線資訊卡片 -->
+        <div id="myIpCard" class="ip-info-card">
+          <div class="ip-card-label">您的目前連線</div>
+          <div id="myIpNum" class="ip-card-big-ip">載入中…</div>
+          <div class="ip-grid-two">
+            <div class="ip-grid-item">
+              <span class="ip-item-label">📍 位置</span>
+              <span id="myIpLoc" class="ip-item-val">-</span>
+            </div>
+            <div class="ip-grid-item">
+              <span class="ip-item-label">🏢 網路供應商 (ISP)</span>
+              <span id="myIpIsp" class="ip-item-val">-</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 搜尋表單 -->
+        <form id="ipSearchForm" class="ip-search-form">
+          <div class="ip-input-wrap">
+            <input type="text" id="ipSearchInput" placeholder="輸入 IP 或網域名稱 (例: 1.1.1.1 或 google.com)" class="ip-input" required autocomplete="off" />
+            <button type="submit" id="ipSearchBtn" class="ip-submit-btn">查詢</button>
+          </div>
+          <div id="ipSearchStatus" class="ip-search-status"></div>
+        </form>
+
+        <!-- 搜尋結果區塊 -->
+        <div id="ipResultCard" class="ip-info-card result-card" style="display: none;">
+          <div id="ipResultTarget" class="ip-card-label">查詢結果</div>
+          <div id="ipResultNum" class="ip-card-big-ip">-</div>
+          <div class="ip-grid-two">
+            <div class="ip-grid-item">
+              <span class="ip-item-label">📍 位置</span>
+              <span id="ipResultLoc" class="ip-item-val">-</span>
+            </div>
+            <div class="ip-grid-item">
+              <span class="ip-item-label">🏢 網路供應商 (ISP)</span>
+              <span id="ipResultIsp" class="ip-item-val">-</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </body>
 </html>
 
 <style is:global>
@@ -1687,4 +2024,219 @@ const searchIndexJson = JSON.stringify(
     width: auto;
     border-radius: 2px;
   }
+
+  /* 🌐 底部 IP 查詢列樣式 */
+  .footer-ip-lookup-bar {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 0.4rem;
+    padding: 3px 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    color: #94a3b8;
+    font-size: 11.5px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .footer-ip-lookup-bar:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: #f8fafc;
+    border-color: rgba(255, 255, 255, 0.25);
+  }
+
+  .ip-globe-icon {
+    color: #ff6b00;
+    flex-shrink: 0;
+  }
+
+  /* 🌐 IP 查詢彈窗 Modal */
+  .ip-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(15, 23, 42, 0.75);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+
+  .ip-modal-dialog {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    padding: 2rem;
+    box-sizing: border-box;
+    animation: ipFadeIn 0.2s ease-out;
+  }
+
+  @keyframes ipFadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  .ip-modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    color: #94a3b8;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: color 0.15s ease;
+  }
+
+  .ip-modal-close:hover {
+    color: #0f172a;
+  }
+
+  .ip-modal-head {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .ip-modal-icon-wrap {
+    width: 48px;
+    height: 48px;
+    background: #fff7ed;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 0.8rem;
+  }
+
+  .ip-modal-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #0f172a;
+    margin: 0 0 0.3rem;
+  }
+
+  .ip-modal-desc {
+    font-size: 0.85rem;
+    color: #64748b;
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  .ip-info-card {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 1.2rem;
+    margin-bottom: 1.2rem;
+    text-align: center;
+  }
+
+  .ip-info-card.result-card {
+    background: #eff6ff;
+    border-color: #bfdbfe;
+    margin-top: 1rem;
+    margin-bottom: 0;
+  }
+
+  .ip-card-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #ff6b00;
+    margin-bottom: 0.3rem;
+  }
+
+  .ip-card-big-ip {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #0f172a;
+    font-family: monospace, sans-serif;
+    margin-bottom: 0.8rem;
+  }
+
+  .ip-grid-two {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.8rem;
+    text-align: left;
+  }
+
+  .ip-grid-item {
+    background: #ffffff;
+    padding: 0.6rem 0.8rem;
+    border-radius: 6px;
+    border: 1px solid #e2e8f0;
+  }
+
+  .ip-item-label {
+    display: block;
+    font-size: 0.75rem;
+    color: #64748b;
+    margin-bottom: 2px;
+  }
+
+  .ip-item-val {
+    display: block;
+    font-size: 0.85rem;
+    color: #1e293b;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .ip-search-form {
+    margin-top: 0.5rem;
+  }
+
+  .ip-input-wrap {
+    display: flex;
+    gap: 6px;
+  }
+
+  .ip-input {
+    flex: 1;
+    padding: 0.65rem 0.9rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.15s ease;
+  }
+
+  .ip-input:focus {
+    border-color: #ff6b00;
+  }
+
+  .ip-submit-btn {
+    padding: 0.65rem 1.2rem;
+    background: #ff6b00;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+
+  .ip-submit-btn:hover {
+    background: #ea580c;
+  }
+
+  .ip-search-status {
+    font-size: 0.82rem;
+    color: #ef4444;
+    text-align: center;
+    margin-top: 0.4rem;
+    min-height: 1.2rem;
+  }
+
 </style>

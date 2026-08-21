@@ -94,6 +94,30 @@ const mainTabCategories = [
 ];
 
 // 2. 編輯精選 (3 篇經典深度代表作 - 三篇完全不同之旗艦文章)
+// 3. 專案技能技術標籤 (來源: nasircy 專案)
+const skillRow1 = [
+  { name: "Python", url: "https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" },
+  { name: "HTML5", url: "https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white" },
+  { name: "CSS3", url: "https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white" },
+  { name: "Apps Script", url: "https://img.shields.io/badge/Apps_Script-4285F4?style=for-the-badge&logo=googleappsscript&logoColor=white" },
+  { name: "Firebase", url: "https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black" },
+  { name: "MongoDB", url: "https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white" },
+  { name: "Redis", url: "https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white" },
+];
+
+const skillRow2 = [
+  { name: "Linux", url: "https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black" },
+  { name: "Git", url: "https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white" },
+  { name: "Render", url: "https://img.shields.io/badge/Render-46E3B7?style=for-the-badge&logo=render&logoColor=white" },
+  { name: "Cloudflare", url: "https://img.shields.io/badge/Cloudflare-F38020?style=for-the-badge&logo=cloudflare&logoColor=white" },
+  { name: "Word", url: "https://img.shields.io/badge/Microsoft_Word-2B579A?style=for-the-badge&logo=microsoft-word&logoColor=white" },
+  { name: "Excel", url: "https://img.shields.io/badge/Microsoft_Excel-217346?style=for-the-badge&logo=microsoft-excel&logoColor=white" },
+  { name: "PowerPoint", url: "https://img.shields.io/badge/Microsoft_PowerPoint-B7472A?style=for-the-badge&logo=microsoft-powerpoint&logoColor=white" },
+  { name: "Sheets", url: "https://img.shields.io/badge/Google_Sheets-34A853?style=for-the-badge&logo=googlesheets&logoColor=white" },
+  { name: "Photoshop", url: "https://img.shields.io/badge/Photoshop-31A8FF?style=for-the-badge&logo=adobephotoshop&logoColor=white" },
+  { name: "Premiere Pro", url: "https://img.shields.io/badge/Premiere_Pro-9999FF?style=for-the-badge&logo=adobepremierepro&logoColor=white" },
+];
+
 const editorPicks = [
   posts.find(p => p.slug === 'tech-notes-architecture') || posts[0],
   posts.find(p => p.slug === 'cf-pages-pwa-webpush') || posts[1],
@@ -317,6 +341,67 @@ function getPostCategory(post: typeof posts[0]) {
               </article>
             );
           })}
+        </div>
+      </section>
+
+      <!-- 🚀 Skills 技能技術跑馬燈 (雙向無限滾動) -->
+      <section class="index-skills-section">
+        <div class="skills-head-row">
+          <span class="skills-badge-label">TECH STACK</span>
+          <h2 class="skills-title">專業技術與開發工具</h2>
+          <p class="skills-desc">跨領域的技術整合能力 · 系統架構 · 雲端部署 · 多媒體設計</p>
+        </div>
+
+        <div class="skills-marquee-container">
+          <!-- 第 1 排：正向滾動 -->
+          <div class="skills-marquee-track normal">
+            <div class="skills-marquee-content">
+              {skillRow1.map((s) => (
+                <div class="skill-item">
+                  <img src={s.url} alt={s.name} class="skill-badge-img" loading="lazy" />
+                </div>
+              ))}
+            </div>
+            <div class="skills-marquee-content" aria-hidden="true">
+              {skillRow1.map((s) => (
+                <div class="skill-item">
+                  <img src={s.url} alt={s.name} class="skill-badge-img" loading="lazy" />
+                </div>
+              ))}
+            </div>
+            <div class="skills-marquee-content" aria-hidden="true">
+              {skillRow1.map((s) => (
+                <div class="skill-item">
+                  <img src={s.url} alt={s.name} class="skill-badge-img" loading="lazy" />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <!-- 第 2 排：反向滾動 -->
+          <div class="skills-marquee-track reverse">
+            <div class="skills-marquee-content reverse">
+              {skillRow2.map((s) => (
+                <div class="skill-item">
+                  <img src={s.url} alt={s.name} class="skill-badge-img" loading="lazy" />
+                </div>
+              ))}
+            </div>
+            <div class="skills-marquee-content reverse" aria-hidden="true">
+              {skillRow2.map((s) => (
+                <div class="skill-item">
+                  <img src={s.url} alt={s.name} class="skill-badge-img" loading="lazy" />
+                </div>
+              ))}
+            </div>
+            <div class="skills-marquee-content reverse" aria-hidden="true">
+              {skillRow2.map((s) => (
+                <div class="skill-item">
+                  <img src={s.url} alt={s.name} class="skill-badge-img" loading="lazy" />
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
@@ -2085,6 +2170,107 @@ function getPostCategory(post: typeof posts[0]) {
     to { opacity: 1; transform: translateY(0); }
   }
 
+  /* 🚀 技能技術跑馬燈樣式 (.index-skills-section) */
+  .index-skills-section {
+    margin-top: 3.5rem;
+    padding: 3rem 1.5rem;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.02);
+    overflow: hidden;
+  }
+
+  .skills-head-row {
+    text-align: center;
+    margin-bottom: 2.2rem;
+  }
+
+  .skills-badge-label {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    color: #ff6b00;
+    background: #fff7ed;
+    padding: 3px 10px;
+    border-radius: 9999px;
+    margin-bottom: 0.6rem;
+  }
+
+  .skills-title {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: #0f172a;
+    margin: 0 0 0.5rem;
+  }
+
+  .skills-desc {
+    font-size: 0.92rem;
+    color: #64748b;
+    margin: 0;
+  }
+
+  .skills-marquee-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    position: relative;
+    padding: 0.5rem 0;
+  }
+
+  .skills-marquee-track {
+    display: flex;
+    width: 100%;
+    overflow: hidden;
+    user-select: none;
+    position: relative;
+    mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  }
+
+  .skills-marquee-content {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 1.2rem;
+    padding: 0 0.6rem;
+    animation: scroll-normal 25s linear infinite;
+  }
+
+  .skills-marquee-content.reverse {
+    animation: scroll-reverse 28s linear infinite;
+  }
+
+  .skills-marquee-track:hover .skills-marquee-content {
+    animation-play-state: paused;
+  }
+
+  .skill-item {
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+  }
+
+  .skill-item:hover {
+    transform: translateY(-3px) scale(1.05);
+  }
+
+  .skill-badge-img {
+    height: 38px;
+    display: block;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  }
+
+  @keyframes scroll-normal {
+    from { transform: translateX(0); }
+    to { transform: translateX(-100%); }
+  }
+
+  @keyframes scroll-reverse {
+    from { transform: translateX(-100%); }
+    to { transform: translateX(0); }
+  }
 </style>
 
 <script>
