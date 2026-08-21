@@ -5,7 +5,19 @@ import posts from '../data/posts';
 const popularPosts = posts.slice(0, 3);
 ---
 
-<BlogLayout title="VIP 專區 — OviNas" description="OviNas VIP 會員專屬權限、技術支援工單與站長時段預約系統。">
+<BlogLayout title="VIP 專區 — OviNas" description="OviNas VIP 會員專屬權限與問題工單支援中心。">
+  <!-- 未登入秒速防護轉跳 (防止未登入畫面閃爍) -->
+  <script is:inline>
+    (function() {
+      try {
+        var token = localStorage.getItem('sheep_portal_token');
+        if (!token) {
+          window.location.replace('/login/?redirect=/vip/');
+        }
+      } catch(e) {}
+    })();
+  </script>
+
   <div class="main-content">
     <div class="container">
       <!-- 麵包屑導航 (Breadcrumbs) -->
@@ -41,8 +53,7 @@ const popularPosts = posts.slice(0, 3);
           <h3>VIP ZONE</h3>
           <h2>VIP</h2>
           <div class="hero-quick-btns">
-            <a href="#ticketSection" class="btn-about-hero">問題工單 ↓</a>
-            <a href="#calendarSection" class="btn-about-hero" style="background:#334155;">站長行事曆 ↓</a>
+            <a href="#ticketSection" class="btn-about-hero">建立問題工單 ↓</a>
           </div>
         </div>
       </section>
@@ -65,7 +76,7 @@ const popularPosts = posts.slice(0, 3);
           </div>
 
           <!-- 🎫 Section 2: 問題工單 (Tickets) -->
-          <div class="post-area-head" id="ticketSection" style="margin-top: 3.5rem;">
+          <div class="post-area-head" id="ticketSection" style="margin-top: 3rem;">
             <h2 class="post-area-title">問題工單</h2>
             <button class="btn btn--sm" id="btn-toggle-ticket" type="button">+ 建立新工單</button>
           </div>
@@ -75,7 +86,7 @@ const popularPosts = posts.slice(0, 3);
             <form id="new-ticket-form">
               <div class="form-field">
                 <label for="nt-subject">問題主旨 *</label>
-                <input id="nt-subject" type="text" name="subject" maxlength="120" placeholder="例如：網站部屬問題 / 資安諮詢" required class="form-input" />
+                <input id="nt-subject" type="text" name="subject" maxlength="120" placeholder="例如：網站部屬問題 / 技術諮詢" required class="form-input" />
               </div>
               <div class="form-field">
                 <label for="nt-body">問題詳述 *</label>
@@ -92,36 +103,6 @@ const popularPosts = posts.slice(0, 3);
           <!-- 我的工單列表 -->
           <div class="ticket-list" id="ticket-list">
             <p class="slot-empty">正在載入專屬工單紀錄…</p>
-          </div>
-
-          <!-- 📅 Section 3: 站長行事曆 -->
-          <div class="post-area-head" id="calendarSection" style="margin-top: 4rem;">
-            <h2 class="post-area-title">站長行事曆</h2>
-          </div>
-
-          <div class="blog-cal-frame" style="margin-bottom: 2.2rem;">
-            <iframe
-              src="https://calendar.google.com/calendar/embed?src=bb049ab126a644ff77ce9a3dd0ad5c2aa0b1bd0272dd636a38dcfbabdd5aa7aa%40group.calendar.google.com&ctz=Asia%2FTaipei"
-              title="OviNas 站長行事曆"
-              loading="lazy"
-              frameborder="0"
-              scrolling="no"
-            ></iframe>
-          </div>
-
-          <!-- 開放預約時段列表 -->
-          <div class="slot-list" id="slot-list">
-            <p class="slot-empty">正在載入開放時段…</p>
-          </div>
-
-          <!-- VIP 會員歷史預約紀錄 -->
-          <div id="mine-reservations-section" style="display:none; margin-top: 3rem;">
-            <div class="post-area-head">
-              <h2 class="post-area-title">我的預約紀錄</h2>
-            </div>
-            <div class="mine-list" id="mine-reservations-list">
-              <p class="slot-empty">載入中…</p>
-            </div>
           </div>
         </div>
 
@@ -198,7 +179,7 @@ const popularPosts = posts.slice(0, 3);
     font-weight: 500;
   }
 
-  /* 🔷 1. 左右交換 + 正方形圖片之 Hero Header */
+  /* 🔷 1. 左右交換 + 正方形 1:1 圖片之 Hero Header */
   .content-hero-header.hero-reversed {
     display: flex;
     justify-content: flex-start;
@@ -320,11 +301,6 @@ const popularPosts = posts.slice(0, 3);
     line-height: 1.2;
   }
 
-  .cal-sub-label {
-    font-size: 0.85rem;
-    color: #888888;
-  }
-
   /* VIP 會員資料卡片 */
   .vip-card-box {
     background: #ffffff;
@@ -359,7 +335,7 @@ const popularPosts = posts.slice(0, 3);
 
   .vip-field-val {
     font-size: 1.05rem;
-    font-weight: 400;
+    font-weight: 500;
     color: #111111;
   }
 
@@ -381,7 +357,7 @@ const popularPosts = posts.slice(0, 3);
 
   .form-field label {
     font-size: 0.85rem;
-    font-weight: 400;
+    font-weight: 500;
     color: #334155;
   }
 
@@ -445,7 +421,7 @@ const popularPosts = posts.slice(0, 3);
 
   .ticket-status-badge {
     font-size: 0.78rem;
-    font-weight: 400;
+    font-weight: 500;
     padding: 2px 8px;
     border: 1px solid #cbd5e1;
     background: #f8fafc;
@@ -468,115 +444,6 @@ const popularPosts = posts.slice(0, 3);
   .ticket-meta {
     font-size: 0.82rem;
     color: #888888;
-  }
-
-  /* 📅 行事曆與時段 */
-  .blog-cal-frame {
-    background: #ffffff;
-    border: 1px solid #e0e0e0;
-    padding: 1rem;
-  }
-
-  .blog-cal-frame iframe {
-    width: 100%;
-    height: 460px;
-    border: none;
-    display: block;
-  }
-
-  .slot-list,
-  .mine-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
-  }
-
-  .slot-card {
-    background: #ffffff;
-    border: 1px solid #e0e0e0;
-    transition: border-color 0.15s ease;
-  }
-
-  .slot-card:hover {
-    border-color: #ff6b00;
-  }
-
-  .slot-head {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 1rem;
-    padding: 1.1rem 1.3rem 0.5rem;
-  }
-
-  .slot-title {
-    font-size: 1.12rem;
-    font-weight: 400;
-    color: #111111;
-    margin: 0;
-  }
-
-  .slot-meta {
-    font-size: 0.84rem;
-    color: #666666;
-    background: #f8fafc;
-    padding: 3px 8px;
-    border: 1px solid #e2e8f0;
-  }
-
-  .slot-desc {
-    padding: 0 1.3rem 0.75rem;
-    font-size: 0.92rem;
-    color: #555555;
-    line-height: 1.6;
-    margin: 0;
-  }
-
-  .slot-foot {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    padding: 0.85rem 1.3rem;
-    border-top: 1px solid #f1f5f9;
-    background: #fafafa;
-  }
-
-  .slot-remaining {
-    font-size: 0.88rem;
-    color: #555555;
-    font-weight: 500;
-  }
-
-  .slot-remaining.full {
-    color: #dc2626;
-  }
-
-  .mine-row {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 1rem;
-    padding: 1rem 1.3rem;
-    border: 1px solid #e0e0e0;
-    background: #ffffff;
-    margin-bottom: 0.8rem;
-  }
-
-  .mine-info {
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-  }
-
-  .mine-name {
-    font-weight: 400;
-    color: #111111;
-  }
-
-  .mine-note {
-    font-size: 0.84rem;
-    color: #777777;
   }
 
   .btn {
@@ -637,6 +504,7 @@ const popularPosts = posts.slice(0, 3);
     font-size: 1.2rem;
     margin: 0 0 0.4rem;
     color: #111111;
+    font-weight: 500;
   }
 
   .side-author-box .history {
@@ -652,6 +520,7 @@ const popularPosts = posts.slice(0, 3);
     color: #ffffff;
     text-decoration: none;
     font-size: 0.85rem;
+    font-weight: 500;
   }
 
   .popular-posts {
@@ -706,7 +575,7 @@ const popularPosts = posts.slice(0, 3);
 
   .wpp-post-title {
     font-size: 0.88rem;
-    font-weight: 400;
+    font-weight: 500;
     color: #222222;
     text-decoration: none;
     line-height: 1.4;
@@ -748,30 +617,6 @@ const popularPosts = posts.slice(0, 3);
 
   const TZ = 'Asia/Taipei';
 
-  type Slot = {
-    id: number;
-    title: string;
-    description: string;
-    startsAt: number;
-    durationMinutes: number;
-    maxBookings: number;
-    bookingCount: number;
-    active: number;
-  };
-
-  type Reservation = {
-    id: number;
-    slotId: number;
-    slotTitle: string;
-    slotStartsAt: number;
-    slotDurationMinutes: number;
-    name: string;
-    email: string;
-    note: string;
-    status: string;
-    createdAt: number;
-  };
-
   type Ticket = {
     id: number;
     subject: string;
@@ -783,9 +628,6 @@ const popularPosts = posts.slice(0, 3);
   const vipBody = document.querySelector('#vip-body');
   const loadingText = document.querySelector('#vip-loading-text');
   const ticketList = document.querySelector('#ticket-list');
-  const slotList = document.querySelector('#slot-list');
-  const mineReservationsSection = document.querySelector('#mine-reservations-section');
-  const mineReservationsList = document.querySelector('#mine-reservations-list');
 
   const btnToggleTicket = document.querySelector('#btn-toggle-ticket');
   const newTicketCard = document.querySelector<HTMLDivElement>('#new-ticket-card');
@@ -800,11 +642,6 @@ const popularPosts = posts.slice(0, 3);
     if (vipBody) (vipBody as HTMLElement).style.display = 'block';
     renderVipUser();
     loadTickets();
-    loadSlots();
-    if (mineReservationsSection) {
-      (mineReservationsSection as HTMLElement).style.display = 'block';
-      loadMineReservations();
-    }
   }
 
   function renderVipUser(): void {
@@ -914,186 +751,6 @@ const popularPosts = posts.slice(0, 3);
         <div class="ticket-meta">工單編號 #${t.id} · 建立時間：${formatDateTime(timeMs)}</div>
       `;
       ticketList.appendChild(card);
-    }
-  }
-
-  // 📅 預約時段邏輯
-  async function loadSlots(): Promise<void> {
-    if (slotList === null) return;
-    try {
-      const data = await api<{ slots: Slot[] }>('/slots');
-      const now = Date.now();
-      const future = (data.slots || []).filter(
-        (s) => s.active === 1 && s.startsAt + s.durationMinutes * 60 * 1000 > now,
-      );
-      renderSlots(future);
-    } catch {
-      slotList.innerHTML = '<p class="slot-empty">目前尚無開放預約時段。</p>';
-    }
-  }
-
-  function renderSlots(slots: Slot[]): void {
-    if (slotList === null) return;
-    slotList.replaceChildren();
-
-    if (slots.length === 0) {
-      slotList.innerHTML = '<p class="slot-empty">目前尚無開放預約的時段。</p>';
-      return;
-    }
-
-    for (const slot of slots) {
-      const remaining = slot.maxBookings - slot.bookingCount;
-      const isFull = remaining <= 0;
-
-      const card = document.createElement('div');
-      card.className = 'slot-card';
-
-      const head = document.createElement('div');
-      head.className = 'slot-head';
-      head.innerHTML = `
-        <h3 class="slot-title">${escapeHtml(slot.title)}</h3>
-        <span class="slot-meta">${formatDateTime(slot.startsAt)} · ${slot.durationMinutes} 分鐘</span>
-      `;
-      card.appendChild(head);
-
-      if (slot.description) {
-        const desc = document.createElement('p');
-        desc.className = 'slot-desc';
-        desc.textContent = slot.description;
-        card.appendChild(desc);
-      }
-
-      const foot = document.createElement('div');
-      foot.className = 'slot-foot';
-
-      const remSpan = document.createElement('span');
-      remSpan.className = 'slot-remaining' + (isFull ? ' full' : '');
-      remSpan.textContent = isFull ? '已額滿' : `尚餘 ${remaining} 個名額`;
-      foot.appendChild(remSpan);
-
-      if (!isFull) {
-        const btn = document.createElement('button');
-        btn.className = 'btn btn--sm';
-        btn.textContent = '預約此時段';
-        btn.addEventListener('click', () => {
-          const existing = card.querySelector('.ticket-form-card');
-          if (existing !== null) {
-            existing.remove();
-            return;
-          }
-          card.appendChild(createBookingForm(slot, card));
-        });
-        foot.appendChild(btn);
-      }
-
-      card.appendChild(foot);
-      slotList.appendChild(card);
-    }
-  }
-
-  function createBookingForm(slot: Slot, card: HTMLElement): HTMLElement {
-    const form = document.createElement('form');
-    form.className = 'ticket-form-card';
-    form.style.marginTop = '1rem';
-
-    const u = currentUser();
-    const defaultName = u?.displayName || '';
-    const defaultEmail = u?.email || '';
-
-    form.innerHTML = `
-      <div class="form-field">
-        <label>您的稱呼 *</label>
-        <input type="text" name="name" required maxlength="50" value="${escapeHtml(defaultName)}" class="form-input" />
-      </div>
-      <div class="form-field">
-        <label>聯絡 Email *</label>
-        <input type="email" name="email" required maxlength="100" value="${escapeHtml(defaultEmail)}" class="form-input" />
-      </div>
-      <div class="form-field">
-        <label>備註提問（選填）</label>
-        <textarea name="note" maxlength="300" class="form-input form-textarea" placeholder="預先想討論的主題或諮詢內容…"></textarea>
-      </div>
-      <div class="form-actions">
-        <button type="submit" class="btn btn--sm">確認預約</button>
-        <button type="button" class="btn btn--ghost btn--sm cancel-btn">取消</button>
-      </div>
-      <div class="form-msg" style="display:none; margin-top:0.8rem; font-size:0.88rem;"></div>
-    `;
-
-    form.querySelector('.cancel-btn')?.addEventListener('click', () => {
-      form.remove();
-    });
-
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const msg = form.querySelector<HTMLDivElement>('.form-msg')!;
-      const submitBtn = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
-      msg.style.display = 'none';
-      submitBtn.disabled = true;
-      submitBtn.textContent = '預約中…';
-
-      const formData = new FormData(form);
-      try {
-        await api('/reservations', {
-          method: 'POST',
-          body: {
-            slotId: slot.id,
-            name: (formData.get('name') as string).trim(),
-            email: (formData.get('email') as string).trim(),
-            note: (formData.get('note') as string || '').trim(),
-          },
-        });
-        msg.style.color = '#16a34a';
-        msg.textContent = '✓ 預約成功！已發送確認信件。';
-        msg.style.display = 'block';
-        form.querySelector<HTMLElement>('.form-actions')!.style.display = 'none';
-        loadSlots();
-        loadMineReservations();
-      } catch (err) {
-        msg.style.color = '#dc2626';
-        msg.textContent = err instanceof ApiError ? err.message : '預約失敗，請稍後再試。';
-        msg.style.display = 'block';
-        submitBtn.disabled = false;
-        submitBtn.textContent = '確認預約';
-      }
-    });
-
-    return form;
-  }
-
-  async function loadMineReservations(): Promise<void> {
-    if (mineReservationsList === null) return;
-    try {
-      const data = await api<{ reservations: Reservation[] }>('/reservations/mine', { auth: true });
-      renderMineReservations(data.reservations || []);
-    } catch {
-      mineReservationsList.innerHTML = '<p class="slot-empty">無法載入預約紀錄。</p>';
-    }
-  }
-
-  function renderMineReservations(items: Reservation[]): void {
-    if (mineReservationsList === null) return;
-    mineReservationsList.replaceChildren();
-
-    if (items.length === 0) {
-      mineReservationsList.innerHTML = '<p class="slot-empty">您目前沒有任何時段預約紀錄。</p>';
-      return;
-    }
-
-    for (const res of items) {
-      const row = document.createElement('div');
-      row.className = 'mine-row';
-      const isCancelled = res.status === 'cancelled';
-      const statusLabel = isCancelled ? '已取消' : '已確認';
-
-      row.innerHTML = `
-        <div class="mine-info">
-          <span class="mine-name">${escapeHtml(res.slotTitle)}</span>
-          <span class="mine-note">${formatDateTime(res.slotStartsAt)} · ${res.slotDurationMinutes} 分鐘${res.note ? ' · 備註：' + escapeHtml(res.note) : ''}</span>
-        </div>
-        <span class="ticket-status-badge ${isCancelled ? '' : 'resolved'}">${statusLabel}</span>
-      `;
-      mineReservationsList.appendChild(row);
     }
   }
 
