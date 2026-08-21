@@ -1,265 +1,609 @@
 ---
 import BlogLayout from '../layouts/BlogLayout.astro';
+import posts from '../data/posts';
+
+const popularPosts = posts.slice(0, 3);
 ---
 
-<BlogLayout title="VIP 專區 — OviNas" description="OviNas VIP 會員專屬權限與獨家內容。">
+<BlogLayout title="VIP 專區 — OviNas" description="OviNas VIP 會員專屬權限、預約紀錄與獨家系統服務。">
   <div class="main-content">
-  <div class="container">
-    <h1 class="page-title">VIP 專區</h1>
-    <p class="page-sub">VIP會員專屬權限與獨家內容</p>
+    <div class="container">
+      <!-- 麵包屑導航 (Breadcrumbs) -->
+      <div class="breadcrumbs">
+        <a href="/" class="home">首頁</a>
+        <span class="sep">&gt;</span>
+        <span class="current-post-name">VIP 專區</span>
+      </div>
 
-    <section class="module" id="vip-module" hidden>
-      <h2 class="module-title">
-        <span>VIP會員</span>
-      </h2>
-      <div class="vip-body" id="vip-body"></div>
-    </section>
+      <!-- 🔷 1. 經典 Hero Header 區塊 (左側 30% VIP 介紹 + 右側 70% 橫幅大圖) -->
+      <section class="content-hero-header">
+        <div class="left">
+          <h3>VIP ZONE</h3>
+          <h2>會員專屬權限與獨家服務</h2>
+          <a href="/reserve/" class="btn-about-hero">前往預約系統</a>
+        </div>
+        <div class="right">
+          <div class="slider-wrap-header">
+            <div class="slider-one">
+              <div class="img-wrap">
+                <div class="bgs bgs1"></div>
+                <div class="bgs bgs2"></div>
+                <div class="bgs bgs3"></div>
+                <div class="bgs bgs4"></div>
+                <div class="bgs bgs5 hero-featured-link">
+                  <div class="featured-img-container">
+                    <img src="/banners/hero-promo-v3.jpg?v=20260820light" alt="OviNas VIP 專屬服務" class="featured-main-img" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-  </div>
+      <!-- 📰 2. 雙欄主內容區 (左側 70% VIP 模組 + 右側 30% 側邊欄) -->
+      <div class="content-area-top">
+        <div class="left">
+          <!-- VIP 會員資料卡片區塊 -->
+          <div class="post-area-head">
+            <h2 class="post-area-title">VIP 會員中心</h2>
+            <span class="cal-sub-label">尊榮會員權限與帳號管理</span>
+          </div>
+
+          <div class="vip-card-box" id="vip-card-box">
+            <div class="vip-loading-state" id="vip-loading-text">
+              正在驗證 VIP 會員身份，請稍候…
+            </div>
+            <div class="vip-user" id="vip-body" style="display: none;">
+              <!-- JS 動態填入會員資料 -->
+            </div>
+          </div>
+
+          <!-- VIP 專屬特權功能網格 (比照首頁 post-card 雙欄排版) -->
+          <div class="post-area-head" style="margin-top: 2.5rem;">
+            <h2 class="post-area-title">VIP 專屬特權與功能</h2>
+            <span class="cal-sub-label">享受最高優先級服務與技術支援</span>
+          </div>
+
+          <div class="post-list col2">
+            <article class="post-card">
+              <div class="img-wrap">
+                <div class="bgs bgs1"></div>
+                <div class="bgs bgs2"></div>
+                <div class="bgs bgs3"></div>
+                <div class="bgs bgs4"></div>
+                <a class="bgs bgs5 card-thumb-link" href="/reserve/">
+                  <div class="card-img-box">
+                    <img src="/banners/tech-notes-architecture.jpg?v=20260820light" alt="預約諮詢" class="card-img" />
+                  </div>
+                </a>
+              </div>
+              <ul class="post-categories">
+                <li><a href="/reserve/">專屬諮詢</a></li>
+              </ul>
+              <h3 class="post-title">
+                <a href="/reserve/">1 對 1 系統架構與資安預約</a>
+              </h3>
+              <p class="post-excerpt">專屬諮詢時段優先選擇，隨時線上討論架構問題與專案痛點。</p>
+              <a href="/reserve/" class="read-more">立即預約時段 →</a>
+            </article>
+
+            <article class="post-card">
+              <div class="img-wrap">
+                <div class="bgs bgs1"></div>
+                <div class="bgs bgs2"></div>
+                <div class="bgs bgs3"></div>
+                <div class="bgs bgs4"></div>
+                <a class="bgs bgs5 card-thumb-link" href="/tickets/">
+                  <div class="card-img-box">
+                    <img src="/banners/github-open-source-tools.jpg?v=20260820light" alt="問題專區" class="card-img" />
+                  </div>
+                </a>
+              </div>
+              <ul class="post-categories">
+                <li><a href="/tickets/">工單支援</a></li>
+              </ul>
+              <h3 class="post-title">
+                <a href="/tickets/">快速技術工單反饋</a>
+              </h3>
+              <p class="post-excerpt">提交任何 Bug、技術問題或合作提案，站長將以最高優先度回覆處理。</p>
+              <a href="/tickets/" class="read-more">開啟問題工單 →</a>
+            </article>
+          </div>
+        </div>
+
+        <!-- 📌 右側側邊欄 (比照首頁 28% 側邊欄) -->
+        <aside class="right sidebar-right">
+          <!-- 站長專欄 -->
+          <div class="side-author-box">
+            <div class="photo">
+              <img src="/sheep-hd.png" alt="OviNas" width="90" height="90" />
+            </div>
+            <h2>OviNas <span class="eng-name">/ 站長 Nasir</span></h2>
+            <p class="history">網站架設 · 系統資安 · 筆記小分享</p>
+            <div class="side-btn-wrap">
+              <a href="/about/" class="btn-vip">關於站長</a>
+            </div>
+          </div>
+
+          <!-- 熱門推薦文章 -->
+          <div class="popular-posts" id="popular-side">
+            <h3 class="popular-title">熱門推薦文章</h3>
+            <ul class="wpp-list">
+              {popularPosts.map((p) => (
+                <li class="wpp-item">
+                  <a href={`/posts/${p.slug}/`} class="wpp-thumb-link">
+                    <div class="wpp-thumbnail-box">
+                      <img src={`/banners/${p.slug}.jpg?v=20260820light`} alt={p.title} class="wpp-thumb-img" />
+                    </div>
+                  </a>
+                  <div class="wpp-details">
+                    <a href={`/posts/${p.slug}/`} class="wpp-post-title">
+                      {p.title}
+                    </a>
+                    <span class="wpp-meta">{p.date}</span>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
   </div>
 </BlogLayout>
 
-<style is:global>
+<style>
+  .main-content {
+    background-color: #ffffff;
+    padding: 1.5rem 0 5rem;
+  }
 
-  /* 📦 經典零圓角質感 Module 樣式 (Zero Border Radius) */
-  .module {
-    background: #ffffff;
-    border: 1.5px solid #0f172a;
-    border-radius: 0px !important;
-    margin-bottom: 2rem;
-    box-shadow: 0 6px 24px rgba(15, 23, 42, 0.06);
+  .breadcrumbs {
+    font-size: 14px;
+    color: #999999;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+  }
+
+  .breadcrumbs a {
+    color: #666666;
+    text-decoration: none;
+  }
+
+  .breadcrumbs a:hover {
+    color: #ff6b00;
+  }
+
+  .breadcrumbs .sep {
+    margin: 0 5px;
+    color: #cccccc;
+  }
+
+  .breadcrumbs .current-post-name {
+    color: #333333;
+    font-weight: 500;
+  }
+
+  /* 🔷 1. Hero Header 區塊 (完全比照首頁) */
+  .content-hero-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    margin-bottom: 3.5rem;
+    border-bottom: 1px solid #e2e2e2;
+    padding-bottom: 3rem;
+  }
+
+  .content-hero-header .left {
+    width: 28%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-right: 2rem;
+  }
+
+  .content-hero-header .left h3 {
+    font-size: 1.1rem;
+    color: #ff6b00;
+    margin: 0 0 0.5rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+
+  .content-hero-header .left h2 {
+    font-size: 1.65rem;
+    line-height: 1.4;
+    color: #111111;
+    margin: 0 0 1.5rem;
+    font-weight: 700;
+  }
+
+  .btn-about-hero {
+    display: inline-block;
+    padding: 0.6rem 1.4rem;
+    background: #111111;
+    color: #ffffff !important;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    align-self: flex-start;
+    transition: background 0.15s ease;
+  }
+
+  .btn-about-hero:hover {
+    background: #ff6b00;
+  }
+
+  .content-hero-header .right {
+    width: 70%;
+  }
+
+  .slider-wrap-header {
+    width: 100%;
+  }
+
+  .slider-one .img-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    max-height: 380px;
+    background: #f0f0f0;
+  }
+
+  .hero-featured-link {
+    display: block;
+    width: 100%;
+    height: 100%;
     overflow: hidden;
   }
 
-  .module-title {
-    background: #0f172a;
-    color: #ffffff;
-    padding: 12px 18px;
-    font-size: 15px;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    margin: 0;
-    border-radius: 0px !important;
+  .featured-img-container {
+    width: 100%;
+    height: 100%;
+  }
+
+  .featured-main-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* 📰 2. 雙欄主內容區 (完全比照首頁) */
+  .content-area-top {
     display: flex;
-    align-items: center;
-    gap: 8px;
+    justify-content: space-between;
   }
 
-  .module-title span {
-    color: #ffffff;
+  .content-area-top > .left {
+    width: 68%;
+    padding-right: 3.5%;
+    border-right: 1px solid #e2e2e2;
   }
 
-  .btn {
-    display: inline-block;
-    padding: 0.65rem 1.4rem;
-    background: #0f172a;
-    color: #ffffff !important;
-    border: none;
-    border-radius: 0px !important;
-    font-size: 0.9rem;
+  .content-area-top > .right.sidebar-right {
+    width: 28%;
+    padding-top: 0.5rem;
+  }
+
+  .post-area-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    border-bottom: 2px solid #111111;
+    padding-bottom: 0.6rem;
+    margin-bottom: 1.8rem;
+  }
+
+  .post-area-title {
+    font-size: 1.45rem;
     font-weight: 700;
-    letter-spacing: 0.08em;
-    text-decoration: none;
-    cursor: pointer;
-    transition: all 0.15s ease;
+    color: #111111;
+    border-left: 5px solid #ff6b00;
+    padding-left: 12px;
+    margin: 0;
+    line-height: 1.2;
   }
 
-  .btn:hover {
-    background: #ff6b00;
-    color: #ffffff !important;
+  .cal-sub-label {
+    font-size: 0.85rem;
+    color: #888888;
   }
 
-  .btn--block {
-    display: block;
-    width: 100%;
+  /* VIP 會員資料卡片 */
+  .vip-card-box {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    padding: 1.6rem 1.8rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .vip-loading-state {
+    color: #666666;
+    font-size: 0.95rem;
     text-align: center;
-  }
-
-  .page-title {
-    font-family: var(--font-serif);
-    font-size: 2rem;
-    font-weight: 600;
-    letter-spacing: 0.14em;
-    padding: 3rem 0 0.4rem;
-  }
-
-  .page-sub {
-    margin-bottom: 1.6rem;
-    font-size: 0.9rem;
-    color: var(--ink-3);
-    letter-spacing: 0.08em;
-  }
-
-  .news-head-left {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-  }
-
-  .news-square {
-    width: 8px;
-    height: 8px;
-    background: var(--ink);
-    transform: rotate(45deg);
-  }
-
-  .vip-body {
-    padding: 1.2rem 1.4rem 1.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    align-items: flex-start;
-  }
-
-  .vip-desc {
-    font-size: 0.9rem;
-    color: var(--ink-2);
-    letter-spacing: 0.05em;
-  }
-
-  .vip-user {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    width: 100%;
+    padding: 1.5rem 0;
   }
 
   .vip-user-detail {
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem 1.5rem;
+    padding-bottom: 1.4rem;
+    border-bottom: 1px solid #f1f5f9;
+    margin-bottom: 1.2rem;
   }
 
   .vip-field {
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-    font-size: 0.92rem;
-  }
-
-  .vip-field-label {
-    font-size: 0.82rem;
-    color: var(--ink-3);
-    width: 90px;
-    letter-spacing: 0.08em;
-  }
-
-  .vip-field-val {
-    font-weight: 500;
-    color: var(--ink);
-  }
-
-  .vip-actions {
-    width: 100%;
-    display: flex;
-    gap: 0.75rem;
-    flex-wrap: wrap;
-  }
-
-  .news-list {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .vip-news-item {
-    display: flex;
-    flex-direction: column;
-    border-bottom: 1px solid var(--border);
-    transition: background var(--t);
-    text-decoration: none;
-    color: var(--ink);
-    cursor: pointer;
-  }
-
-  .vip-news-item:last-child {
-    border-bottom: none;
-  }
-
-  .vip-news-row {
-    display: flex;
-    align-items: center;
-    gap: 1.1rem;
-    min-width: 0;
-    padding: 1.1rem 1.4rem;
-  }
-
-  .vip-news-row:hover {
-    background: var(--bg-soft);
-  }
-
-  .vip-news-title {
-    flex: 1;
-    min-width: 0;
-    font-size: 0.98rem;
-    font-weight: 500;
-    letter-spacing: 0.06em;
     display: flex;
     flex-direction: column;
     gap: 0.3rem;
   }
 
-  .vip-news-tag {
-    font-size: 0.72rem;
+  .vip-field-label {
+    font-size: 0.82rem;
+    color: #888888;
+  }
+
+  .vip-field-val {
+    font-size: 1.05rem;
     font-weight: 600;
-    background: var(--ink);
-    color: var(--white);
-    padding: 0.15rem 0.45rem;
+    color: #111111;
+  }
+
+  .vip-actions {
+    display: flex;
+    gap: 0.8rem;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 0.55rem 1.4rem;
+    background: #111111;
+    color: #ffffff !important;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: background 0.15s ease;
+  }
+
+  .btn:hover {
+    background: #ff6b00;
+  }
+
+  .btn--ghost {
+    background: #f1f5f9;
+    color: #334155 !important;
+    border: 1px solid #cbd5e1;
+  }
+
+  .btn--ghost:hover {
+    background: #e2e8f0;
+    color: #0f172a !important;
+  }
+
+  /* 雙欄文章卡片網格 (完全比照首頁) */
+  .post-list.col2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem 1.5rem;
+  }
+
+  .post-card {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .post-card .img-wrap {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: #f0f0f0;
+    margin-bottom: 0.9rem;
+  }
+
+  .card-thumb-link {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .card-img-box {
+    width: 100%;
+    height: 100%;
+  }
+
+  .card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .post-card:hover .card-img {
+    transform: scale(1.04);
+  }
+
+  .post-categories {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 0.4rem;
+  }
+
+  .post-categories li a {
+    color: #ff6b00;
+    font-size: 0.82rem;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .post-title {
+    font-size: 1.12rem;
+    font-weight: 700;
+    line-height: 1.4;
+    margin: 0 0 0.5rem;
+  }
+
+  .post-title a {
+    color: #111111;
+    text-decoration: none;
+  }
+
+  .post-title a:hover {
+    color: #ff6b00;
+  }
+
+  .post-excerpt {
+    font-size: 0.88rem;
+    color: #666666;
+    line-height: 1.6;
+    margin: 0 0 0.9rem;
+    flex-grow: 1;
+  }
+
+  .read-more {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #ff6b00;
+    text-decoration: none;
     align-self: flex-start;
   }
 
-  .vip-news-summary {
-    font-size: 0.82rem;
-    color: var(--ink-3);
-    letter-spacing: 0.04em;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+  .read-more:hover {
+    text-decoration: underline;
   }
 
-  .vip-news-date {
-    flex-shrink: 0;
-    font-size: 0.82rem;
-    letter-spacing: 0.12em;
-    color: var(--ink-3);
-    font-variant-numeric: tabular-nums;
-  }
-
-  .vip-news-arrow {
-    font-size: 0.85rem;
-    color: var(--ink-3);
-    transition: transform 0.2s ease;
-  }
-
-  .vip-news-item.is-open .vip-news-arrow {
-    transform: rotate(90deg);
-  }
-
-  .vip-article-detail {
-    padding: 1.2rem 1.4rem 1.6rem;
-    background: var(--bg-soft);
-    border-top: 1px solid var(--border);
-    font-size: 0.92rem;
-    line-height: 1.75;
-    color: var(--ink-2);
-    display: none;
-  }
-
-  .vip-news-item.is-open .vip-article-detail {
-    display: block;
-  }
-
-  .slot-empty {
-    color: var(--ink-3);
-    font-size: 0.92rem;
-    letter-spacing: 0.06em;
+  /* 側邊欄樣式 (完全比照首頁) */
+  .side-author-box {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    padding: 1.8rem;
     text-align: center;
-    padding: 1.4rem 0;
+    margin-bottom: 2rem;
   }
 
-  .game-wrap {
-    padding: 1rem;
+  .side-author-box .photo img {
+    border-radius: 50%;
+    margin-bottom: 0.8rem;
+  }
+
+  .side-author-box h2 {
+    font-size: 1.2rem;
+    margin: 0 0 0.4rem;
+    color: #111111;
+  }
+
+  .side-author-box .history {
+    font-size: 0.85rem;
+    color: #888888;
+    margin: 0 0 1rem;
+  }
+
+  .side-author-box .btn-vip {
+    display: inline-block;
+    padding: 0.4rem 1.2rem;
+    background: #111111;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 0.85rem;
+  }
+
+  .popular-posts {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    padding: 1.5rem;
+  }
+
+  .popular-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #111111;
+    border-bottom: 2px solid #111111;
+    padding-bottom: 0.6rem;
+    margin: 0 0 1.2rem;
+  }
+
+  .wpp-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .wpp-item {
+    display: flex;
+    gap: 0.8rem;
+    align-items: center;
+  }
+
+  .wpp-thumbnail-box {
+    width: 65px;
+    height: 65px;
+    flex-shrink: 0;
+    overflow: hidden;
+    background: #f0f0f0;
+  }
+
+  .wpp-thumb-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .wpp-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .wpp-post-title {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #222222;
+    text-decoration: none;
+    line-height: 1.4;
+  }
+
+  .wpp-post-title:hover {
+    color: #ff6b00;
+  }
+
+  .wpp-meta {
+    font-size: 0.78rem;
+    color: #999999;
+  }
+
+  @media (max-width: 900px) {
+    .content-hero-header {
+      flex-direction: column;
+    }
+    .content-hero-header .left {
+      width: 100%;
+      padding-right: 0;
+      margin-bottom: 1.5rem;
+    }
+    .content-hero-header .right {
+      width: 100%;
+    }
+    .content-area-top {
+      flex-direction: column;
+    }
+    .content-area-top > .left {
+      width: 100%;
+      padding-right: 0;
+      border-right: none;
+    }
+    .content-area-top > .right.sidebar-right {
+      width: 100%;
+      margin-top: 3rem;
+    }
+    .post-list.col2 {
+      grid-template-columns: 1fr;
+    }
   }
 </style>
 
@@ -267,13 +611,14 @@ import BlogLayout from '../layouts/BlogLayout.astro';
   import { currentUser } from '../scripts/auth';
 
   const vipBody = document.querySelector('#vip-body');
+  const loadingText = document.querySelector('#vip-loading-text');
 
   const user = currentUser();
   if (user === null) {
     window.location.replace('/login/?redirect=/vip/');
   } else {
-    const vipModule = document.querySelector('#vip-module');
-    if (vipModule !== null) vipModule.hidden = false;
+    if (loadingText) loadingText.remove();
+    if (vipBody) (vipBody as HTMLElement).style.display = 'block';
     renderVipUser();
   }
 
@@ -282,45 +627,29 @@ import BlogLayout from '../layouts/BlogLayout.astro';
     const u = currentUser();
     if (u === null) return;
 
-    vipBody.replaceChildren();
-    const wrap = document.createElement('div');
-    wrap.className = 'vip-user';
-
-    const detail = document.createElement('div');
-    detail.className = 'vip-user-detail';
-    detail.innerHTML = `
-      <div class="vip-field">
-        <span class="vip-field-label">會員姓名</span>
-        <span class="vip-field-val">${u.displayName || '未設定'}</span>
+    vipBody.innerHTML = `
+      <div class="vip-user-detail">
+        <div class="vip-field">
+          <span class="vip-field-label">會員姓名</span>
+          <span class="vip-field-val">${u.displayName || '未設定'}</span>
+        </div>
+        <div class="vip-field">
+          <span class="vip-field-label">電子郵件</span>
+          <span class="vip-field-val">${u.email}</span>
+        </div>
+        <div class="vip-field">
+          <span class="vip-field-label">會員編號</span>
+          <span class="vip-field-val">#${u.id}</span>
+        </div>
+        <div class="vip-field">
+          <span class="vip-field-label">會員身份</span>
+          <span class="vip-field-val">${u.role === 'admin' ? '系統管理員' : 'VIP 會員'}</span>
+        </div>
       </div>
-      <div class="vip-field">
-        <span class="vip-field-label">電子郵件</span>
-        <span class="vip-field-val">${u.email}</span>
-      </div>
-      <div class="vip-field">
-        <span class="vip-field-label">會員編號</span>
-        <span class="vip-field-val">#${u.id}</span>
-      </div>
-      <div class="vip-field">
-        <span class="vip-field-label">會員身份</span>
-        <span class="vip-field-val">${u.role === 'admin' ? '系統管理員' : 'VIP 會員'}</span>
+      <div class="vip-actions">
+        <a href="/reserve/" class="btn">預約時段紀錄 →</a>
+        <a href="/tickets/" class="btn btn--ghost">問題工單中心 →</a>
       </div>
     `;
-
-    const actions = document.createElement('div');
-    actions.className = 'vip-actions';
-    const reserveLink = document.createElement('a');
-    reserveLink.className = 'btn';
-    reserveLink.href = '/reserve/';
-    reserveLink.textContent = '預約紀錄';
-
-    const ticketsLink = document.createElement('a');
-    ticketsLink.className = 'btn btn--ghost';
-    ticketsLink.href = '/tickets/';
-    ticketsLink.textContent = '問題專區（工單）';
-
-    actions.append(reserveLink, ticketsLink);
-    wrap.append(detail, actions);
-    vipBody.append(wrap);
   }
 </script>
