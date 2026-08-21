@@ -256,6 +256,64 @@
 		customCourses = customCourses.filter((c) => c.id !== id);
 	}
 
+	// 匯出當前所有工作表為真正 .xlsx 格式 Excel 試算表
+	async function exportToXLSX() {
+		try {
+			const XLSX = await import('xlsx');
+			const wb = XLSX.utils.book_new();
+
+			// 1. 當前檢視表或全表
+			const rows = displayedRows();
+			const sheetData = [
+				[`國立臺北商業大學 NTUB 學分修業試算表 — ${activeSheet === 'all' ? '全校總表' : (activeSheet === 'custom' ? '自訂修課' : currentProgram.name)}`],
+				['狀態', '課程代碼', '課程名稱', '開課系所', '修別', '學分數', '學期/年級', '備註與學程判定']
+			];
+
+			rows.forEach((r) => {
+				sheetData.push([
+					r.checked ? '已修' : '未修',
+					r.code,
+					r.name,
+					r.unit,
+					r.type,
+					r.credits,
+					r.term,
+					r.notes
+				]);
+			});
+
+			const stats = sheetStats();
+			sheetData.push([]);
+			sheetData.push(['--- 試算表統計彙總 ---']);
+			sheetData.push(['已修畢總學分', '', '', '', '', stats.earnedCreditsSum, '', `達成率: ${stats.progressPct}%`]);
+			sheetData.push(['核心必修學分', '', '', '', '', stats.requiredCreditsSum]);
+			sheetData.push(['專業選修學分', '', '', '', '', stats.electiveCreditsSum]);
+			sheetData.push(['本系修課學分', '', '', '', '', stats.myDeptCreditsSum]);
+			sheetData.push(['跨系修課學分', '', '', '', '', stats.crossDeptCreditsSum]);
+
+			const ws = XLSX.utils.aoa_to_sheet(sheetData);
+			ws['!cols'] = [
+				{ wch: 12 },
+				{ wch: 14 },
+				{ wch: 32 },
+				{ wch: 18 },
+				{ wch: 10 },
+				{ wch: 10 },
+				{ wch: 14 },
+				{ wch: 30 }
+			];
+
+			const title = (activeSheet === 'all' ? '全校課程總覽' : (activeSheet === 'custom' ? '自訂修課' : currentProgram.name.slice(0, 20)));
+			XLSX.utils.book_append_sheet(wb, ws, title);
+
+			// 下載真實 .xlsx 檔案
+			XLSX.writeFile(wb, `NTUB_學分修業試算表_${activeSheet}_${new Date().toISOString().slice(0, 10)}.xlsx`);
+		} catch (err) {
+			console.error('XLSX export fallback to CSV', err);
+			exportToCSV();
+		}
+	}
+
 	// 匯出當前工作表為 CSV 試算表檔
 	function exportToCSV() {
 		const headers = ['狀態', '課程代碼', '課程名稱', '開課系所', '修別', '學分數', '學期/年級', '備註與學程'];
@@ -407,9 +465,15 @@
 						⚡ 勾選本系課程
 					</button>
 				{/if}
-				<button class="sheet-btn export" onclick={exportToCSV} title="將此試算表匯出為標準 CSV / Excel 格式">
-					📥 匯出 CSV 試算表
+				<button class="sheet-btn export xlsx" onclick={exportToXLSX} title="即時產生並下載當前修課勾選之 Microsoft Excel (.xlsx) 檔案">
+					📗 匯出 .xlsx Excel
 				</button>
+				<button class="sheet-btn export" onclick={exportToCSV} title="匯出為標準 CSV 試算表格式">
+					📥 匯出 CSV
+				</button>
+				<a href="/downloads/NTUB_學分學程修業完整試算表.xlsx" download="NTUB_學分學程修業完整試算表.xlsx" class="sheet-btn template" title="下載官方完整 9 大學分學程多工作表 Excel 範本 (.xlsx)">
+					📂 完整範本 (.xlsx)
+				</a>
 			</div>
 		</div>
 
@@ -862,6 +926,30 @@
 
 	.sheet-btn.export:hover {
 		background: #14532d;
+	}
+
+	.sheet-btn.export.xlsx {
+		background: #15803d;
+		color: #ffffff;
+		border-color: #15803d;
+	}
+
+	.sheet-btn.export.xlsx:hover {
+		background: #166534;
+	}
+
+	.sheet-btn.template {
+		background: #0f172a;
+		color: #ffffff;
+		border-color: #0f172a;
+		text-decoration: none;
+		display: inline-flex;
+		align-items: center;
+		gap: 4px;
+	}
+
+	.sheet-btn.template:hover {
+		background: #334155;
 	}
 
 	/* 2. 表格網格 */
