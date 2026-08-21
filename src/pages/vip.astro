@@ -27,28 +27,8 @@ const popularPosts = posts.slice(0, 3);
         <span class="current-post-name">VIP 專區</span>
       </div>
 
-      <!-- 🔷 1. 左右交換 + 正方形 1:1 圖片之 Hero Header -->
-      <section class="content-hero-header hero-reversed">
-        <!-- 左側：1:1 正方形圖片 (Square Banner) -->
-        <div class="hero-square-col">
-          <div class="slider-wrap-header">
-            <div class="slider-one">
-              <div class="img-wrap square-wrap">
-                <div class="bgs bgs1"></div>
-                <div class="bgs bgs2"></div>
-                <div class="bgs bgs3"></div>
-                <div class="bgs bgs4"></div>
-                <div class="bgs bgs5 hero-featured-link">
-                  <div class="featured-img-container square-img-container">
-                    <img src="/banners/vip-hero-banner.jpg?v=20260821" alt="OviNas VIP" class="featured-main-img square-img" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 右側：VIP 標題與快捷按鈕 -->
+      <!-- 🔷 1. 純文字極簡 VIP Hero Header (無圖片) -->
+      <section class="vip-pure-hero">
         <div class="hero-text-col">
           <h3>VIP ZONE</h3>
           <h2>VIP</h2>
@@ -179,40 +159,14 @@ const popularPosts = posts.slice(0, 3);
     font-weight: 500;
   }
 
-  /* 🔷 1. 左右交換 + 正方形 1:1 圖片之 Hero Header */
-  .content-hero-header.hero-reversed {
+  /* 🔷 1. 純文字極簡 VIP Hero Header (無圖片) */
+  .vip-pure-hero {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    gap: 3rem;
-    margin-bottom: 3.5rem;
+    margin-bottom: 2.5rem;
     border-bottom: 1px solid #e2e2e2;
-    padding-bottom: 3rem;
-  }
-
-  .hero-square-col {
-    width: 240px;
-    height: 240px;
-    flex-shrink: 0;
-  }
-
-  .square-wrap {
-    width: 240px !important;
-    height: 240px !important;
-    aspect-ratio: 1 / 1 !important;
-    max-height: 240px !important;
-    background: #f0f0f0;
-  }
-
-  .square-img-container {
-    width: 100% !important;
-    height: 100% !important;
-  }
-
-  .square-img {
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: cover !important;
+    padding-bottom: 2rem;
   }
 
   .hero-text-col {
