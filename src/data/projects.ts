@@ -11,11 +11,6 @@ const projects: Project[] = [
     href: '/badges/',
   },
   {
-    name: '【學分學程】NTUB學分學程查詢及預算學分',
-    desc: 'NTUB 學分學程簡章與學分勾選',
-    href: '/ntub/',
-  },
-  {
     name: '【專案工具】NYTools',
     desc: 'P2P 工具集 — 檔案傳輸、螢幕投影',
     href: '/nytools/',
