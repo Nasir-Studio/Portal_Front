@@ -779,8 +779,9 @@ const searchIndexJson = JSON.stringify(
     });
   });
 
-  // 3. 全站卡片滑動淡入進場動畫 (Scroll Reveal Animation)
-  const revealElements = document.querySelectorAll('.post-card, .loop-article, .single-hero-img-wrap, .side-author-box, .popular-posts, .tag-widget-box');
+  // 3. 故事感沉浸式漸進滾動動畫 (Storytelling Scroll Animation with Cascading Stagger)
+  const revealSelector = '.post-card, .loop-article, .recommend-col-card, .single-hero-img-wrap, .side-author-box, .side-badges-box, .popular-posts, .tag-widget-box, .blog-calendar-section, .index-skills-section, .post-area-head, .recommend-head-row, .footer-col-left, .footer-center, .footer-right, .post-footer-author, .article-contact-section, .prev-next-article';
+  const revealElements = document.querySelectorAll(revealSelector);
 
   if ('IntersectionObserver' in window) {
     const observer = new IntersectionObserver((entries, obs) => {
@@ -791,12 +792,21 @@ const searchIndexJson = JSON.stringify(
         }
       });
     }, {
-      rootMargin: '0px 0px -40px 0px',
-      threshold: 0.08,
+      rootMargin: '0px 0px -30px 0px',
+      threshold: 0.06,
     });
 
-    revealElements.forEach(el => {
+    revealElements.forEach((el, index) => {
       el.classList.add('reveal-ready');
+      // 根據同一父容器內的順序自動賦予細緻階梯延遲，營造章節故事般的流動感
+      const parent = el.parentElement;
+      if (parent) {
+        const siblings = Array.from(parent.children).filter(c => c.matches && c.matches(revealSelector));
+        const idx = siblings.indexOf(el);
+        if (idx > 0 && idx < 5) {
+          el.classList.add(`reveal-delay-${idx}`);
+        }
+      }
       observer.observe(el);
     });
   }
@@ -1715,17 +1725,33 @@ const searchIndexJson = JSON.stringify(
     }
   }
   
-  /* 🌟 滑動進場動畫 (Scroll Reveal Animation) */
+  /* 🌟 故事感沉浸式滾動動畫 (Storytelling Cinematic Scroll Animation) */
+  html {
+    scroll-behavior: smooth;
+  }
+
   .reveal-ready {
     opacity: 0;
-    transform: translateY(24px);
-    transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1), transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translateY(32px) scale(0.985);
+    filter: blur(1px);
+    transition: opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+                filter 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: opacity, transform, filter;
   }
 
   .reveal-ready.revealed {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
+    filter: blur(0);
   }
+
+  /* 逐項階梯式進場 (Staggered Story Progression) */
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
 
     /* ✉️ Footer 聯絡表單 (Google Form) */
   .footer-contact-form {
