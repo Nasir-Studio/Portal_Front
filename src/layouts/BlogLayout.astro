@@ -560,13 +560,22 @@ const searchIndexJson = JSON.stringify(
   }
   </script>
 <script>
-  // 1. 頂部導覽列滾動縮小動效 (.min-fixed)
+  // 1. 頂部導覽列滾動毛玻璃動效 (防抖與防高度跳變，杜絕跳針閃爍)
   const header = document.getElementById('main-header');
+  let isHeaderScrolled = false;
+  let ticking = false;
+
   window.addEventListener('scroll', () => {
-    if (window.scrollY > 50) {
-      header?.classList.add('min-fixed');
-    } else {
-      header?.classList.remove('min-fixed');
+    if (!ticking) {
+      window.requestAnimationFrame(() => {
+        const scrolled = window.scrollY > 20;
+        if (scrolled !== isHeaderScrolled) {
+          isHeaderScrolled = scrolled;
+          header?.classList.toggle('min-fixed', isHeaderScrolled);
+        }
+        ticking = false;
+      });
+      ticking = true;
     }
   }, { passive: true });
 
@@ -962,7 +971,7 @@ const searchIndexJson = JSON.stringify(
     border-radius: 4px;
   }
 
-  /* 🔷 Header 樣式 (100% 依據經典自媒體比例，含 75px Logo、灰字選單、下拉、圓形按鈕、毛玻璃透明) */
+  /* 🔷 Header 樣式 (穩定固定高度，杜絕 Layout Shift 跳動與閃爍) */
   .main-header {
     background-color: #ffffff;
     border-top: none;
@@ -970,13 +979,13 @@ const searchIndexJson = JSON.stringify(
     position: sticky;
     top: 0;
     z-index: 1000;
-    transition: all 0.25s ease;
+    transition: background-color 0.2s ease, backdrop-filter 0.2s ease, box-shadow 0.2s ease;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
   }
 
-  /* 滾動時透明毛玻璃縮小樣式 (.min-fixed) */
+  /* 滾動時透明毛玻璃樣式 (.min-fixed) */
   .main-header.min-fixed {
-    background-color: rgba(255, 255, 255, 0.85);
+    background-color: rgba(255, 255, 255, 0.92);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
@@ -986,15 +995,14 @@ const searchIndexJson = JSON.stringify(
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 100px;
-    transition: height 0.25s ease;
+    height: 76px;
   }
 
   .main-header.min-fixed .header-row {
-    height: 72px;
+    height: 76px;
   }
 
-    .logo {
+  .logo {
     display: flex;
     align-items: center;
   }
@@ -1010,17 +1018,17 @@ const searchIndexJson = JSON.stringify(
   }
 
   .logo-sheep-icon {
-    width: 52px;
-    height: 52px;
+    width: 48px;
+    height: 48px;
     object-fit: contain;
-    filter: none; /* 自然原版黑色羊，不反白，完全不需要橘色方塊 */
+    filter: none;
     display: block;
     transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
 
   .main-header.min-fixed .logo-sheep-icon {
-    width: 42px;
-    height: 42px;
+    width: 48px;
+    height: 48px;
   }
 
   .logo-link:hover .logo-sheep-icon {
