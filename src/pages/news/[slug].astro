@@ -682,6 +682,10 @@ const { item, prevPost, nextPost } = Astro.props;
     background: #fdfdfd;
   }
 
+  .side-author-box {
+    text-align: center;
+  }
+
   .photo {
     border-radius: 50%;
     overflow: hidden;
@@ -702,10 +706,11 @@ const { item, prevPost, nextPost } = Astro.props;
   }
 
   .side-author-box h2 {
-    font-size: 20px !important;
-    font-weight: 700 !important;
+    font-size: 19px !important;
+    font-weight: 500 !important;
     color: #1e293b !important;
     margin: 0.6rem 0 0.3rem !important;
+    text-align: center !important;
     display: block !important;
   }
 
@@ -722,7 +727,8 @@ const { item, prevPost, nextPost } = Astro.props;
     color: #ff6b00;
     font-size: 0.82rem;
     font-weight: 400;
-    margin: 0 0 0.6rem;
+    margin: 0 auto 0.6rem;
+    text-align: center !important;
   }
 
   .side-author-box .author-bio p {
