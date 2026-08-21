@@ -2,13 +2,11 @@
 import BaseLayout from '../../../shop/layouts/BaseLayout.astro';
 import Header from '../../../shop/components/Header.astro';
 import Footer from '../../../shop/components/Footer.astro';
-import LoadingScreen from '../../../shop/components/LoadingScreen.astro';
 const API_URL = import.meta.env.PUBLIC_API_URL || 'https://api.nsir.uk';
 ---
 
 <BaseLayout title="全部商品 — 小羊農場">
-  <LoadingScreen preloadSelector=".product-card img" />
-  <Header />
+    <Header />
 
   <main class="pt-header">
     <div class="container">
