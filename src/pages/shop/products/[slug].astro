@@ -124,6 +124,26 @@ export async function getStaticPaths() {
     color: #cccccc;
   }
 
+  .breadcrumbs .current-post-name {
+    color: #333333;
+    font-weight: 500;
+  }
+
+  /* 🛍️ 商品詳情雙欄排版 (左 45% 正方形圖片 + 右 55% 購買面板) */
+  .product-detail-area {
+    display: grid;
+    grid-template-columns: 1fr 1.15fr;
+    gap: 3.5rem;
+    align-items: start;
+    margin-bottom: 2rem;
+  }
+
+  .product-gallery {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
   .product-main-image-box {
     width: 100%;
     aspect-ratio: 1 / 1;
@@ -374,7 +394,7 @@ export async function getStaticPaths() {
       condition: 'used',
       category_name: '硬體良品 · 二手測試通過',
       description: '功能經站長實機檢測完全正常，原廠顆粒良品。適合老舊電腦升級或實驗專案使用。',
-      image_url: 'https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?auto=format&fit=crop&w=800&h=800&q=85'
+      image_url: '/banners/samsungddr34gbram.jpg'
     };
 
     var p = fallbackProduct;
