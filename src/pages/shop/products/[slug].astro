@@ -40,7 +40,7 @@ export async function getStaticPaths() {
       </div>
 
       <div class="product-detail-area">
-        <!-- 左側商品圖片畫廊 -->
+        <!-- 左側商品圖片畫廊 (1:1 正方形) -->
         <div class="product-gallery">
           <div class="product-main-image-box" id="main-image-wrap">
             <div class="product-placeholder">
@@ -52,7 +52,7 @@ export async function getStaticPaths() {
 
         <!-- 右側商品購買與詳細資訊 -->
         <div class="product-info-panel">
-          <span class="product-category-tag" id="product-category">農場物資</span>
+          <span class="product-category-tag" id="product-category">二手良品</span>
           <h1 class="product-title" id="product-name">商品名稱</h1>
           
           <div class="product-pricing-row">
@@ -71,7 +71,7 @@ export async function getStaticPaths() {
             </div>
             <div class="meta-row">
               <span class="meta-label">運送方式</span>
-              <span class="meta-value">7-11 店到店（運費 $60 + 包材 $15 = $75）</span>
+              <span class="meta-value">7-11 店到店（運費 $60 + 包材 $15 = NT$ 75）</span>
             </div>
           </div>
 
@@ -83,11 +83,14 @@ export async function getStaticPaths() {
             </div>
             <button class="btn btn-add-cart" id="add-to-cart-btn" type="button">加入購物車</button>
           </div>
+        </div>
+      </div>
 
-          <div class="product-desc-box">
-            <h3>商品詳細說明</h3>
-            <p id="product-desc">功能經站長檢測完全正常，歡迎選購。</p>
-          </div>
+      <!-- 下方獨立商品詳細說明區塊 (不再擁擠卡在按鈕旁) -->
+      <div class="product-full-desc-section">
+        <div class="product-desc-box">
+          <h3 class="product-desc-title">商品詳細說明</h3>
+          <p id="product-desc">功能經站長檢測完全正常，歡迎選購。</p>
         </div>
       </div>
     </div>
@@ -121,31 +124,13 @@ export async function getStaticPaths() {
     color: #cccccc;
   }
 
-  .breadcrumbs .current-post-name {
-    color: #333333;
-    font-weight: 500;
-  }
-
-  /* 商品詳情排版 */
-  .product-detail-area {
-    display: grid;
-    grid-template-columns: 1fr 1.15fr;
-    gap: 3.5rem;
-    align-items: start;
-  }
-
-  .product-gallery {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
   .product-main-image-box {
     width: 100%;
-    aspect-ratio: 16 / 10;
-    max-height: 420px;
+    aspect-ratio: 1 / 1;
+    max-height: 480px;
     background: #fafafa;
-    border: 1px solid #e0e0e0;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
     overflow: hidden;
     display: flex;
     align-items: center;
@@ -155,7 +140,7 @@ export async function getStaticPaths() {
   .product-main-image-box img {
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: cover !important;
     background: #fafafa;
     display: block;
   }
@@ -180,6 +165,7 @@ export async function getStaticPaths() {
     width: 72px;
     height: 72px;
     border: 1px solid #e0e0e0;
+    border-radius: 4px;
     overflow: hidden;
     cursor: pointer;
     background: #fafafa;
@@ -249,32 +235,33 @@ export async function getStaticPaths() {
 
   .meta-row {
     display: flex;
-    align-items: center;
     font-size: 0.92rem;
   }
 
   .meta-label {
-    width: 90px;
+    width: 100px;
     color: #64748b;
+    font-weight: 400;
   }
 
   .meta-value {
-    color: #0f172a;
-    font-weight: 500;
+    color: #1e293b;
+    font-weight: 400;
   }
 
   .product-action-section {
     display: flex;
     gap: 1rem;
-    align-items: center;
-    margin-bottom: 2.5rem;
+    margin-bottom: 1.5rem;
   }
 
   .qty-selector {
     display: flex;
     align-items: center;
     border: 1px solid #cbd5e1;
+    border-radius: 4px;
     background: #ffffff;
+    overflow: hidden;
   }
 
   .qty-btn {
@@ -309,6 +296,7 @@ export async function getStaticPaths() {
     background: #111111;
     color: #ffffff !important;
     border: none;
+    border-radius: 4px;
     font-size: 0.95rem;
     font-weight: 500;
     cursor: pointer;
@@ -319,23 +307,33 @@ export async function getStaticPaths() {
     background: #ff6b00;
   }
 
-  .product-desc-box {
-    background: #fafafa;
-    border: 1px solid #e5e7eb;
-    padding: 1.6rem 1.8rem;
+  .product-full-desc-section {
+    margin-top: 3.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid #f1f5f9;
   }
 
-  .product-desc-box h3 {
-    font-size: 1.1rem;
+  .product-desc-box {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 1.8rem 2.2rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+  }
+
+  .product-desc-title {
+    font-size: 1.15rem;
     font-weight: 500;
     color: #111111;
-    margin: 0 0 0.8rem;
+    margin: 0 0 1rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid #f1f5f9;
   }
 
   .product-desc-box p {
-    font-size: 0.94rem;
-    color: #555555;
-    line-height: 1.7;
+    font-size: 0.96rem;
+    color: #475569;
+    line-height: 1.8;
     margin: 0;
   }
 
@@ -357,7 +355,6 @@ export async function getStaticPaths() {
 
   var __cc = window.__currency;
   function _fmt(ntd) {
-    if (ntd === 0) return '0 元免費';
     if (__cc && __cc._rates) return __cc.format(ntd);
     return 'NT$ ' + (ntd || 0).toLocaleString();
   }
@@ -369,15 +366,15 @@ export async function getStaticPaths() {
 
     var fallbackProduct = {
       id: 1,
-      name: 'Samsung DDR3 4GB 筆電/桌機記憶體',
+      name: 'Samsung DDR3 4GB 記憶體',
       slug: 'samsungddr34gbram',
-      price: 0,
+      price: 150,
       sale_price: null,
       stock: 1,
       condition: 'used',
-      category_name: '電腦零組件 · 0 元活動',
+      category_name: '硬體良品 · 二手測試通過',
       description: '功能經站長實機檢測完全正常，原廠顆粒良品。適合老舊電腦升級或實驗專案使用。',
-      image_url: ''
+      image_url: 'https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?auto=format&fit=crop&w=800&h=800&q=85'
     };
 
     var p = fallbackProduct;
@@ -397,7 +394,7 @@ export async function getStaticPaths() {
     if (nameEl) nameEl.textContent = p.name;
 
     var catEl = document.getElementById('product-category');
-    if (catEl) catEl.textContent = p.category_name || '農場物資';
+    if (catEl) catEl.textContent = p.category_name || '二手良品';
 
     var priceEl = document.getElementById('product-price');
     if (priceEl) priceEl.textContent = _fmt(p.price);
@@ -406,18 +403,15 @@ export async function getStaticPaths() {
     if (condEl) condEl.textContent = conditionLabels[p.condition] || '二手良品';
 
     var stockEl = document.getElementById('product-stock');
-    if (stockEl) stockEl.textContent = (p.stock > 0) ? '剩餘 ' + p.stock + ' 件' : '已結案';
+    if (stockEl) stockEl.textContent = (p.stock > 0) ? '現貨剩餘 ' + p.stock + ' 件' : '已售完';
 
     var descEl = document.getElementById('product-desc');
-    if (descEl) descEl.textContent = p.description || p.summary || '功能完好，歡迎索取。';
+    if (descEl) descEl.textContent = p.description || p.summary || '功能完好，歡迎選購。';
 
     var mainImgWrap = document.getElementById('main-image-wrap');
     if (mainImgWrap) {
-      if (p.image_url) {
-        mainImgWrap.innerHTML = '<img src="' + p.image_url + '" alt="' + escHtml(p.name) + '" loading="lazy" />';
-      } else {
-        mainImgWrap.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;background:#f8fafc;color:#64748b;font-weight: 500;font-size:1.3rem;">' + escHtml(p.name) + '</div>';
-      }
+      var imgUrl = p.image_url || fallbackProduct.image_url;
+      mainImgWrap.innerHTML = '<img src="' + imgUrl + '" alt="' + escHtml(p.name) + '" loading="lazy" />';
     }
 
     var minusBtn = document.getElementById('qty-minus');
