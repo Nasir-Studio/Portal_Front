@@ -5,7 +5,7 @@ import posts from '../data/posts';
 const popularPosts = posts.slice(0, 3);
 ---
 
-<BlogLayout title="VIP 專區 — OviNas" description="OviNas VIP 會員專屬權限、預約紀錄與獨家系統服務。">
+<BlogLayout title="VIP 專區 — OviNas" description="OviNas VIP 會員專屬權限、技術支援工單與站長時段預約系統。">
   <div class="main-content">
     <div class="container">
       <!-- 麵包屑導航 (Breadcrumbs) -->
@@ -15,12 +15,15 @@ const popularPosts = posts.slice(0, 3);
         <span class="current-post-name">VIP 專區</span>
       </div>
 
-      <!-- 🔷 1. 經典 Hero Header 區塊 (左側 30% VIP 介紹 + 右側 70% 橫幅大圖) -->
+      <!-- 🔷 1. 經典 Hero Header 旗艦橫幅 -->
       <section class="content-hero-header">
         <div class="left">
           <h3>VIP ZONE</h3>
           <h2>VIP</h2>
-          <a href="/reserve/" class="btn-about-hero">前往預約系統</a>
+          <div class="hero-quick-btns">
+            <a href="#ticketSection" class="btn-about-hero">技術工單支援</a>
+            <a href="#calendarSection" class="btn-about-hero" style="background:#475569;">時段預約系統</a>
+          </div>
         </div>
         <div class="right">
           <div class="slider-wrap-header">
@@ -41,13 +44,13 @@ const popularPosts = posts.slice(0, 3);
         </div>
       </section>
 
-      <!-- 📰 2. 雙欄主內容區 (左側 70% VIP 模組 + 右側 30% 側邊欄) -->
+      <!-- 📰 2. 雙欄主內容區 (左側 68% + 右側 28% 側邊欄) -->
       <div class="content-area-top">
         <div class="left">
-          <!-- VIP 會員資料卡片區塊 -->
+          <!-- 👤 Section 1: VIP 會員中心基本資料 -->
           <div class="post-area-head">
             <h2 class="post-area-title">VIP 會員中心</h2>
-            <span class="cal-sub-label">尊榮會員權限與帳號管理</span>
+            <span class="cal-sub-label">尊榮會員基本資料與帳號狀態</span>
           </div>
 
           <div class="vip-card-box" id="vip-card-box">
@@ -59,56 +62,66 @@ const popularPosts = posts.slice(0, 3);
             </div>
           </div>
 
-          <!-- VIP 專屬特權功能網格 (比照首頁 post-card 雙欄排版) -->
-          <div class="post-area-head" style="margin-top: 2.5rem;">
-            <h2 class="post-area-title">VIP 專屬特權與功能</h2>
-            <span class="cal-sub-label">享受最高優先級服務與技術支援</span>
+          <!-- 🎫 Section 2: 專屬技術支援工單 (Tickets) -->
+          <div class="post-area-head" id="ticketSection" style="margin-top: 3.5rem;">
+            <h2 class="post-area-title">專屬技術支援工單</h2>
+            <button class="btn btn--sm" id="btn-toggle-ticket" type="button">+ 建立新工單</button>
           </div>
 
-          <div class="post-list col2">
-            <article class="post-card">
-              <div class="img-wrap">
-                <div class="bgs bgs1"></div>
-                <div class="bgs bgs2"></div>
-                <div class="bgs bgs3"></div>
-                <div class="bgs bgs4"></div>
-                <a class="bgs bgs5 card-thumb-link" href="/reserve/">
-                  <div class="card-img-box">
-                    <img src="/banners/tech-notes-architecture.jpg?v=20260820light" alt="預約諮詢" class="card-img" />
-                  </div>
-                </a>
+          <!-- 新建工單表單 (點擊切換展開) -->
+          <div class="ticket-form-card" id="new-ticket-card" style="display: none;">
+            <form id="new-ticket-form">
+              <div class="form-field">
+                <label for="nt-subject">問題主旨 *</label>
+                <input id="nt-subject" type="text" name="subject" maxlength="120" placeholder="例如：網站部屬問題 / 資安諮詢" required class="form-input" />
               </div>
-              <ul class="post-categories">
-                <li><a href="/reserve/">專屬諮詢</a></li>
-              </ul>
-              <h3 class="post-title">
-                <a href="/reserve/">1 對 1 系統架構與資安預約</a>
-              </h3>
-              <p class="post-excerpt">專屬諮詢時段優先選擇，隨時線上討論架構問題與專案痛點。</p>
-              <a href="/reserve/" class="read-more">立即預約時段 →</a>
-            </article>
+              <div class="form-field">
+                <label for="nt-body">問題詳述 *</label>
+                <textarea id="nt-body" name="body" rows="4" maxlength="4000" placeholder="請詳細描述您遇到的問題或需求…" required class="form-input form-textarea"></textarea>
+              </div>
+              <p class="form-msg err" id="nt-msg" style="display:none"></p>
+              <div class="form-actions">
+                <button class="btn" type="submit" id="nt-submit-btn">送出工單</button>
+                <button class="btn btn--ghost" id="nt-cancel-btn" type="button">取消</button>
+              </div>
+            </form>
+          </div>
 
-            <article class="post-card">
-              <div class="img-wrap">
-                <div class="bgs bgs1"></div>
-                <div class="bgs bgs2"></div>
-                <div class="bgs bgs3"></div>
-                <div class="bgs bgs4"></div>
-                <a class="bgs bgs5 card-thumb-link" href="/tickets/">
-                  <div class="card-img-box">
-                    <img src="/banners/github-open-source-tools.jpg?v=20260820light" alt="問題專區" class="card-img" />
-                  </div>
-                </a>
-              </div>
-              <ul class="post-categories">
-                <li><a href="/tickets/">工單支援</a></li>
-              </ul>
-              <h3 class="post-title">
-                <a href="/tickets/">快速技術工單反饋</a>
-              </h3>
-              <p class="post-excerpt">提交任何 Bug、技術問題或合作提案，站長將以最高優先度回覆處理。</p>
-              <a href="/tickets/" class="read-more">開啟問題工單 →</a>
-            </article>
+          <!-- 我的工單列表 -->
+          <div class="ticket-list" id="ticket-list">
+            <p class="slot-empty">正在載入專屬工單紀錄…</p>
+          </div>
+
+          <!-- 📅 Section 3: 站長行事曆與線上預約系統 -->
+          <div class="post-area-head" id="calendarSection" style="margin-top: 4rem;">
+            <h2 class="post-area-title">站長行事曆與時段預約</h2>
+            <span class="cal-sub-label">預先掌握站長行程，以利預約合適時間</span>
+          </div>
+
+          <div class="blog-cal-frame" style="margin-bottom: 2.2rem;">
+            <iframe
+              src="https://calendar.google.com/calendar/embed?src=bb049ab126a644ff77ce9a3dd0ad5c2aa0b1bd0272dd636a38dcfbabdd5aa7aa%40group.calendar.google.com&ctz=Asia%2FTaipei"
+              title="OviNas 站長行事曆"
+              loading="lazy"
+              frameborder="0"
+              scrolling="no"
+            ></iframe>
+          </div>
+
+          <!-- 開放預約時段列表 -->
+          <div class="slot-list" id="slot-list">
+            <p class="slot-empty">正在載入開放時段…</p>
+          </div>
+
+          <!-- VIP 會員歷史預約紀錄 -->
+          <div id="mine-reservations-section" style="display:none; margin-top: 3rem;">
+            <div class="post-area-head">
+              <h2 class="post-area-title">我的預約紀錄</h2>
+              <span class="cal-sub-label">您的專屬預約歷史與確認狀態</span>
+            </div>
+            <div class="mine-list" id="mine-reservations-list">
+              <p class="slot-empty">載入中…</p>
+            </div>
           </div>
         </div>
 
@@ -212,22 +225,27 @@ const popularPosts = posts.slice(0, 3);
   }
 
   .content-hero-header .left h2 {
-    font-size: 1.65rem;
-    line-height: 1.4;
+    font-size: 2.2rem;
+    line-height: 1.2;
     color: #111111;
     margin: 0 0 1.5rem;
     font-weight: 700;
   }
 
+  .hero-quick-btns {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+  }
+
   .btn-about-hero {
     display: inline-block;
-    padding: 0.6rem 1.4rem;
+    padding: 0.55rem 1.2rem;
     background: #111111;
     color: #ffffff !important;
     text-decoration: none;
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     font-weight: 500;
-    align-self: flex-start;
     transition: background 0.15s ease;
   }
 
@@ -288,7 +306,7 @@ const popularPosts = posts.slice(0, 3);
 
   .post-area-head {
     display: flex;
-    align-items: baseline;
+    align-items: center;
     justify-content: space-between;
     border-bottom: 2px solid #111111;
     padding-bottom: 0.6rem;
@@ -315,7 +333,7 @@ const popularPosts = posts.slice(0, 3);
     background: #ffffff;
     border: 1px solid #e0e0e0;
     padding: 1.6rem 1.8rem;
-    margin-bottom: 2.5rem;
+    margin-bottom: 2rem;
   }
 
   .vip-loading-state {
@@ -329,9 +347,6 @@ const popularPosts = posts.slice(0, 3);
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1rem 1.5rem;
-    padding-bottom: 1.4rem;
-    border-bottom: 1px solid #f1f5f9;
-    margin-bottom: 1.2rem;
   }
 
   .vip-field {
@@ -351,14 +366,232 @@ const popularPosts = posts.slice(0, 3);
     color: #111111;
   }
 
-  .vip-actions {
+  /* 工單表單與列表 */
+  .ticket-form-card {
+    background: #fdfdfd;
+    border: 1px solid #e0e0e0;
+    border-top: 3px solid #ff6b00;
+    padding: 1.6rem 1.8rem;
+    margin-bottom: 1.8rem;
+  }
+
+  .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .form-field label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #334155;
+  }
+
+  .form-input {
+    padding: 0.65rem 0.85rem;
+    border: 1px solid #cbd5e1;
+    font-size: 0.95rem;
+    color: #0f172a;
+    background: #ffffff;
+    font-family: inherit;
+    outline: none;
+  }
+
+  .form-input:focus {
+    border-color: #ff6b00;
+  }
+
+  .form-textarea {
+    resize: vertical;
+    min-height: 90px;
+  }
+
+  .form-actions {
     display: flex;
     gap: 0.8rem;
+    align-items: center;
+  }
+
+  .ticket-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .ticket-card {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    padding: 1.2rem 1.4rem;
+    transition: border-color 0.15s ease;
+  }
+
+  .ticket-card:hover {
+    border-color: #ff6b00;
+  }
+
+  .ticket-card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .ticket-subject {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #111111;
+    margin: 0;
+  }
+
+  .ticket-status-badge {
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 2px 8px;
+    border: 1px solid #cbd5e1;
+    background: #f8fafc;
+    color: #334155;
+    white-space: nowrap;
+  }
+
+  .ticket-status-badge.open {
+    color: #ea580c;
+    border-color: #fed7aa;
+    background: #fff7ed;
+  }
+
+  .ticket-status-badge.resolved {
+    color: #16a34a;
+    border-color: #bbf7d0;
+    background: #f0fdf4;
+  }
+
+  .ticket-body-preview {
+    font-size: 0.9rem;
+    color: #666666;
+    line-height: 1.6;
+    margin: 0 0 0.8rem;
+  }
+
+  .ticket-meta {
+    font-size: 0.8rem;
+    color: #999999;
+  }
+
+  /* 📅 行事曆與時段 */
+  .blog-cal-frame {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    padding: 1rem;
+  }
+
+  .blog-cal-frame iframe {
+    width: 100%;
+    height: 460px;
+    border: none;
+    display: block;
+  }
+
+  .slot-list,
+  .mine-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+
+  .slot-card {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    transition: border-color 0.15s ease;
+  }
+
+  .slot-card:hover {
+    border-color: #ff6b00;
+  }
+
+  .slot-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.1rem 1.3rem 0.5rem;
+  }
+
+  .slot-title {
+    font-size: 1.12rem;
+    font-weight: 600;
+    color: #111111;
+    margin: 0;
+  }
+
+  .slot-meta {
+    font-size: 0.84rem;
+    color: #666666;
+    background: #f8fafc;
+    padding: 3px 8px;
+    border: 1px solid #e2e8f0;
+  }
+
+  .slot-desc {
+    padding: 0 1.3rem 0.75rem;
+    font-size: 0.92rem;
+    color: #555555;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .slot-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.85rem 1.3rem;
+    border-top: 1px solid #f1f5f9;
+    background: #fafafa;
+  }
+
+  .slot-remaining {
+    font-size: 0.88rem;
+    color: #555555;
+    font-weight: 500;
+  }
+
+  .slot-remaining.full {
+    color: #dc2626;
+  }
+
+  .mine-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 1.3rem;
+    border: 1px solid #e0e0e0;
+    background: #ffffff;
+    margin-bottom: 0.8rem;
+  }
+
+  .mine-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .mine-name {
+    font-weight: 600;
+    color: #111111;
+  }
+
+  .mine-note {
+    font-size: 0.84rem;
+    color: #777777;
   }
 
   .btn {
     display: inline-block;
-    padding: 0.55rem 1.4rem;
+    padding: 0.55rem 1.3rem;
     background: #111111;
     color: #ffffff !important;
     text-decoration: none;
@@ -373,6 +606,11 @@ const popularPosts = posts.slice(0, 3);
     background: #ff6b00;
   }
 
+  .btn--sm {
+    padding: 0.4rem 0.9rem;
+    font-size: 0.84rem;
+  }
+
   .btn--ghost {
     background: #f1f5f9;
     color: #334155 !important;
@@ -384,95 +622,11 @@ const popularPosts = posts.slice(0, 3);
     color: #0f172a !important;
   }
 
-  /* 雙欄文章卡片網格 (完全比照首頁) */
-  .post-list.col2 {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2rem 1.5rem;
-  }
-
-  .post-card {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .post-card .img-wrap {
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    overflow: hidden;
-    background: #f0f0f0;
-    margin-bottom: 0.9rem;
-  }
-
-  .card-thumb-link {
-    display: block;
-    width: 100%;
-    height: 100%;
-  }
-
-  .card-img-box {
-    width: 100%;
-    height: 100%;
-  }
-
-  .card-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s ease;
-  }
-
-  .post-card:hover .card-img {
-    transform: scale(1.04);
-  }
-
-  .post-categories {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 0.4rem;
-  }
-
-  .post-categories li a {
-    color: #ff6b00;
-    font-size: 0.82rem;
-    font-weight: 600;
-    text-decoration: none;
-  }
-
-  .post-title {
-    font-size: 1.12rem;
-    font-weight: 700;
-    line-height: 1.4;
-    margin: 0 0 0.5rem;
-  }
-
-  .post-title a {
-    color: #111111;
-    text-decoration: none;
-  }
-
-  .post-title a:hover {
-    color: #ff6b00;
-  }
-
-  .post-excerpt {
-    font-size: 0.88rem;
-    color: #666666;
-    line-height: 1.6;
-    margin: 0 0 0.9rem;
-    flex-grow: 1;
-  }
-
-  .read-more {
-    font-size: 0.88rem;
-    font-weight: 600;
-    color: #ff6b00;
-    text-decoration: none;
-    align-self: flex-start;
-  }
-
-  .read-more:hover {
-    text-decoration: underline;
+  .slot-empty {
+    color: #888888;
+    font-size: 0.95rem;
+    text-align: center;
+    padding: 2rem 0;
   }
 
   /* 側邊欄樣式 (完全比照首頁) */
@@ -601,17 +755,59 @@ const popularPosts = posts.slice(0, 3);
       width: 100%;
       margin-top: 3rem;
     }
-    .post-list.col2 {
-      grid-template-columns: 1fr;
-    }
   }
 </style>
 
 <script>
+  import { api, ApiError } from '../scripts/api';
   import { currentUser } from '../scripts/auth';
+
+  const TZ = 'Asia/Taipei';
+
+  type Slot = {
+    id: number;
+    title: string;
+    description: string;
+    startsAt: number;
+    durationMinutes: number;
+    maxBookings: number;
+    bookingCount: number;
+    active: number;
+  };
+
+  type Reservation = {
+    id: number;
+    slotId: number;
+    slotTitle: string;
+    slotStartsAt: number;
+    slotDurationMinutes: number;
+    name: string;
+    email: string;
+    note: string;
+    status: string;
+    createdAt: number;
+  };
+
+  type Ticket = {
+    id: number;
+    subject: string;
+    status: string;
+    createdAt: number;
+    updatedAt: number;
+    body?: string;
+  };
 
   const vipBody = document.querySelector('#vip-body');
   const loadingText = document.querySelector('#vip-loading-text');
+  const ticketList = document.querySelector('#ticket-list');
+  const slotList = document.querySelector('#slot-list');
+  const mineReservationsSection = document.querySelector('#mine-reservations-section');
+  const mineReservationsList = document.querySelector('#mine-reservations-list');
+
+  const btnToggleTicket = document.querySelector('#btn-toggle-ticket');
+  const newTicketCard = document.querySelector<HTMLDivElement>('#new-ticket-card');
+  const newTicketForm = document.querySelector<HTMLFormElement>('#new-ticket-form');
+  const ntCancelBtn = document.querySelector('#nt-cancel-btn');
 
   const user = currentUser();
   if (user === null) {
@@ -620,6 +816,12 @@ const popularPosts = posts.slice(0, 3);
     if (loadingText) loadingText.remove();
     if (vipBody) (vipBody as HTMLElement).style.display = 'block';
     renderVipUser();
+    loadTickets();
+    loadSlots();
+    if (mineReservationsSection) {
+      (mineReservationsSection as HTMLElement).style.display = 'block';
+      loadMineReservations();
+    }
   }
 
   function renderVipUser(): void {
@@ -631,25 +833,298 @@ const popularPosts = posts.slice(0, 3);
       <div class="vip-user-detail">
         <div class="vip-field">
           <span class="vip-field-label">會員姓名</span>
-          <span class="vip-field-val">${u.displayName || '未設定'}</span>
+          <span class="vip-field-val">${escapeHtml(u.displayName || '未設定')}</span>
         </div>
         <div class="vip-field">
           <span class="vip-field-label">電子郵件</span>
-          <span class="vip-field-val">${u.email}</span>
+          <span class="vip-field-val">${escapeHtml(u.email)}</span>
         </div>
         <div class="vip-field">
           <span class="vip-field-label">會員編號</span>
           <span class="vip-field-val">#${u.id}</span>
         </div>
         <div class="vip-field">
-          <span class="vip-field-label">會員身份</span>
-          <span class="vip-field-val">${u.role === 'admin' ? '系統管理員' : 'VIP 會員'}</span>
+          <span class="vip-field-label">會員等級</span>
+          <span class="vip-field-val">${u.role === 'admin' ? '系統管理員' : '尊榮 VIP 會員'}</span>
         </div>
       </div>
-      <div class="vip-actions">
-        <a href="/reserve/" class="btn">預約時段紀錄 →</a>
-        <a href="/tickets/" class="btn btn--ghost">問題工單中心 →</a>
-      </div>
     `;
+  }
+
+  // 🎫 工單系統邏輯
+  if (btnToggleTicket && newTicketCard) {
+    btnToggleTicket.addEventListener('click', () => {
+      newTicketCard.style.display = newTicketCard.style.display === 'none' ? 'block' : 'none';
+    });
+  }
+
+  if (ntCancelBtn && newTicketCard) {
+    ntCancelBtn.addEventListener('click', () => {
+      newTicketCard.style.display = 'none';
+    });
+  }
+
+  if (newTicketForm) {
+    newTicketForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const submitBtn = document.querySelector<HTMLButtonElement>('#nt-submit-btn')!;
+      const msg = document.querySelector<HTMLParagraphElement>('#nt-msg')!;
+      submitBtn.disabled = true;
+      submitBtn.textContent = '送出中…';
+      msg.style.display = 'none';
+
+      const formData = new FormData(newTicketForm);
+      try {
+        await api.post('/api/tickets', {
+          subject: (formData.get('subject') as string).trim(),
+          body: (formData.get('body') as string).trim(),
+        });
+        newTicketForm.reset();
+        if (newTicketCard) newTicketCard.style.display = 'none';
+        loadTickets();
+      } catch (err) {
+        msg.textContent = err instanceof ApiError ? err.message : '送出工單失敗，請稍後再試。';
+        msg.style.display = 'block';
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = '送出工單';
+      }
+    });
+  }
+
+  async function loadTickets(): Promise<void> {
+    if (ticketList === null) return;
+    try {
+      const data = await api.get<{ tickets: Ticket[] }>('/api/tickets');
+      renderTickets(data.tickets || []);
+    } catch {
+      ticketList.innerHTML = '<p class="slot-empty">無法載入工單紀錄。</p>';
+    }
+  }
+
+  function renderTickets(tickets: Ticket[]): void {
+    if (ticketList === null) return;
+    ticketList.replaceChildren();
+
+    if (tickets.length === 0) {
+      ticketList.innerHTML = '<p class="slot-empty">目前尚無工單紀錄。如有問題歡迎隨時點擊上方「+ 建立新工單」。</p>';
+      return;
+    }
+
+    for (const t of tickets) {
+      const card = document.createElement('div');
+      card.className = 'ticket-card';
+      const isOpen = t.status === 'open';
+      const statusText = isOpen ? '處理中' : '已結案';
+      const statusClass = isOpen ? 'open' : 'resolved';
+
+      card.innerHTML = `
+        <div class="ticket-card-head">
+          <h4 class="ticket-subject">${escapeHtml(t.subject)}</h4>
+          <span class="ticket-status-badge ${statusClass}">${statusText}</span>
+        </div>
+        <div class="ticket-meta">工單編號 #${t.id} · 建立時間：${formatDateTime(t.createdAt)}</div>
+      `;
+      ticketList.appendChild(card);
+    }
+  }
+
+  // 📅 預約時段邏輯
+  async function loadSlots(): Promise<void> {
+    if (slotList === null) return;
+    try {
+      const data = await api.get<{ slots: Slot[] }>('/api/reservations/slots');
+      const now = Date.now();
+      const future = (data.slots || []).filter(
+        (s) => s.active === 1 && s.startsAt + s.durationMinutes * 60 * 1000 > now,
+      );
+      renderSlots(future);
+    } catch {
+      slotList.innerHTML = '<p class="slot-empty">無法載入時段，請稍後再試。</p>';
+    }
+  }
+
+  function renderSlots(slots: Slot[]): void {
+    if (slotList === null) return;
+    slotList.replaceChildren();
+
+    if (slots.length === 0) {
+      slotList.innerHTML = '<p class="slot-empty">目前尚無開放預約的時段。</p>';
+      return;
+    }
+
+    for (const slot of slots) {
+      const remaining = slot.maxBookings - slot.bookingCount;
+      const isFull = remaining <= 0;
+
+      const card = document.createElement('div');
+      card.className = 'slot-card';
+
+      const head = document.createElement('div');
+      head.className = 'slot-head';
+      head.innerHTML = `
+        <h3 class="slot-title">${escapeHtml(slot.title)}</h3>
+        <span class="slot-meta">${formatDateTime(slot.startsAt)} · ${slot.durationMinutes} 分鐘</span>
+      `;
+      card.appendChild(head);
+
+      if (slot.description) {
+        const desc = document.createElement('p');
+        desc.className = 'slot-desc';
+        desc.textContent = slot.description;
+        card.appendChild(desc);
+      }
+
+      const foot = document.createElement('div');
+      foot.className = 'slot-foot';
+
+      const remSpan = document.createElement('span');
+      remSpan.className = 'slot-remaining' + (isFull ? ' full' : '');
+      remSpan.textContent = isFull ? '已額滿' : `尚餘 ${remaining} 個名額`;
+      foot.appendChild(remSpan);
+
+      if (!isFull) {
+        const btn = document.createElement('button');
+        btn.className = 'btn btn--sm';
+        btn.textContent = '預約此時段';
+        btn.addEventListener('click', () => {
+          const existing = card.querySelector('.book-form');
+          if (existing !== null) {
+            existing.remove();
+            return;
+          }
+          card.appendChild(createBookingForm(slot, card));
+        });
+        foot.appendChild(btn);
+      }
+
+      card.appendChild(foot);
+      slotList.appendChild(card);
+    }
+  }
+
+  function createBookingForm(slot: Slot, card: HTMLElement): HTMLElement {
+    const form = document.createElement('form');
+    form.className = 'ticket-form-card';
+    form.style.marginTop = '1rem';
+
+    const u = currentUser();
+    const defaultName = u?.displayName || '';
+    const defaultEmail = u?.email || '';
+
+    form.innerHTML = `
+      <div class="form-field">
+        <label>您的稱呼 *</label>
+        <input type="text" name="name" required maxlength="50" value="${escapeHtml(defaultName)}" class="form-input" />
+      </div>
+      <div class="form-field">
+        <label>聯絡 Email *</label>
+        <input type="email" name="email" required maxlength="100" value="${escapeHtml(defaultEmail)}" class="form-input" />
+      </div>
+      <div class="form-field">
+        <label>備註提問（選填）</label>
+        <textarea name="note" maxlength="300" class="form-input form-textarea" placeholder="預先想討論的主題或諮詢內容…"></textarea>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn btn--sm">確認預約</button>
+        <button type="button" class="btn btn--ghost btn--sm cancel-btn">取消</button>
+      </div>
+      <div class="form-msg" style="display:none; margin-top:0.8rem; font-size:0.88rem;"></div>
+    `;
+
+    form.querySelector('.cancel-btn')?.addEventListener('click', () => {
+      form.remove();
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const msg = form.querySelector<HTMLDivElement>('.form-msg')!;
+      const submitBtn = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+      msg.style.display = 'none';
+      submitBtn.disabled = true;
+      submitBtn.textContent = '預約中…';
+
+      const formData = new FormData(form);
+      try {
+        await api.post('/api/reservations/book', {
+          slotId: slot.id,
+          name: (formData.get('name') as string).trim(),
+          email: (formData.get('email') as string).trim(),
+          note: (formData.get('note') as string || '').trim(),
+        });
+        msg.style.color = '#16a34a';
+        msg.textContent = '✓ 預約成功！已發送通知信件。';
+        msg.style.display = 'block';
+        form.querySelector<HTMLElement>('.form-actions')!.style.display = 'none';
+        loadSlots();
+        loadMineReservations();
+      } catch (err) {
+        msg.style.color = '#dc2626';
+        msg.textContent = err instanceof ApiError ? err.message : '預約失敗，請稍後再試。';
+        msg.style.display = 'block';
+        submitBtn.disabled = false;
+        submitBtn.textContent = '確認預約';
+      }
+    });
+
+    return form;
+  }
+
+  async function loadMineReservations(): Promise<void> {
+    if (mineReservationsList === null) return;
+    try {
+      const data = await api.get<{ reservations: Reservation[] }>('/api/reservations/mine');
+      renderMineReservations(data.reservations || []);
+    } catch {
+      mineReservationsList.innerHTML = '<p class="slot-empty">無法載入預約紀錄。</p>';
+    }
+  }
+
+  function renderMineReservations(items: Reservation[]): void {
+    if (mineReservationsList === null) return;
+    mineReservationsList.replaceChildren();
+
+    if (items.length === 0) {
+      mineReservationsList.innerHTML = '<p class="slot-empty">您目前沒有任何時段預約紀錄。</p>';
+      return;
+    }
+
+    for (const res of items) {
+      const row = document.createElement('div');
+      row.className = 'mine-row';
+      const isCancelled = res.status === 'cancelled';
+      const statusLabel = isCancelled ? '已取消' : '已確認';
+
+      row.innerHTML = `
+        <div class="mine-info">
+          <span class="mine-name">${escapeHtml(res.slotTitle)}</span>
+          <span class="mine-note">${formatDateTime(res.slotStartsAt)} · ${res.slotDurationMinutes} 分鐘${res.note ? ' · 備註：' + escapeHtml(res.note) : ''}</span>
+        </div>
+        <span class="ticket-status-badge ${isCancelled ? '' : 'resolved'}">${statusLabel}</span>
+      `;
+      mineReservationsList.appendChild(row);
+    }
+  }
+
+  function formatDateTime(ms: number): string {
+    const d = new Date(ms);
+    return d.toLocaleString('zh-TW', {
+      timeZone: TZ,
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    });
+  }
+
+  function escapeHtml(str: string): string {
+    return str
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
   }
 </script>
