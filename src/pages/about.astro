@@ -1,175 +1,10 @@
 ---
 import BlogLayout from '../layouts/BlogLayout.astro';
 import badges from '../data/badges';
-
-const certCategories = [
-  {
-    title: "資訊安全與人工智慧 (Information Security & AI)",
-    items: [
-      { name: "Cisco Certified Support Technician Cybersecurity 思科國際認證", level: "國際認證" },
-      { name: "國家經濟部頒發 - iPas AI 應用規劃師初級合格", level: "國家認證" },
-      { name: "Microsoft Certified: Azure AI Fundamentals (AI-900) 國際原廠認證", level: "微軟原廠" },
-      { name: "GLAD Artificial Intelligence Literacy 國際認證", level: "國際認證" }
-    ]
-  },
-  {
-    title: "系統、網路與雲端架構 (Systems, Network & Cloud)",
-    items: [
-      { name: "TQC 專業 Linux 系統管理工程師認證", level: "專業級" },
-      { name: "TQC 專業 Linux 網路管理工程師認證", level: "專業級" },
-      { name: "TQC 雲端技術及網路服務工程師認證", level: "專業級" },
-      { name: "TQC 專業行動裝置應用工程師認證", level: "專業級" },
-      { name: "MOCC Information Technology (ICT) 資訊技術認證", level: "專業認證" }
-    ]
-  },
-  {
-    title: "程式開發與多媒體設計 (Programming & Design)",
-    items: [
-      { name: "ITS Python 國際認證 (Certiport)", level: "國際認證" },
-      { name: "TQC+ 網頁程式設計 (HTML5) 專業級", level: "專業級" },
-      { name: "Adobe Certified Professional Visual Design (Photoshop)", level: "Adobe 國際認證" },
-      { name: "Adobe Certified Professional Digital Video (Premiere Pro)", level: "Adobe 國際認證" },
-      { name: "Microsoft Office Specialist (MOS) PowerPoint", level: "微軟原廠" }
-    ]
-  },
-  {
-    title: "國家技能檢定與專業執照 (National Licenses & Others)",
-    items: [
-      { name: "交通部民用航空局 遙控無人機操作證 (CAA Remote Pilot)", level: "國家執照" },
-      { name: "美國聯邦航空總署 (FAA) TRUST 休閒無人機安全認證", level: "國際執照" },
-      { name: "中華民國 乙級電腦軟體應用 國家技術士證", level: "國家乙級" },
-      { name: "中華民國 丙級電腦軟體應用 國家技術士證", level: "國家技術士" },
-      { name: "中華民國 丙級電腦硬體裝修 國家技術士證", level: "國家技術士" },
-      { name: "NCC 國家通訊傳播委員會 業餘無線電人員執照", level: "國家執照" },
-      { name: "GLAD 資訊類專業英文詞彙 (ICT) 專家級", level: "專家級" },
-      { name: "Yamaha 鋼琴檢定 8 級認證", level: "專長認證" }
-    ]
-  }
-];
-
-const workExperiences = [
-  {
-    period: "2026.07 - 2026.07",
-    role: "臺大全國夏季學院 - 希臘羅馬神話 助教 (TA)",
-    company: "國立臺灣大學",
-    desc: "擔任全國夏季學院課堂助教，協助課堂運作、教學系統維護及學生相關庶務處理。"
-  },
-  {
-    period: "2026.07 - 2026.07",
-    role: "文學季官方網站建置 (專案接案)",
-    company: "國立臺北商業大學 通識教育中心",
-    desc: "獨立架構並開發校內文學季專題網站，整合自適應響應式設計與多媒體展示。"
-  },
-  {
-    period: "2026.06 - 2026.06",
-    role: "資安稽核協助助理 (通識單位)",
-    company: "國立臺北商業大學",
-    desc: "派任協助通識單位與教職員處理教育部資安稽核前校內檢測，排查系統弱點，確保符合資安稽核各項指標。"
-  },
-  {
-    period: "2026.03 - 至今",
-    role: "高教深耕計畫研究助理 / 課堂助教 (TA)",
-    company: "國立臺北商業大學",
-    desc: "協助高老師研究計畫管理、課堂教學技術支援與專案進度追蹤。"
-  },
-  {
-    period: "2026.03 - 至今",
-    role: "資訊管理系 兼任助理",
-    company: "國立臺北商業大學 資訊管理系",
-    desc: "協助系辦行政業務、伺服器庶務管理、學生技術諮詢與各項活動支援。"
-  },
-  {
-    period: "2026.01 - 2026.02",
-    role: "標註專員 (Operations Listing & Content Temp)",
-    company: "Shopee 蝦皮購物總部",
-    desc: "商品營運部門核心資料比對與審核，每日績效達成 1,000 件商品，並自研內部自動化腳本優化作業流程。"
-  },
-  {
-    period: "2025.07 - 2025.08",
-    role: "Xpress BI & Planning Temp (物流分析)",
-    company: "Shopee 蝦皮購物總部",
-    desc: "物流倉儲部門證件審查與數據校對，運用 Google Sheets + Google Apps Script (GAS) 實現自動化資料流處理。"
-  },
-  {
-    period: "2025.02 - 至今",
-    role: "校園體育器材借用系統 — 開發與維護 (PM & Dev)",
-    company: "國立臺北商業大學 體育室專案",
-    desc: "主導系統架構設計與日常維運，取代傳統紙本 Google 表單，大幅提升全校師生借還器材之效率。"
-  }
-];
-
-const honorsAwards = [
-  {
-    year: "2024",
-    title: "電腦應用組 全國第一名",
-    event: "2024 智在生活 ABCD 應用競賽",
-    desc: "將長年經營之鋼琴 YT 頻道結合資訊科技，規劃索譜系統與受眾數據分析，將音樂跨界整合商業數據榮獲全國第一名。"
-  },
-  {
-    year: "2024",
-    title: "資訊科技 全國第一名",
-    event: "2024 全民 e 化資訊運動會 (春季賽)"
-  },
-  {
-    year: "2024",
-    title: "電子商務 全國第三名",
-    event: "2024 全民 e 化資訊運動會 (春季賽)"
-  },
-  {
-    year: "2023",
-    title: "全國總決賽 第三名",
-    event: "2023 MOS 世界盃 PowerPoint 大賽",
-    desc: "代表參與微軟 MOS 世界盃全國總決賽，發揮商業簡報母片設計、動態排版與數據分析專長榮獲全國第三名。"
-  },
-  {
-    year: "2023",
-    title: "餐飲產業組 全國第二名",
-    event: "2023 全國高中職簡報競賽總決賽"
-  }
-];
-
-const featuredProjects = [
-  {
-    name: "NY-Short 短網址服務平台",
-    tag: "Astro · Serverless · Edge",
-    link: "https://nsir.uk",
-    desc: "基於 Astro 與 Cloudflare Edge 打造的高效能短網址管理系統，具備超高速即時重定向與點擊數據分析。"
-  },
-  {
-    name: "NY-Short 專屬 Chrome 擴充功能",
-    tag: "Chrome Extension · Google Web Store",
-    link: "https://chromewebstore.google.com/detail/ny-short-%E8%B6%85%E7%B4%9A%E7%89%B9%E5%88%A5%E4%B8%94%E5%BF%AB%E9%80%9F%E7%9A%84%E7%9F%AD%E7%B6%B2%E5%9D%80%E6%9C%8D%E5%8B%99/eaddldpmbbdccogjeldhelkppohkfonh",
-    desc: "通過 Google 官方商店嚴格審核上架，一鍵生成短網址並複製分享，支援即時 QR Code 產生。"
-  },
-  {
-    name: "北商大教學評量自動填寫擴充",
-    tag: "Chrome Web Store · DOM Automation",
-    link: "https://chromewebstore.google.com/detail/%E5%8C%97%E5%95%86%E5%A4%A7%E6%95%99%E5%AD%B8%E8%A9%95%E9%87%8F%E8%87%AA%E5%8B%95%E5%A1%AB%E5%AF%AB/neammodmhlmfccinhknhbppojgkdeahg",
-    desc: "解決期末評量繁瑣點擊痛點，已上架 Chrome 商店，服務超過數百位校內同學快速完成填寫。"
-  },
-  {
-    name: "NTUB 校園體育器材借還系統",
-    tag: "Fullstack · Firebase · PM",
-    link: "https://ntubpeo.web.app",
-    desc: "擔任 Lead Dev & PM，使用 HTML5/CSS/JS + Firebase Realtime DB 打造，全面數位化器材出借流程。"
-  },
-  {
-    name: "LINEBOT：小羊請問要吃啥？",
-    tag: "Node.js · Line Messaging API · Docker",
-    link: "https://github.com/nasircy/whattoeatsheep",
-    desc: "結合 VPS Docker 與 Line Push API 開發之輕量級附近餐點推薦機器人，解決用餐選擇障礙。"
-  },
-  {
-    name: "1zTeSt 輕鬆試 — 線上測驗系統",
-    tag: "Web App · Cloud DB · Quiz Engine",
-    link: "https://1ztests.web.app",
-    desc: "可供校園與學術測驗專用之線上快速出題與應試平台，兼具極速反饋與題庫管理。"
-  }
-];
 ---
 
 <BlogLayout
-  title="關於 OviNas / Nasir — 網站架設、系統資安、筆記小分享"
+  title="關於 OviNas — 網站架設、系統資安、筆記小分享"
   description="從小對資訊抱有熱忱，專注於現代 Web 架構設計、系統資安滲透稽核、企業痛點流程自動化與實用開源工具分享。"
 >
   <div class="main-content">
@@ -183,136 +18,94 @@ const featuredProjects = [
 
       <!-- 關於頁面主卡片 -->
       <article class="about-card-wrap">
-        <!-- 頂部頭像與姓名資訊 -->
+        <!-- 頂部頭像與基本資訊 -->
         <div class="about-header-section">
           <div class="about-avatar-box">
             <img src="/sheep-hd.png" alt="OviNas" width="110" height="110" class="about-avatar-img" />
           </div>
           <h1 class="about-main-title">OviNas <span class="about-sub-title">/ 站長專欄</span></h1>
-          <div class="about-nasir-name">Nasir</div>
+          <p class="about-name-sub">Nasir</p>
           <p class="about-slogan">網站架設 · 系統資安 · 筆記小分享</p>
+        </div>
 
-          <div class="about-social-links">
-            <a href="https://github.com/nasircy" target="_blank" rel="noopener noreferrer" class="about-soc-btn" title="GitHub @nasircy" aria-label="GitHub">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+        <!-- 自我介紹故事內文 -->
+        <div class="about-content-body">
+          <h2 class="about-section-h2">站長簡介</h2>
+          <div class="about-text-paragraphs">
+            <p>
+              從小對資訊抱有熱忱，從 Google 查詢時代轉向 AI 世代，面對學習與獲取資訊方式的改變，我始終一直持續 Update 我的資訊專業能力。時代轉變，像是 DOS 轉變成 Windows 一樣，很多東西懂需要重新學，這個資訊爆炸的世代，我不僅具備傳統電腦維修與程式設計能力，更擅長利用資訊解決企業的【痛點】。
+            </p>
+            <p>
+              許多企業目前仍以人工方式處理專業技術工作，而我喜歡發揮想像力，將流程與資訊系統整合，讓原本緩慢的效率獲得大幅提升！
+            </p>
+          </div>
+
+          
+
+                    <!-- 🏅 專業資格認證區塊 (Badges & Certifications - 純淨立體展示網格，無超連結) -->
+          <h2 class="about-section-h2">專業資格認證</h2>
+          <div class="about-badges-container">
+            <ul class="about-badge-grid">
+              {badges.map((b) => (
+                <li class="about-badge-item">
+                  <div class="about-badge-link" title={b.name}>
+                    <div class="about-badge-img-box">
+                      <img src={b.img} alt={b.name} class="about-badge-img" loading="lazy" />
+                    </div>
+                    <p class="about-badge-name">{b.name}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <!-- 社群關注與文章探索 (純粹極簡 Icon 按鈕) -->
+          <div class="about-actions-row">
+            <a href="https://github.com/nasircy" target="_blank" rel="noopener noreferrer" class="icon-action-btn" title="關注 GitHub @nasircy" aria-label="GitHub">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
               </svg>
             </a>
-            <a href="https://www.youtube.com/@jimmypiano" target="_blank" rel="noopener noreferrer" class="about-soc-btn" title="YouTube @jimmypiano" aria-label="YouTube">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <a href="https://www.youtube.com/@jimmypiano" target="_blank" rel="noopener noreferrer" class="icon-action-btn" title="關注 YouTube @jimmypiano" aria-label="YouTube">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
               </svg>
             </a>
-            <a href="https://www.linkedin.com/in/nasirlincy" target="_blank" rel="noopener noreferrer" class="about-soc-btn" title="LinkedIn @nasirlincy" aria-label="LinkedIn">
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
+            <a href="https://www.linkedin.com/in/nasirlincy" target="_blank" rel="noopener noreferrer" class="icon-action-btn" title="LinkedIn @nasirlincy" aria-label="LinkedIn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
               </svg>
             </a>
-            <a href="https://instagram.com/hayashiiii__" target="_blank" rel="noopener noreferrer" class="about-soc-btn" title="Instagram @hayashiiii__" aria-label="Instagram">
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <a href="https://instagram.com/hayashiiii__" target="_blank" rel="noopener noreferrer" class="icon-action-btn" title="Instagram @hayashiiii__" aria-label="Instagram">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
                 <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
                 <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
               </svg>
             </a>
-            <a href="mailto:hi@nasirlin.net" class="about-soc-btn" title="Email: hi@nasirlin.net" aria-label="Email">
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <a href="mailto:hi@nasirlin.net" class="icon-action-btn" title="Email: hi@nasirlin.net" aria-label="Email">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
                 <polyline points="22,6 12,13 2,6"></polyline>
               </svg>
             </a>
-          </div>
-        </div>
-
-        <!-- 自我介紹故事內文 (100% 還原 nasircy 原版自述) -->
-        <div class="about-content-body">
-          <h2 class="about-section-h2">關於我</h2>
-          <div class="about-text-paragraphs">
-            <p class="about-greeting-p">
-              嗨，我是 Nasir。
-            </p>
-            <p>
-              我不只是北商大資管系的學生，更是一位喜歡將<strong>「繁瑣工作自動化」</strong>的懶人創造者。
-            </p>
-            <p>
-              從小對資訊抱有熱忱，從 Google 查詢時代轉向 AI 世代，面對學習與獲取資訊方式的改變，我始終一直持續 Update 我的資訊專業能力。時代轉變，像是 DOS 轉變成 Windows 一樣，很多東西懂需要重新學，這個資訊爆炸的世代，我不僅具備傳統電腦維修與程式設計能力，更擅長利用資訊解決企業的<strong>【痛點】</strong>。
-            </p>
-            <p>
-              許多企業目前仍以人工方式處理專業技術工作，而我喜歡發揮想像力，將流程與資訊系統整合，讓原本緩慢的效率獲得大幅提升！
-            </p>
-            <p>
-              而 Nasir 我不只對資訊感興趣，更斜槓於 <em>攝影</em> 與 <em>音樂</em>。跨域結合的思維，讓我能創造更多價值並發揮自身最大效益。
-            </p>
+            <a href="/posts/" class="icon-action-btn" title="探索所有專欄文章" aria-label="專欄文章">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+              </svg>
+            </a>
+            <a href="/" class="icon-action-btn" title="返回 Portal 首頁" aria-label="Portal 首頁">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+              </svg>
+            </a>
           </div>
 
-          <!-- 💼 1. 工作經歷與實習 (Experience) -->
-          <h2 class="about-section-h2">實戰工作與校園經歷</h2>
-          <div class="about-timeline-list">
-            {workExperiences.map((job) => (
-              <div class="about-timeline-item">
-                <div class="atl-period">{job.period}</div>
-                <h3 class="atl-role">{job.role}</h3>
-                <div class="atl-company">{job.company}</div>
-                <p class="atl-desc">{job.desc}</p>
-              </div>
-            ))}
-          </div>
-
-          <!-- 🏆 2. 競賽獲獎紀錄 (Honors & Awards) -->
-          <h2 class="about-section-h2">榮譽與競賽獲獎</h2>
-          <div class="about-awards-grid">
-            {honorsAwards.map((award) => (
-              <div class="about-award-card">
-                <span class="award-year">{award.year}</span>
-                <h3 class="award-title">{award.title}</h3>
-                <p class="award-event">{award.event}</p>
-                {award.desc && <p class="award-desc">{award.desc}</p>}
-              </div>
-            ))}
-          </div>
-
-          <!-- 🚀 3. 精選開發專案 (Featured Projects) -->
-          <h2 class="about-section-h2">精選自研專案作品</h2>
-          <div class="about-projects-grid">
-            {featuredProjects.map((p) => (
-              <a href={p.link} target="_blank" rel="noopener noreferrer" class="about-project-card">
-                <span class="proj-tag">{p.tag}</span>
-                <h3 class="proj-name">
-                  {p.name}
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="proj-arrow">
-                    <line x1="7" y1="17" x2="17" y2="7"></line>
-                    <polyline points="7 7 17 7 17 17"></polyline>
-                  </svg>
-                </h3>
-                <p class="proj-desc">{p.desc}</p>
-              </a>
-            ))}
-          </div>
-
-          <!-- 🏅 4. 專業證照與國家認證 (Certifications & Licenses) -->
-          <h2 class="about-section-h2">專業證照與國家認證清單</h2>
-          <div class="about-certs-wrapper">
-            {certCategories.map((cat, idx) => (
-              <div class="cert-cat-block">
-                <h3 class="cert-cat-title">0{idx + 1}. {cat.title}</h3>
-                <ul class="cert-item-list">
-                  {cat.items.map((item) => (
-                    <li class="cert-item-row">
-                      <span class="cert-item-name">{item.name}</span>
-                      <span class="cert-item-level">{item.level}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-
-          <!-- ✉️ 聯絡站長表單 (Google Form 串接) -->
+          <!-- 內建聯絡表單 (Google Form) -->
           <div class="about-contact-box">
-            <h2 class="about-section-h2" style="margin-top: 0;">聯絡站長 / 合作洽詢</h2>
-            <p style="font-size: 14px; color: #64748b; margin-bottom: 1.2rem;">
-              有任何專案開發、系統資安諮詢或技術合作想法？歡迎隨時填寫下方表單直接與我聯繫！
-            </p>
+            <h2 class="about-section-h2" style="margin-top: 0;">聯絡表單</h2>
             <form class="about-contact-form" id="aboutPageContactForm">
               <div class="form-row-2">
                 <div class="form-field">
@@ -342,7 +135,7 @@ const featuredProjects = [
 
 <style>
   .about-page-layout {
-    max-width: 880px;
+    max-width: 860px;
     margin: 0 auto;
     padding: 2.2rem 1.2rem 4.5rem;
   }
@@ -371,7 +164,7 @@ const featuredProjects = [
     border: 1px solid #e5e7eb;
     border-radius: 8px;
     padding: 3rem 2.8rem;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
   }
 
   .about-header-section {
@@ -382,459 +175,461 @@ const featuredProjects = [
   }
 
   .about-avatar-box {
-    width: 105px;
-    height: 105px;
+    width: 96px;
+    height: 96px;
     margin: 0 auto 1.2rem;
     border-radius: 50%;
     overflow: hidden;
+    box-shadow: 0 6px 18px rgba(255, 107, 0, 0.2);
     border: 3px solid #ff6b00;
-    background: #ffffff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 14px rgba(255, 107, 0, 0.15);
   }
 
   .about-avatar-img {
-    width: 88px;
-    height: 88px;
-    object-fit: contain;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   .about-main-title {
-    font-size: 28px;
+    font-size: 2rem;
     font-weight: 700;
-    color: #111111;
-    margin: 0 0 0.2rem;
+    color: #1e293b;
+    margin: 0 0 6px;
   }
 
   .about-sub-title {
-    font-size: 17px;
-    font-weight: 400;
-    color: #888888;
-    margin-left: 6px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #ff6b00;
   }
 
-  .about-nasir-name {
-    font-size: 19px;
+  .about-name-sub {
+    font-size: 16px;
     font-weight: 600;
-    color: #ff6b00;
-    letter-spacing: 0.5px;
-    margin: 0 0 0.4rem;
+    color: #0f172a;
+    margin: 4px 0 6px;
+    letter-spacing: 0.05em;
   }
 
   .about-slogan {
-    font-size: 14.5px;
+    font-size: 15px;
     color: #64748b;
-    margin: 0 0 1.2rem;
-  }
-
-  .about-social-links {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
-  }
-
-  .about-soc-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 38px;
-    height: 38px;
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 50%;
-    color: #475569;
-    text-decoration: none;
-    transition: all 0.2s ease;
-  }
-
-  .about-soc-btn:hover {
-    background: #0f172a;
-    border-color: #0f172a;
-    color: #ffffff !important;
-    transform: translateY(-2px);
-  }
-
-  .about-greeting-p {
-    font-size: 18px !important;
-    font-weight: 600;
-    color: #0f172a !important;
-  }
-
-  .about-soc-btn:hover {
-    background: #0f172a;
-    border-color: #0f172a;
-    color: #ffffff !important;
+    margin: 0;
+    font-weight: 400;
   }
 
   .about-section-h2 {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: #0f172a;
-    margin: 2.8rem 0 1.2rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid #f1f5f9;
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: #1e293b;
+    margin: 2.2rem 0 1.2rem;
+    padding-left: 0;
+    border-left: none;
   }
 
   .about-text-paragraphs p {
-    font-size: 15px;
-    color: #334155;
-    line-height: 1.85;
-    margin-bottom: 1rem;
-  }
-
-  /* 💼 經歷時間軸樣式 */
-  .about-timeline-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
-    border-left: 2px solid #f1f5f9;
-    padding-left: 1.2rem;
-    margin-left: 0.4rem;
-  }
-
-  .about-timeline-item {
-    position: relative;
-  }
-
-  .about-timeline-item::before {
-    content: '';
-    position: absolute;
-    left: calc(-1.2rem - 6px);
-    top: 6px;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: #ffffff;
-    border: 2.5px solid #ff6b00;
-  }
-
-  .atl-period {
-    font-size: 12px;
-    font-weight: 600;
-    color: #ff6b00;
-    letter-spacing: 0.5px;
-    margin-bottom: 2px;
-  }
-
-  .atl-role {
     font-size: 15.5px;
-    font-weight: 600;
-    color: #0f172a;
-    margin: 0 0 2px;
-  }
-
-  .atl-company {
-    font-size: 13.5px;
-    color: #64748b;
-    margin-bottom: 6px;
-  }
-
-  .atl-desc {
-    font-size: 13.5px;
     color: #475569;
-    line-height: 1.65;
-    margin: 0;
+    line-height: 1.8;
+    margin: 0 0 1.2rem;
   }
 
-  /* 🏆 競賽獎項網格 */
-  .about-awards-grid {
+  
+
+    /* 🏅 關於頁面資格認證樣式 (經典多徽章展示網格) */
+  .about-badges-container {
+    background: transparent;
+    border: none;
+    border-radius: 0px;
+    padding: 1rem 0 2rem;
+    margin: 1rem 0 2rem;
+  }
+
+  .about-badge-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-  }
-
-  .about-award-card {
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 6px;
-    padding: 1rem 1.2rem;
-  }
-
-  .award-year {
-    font-size: 11px;
-    font-weight: 700;
-    color: #ff6b00;
-    background: #fff7ed;
-    padding: 2px 6px;
-    border-radius: 4px;
-  }
-
-  .award-title {
-    font-size: 14.5px;
-    font-weight: 600;
-    color: #0f172a;
-    margin: 6px 0 3px;
-  }
-
-  .award-event {
-    font-size: 13px;
-    color: #64748b;
-    margin: 0;
-  }
-
-  .award-desc {
-    font-size: 12.5px;
-    color: #475569;
-    margin: 6px 0 0;
-    line-height: 1.5;
-  }
-
-  /* 🚀 專案作品網格 */
-  .about-projects-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-  }
-
-  .about-project-card {
-    display: flex;
-    flex-direction: column;
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    padding: 1.2rem 1.4rem;
-    text-decoration: none;
-    transition: all 0.2s ease;
-  }
-
-  .about-project-card:hover {
-    border-color: #ff6b00;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
-  }
-
-  .proj-tag {
-    font-size: 11px;
-    color: #64748b;
-    margin-bottom: 6px;
-  }
-
-  .proj-name {
-    font-size: 15px;
-    font-weight: 600;
-    color: #0f172a;
-    margin: 0 0 6px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .proj-arrow {
-    color: #94a3b8;
-    transition: transform 0.15s ease, color 0.15s ease;
-  }
-
-  .about-project-card:hover .proj-arrow {
-    color: #ff6b00;
-    transform: translate(2px, -2px);
-  }
-
-  .proj-desc {
-    font-size: 13px;
-    color: #475569;
-    line-height: 1.6;
-    margin: 0;
-  }
-
-  /* 🏅 證照清單 */
-  .about-certs-wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 1.4rem;
-  }
-
-  .cert-cat-block {
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    padding: 1.2rem 1.4rem;
-  }
-
-  .cert-cat-title {
-    font-size: 14.5px;
-    font-weight: 600;
-    color: #0f172a;
-    margin: 0 0 0.8rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid #e2e8f0;
-  }
-
-  .cert-item-list {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.8rem 1.2rem;
     list-style: none;
     padding: 0;
     margin: 0;
+  }
+
+  .about-badge-item {
+    text-align: center;
+  }
+
+  .about-badge-link {
     display: flex;
     flex-direction: column;
-    gap: 6px;
-  }
-
-  .cert-item-row {
-    display: flex;
-    justify-content: space-between;
     align-items: center;
-    font-size: 13.5px;
+    text-decoration: none;
+    height: 100%;
+    transition: all 0.2s ease;
   }
 
-  .cert-item-name {
-    color: #334155;
+  .about-badge-img-box {
+    width: 90px;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.75rem;
   }
 
-  .cert-item-level {
-    font-size: 11.5px;
+  .about-badge-img {
+    max-width: 100%;
+    max-height: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.12));
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), filter 0.25s ease;
+  }
+
+  .about-badge-link:hover .about-badge-img {
+    transform: translateY(-4px) scale(1.08);
+    filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.2));
+  }
+
+  .about-badge-name {
+    font-size: 12.5px;
     font-weight: 500;
-    color: #ff6b00;
-    background: #ffffff;
-    border: 1px solid #fed7aa;
-    padding: 1px 6px;
-    border-radius: 4px;
-    white-space: nowrap;
+    color: #334155;
+    line-height: 1.45;
+    margin: 0;
+    letter-spacing: 0.02em;
+    transition: color 0.15s ease;
   }
 
-  /* ✉️ 聯絡表單 */
-  .about-contact-box {
-    margin-top: 3rem;
-    padding: 2rem 2.2rem;
-    background: #f8fafc;
+  .about-badge-link:hover .about-badge-name {
+    color: #ff6b00;
+  }
+
+  .about-badge-more-wrap {
+    margin-top: 1.8rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e2e8f0;
+    text-align: center;
+  }
+
+    .about-badge-more-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13.5px;
+    color: #64748b;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 6px 12px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: color 0.15s ease;
+  }
+
+  .about-badge-more-btn:hover {
+    color: #ff6b00;
+    background: transparent;
+    text-decoration: underline;
+  }
+
+    .about-actions-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    margin: 2rem 0 2.5rem;
+  }
+
+  .icon-action-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #ffffff;
     border: 1px solid #e2e8f0;
-    border-radius: 8px;
+    color: #475569;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .icon-action-btn:hover {
+    color: #ffffff;
+    background: #ff6b00;
+    border-color: #ff6b00;
+    transform: translateY(-3px) scale(1.08);
+    box-shadow: 0 6px 16px rgba(255, 107, 0, 0.35);
+  }
+
+  /* 聯絡表單區塊 (無外框、無圓角、純淨極簡) */
+  .about-contact-box {
+    background: transparent;
+    border: none;
+    border-radius: 0px;
+    padding: 1.5rem 0 0;
+    margin-top: 2rem;
+    box-shadow: none;
   }
 
   .about-contact-form {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 16px;
+    margin-top: 1.2rem;
   }
 
   .form-row-2 {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
+    display: flex;
+    gap: 16px;
   }
 
   .form-field {
+    flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 6px;
   }
 
   .form-field label {
-    font-size: 12.5px;
+    font-size: 13px;
     font-weight: 500;
-    color: #475569;
+    color: #334155;
   }
 
   .form-input {
     width: 100%;
-    padding: 9px 12px;
-    border: 1px solid #cbd5e1;
-    border-radius: 4px;
-    font-size: 13.5px;
     background: #ffffff;
+    border: 1.5px solid #cbd5e1;
+    padding: 10px 12px;
+    font-size: 14px;
     color: #0f172a;
+    border-radius: 0px !important;
     outline: none;
     box-sizing: border-box;
-    transition: border-color 0.15s ease;
+    font-family: inherit;
+    transition: border-color 0.15s, box-shadow 0.15s;
   }
 
   .form-input:focus {
     border-color: #ff6b00;
+    box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.12);
   }
 
   .form-textarea {
     resize: vertical;
+    min-height: 90px;
+    line-height: 1.6;
+    border-radius: 0px !important;
   }
 
   .form-submit-row {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 14px;
     margin-top: 4px;
   }
 
   .btn-about-submit {
-    padding: 9px 24px;
-    background: #0f172a;
+    background: #ff6b00;
     color: #ffffff;
     border: none;
-    border-radius: 4px;
-    font-size: 14px;
-    font-weight: 500;
+    padding: 11px 28px;
+    font-size: 14.5px;
+    font-weight: 600;
+    border-radius: 0px !important;
     cursor: pointer;
-    transition: background 0.15s ease;
+    transition: all 0.15s ease;
+    box-shadow: 0 4px 12px rgba(255, 107, 0, 0.25);
   }
 
   .btn-about-submit:hover {
-    background: #ff6b00;
+    background: #ea580c;
+    transform: translateY(-1px);
   }
 
-  .about-form-status {
+.about-form-status {
     font-size: 13px;
     font-weight: 500;
   }
 
-  @media (max-width: 768px) {
+  .about-form-status.is-success {
+    color: #16a34a;
+  }
+
+  .about-form-status.is-error {
+    color: #dc2626;
+  }
+
+  @media (max-width: 680px) {
+    .about-badge-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.2rem 0.8rem;
+    }
     .about-card-wrap {
       padding: 2rem 1.4rem;
     }
-    .about-awards-grid,
-    .about-projects-grid,
+    
+      /* 🏅 關於頁面資格認證樣式 (經典多徽章展示網格) */
+  .about-badges-container {
+    background: transparent;
+    border: none;
+    border-radius: 0px;
+    padding: 1rem 0 2rem;
+    margin: 1rem 0 2rem;
+  }
+
+  .about-badge-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.8rem 1.2rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .about-badge-item {
+    text-align: center;
+  }
+
+  .about-badge-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    height: 100%;
+    transition: all 0.2s ease;
+  }
+
+  .about-badge-img-box {
+    width: 90px;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.75rem;
+  }
+
+  .about-badge-img {
+    max-width: 100%;
+    max-height: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.12));
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), filter 0.25s ease;
+  }
+
+  .about-badge-link:hover .about-badge-img {
+    transform: translateY(-4px) scale(1.08);
+    filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.2));
+  }
+
+  .about-badge-name {
+    font-size: 12.5px;
+    font-weight: 500;
+    color: #334155;
+    line-height: 1.45;
+    margin: 0;
+    letter-spacing: 0.02em;
+    transition: color 0.15s ease;
+  }
+
+  .about-badge-link:hover .about-badge-name {
+    color: #ff6b00;
+  }
+
+  .about-badge-more-wrap {
+    margin-top: 1.8rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e2e8f0;
+    text-align: center;
+  }
+
+    .about-badge-more-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13.5px;
+    color: #64748b;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 6px 12px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: color 0.15s ease;
+  }
+
+  .about-badge-more-btn:hover {
+    color: #ff6b00;
+    background: transparent;
+    text-decoration: underline;
+  }
+
+  .about-actions-row {
+      flex-direction: column;
+    }
     .form-row-2 {
-      grid-template-columns: 1fr;
+      flex-direction: column;
     }
   }
 </style>
 
-<script is:inline>
-  var GOOGLE_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSeeWapjagLqPsg7i2y_TYhNq2xKW-nNFj6JywiqiDZ8Hkiheg/formResponse';
-  var form = document.getElementById('aboutPageContactForm');
-  var btn = document.getElementById('apSubmitBtn');
-  var status = document.getElementById('apStatus');
+<script>
+  // ✉️ 關於頁面 Google Form 聯絡送出邏輯
+  const form = document.getElementById('aboutPageContactForm') as HTMLFormElement;
+  const submitBtn = document.getElementById('apSubmitBtn') as HTMLButtonElement;
+  const statusBox = document.getElementById('apStatus');
 
-  if (form && btn) {
-    form.addEventListener('submit', async function(e) {
+  const FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSeeWapjagLqPsg7i2y_TYhNq2xKW-nNFj6JywiqiDZ8Hkiheg/formResponse';
+
+  if (form) {
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      var name = document.getElementById('apName').value.trim();
-      var email = document.getElementById('apEmail').value.trim();
-      var msg = document.getElementById('apMsg').value.trim();
+      const name = (document.getElementById('apName') as HTMLInputElement).value.trim();
+      const email = (document.getElementById('apEmail') as HTMLInputElement).value.trim();
+      const msg = (document.getElementById('apMsg') as HTMLTextAreaElement).value.trim();
 
       if (!name || !email || !msg) return;
 
-      btn.disabled = true;
-      btn.textContent = '傳送中…';
-      if (status) {
-        status.textContent = '';
-        status.style.color = '#ff6b00';
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = '傳送中…';
       }
 
       try {
-        var formData = new FormData();
+        const formData = new FormData();
         formData.append('entry.57084769', name);
         formData.append('entry.135399445', email);
         formData.append('entry.1753446536', msg);
 
-        await fetch(GOOGLE_FORM_URL, {
+        await fetch(FORM_URL, {
           method: 'POST',
           mode: 'no-cors',
-          body: formData
+          body: formData,
         });
 
-        if (status) {
-          status.textContent = '✓ 訊息已成功送出！我會盡快回覆您。';
-          status.style.color = '#16a34a';
+        if (statusBox) {
+          statusBox.textContent = '✓ 訊息已成功送出，感謝您的聯繫！';
+          statusBox.className = 'about-form-status is-success';
         }
+
         form.reset();
-        btn.textContent = '已送出';
+
+        setTimeout(() => {
+          if (statusBox) statusBox.textContent = '';
+        }, 5000);
       } catch (err) {
-        if (status) {
-          status.textContent = '✕ 傳送失敗，請直接來信 hi@nasirlin.net';
-          status.style.color = '#ef4444';
+        if (statusBox) {
+          statusBox.textContent = '✕ 傳送失敗，請稍後再試。';
+          statusBox.className = 'about-form-status is-error';
         }
-        btn.disabled = false;
-        btn.textContent = '重新送出';
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = '送出訊息';
+        }
       }
     });
   }
