@@ -64,28 +64,34 @@ const defaultProducts = [
         <span class="current-post-name">Ovis Shop</span>
       </div>
 
-      <!-- 🔷 1. 經典 Hero Header 區塊 (左側 30% 商城介紹 + 右側 70% 橫幅大圖) -->
-      <section class="content-hero-header">
-        <div class="left">
-          <h3>Ovis Shop</h3>
-          <h2>物品價值，淋漓盡致</h2>
-          <a href="/shop/" class="btn-about-hero">瀏覽全部商品</a>
-        </div>
-        <div class="right">
+            <!-- 🔷 1. 左右交換 + 正方形 1:1 圖片之 Hero Header (比照 VIP 專區) -->
+      <section class="content-hero-header hero-reversed">
+        <!-- 左側：1:1 正方形圖片 (Square Banner) -->
+        <div class="hero-square-col">
           <div class="slider-wrap-header">
             <div class="slider-one">
-              <div class="img-wrap">
+              <div class="img-wrap square-wrap">
                 <div class="bgs bgs1"></div>
                 <div class="bgs bgs2"></div>
                 <div class="bgs bgs3"></div>
                 <div class="bgs bgs4"></div>
-                <a class="bgs bgs5 hero-featured-link" href="/shop/">
-                  <div class="featured-img-container">
-                    <img src="/banners/hero-promo-v3.jpg?v=20260820light" alt="Ovis Shop" class="featured-main-img" />
+                <div class="bgs bgs5 hero-featured-link">
+                  <div class="featured-img-container square-img-container">
+                    <img src="/banners/shop-hero-banner.jpg?v=20260821" alt="Ovis Shop" class="featured-main-img square-img" />
                   </div>
-                </a>
+                </div>
               </div>
             </div>
+          </div>
+        </div>
+
+        <!-- 右側：Ovis Shop 標題與快捷按鈕 -->
+        <div class="hero-text-col">
+          <h3>Ovis Shop</h3>
+          <h2>物品價值，淋漓盡致</h2>
+          <div class="hero-quick-btns">
+            <a href="#featured-products" class="btn-about-hero">瀏覽全部商品 ↓</a>
+            <a href="/shop/shopping-guide/" class="btn-about-hero" style="background:#334155;">購物須知 →</a>
           </div>
         </div>
       </section>
@@ -182,6 +188,70 @@ const defaultProducts = [
   .breadcrumbs .current-post-name {
     color: #333333;
     font-weight: 500;
+  }
+
+    /* 🔷 1. 左右交換 + 正方形 1:1 圖片之 Hero Header */
+  .content-hero-header.hero-reversed {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 3rem;
+    margin-bottom: 3.5rem;
+    border-bottom: 1px solid #e2e2e2;
+    padding-bottom: 3rem;
+  }
+
+  .hero-square-col {
+    width: 240px;
+    height: 240px;
+    flex-shrink: 0;
+  }
+
+  .square-wrap {
+    width: 240px !important;
+    height: 240px !important;
+    aspect-ratio: 1 / 1 !important;
+    max-height: 240px !important;
+    background: #f0f0f0;
+  }
+
+  .square-img-container {
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  .square-img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+  }
+
+  .hero-text-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .hero-text-col h3 {
+    font-size: 1.1rem;
+    color: #ff6b00;
+    margin: 0 0 0.5rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+  }
+
+  .hero-text-col h2 {
+    font-size: 2.2rem;
+    line-height: 1.2;
+    color: #111111;
+    margin: 0 0 1.5rem;
+    font-weight: 500;
+  }
+
+  .hero-quick-btns {
+    display: flex;
+    gap: 0.8rem;
+    flex-wrap: wrap;
   }
 
   .content-hero-header {
@@ -527,7 +597,71 @@ const defaultProducts = [
   }
 
   @media (max-width: 900px) {
-    .content-hero-header {
+      /* 🔷 1. 左右交換 + 正方形 1:1 圖片之 Hero Header */
+  .content-hero-header.hero-reversed {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 3rem;
+    margin-bottom: 3.5rem;
+    border-bottom: 1px solid #e2e2e2;
+    padding-bottom: 3rem;
+  }
+
+  .hero-square-col {
+    width: 240px;
+    height: 240px;
+    flex-shrink: 0;
+  }
+
+  .square-wrap {
+    width: 240px !important;
+    height: 240px !important;
+    aspect-ratio: 1 / 1 !important;
+    max-height: 240px !important;
+    background: #f0f0f0;
+  }
+
+  .square-img-container {
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  .square-img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+  }
+
+  .hero-text-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .hero-text-col h3 {
+    font-size: 1.1rem;
+    color: #ff6b00;
+    margin: 0 0 0.5rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+  }
+
+  .hero-text-col h2 {
+    font-size: 2.2rem;
+    line-height: 1.2;
+    color: #111111;
+    margin: 0 0 1.5rem;
+    font-weight: 500;
+  }
+
+  .hero-quick-btns {
+    display: flex;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+  }
+
+  .content-hero-header {
       flex-direction: column;
     }
     .content-hero-header .left {
