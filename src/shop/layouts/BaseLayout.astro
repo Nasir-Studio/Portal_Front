@@ -28,11 +28,7 @@ const {
       var c = parseInt(localStorage.getItem('shop_cart_count') || '0', 10);
       if (c > 0) { document.documentElement.classList.add('has-cart'); }
 
-      var closeTs = localStorage.getItem('announcement_closed');
-      var WEEK = 7 * 24 * 60 * 60 * 1000;
-      if (!closeTs || (Date.now() - parseInt(closeTs) > WEEK)) {
-        document.documentElement.classList.add('announcement-visible');
-      }
+      
     })();
   </script>
 
