@@ -1,20 +1,28 @@
 ---
+import quotes from '../../data/quotes';
+import badges from '../../data/badges';
 import BlogLayout from '../../layouts/BlogLayout.astro';
 import announcements from '../../data/announcements';
 import posts from '../../data/posts';
 
+const today = new Date();
+const seed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
+const dailyQuote = quotes[seed % quotes.length];
+
 export function getStaticPaths() {
-  return announcements.map((item) => ({
-    params: { slug: item.slug },
-    props: { item },
-  }));
+  return announcements.map((item, index) => {
+    const prevPost = index > 0 ? announcements[index - 1] : null;
+    const nextPost = index < announcements.length - 1 ? announcements[index + 1] : null;
+    return {
+      params: { slug: item.slug },
+      props: { item, prevPost, nextPost },
+    };
+  });
 }
 
-const { item } = Astro.props;
-const popularPosts = posts.slice(0, 3);
+const { item, prevPost, nextPost } = Astro.props;
 ---
-
-<BlogLayout title={`${item.title} ｜ OviNas`} description="OviNas 站務公告與創站日記隨筆">
+<BlogLayout title={`${item.title} ｜ OviNas`} description={item.summary || "OviNas 站務公告與創站日記隨筆"}>
   <div class="main-content forsingle">
     <div class="container single-page-area">
       <!-- 📖 左側主文章區域 (68% 寬度，右側 1px 分隔線) -->
@@ -37,7 +45,7 @@ const popularPosts = posts.slice(0, 3);
           <!-- 文章 Meta 資訊欄 (.post-meta) -->
           <div class="post-meta">
             <div class="post-author">
-              By <a href="/about/">OviNas 站長 Nasir</a>
+              By <a href="/about/">OviNas 站長</a>
             </div>
             <div class="post-date">
               {item.date}
@@ -51,27 +59,30 @@ const popularPosts = posts.slice(0, 3);
             </ul>
           </div>
 
-          <!-- 經典 16:9 文青照片大圖展示 (.img-wrap) -->
+          <!-- 經典 16:9 文青照片大圖展示 (.img-wrap + .bgs1~.bgs5) -->
           <div class="img-wrap single-hero-img-wrap">
-            <div class="single-cover-box">
+            <div class="bgs bgs1"></div>
+            <div class="bgs bgs2"></div>
+            <div class="bgs bgs3"></div>
+            <div class="bgs bgs4"></div>
+            <div class="bgs bgs5 single-cover-box">
               <img src="/banners/hero-promo-v3.jpg?v=20260820light" alt={item.title} class="single-cover-photo" />
             </div>
           </div>
 
-          <!-- 📑 內容索引目錄 (Table of Contents) -->
+          <!-- 📑 內容索引目錄 (Table of Contents - Classic #toc_container) -->
           <div id="toc_container" class="no_bullets toc_numbered toc_title_center">
             <p class="toc_title">內容索引</p>
             <ul class="toc_list" id="tocList">
-              <li><a href="#section-diary">1. 創站隨筆與大學生活</a></li>
-              <li><a href="#section-origin">2. 為什麼叫做 OviNas？</a></li>
+              <!-- JS 動態生成 -->
             </ul>
           </div>
 
-          <!-- 文章內文排版 (.post-content) -->
+          <!-- 文章內文排版 -->
           <div class="post-content" id="articleBody">
             <h2 id="section-diary">創站隨筆與大學生活</h2>
             <p>
-              決定用這個 Repo 來記錄自己的每一天，像是一本專屬的日記本。
+              決定用這個網站來記錄自己的每一天，像是一本專屬的日記本與技術筆記。
             </p>
             <p>
               也即將要邁入大三了，我覺得大學生活也即將過半了，在大學的這兩年下來，除了一方面是自己搬出來臺北北漂住，然後生存，課業方面，當然有擅長的跟非常不擅長的（像是數學 XD）而日常生活中除了讀書，我也覺得北部很有趣，在大學期間這兩年去了蠻多地方，也體驗蠻多事物，但偶爾也是會思考，我大學到底做了什麼，有沒有把時間效率最大化。
@@ -106,26 +117,47 @@ const popularPosts = posts.slice(0, 3);
             </div>
           </div>
 
-          <!-- ✉️ 文章底部的聯絡表單 -->
+          <!-- ✉️ 文章底部的 Google Form 聯絡表單 -->
           <div class="article-contact-section">
-            <h3 class="article-contact-title">聯絡站長 / 交流反饋</h3>
+            <h3 class="article-contact-title">聯絡站長 / 技術交流</h3>
             <p class="article-contact-desc">
-              有任何想法或交流？歡迎填寫下方表單直接與我聯繫！
+              有任何架構疑問、系統資安諮詢或合作交流想法？歡迎填寫下方表單直接與我聯繫！
             </p>
             <form class="article-contact-form" id="articleContactForm">
               <div class="form-row-2">
                 <div class="form-field">
                   <label for="acName">姓名 / 稱呼 *</label>
-                  <input type="text" id="acName" name="entry.57084769" placeholder="您的姓名或暱稱" required class="form-input" />
+                  <input
+                    type="text"
+                    id="acName"
+                    name="entry.57084769"
+                    placeholder="您的姓名或暱稱"
+                    required
+                    class="form-input"
+                  />
                 </div>
                 <div class="form-field">
                   <label for="acEmail">電子郵件 *</label>
-                  <input type="email" id="acEmail" name="entry.135399445" placeholder="your-email@example.com" required class="form-input" />
+                  <input
+                    type="email"
+                    id="acEmail"
+                    name="entry.135399445"
+                    placeholder="your-email@example.com"
+                    required
+                    class="form-input"
+                  />
                 </div>
               </div>
               <div class="form-field">
-                <label for="acMsg">留言內容 *</label>
-                <textarea id="acMsg" name="entry.1753446536" placeholder="請輸入您想交流的內容…" rows="3" required class="form-input form-textarea"></textarea>
+                <label for="acMsg">聯絡內容 / 諮詢訊息 *</label>
+                <textarea
+                  id="acMsg"
+                  name="entry.1753446536"
+                  placeholder="請輸入您想詢問或交流的內容…"
+                  rows="3"
+                  required
+                  class="form-input form-textarea"
+                ></textarea>
               </div>
               <div class="form-submit-row">
                 <button type="submit" id="acSubmitBtn" class="btn-article-submit">送出訊息</button>
@@ -134,16 +166,31 @@ const popularPosts = posts.slice(0, 3);
             </form>
           </div>
 
-          <!-- 上一篇 / 下一篇導航 -->
+          <!-- 上一篇 / 下一篇導航 (prev-next-article) -->
           <div class="prev-next-article">
-            <a href="/" class="pn-item prev">
-              <span class="pn-dir">« 返回首頁</span>
-              <span class="pn-text">OviNas 首頁專欄</span>
-            </a>
-            <a href="/posts/tech-notes-architecture/" class="pn-item next">
-              <span class="pn-dir">下一篇推薦 »</span>
-              <span class="pn-text">【技術文章】技術筆記本</span>
-            </a>
+            {prevPost ? (
+              <a href={`/news/${prevPost.slug}/`} class="pn-item prev">
+                <span class="pn-dir">« 上一篇公告</span>
+                <span class="pn-text">{prevPost.title}</span>
+              </a>
+            ) : (
+              <a href="/" class="pn-item prev">
+                <span class="pn-dir">« 返回首頁</span>
+                <span class="pn-text">OviNas 首頁專欄</span>
+              </a>
+            )}
+
+            {nextPost ? (
+              <a href={`/news/${nextPost.slug}/`} class="pn-item next">
+                <span class="pn-dir">下一篇公告 »</span>
+                <span class="pn-text">{nextPost.title}</span>
+              </a>
+            ) : (
+              <a href="/posts/tech-notes-architecture/" class="pn-item next">
+                <span class="pn-dir">推薦技術專欄 »</span>
+                <span class="pn-text">【技術文章】技術筆記本</span>
+              </a>
+            )}
           </div>
         </article>
       </main>
@@ -158,15 +205,30 @@ const popularPosts = posts.slice(0, 3);
           <h2>OviNas <span class="eng-name">/ 站長</span></h2>
           <p class="history">網站架設 · 系統資安 · 筆記小分享</p>
           <div class="side-btn-wrap">
-            <a href="/about/" class="btn-vip">關於站長</a>
+            <a href="/about/" class="btn-vip">更多</a>
           </div>
         </div>
 
-        <!-- 熱門排行側欄 (#popular-side: 75px 1:1 正方形微縮圖) -->
-        <div class="popular-posts" id="popular-side">
-          <h3 class="popular-title">熱門推薦文章</h3>
+        <!-- 🏅 資格認證 (Badges - 純淨展示，無多餘超連結) -->
+        <div class="side-badges-box" style="margin-top: 2rem;">
+          <h2 class="side-badges-title">資格認證</h2>
+          <ul class="side-badges-list">
+            {badges.map((b) => (
+              <li class="side-badge-item">
+                <div class="side-badge-link" title={b.name}>
+                  <img src={b.img} alt={b.name} class="side-badge-img" loading="lazy" />
+                  <span class="side-badge-name">{b.name}</span>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <!-- 熱門排行側欄 (#popular-side: 75px 1:1 正方形文青照片微縮圖) -->
+        <div class="popular-posts" id="popular-side" style="margin-top: 2rem;">
+          <h3 class="side-section-heading">熱門推薦文章</h3>
           <ul class="wpp-list">
-            {popularPosts.map((p) => (
+            {posts.slice(0, 3).map((p) => (
               <li class="wpp-item">
                 <a href={`/posts/${p.slug}/`} class="wpp-thumb-link">
                   <div class="wpp-thumbnail-box">
@@ -278,28 +340,24 @@ const popularPosts = posts.slice(0, 3);
     text-decoration: none;
   }
 
+  .post-categories li a:hover {
+    color: #ea580c;
+  }
+
   .meta-divider {
     color: #dddddd;
   }
 
+  /* 16:9 主圖真實照片 */
   .single-hero-img-wrap {
     margin-bottom: 2.2rem;
   }
 
-  .single-cover-box {
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    max-height: 420px;
-    overflow: hidden;
-    background: #f0f0f0;
-  }
+  
 
-  .single-cover-photo {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
+  
+
+  .single-hero-img-wrap:hover 
 
   #toc_container {
     background-color: #f9f9f9;
@@ -329,6 +387,8 @@ const popularPosts = posts.slice(0, 3);
     color: #ff6b00;
     text-decoration: none;
     font-size: 0.95rem;
+    font-weight: 400;
+    transition: color 0.2s ease;
   }
 
   .toc_list a:hover {
@@ -336,6 +396,7 @@ const popularPosts = posts.slice(0, 3);
     text-decoration: underline;
   }
 
+  /* 📖 文章內文排版美學 (.post-content) */
   .post-content {
     font-size: 16.5px;
     line-height: 2em;
@@ -353,198 +414,349 @@ const popularPosts = posts.slice(0, 3);
     line-height: 1.35;
   }
 
-  .post-content p {
-    margin: 0 0 1.6em;
-  }
-
-  .post-footer-author {
-    margin-top: 3.5rem;
-    margin-bottom: 2.5rem;
-    padding: 2.2rem;
-    background: #fdfdfd;
-    border: 1px solid #e9ecef;
-  }
-
-  .side-author-box {
-    background: #ffffff;
-    border: 1px solid #e0e0e0;
-    padding: 1.8rem;
-    text-align: center;
-    margin-bottom: 2rem;
-  }
-
-  .side-author-box .photo img {
-    border-radius: 50%;
-    margin-bottom: 0.8rem;
-  }
-
-  .side-author-box h2 {
-    font-size: 1.2rem;
-    margin: 0 0 0.4rem;
-    color: #111111;
-  }
-
-  .side-author-box .history {
-    font-size: 0.85rem;
-    color: #888888;
-    margin: 0 0 1rem;
-  }
-
-  .side-author-box .btn-vip {
-    display: inline-block;
-    padding: 0.4rem 1.2rem;
-    background: #111111;
-    color: #ffffff;
-    text-decoration: none;
-    font-size: 0.85rem;
-  }
-
-  .popular-posts {
-    background: #ffffff;
-    border: 1px solid #e0e0e0;
-    padding: 1.5rem;
-  }
-
-  .popular-title {
-    font-size: 1.1rem;
+  .post-content h3 {
+    font-size: 19px;
     font-weight: 700;
-    color: #111111;
-    border-bottom: 2px solid #111111;
-    padding-bottom: 0.6rem;
-    margin: 0 0 1.2rem;
+    color: #222222;
+    margin: 2em 0 0.8em;
+    line-height: 1.35;
   }
 
-  .wpp-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+  
+  
+  /* 🖼️ 文章內文圖片排版美化 (對齊頂級自媒體圖文排版) */
+  .post-content p:has(img),
+  .post-content figure {
+    text-align: center;
+    margin: 2rem 0;
   }
 
-  .wpp-item {
-    display: flex;
-    gap: 0.8rem;
-    align-items: center;
+  .post-content img {
+    max-width: 100%;
+    height: auto;
+    display: inline-block;
+    margin: 0 auto;
+    border-radius: 6px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    background-color: #ffffff;
+    padding: 2px;
   }
 
-  .wpp-thumbnail-box {
-    width: 65px;
-    height: 65px;
-    flex-shrink: 0;
+  /* 頂部 16:9 Banner 自適應高度 */
+  .single-cover-box {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    height: auto;
+    max-height: 420px;
     overflow: hidden;
     background: #f0f0f0;
   }
 
-  .wpp-thumb-img {
+  .single-cover-photo {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
   }
 
-  .wpp-details {
-    display: flex;
-    flex-direction: column;
-    gap: 0.2rem;
+  .post-content p {
+    margin: 0 0 1.6em;
   }
 
-  .wpp-post-title {
-    font-size: 0.88rem;
-    font-weight: 600;
-    color: #222222;
-    text-decoration: none;
-    line-height: 1.4;
+  .post-content a {
+    color: #3bce89;
+    text-decoration: underline;
+    font-weight: 400;
   }
 
-  .wpp-post-title:hover {
-    color: #ff6b00;
+  .post-content a:hover {
+    color: #3bce89;
   }
 
-  .wpp-meta {
-    font-size: 0.78rem;
-    color: #999999;
+  .post-content ul, .post-content ol {
+    margin: 0 0 1.8em;
+    padding-left: 2rem;
   }
 
-  .article-contact-section {
-    background: #f8fafc;
+  .post-content li {
+    margin-bottom: 0.6em;
+    line-height: 1.8;
+  }
+
+  .post-content code {
+    background-color: #f3f4f6;
+    color: #ea580c;
+    padding: 2px 6px;
+    font-size: 0.9em;
+    font-family: monospace;
+    border-radius: 3px;
+  }
+
+  .post-content pre {
+    background-color: #1e1e1e;
+    color: #e5e7eb;
+    padding: 1.4rem 1.6rem;
+    overflow-x: auto;
+    border-left: 4px solid #ff6b00;
+    margin: 1.8rem 0;
+    font-size: 14.5px;
+    line-height: 1.65;
+  }
+
+  /* 提示框 (.post-intro, .post-tips, blockquote) */
+  .post-content blockquote,
+  .post-content .post-intro,
+  .post-content .post-tips {
+    background-color: #f8fafc;
+    border-left: 5px solid #3bce89;
+    padding: 1.4rem 1.6rem;
+    margin: 2rem 0;
+    color: #334155;
+    font-size: 15.5px;
+    line-height: 1.8;
+  }
+
+  .post-content .post-tips2 {
+    background-color: #fffbeb;
+    border-left: 5px solid #ff6b00;
+    padding: 1.4rem 1.6rem;
+    margin: 2rem 0;
+    color: #92400e;
+    font-size: 15.5px;
+    line-height: 1.8;
+  }
+
+  /* 表格樣式 */
+  .post-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 2rem 0;
+    font-size: 14.5px;
+  }
+
+  .post-content th {
+    background-color: #f8fafc;
     border: 1px solid #e2e8f0;
+    padding: 10px 14px;
+    font-weight: 700;
+    text-align: left;
+    color: #1e293b;
+  }
+
+  .post-content td {
+    border: 1px solid #e2e8f0;
+    padding: 10px 14px;
+    color: #475569;
+  }
+
+      /* ✉️ 文章底部 Google Form 聯絡表單樣式 */
+  .article-contact-section {
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-top: 4px solid #ff6b00;
     padding: 2rem 2.2rem;
-    margin: 3rem 0;
+    margin: 3.5rem 0 2rem;
+    border-radius: 4px;
   }
 
   .article-contact-title {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: #0f172a;
-    margin: 0 0 0.5rem;
+    font-size: 21px;
+    font-weight: 500;
+    color: #333333;
+    margin: 0 0 8px;
+    letter-spacing: 0.03em;
   }
 
   .article-contact-desc {
-    font-size: 0.92rem;
-    color: #64748b;
-    margin: 0 0 1.4rem;
+    font-size: 14.5px;
+    color: #555555;
+    font-weight: 400;
+    margin: 0 0 1.5rem;
+    line-height: 1.6;
+  }
+
+  .article-contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
   }
 
   .form-row-2 {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    margin-bottom: 1rem;
+    display: flex;
+    gap: 16px;
   }
 
   .form-field {
+    flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 0.4rem;
-    margin-bottom: 1rem;
+    gap: 6px;
   }
 
   .form-field label {
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: #334155;
+    font-size: 13px;
+    font-weight: 400;
+    color: #4b5563;
   }
 
   .form-input {
-    padding: 0.7rem 0.9rem;
-    border: 1px solid #cbd5e1;
-    font-size: 0.95rem;
-    color: #0f172a;
-    background: #ffffff;
+    width: 100%;
+    background-color: #ffffff;
+    border: 1px solid #d1d5db;
+    padding: 10px 14px;
+    font-size: 14px;
+    font-weight: 400;
+    color: #333333;
     font-family: inherit;
+    border-radius: 4px;
+    box-sizing: border-box;
     outline: none;
+    transition: border-color 0.2s;
   }
 
   .form-input:focus {
     border-color: #ff6b00;
+    box-shadow: 0 0 0 2px rgba(255, 107, 0, 0.1);
   }
 
   .form-textarea {
     resize: vertical;
+    min-height: 85px;
+    line-height: 1.5;
+  }
+
+  .form-submit-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 4px;
   }
 
   .btn-article-submit {
-    padding: 0.65rem 1.6rem;
-    background: #0f172a;
+    background-color: #ff6b00;
     color: #ffffff;
     border: none;
-    font-weight: 700;
+    padding: 10px 28px;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 4px;
     cursor: pointer;
-    transition: background 0.15s ease;
+    transition: background-color 0.2s ease;
   }
 
   .btn-article-submit:hover {
-    background: #ff6b00;
+    background-color: #ea580c;
+  }
+
+  .btn-article-submit:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .article-form-status {
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  .article-form-status.is-success {
+    color: #16a34a;
+  }
+
+  .article-form-status.is-error {
+    color: #dc2626;
+  }
+
+  @media (max-width: 640px) {
+    .form-row-2 {
+      flex-direction: column;
+    }
+  }
+
+  .post-footer-author {
+    text-align: center;
+    border: 1px solid #e7e7e7;
+    padding: 2rem 1.5rem;
+    margin: 3.5rem 0 2rem;
+    background: #fdfdfd;
+  }
+
+  .photo {
+    border-radius: 50%;
+    overflow: hidden;
+    width: 90px;
+    height: 90px;
+    margin: 0 auto 1rem;
+    border: 3px solid #ff6b00;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .photo img {
+    width: 75px;
+    height: 75px;
+    object-fit: contain;
+  }
+
+  .side-author-box h2 {
+    font-size: 20px !important;
+    font-weight: 700 !important;
+    color: #1e293b !important;
+    margin: 0.6rem 0 0.3rem !important;
+    display: block !important;
+  }
+
+  .side-author-box h2 .eng-name {
+    font-size: 13px !important;
+    font-weight: 400 !important;
+    color: #94a3b8 !important;
+    margin-left: 6px !important;
+    letter-spacing: 0.04em !important;
+    display: inline-block !important;
+  }
+
+  .side-author-box .history {
+    color: #ff6b00;
+    font-size: 0.82rem;
+    font-weight: 400;
+    margin: 0 0 0.6rem;
+  }
+
+  .side-author-box .author-bio p {
+    font-size: 0.85rem;
+    line-height: 1.7;
+    color: #555555;
+    margin: 0 0 0.8rem;
+    font-weight: 400;
+    text-align: left;
+  }
+  .side-author-box .author-bio p:last-child {
+    margin-bottom: 1.2rem;
+  }
+  .side-author-box .author-bio em {
+    color: #16a34a;
+    font-style: normal;
+    font-weight: 500;
+  }
+  .side-author-box .author-bio {
+    font-size: 0.84rem;
+    line-height: 1.6;
+    color: #666666;
+    margin: 0;
+    font-weight: 400;
   }
 
   .prev-next-article {
     display: flex;
     justify-content: space-between;
     gap: 1.5rem;
-    margin-top: 3rem;
-    padding-top: 2rem;
-    border-top: 1px solid #eeeeee;
+    margin: 2.5rem 0;
+    padding: 1.5rem 0;
+    border-top: 1px solid #e7e7e7;
+    border-bottom: 1px solid #e7e7e7;
   }
 
   .pn-item {
@@ -556,35 +768,1047 @@ const popularPosts = posts.slice(0, 3);
   }
 
   .pn-dir {
-    font-size: 0.8rem;
-    color: #999999;
+    font-size: 0.78rem;
+    font-weight: 400;
+    color: #ff6b00;
   }
 
   .pn-text {
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: #222222;
+    font-size: 0.92rem;
+    font-weight: 400;
+    color: #333333;
+    line-height: 1.4;
+    transition: color 0.2s ease;
   }
 
   .pn-item:hover .pn-text {
     color: #ff6b00;
   }
 
-  @media (max-width: 900px) {
+  .pn-item.next {
+    text-align: right;
+    margin-left: auto;
+  }
+
+  .side-btn-wrap {
+    margin-top: 1rem;
+  }
+
+  .btn-vip {
+    display: block;
+    background-color: #ff6b00;
+    color: #ffffff;
+    padding: 8px 0;
+    font-size: 0.86rem;
+    font-weight: 400;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+  }
+
+  .btn-vip:hover {
+    background-color: #ea580c;
+  }
+
+  .popular-posts {
+    margin-top: 2.5rem;
+    border-top: 4px solid #222222;
+    padding-top: 10px;
+  }
+
+  .popular-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin: 0 0 1.2rem;
+  }
+
+  .wpp-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+
+  .wpp-item {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding-bottom: 0.9rem;
+    border-bottom: 1px solid #f0f0f0;
+    min-height: 75px;
+  }
+
+  .wpp-thumb-link {
+    flex-shrink: 0;
+    text-decoration: none;
+    display: block;
+  }
+
+  .wpp-thumbnail-box {
+    width: 75px;
+    height: 75px;
+    overflow: hidden;
+    background: #eeeeee;
+  }
+
+  .wpp-thumb-img {
+    width: 75px;
+    height: 75px;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.2s ease;
+  }
+
+  .wpp-thumb-link:hover .wpp-thumb-img {
+    transform: scale(1.06);
+  }
+
+  .wpp-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    flex: 1;
+  }
+
+  .wpp-post-title {
+    font-size: 0.96rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #555555;
+    text-decoration: none;
+    transition: color 0.2s ease;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .wpp-post-title:hover {
+    color: #ff6b00;
+  }
+
+  .wpp-meta {
+    font-size: 0.76rem;
+    color: #999999;
+    font-weight: 400;
+  }
+
+  @media (max-width: 960px) {
     .single-page-area {
       flex-direction: column;
     }
-    .single-page-area main.left {
-      width: 100%;
-      padding-right: 0;
-      border-right: none;
-    }
+    .single-page-area main.left,
     .single-page-area .right.sidebar-right {
       width: 100%;
-      margin-top: 3rem;
+      border-right: none;
+      padding-right: 0;
     }
-    .form-row-2 {
-      grid-template-columns: 1fr;
+  }
+    /* 🏅 側邊欄資格認證與每日一句樣式 (雙欄並排、全部8個徽章完整呈現) */
+  .side-badges-box {
+    background: transparent;
+    border: none;
+    padding: 0;
+  }
+  .side-quote-box {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    padding: 1.2rem;
+  }
+
+  .side-badges-title, .side-quote-title {
+    font-size: 1.15rem;
+    font-weight: 500;
+    color: #444444;
+    margin: 0 0 0.9rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #ff6b00;
+  }
+
+  .side-badges-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1rem;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .side-badge-item {
+    background: transparent;
+    border: none;
+    border-radius: 0px;
+    transition: all 0.2s ease;
+  }
+
+  .side-badge-item:hover {
+    transform: translateY(-2px);
+    box-shadow: none;
+  }
+
+  .side-badge-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 8px 4px;
+    text-decoration: none;
+    color: #334155;
+    height: 100%;
+    box-sizing: border-box;
+    gap: 6px;
+  }
+
+  .side-badge-img {
+    width: 44px;
+    height: 44px;
+    object-fit: contain;
+    flex-shrink: 0;
+  }
+
+  .side-badge-name {
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 1.3;
+    color: #475569;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+    .side-badge-more-link {
+    display: block;
+    text-align: center;
+    font-size: 12.5px;
+    color: #64748b;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 8px 0 2px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: color 0.15s ease;
+  }
+
+  .side-badge-more-link:hover {
+    color: #ff6b00;
+    background: transparent;
+    text-decoration: underline;
+  }
+
+  .side-quote-content {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-left: 3px solid #ff6b00;
+    padding: 1rem;
+    border-radius: 2px;
+  }
+
+  .side-quote-text {
+    font-size: 14px;
+    color: #334155;
+    line-height: 1.7;
+    margin: 0 0 8px;
+    font-weight: 400;
+  }
+
+  .side-quote-author {
+    font-size: 12px;
+    color: #64748b;
+    margin: 0;
+    text-align: right;
+    font-style: italic;
+  }
+  /* 🔒 VIP 門禁專用卡片樣式 */
+  .tech-lock-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-top: 4px solid #ff6b00;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+  }
+
+  .lock-card-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .lock-badge {
+    display: inline-block;
+    background: #fff7ed;
+    color: #ff6b00;
+    font-size: 12.5px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 9999px;
+    margin-bottom: 0.5rem;
+  }
+
+  .lock-card-header h3 {
+    font-size: 1.25rem;
+    color: #1e293b;
+    margin: 0 0 6px;
+    font-weight: 600;
+  }
+
+  .lock-card-header p {
+    font-size: 14px;
+    color: #64748b;
+    margin: 0;
+  }
+
+  /* 📊 網站計數器樣式 */
+  .side-counter-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0 0 1rem;
+    padding-left: 8px;
+    border-left: 3px solid #ff6b00;
+  }
+
+  .side-counter-content {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    padding: 1.2rem 1rem;
+    border-radius: 4px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
+    text-align: center;
+  }
+
+  .counter-badge-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .hitcounter-link {
+    display: inline-block;
+    transition: transform 0.2s ease;
+  }
+
+  .hitcounter-link:hover {
+    transform: scale(1.04);
+  }
+
+  .hitcounter-img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    border-radius: 2px;
+  }
+
+  /* 📊 網站計數器樣式 */
+  .side-counter-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0 0 1rem;
+    padding-left: 8px;
+    border-left: 3px solid #ff6b00;
+  }
+
+  .side-counter-content {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    padding: 1.1rem 1rem;
+    border-radius: 4px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
+  }
+
+  .counter-display-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding-bottom: 0.9rem;
+    border-bottom: 1px dashed #e2e8f0;
+  }
+
+  .counter-label {
+    font-size: 12px;
+    color: #64748b;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+
+  .counter-digits {
+    display: flex;
+    gap: 4px;
+  }
+
+  .counter-digits .digit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 28px;
+    background: #1e293b;
+    color: #f8fafc;
+    font-family: 'Courier New', Courier, monospace, monospace;
+    font-size: 15px;
+    font-weight: 700;
+    border-radius: 3px;
+    box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.3);
+  }
+
+  .counter-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-top: 0.9rem;
+    text-align: center;
+  }
+
+  .stat-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .stat-name {
+    font-size: 11.5px;
+    color: #64748b;
+  }
+
+  .stat-val {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #1e293b;
+  }
+
+  .stat-online {
+    color: #10b981;
+  }
+  /* 📊 網站計數器樣式 */
+  .side-counter-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0 0 1rem;
+    padding-left: 8px;
+    border-left: 3px solid #ff6b00;
+  }
+
+  .side-counter-content {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    padding: 1.2rem 1rem;
+    border-radius: 4px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
+    text-align: center;
+  }
+
+  .counter-badge-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .hitcounter-link {
+    display: inline-block;
+    transition: transform 0.2s ease;
+  }
+
+  .hitcounter-link:hover {
+    transform: scale(1.04);
+  }
+
+  .hitcounter-img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    border-radius: 2px;
+  }
+</style>
+
+<script>
+  // 🔒 技術文章專用門禁解鎖控制
+  const currentSlug = window.location.pathname;
+  if (currentSlug.includes('tech-notes-architecture')) {
+    const articleBodyEl = document.getElementById('articleBody');
+    const tocContainerEl = document.getElementById('toc_container');
+    const gateWrapEl = document.getElementById('tech-gate-wrap');
+
+    function applyTechGate() {
+      const unlocked = localStorage.getItem('ovinas-tech-unlocked') === '1';
+      if (!unlocked) {
+        if (articleBodyEl) articleBodyEl.style.display = 'none';
+        if (tocContainerEl) tocContainerEl.style.display = 'none';
+        if (gateWrapEl) {
+          gateWrapEl.style.display = 'block';
+          if (window.openTechGate) window.openTechGate();
+        }
+      } else {
+        if (articleBodyEl) articleBodyEl.style.display = 'block';
+        if (tocContainerEl) tocContainerEl.style.display = 'block';
+        if (gateWrapEl) {
+          gateWrapEl.style.display = 'none';
+          if (window.closeTechGate) window.closeTechGate();
+        }
+      }
     }
+
+    applyTechGate();
+
+    window.addEventListener('tech-gate:unlocked', () => {
+      applyTechGate();
+    });
+  }
+
+  const articleBody = document.getElementById('articleBody');
+  const tocList = document.getElementById('tocList');
+
+  if (articleBody && tocList) {
+    const headings = articleBody.querySelectorAll('h2');
+    headings.forEach((h, idx) => {
+      const id = `section-${idx + 1}`;
+      h.id = id;
+
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.href = `#${id}`;
+      a.textContent = `${idx + 1}. ${h.textContent}`;
+      li.appendChild(a);
+      tocList.appendChild(li);
+    });
+
+    if (headings.length === 0) {
+      document.getElementById('toc_container')?.remove();
+    }
+  }
+
+  // ✉️ 文章底部 Google Form 送出邏輯
+  const acForm = document.getElementById('articleContactForm') as HTMLFormElement;
+  const acSubmitBtn = document.getElementById('acSubmitBtn') as HTMLButtonElement;
+  const acStatus = document.getElementById('acStatus');
+
+  const GOOGLE_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSeeWapjagLqPsg7i2y_TYhNq2xKW-nNFj6JywiqiDZ8Hkiheg/formResponse';
+
+  if (acForm) {
+    acForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = (document.getElementById('acName') as HTMLInputElement).value.trim();
+      const email = (document.getElementById('acEmail') as HTMLInputElement).value.trim();
+      const msg = (document.getElementById('acMsg') as HTMLTextAreaElement).value.trim();
+
+      if (!name || !email || !msg) return;
+
+      if (acSubmitBtn) {
+        acSubmitBtn.disabled = true;
+        acSubmitBtn.textContent = '傳送中…';
+      }
+
+      try {
+        const formData = new FormData();
+        formData.append('entry.57084769', name);
+        formData.append('entry.135399445', email);
+        formData.append('entry.1753446536', msg);
+
+        await fetch(GOOGLE_FORM_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          body: formData,
+        });
+
+        if (acStatus) {
+          acStatus.textContent = '✓ 訊息已成功送出，感謝您的聯繫！';
+          acStatus.className = 'article-form-status is-success';
+        }
+
+        acForm.reset();
+
+        setTimeout(() => {
+          if (acStatus) acStatus.textContent = '';
+        }, 5000);
+      } catch (err) {
+        if (acStatus) {
+          acStatus.textContent = '✕ 傳送失敗，請稍後再試。';
+          acStatus.className = 'article-form-status is-error';
+        }
+      } finally {
+        if (acSubmitBtn) {
+          acSubmitBtn.disabled = false;
+          acSubmitBtn.textContent = '送出訊息';
+        }
+      }
+    });
+  }
+</script>
+
+
+<style is:global>
+  /* 🖼️ 強制全站文章內文圖片 100% 自適應約束，徹底杜絕溢出 (Global HTML Injected Styles) */
+  .post-content {
+    max-width: 100%;
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+
+  .post-content img {
+    max-width: 100% !important;
+    height: auto !important;
+    max-height: 520px !important;
+    display: block !important;
+    margin: 2rem auto !important;
+    border-radius: 6px !important;
+    border: 1px solid #e5e7eb !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06) !important;
+    background-color: #ffffff !important;
+    box-sizing: border-box !important;
+    object-fit: contain !important;
+  }
+
+  .post-content p:has(img),
+  .post-content figure {
+    text-align: center;
+    margin: 2rem 0;
+    width: 100%;
+  }
+
+  .post-content p {
+    margin: 0 0 1.6em;
+    line-height: 1.8;
+  }
+
+  .post-content a {
+    color: #16a34a;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    font-weight: 400;
+  }
+
+  .post-content a:hover {
+    color: #15803d;
+  }
+
+  .post-content ul, .post-content ol {
+    margin: 0 0 1.8em;
+    padding-left: 2rem;
+  }
+
+  .post-content li {
+    margin-bottom: 0.6em;
+    line-height: 1.8;
+  }
+
+  .post-content code {
+    background-color: #f3f4f6;
+    color: #ea580c;
+    padding: 2px 6px;
+    font-size: 0.9em;
+    font-family: monospace;
+    border-radius: 3px;
+  }
+
+  .post-content pre {
+    background-color: #1e1e1e;
+    color: #e5e7eb;
+    padding: 1.4rem 1.6rem;
+    overflow-x: auto;
+    border-left: 4px solid #ff6b00;
+    margin: 1.8rem 0;
+    font-size: 14.5px;
+    line-height: 1.65;
+    border-radius: 4px;
+  }
+
+  /* 提示框 (.post-intro, .post-tips, .audit-tip, .audit-note, blockquote) */
+  .post-content blockquote,
+  .post-content .post-intro,
+  .post-content .post-tips {
+    background-color: #f8fafc;
+    border-left: 5px solid #16a34a;
+    padding: 1.4rem 1.6rem;
+    margin: 2rem 0;
+    color: #334155;
+    font-size: 15.5px;
+    line-height: 1.8;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .post-content .post-tips2,
+  .post-content .audit-note {
+    background-color: #fffbeb;
+    border-left: 5px solid #ff6b00;
+    padding: 1.4rem 1.6rem;
+    margin: 2rem 0;
+    color: #92400e;
+    font-size: 15px;
+    line-height: 1.8;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .post-content .audit-tip {
+    background-color: #f0fdf4;
+    border-left: 5px solid #16a34a;
+    padding: 1.4rem 1.6rem;
+    margin: 2rem 0;
+    color: #166534;
+    font-size: 15px;
+    line-height: 1.8;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .post-content .audit-dl {
+    display: inline-block;
+    background-color: #ff6b00;
+    color: #ffffff !important;
+    text-decoration: none !important;
+    padding: 10px 22px;
+    border-radius: 4px;
+    font-weight: 500;
+    margin: 1rem 0;
+    transition: background-color 0.2s ease;
+  }
+
+  .post-content .audit-dl:hover {
+    background-color: #ea580c;
+  }
+
+  /* 表格樣式 */
+  .post-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 2rem 0;
+    font-size: 14.5px;
+  }
+
+  .post-content th {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    padding: 10px 14px;
+    font-weight: 600;
+    text-align: left;
+    color: #1e293b;
+  }
+
+  .post-content td {
+    border: 1px solid #e2e8f0;
+    padding: 10px 14px;
+    color: #475569;
+  }
+    /* 🏅 側邊欄資格認證與每日一句樣式 (雙欄並排、全部8個徽章完整呈現) */
+  .side-badges-box {
+    background: transparent;
+    border: none;
+    padding: 0;
+  }
+  .side-quote-box {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    padding: 1.2rem;
+  }
+
+  .side-badges-title, .side-quote-title {
+    font-size: 1.15rem;
+    font-weight: 500;
+    color: #444444;
+    margin: 0 0 0.9rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #ff6b00;
+  }
+
+  .side-badges-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1rem;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .side-badge-item {
+    background: transparent;
+    border: none;
+    border-radius: 0px;
+    transition: all 0.2s ease;
+  }
+
+  .side-badge-item:hover {
+    transform: translateY(-2px);
+    box-shadow: none;
+  }
+
+  .side-badge-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 8px 4px;
+    text-decoration: none;
+    color: #334155;
+    height: 100%;
+    box-sizing: border-box;
+    gap: 6px;
+  }
+
+  .side-badge-img {
+    width: 44px;
+    height: 44px;
+    object-fit: contain;
+    flex-shrink: 0;
+  }
+
+  .side-badge-name {
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 1.3;
+    color: #475569;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+    .side-badge-more-link {
+    display: block;
+    text-align: center;
+    font-size: 12.5px;
+    color: #64748b;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 8px 0 2px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: color 0.15s ease;
+  }
+
+  .side-badge-more-link:hover {
+    color: #ff6b00;
+    background: transparent;
+    text-decoration: underline;
+  }
+
+  .side-quote-content {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-left: 3px solid #ff6b00;
+    padding: 1rem;
+    border-radius: 2px;
+  }
+
+  .side-quote-text {
+    font-size: 14px;
+    color: #334155;
+    line-height: 1.7;
+    margin: 0 0 8px;
+    font-weight: 400;
+  }
+
+  .side-quote-author {
+    font-size: 12px;
+    color: #64748b;
+    margin: 0;
+    text-align: right;
+    font-style: italic;
+  }
+  /* 🔒 VIP 門禁專用卡片樣式 */
+  .tech-lock-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-top: 4px solid #ff6b00;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+  }
+
+  .lock-card-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .lock-badge {
+    display: inline-block;
+    background: #fff7ed;
+    color: #ff6b00;
+    font-size: 12.5px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 9999px;
+    margin-bottom: 0.5rem;
+  }
+
+  .lock-card-header h3 {
+    font-size: 1.25rem;
+    color: #1e293b;
+    margin: 0 0 6px;
+    font-weight: 600;
+  }
+
+  .lock-card-header p {
+    font-size: 14px;
+    color: #64748b;
+    margin: 0;
+  }
+
+  /* 📊 網站計數器樣式 */
+  .side-counter-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0 0 1rem;
+    padding-left: 8px;
+    border-left: 3px solid #ff6b00;
+  }
+
+  .side-counter-content {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    padding: 1.2rem 1rem;
+    border-radius: 4px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
+    text-align: center;
+  }
+
+  .counter-badge-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .hitcounter-link {
+    display: inline-block;
+    transition: transform 0.2s ease;
+  }
+
+  .hitcounter-link:hover {
+    transform: scale(1.04);
+  }
+
+  .hitcounter-img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    border-radius: 2px;
+  }
+
+  /* 📊 網站計數器樣式 */
+  .side-counter-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0 0 1rem;
+    padding-left: 8px;
+    border-left: 3px solid #ff6b00;
+  }
+
+  .side-counter-content {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    padding: 1.1rem 1rem;
+    border-radius: 4px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
+  }
+
+  .counter-display-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding-bottom: 0.9rem;
+    border-bottom: 1px dashed #e2e8f0;
+  }
+
+  .counter-label {
+    font-size: 12px;
+    color: #64748b;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+
+  .counter-digits {
+    display: flex;
+    gap: 4px;
+  }
+
+  .counter-digits .digit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 28px;
+    background: #1e293b;
+    color: #f8fafc;
+    font-family: 'Courier New', Courier, monospace, monospace;
+    font-size: 15px;
+    font-weight: 700;
+    border-radius: 3px;
+    box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.3);
+  }
+
+  .counter-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-top: 0.9rem;
+    text-align: center;
+  }
+
+  .stat-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .stat-name {
+    font-size: 11.5px;
+    color: #64748b;
+  }
+
+  .stat-val {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #1e293b;
+  }
+
+  .stat-online {
+    color: #10b981;
+  }
+  /* 📊 網站計數器樣式 */
+  .side-counter-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0 0 1rem;
+    padding-left: 8px;
+    border-left: 3px solid #ff6b00;
+  }
+
+  .side-counter-content {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    padding: 1.2rem 1rem;
+    border-radius: 4px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
+    text-align: center;
+  }
+
+  .counter-badge-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .hitcounter-link {
+    display: inline-block;
+    transition: transform 0.2s ease;
+  }
+
+  .hitcounter-link:hover {
+    transform: scale(1.04);
+  }
+
+  .hitcounter-img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    border-radius: 2px;
   }
 </style>
