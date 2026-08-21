@@ -206,7 +206,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       var orders = await res.json();
 
       if (!orders.length) {
-        container.innerHTML = '<div class="empty-state"><svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1" opacity="0.3"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><p>還沒有任何訂單</p><a href="/shop/products/" class="btn btn-primary" style="margin-top:var(--sp-4)">開始選購</a></div>';
+        container.innerHTML = '<div class="empty-state"><svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1" opacity="0.3"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><p>還沒有任何訂單</p><a href="/shop/" class="btn btn-primary" style="margin-top:var(--sp-4)">開始選購</a></div>';
         return;
       }
 

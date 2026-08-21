@@ -27,7 +27,7 @@ import Footer from '../../shop/components/Footer.astro';
         <p class="error-desc">你所尋找的頁面不存在，或已被移除。</p>
         <div class="error-actions">
           <a href="/shop/" class="btn btn-primary">回到首頁</a>
-          <a href="/shop/products/" class="btn btn-secondary">瀏覽商品</a>
+          <a href="/shop/" class="btn btn-secondary">瀏覽商品</a>
         </div>
       </div>
 
@@ -121,7 +121,7 @@ import Footer from '../../shop/components/Footer.astro';
       main.innerHTML = '<div class="container">' +
         '<nav class="breadcrumb">' +
         '<a href="/shop/">首頁</a><span class="breadcrumb-sep">/</span>' +
-        '<a href="/shop/products/">全部商品</a><span class="breadcrumb-sep">/</span>' +
+        '<a href="/shop/">全部商品</a><span class="breadcrumb-sep">/</span>' +
         '<span class="breadcrumb-current">' + escHtml(p.name) + '</span></nav>' +
         '<div class="product-detail">' +
         '<div class="product-gallery"><div class="product-main-image" id="main-image-wrap">' + imgHtml(mainImgUrl, p.name) + '</div>' + thumbsHtml + '</div>' +

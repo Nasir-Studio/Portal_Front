@@ -43,7 +43,7 @@ const API_URL = import.meta.env.PUBLIC_API_URL || 'https://api.nsir.uk';
         </svg>
         <h3>購物車是空的</h3>
         <p>快去逛逛吧！</p>
-        <a href="/shop/products/" class="btn btn-primary" style="margin-top:var(--sp-4)">開始選購</a>
+        <a href="/shop/" class="btn btn-primary" style="margin-top:var(--sp-4)">開始選購</a>
       </div>
     </div>
   </main>
@@ -118,7 +118,7 @@ const API_URL = import.meta.env.PUBLIC_API_URL || 'https://api.nsir.uk';
           '<hr class="divider" />' +
           '<div class="summary-row summary-total"><span>合計</span><span>' + _fmt(cart.total + 75) + '</span></div>' +
           '<a href="/shop/checkout/" class="btn btn-primary btn-block btn-lg" style="margin-top:var(--sp-6)">前往結帳</a>' +
-          '<a href="/shop/products/" class="btn btn-ghost btn-block" style="margin-top:var(--sp-2)">繼續選購</a>';
+          '<a href="/shop/" class="btn btn-ghost btn-block" style="margin-top:var(--sp-2)">繼續選購</a>';
 
         var badge = document.getElementById('cart-badge');
         if (badge && cart.item_count > 0) {
