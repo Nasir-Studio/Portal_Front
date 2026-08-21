@@ -2,7 +2,7 @@
 import BlogLayout from '../../layouts/BlogLayout.astro';
 ---
 
-<BlogLayout title="小羊農場 — 物品價值，淋漓盡致" description="小羊農場，讓每件物品的價值淋漓盡致。0元分享與二手優質物資。">
+<BlogLayout title="小羊農場 — 物品價值，淋漓盡致" description="小羊農場，讓每件物品的價值淋漓盡致。二手良品與物資流轉。">
   <div class="main-content">
     <div class="container">
       <!-- 麵包屑導航 (Breadcrumbs) -->
@@ -17,7 +17,7 @@ import BlogLayout from '../../layouts/BlogLayout.astro';
         <div class="left">
           <h3>SHEEP FARM</h3>
           <h2>物品價值，淋漓盡致</h2>
-          <a href="/shop/zero-price/" class="btn-about-hero">探索 0 元活動</a>
+          <a href="/shop/products/" class="btn-about-hero">瀏覽全部商品</a>
         </div>
         <div class="right">
           <div class="slider-wrap-header">
@@ -45,7 +45,6 @@ import BlogLayout from '../../layouts/BlogLayout.astro';
           <div class="tech-main-tab-bar">
             <div class="tech-main-tabs">
               <a href="/shop/products/" class="tech-main-tab-item active">全部商品</a>
-              <a href="/shop/zero-price/" class="tech-main-tab-item zero-tab">0元活動專區</a>
               <a href="/shop/shopping-guide/" class="tech-main-tab-item">購物須知</a>
               <a href="/shop/about/" class="tech-main-tab-item">關於我們</a>
             </div>
@@ -71,38 +70,19 @@ import BlogLayout from '../../layouts/BlogLayout.astro';
                 </a>
               </div>
               <ul class="post-categories">
-                <li><a href="/shop/zero-price/">電腦零組件 · 0 元活動</a></li>
+                <li><a href="/shop/products/">電腦零組件 · 二手良品</a></li>
               </ul>
               <h3 class="post-title">
                 <a href="/shop/products/samsungddr34gbram/">Samsung DDR3 4GB 筆電/桌機記憶體</a>
               </h3>
-              <div class="shop-price-tag">0 元免費領取</div>
-              <p class="post-excerpt">功能經檢測完全正常，原廠晶粒良品，免費分享給有需要升級舊設備的朋友。</p>
+              <div class="shop-price-tag">NT$ 150</div>
+              <p class="post-excerpt">功能經檢測完全正常，原廠晶粒良品，提供給有需要升級舊設備的朋友。</p>
               <a href="/shop/products/samsungddr34gbram/" class="read-more">查看商品詳情 →</a>
             </article>
           </div>
-
-          <!-- 🎁 0 元活動特色區塊 -->
-          <div class="post-area-head" style="margin-top: 3rem;">
-            <h2 class="post-area-title">0 元物資分享活動</h2>
-            <span class="cal-sub-label">免費分享給需要的人，僅需負擔基本包材與物流</span>
-          </div>
-
-          <div class="zero-promo-card">
-            <div class="zero-promo-content">
-              <h3>小羊農場理念：讓不需要的物品以 0 元分享</h3>
-              <p>
-                家中閒置但功能完好的物品，丟掉可惜、放著佔位？我們透過 0 元活動將物品分享給真正有需要的朋友。若需店到店寄送，僅需負擔 7-11 運費與少許包材費用！
-              </p>
-              <div class="zero-promo-actions">
-                <a href="/shop/zero-price/" class="btn">前往 0 元專區領取 →</a>
-                <a href="/shop/zero-price/guide/" class="btn btn--ghost">閱讀活動詳細須知</a>
-              </div>
-            </div>
-          </div>
         </div>
 
-        <!-- 📌 右側側邊欄 (純粹商城相關資訊，無任何部落格文章) -->
+        <!-- 📌 右側側邊欄 (純粹商城相關資訊) -->
         <aside class="right sidebar-right">
           <!-- 農場簡介 -->
           <div class="side-author-box">
@@ -110,7 +90,7 @@ import BlogLayout from '../../layouts/BlogLayout.astro';
               <img src="/sheep-hd.png" alt="小羊農場" width="90" height="90" />
             </div>
             <h2>小羊農場 <span class="eng-name">/ Sheep Farm</span></h2>
-            <p class="history">物品流轉 · 零元分享 · 綠色循環</p>
+            <p class="history">物品流轉 · 惜物共享 · 綠色循環</p>
             <div class="side-btn-wrap">
               <a href="/shop/about/" class="btn-vip">農場理念</a>
             </div>
@@ -120,11 +100,11 @@ import BlogLayout from '../../layouts/BlogLayout.astro';
           <div class="shop-side-box">
             <h3 class="shop-side-title">商城服務指南</h3>
             <ul class="shop-side-menu">
-              <li><a href="/shop/zero-price/">🎁 0 元免費領取專區</a></li>
               <li><a href="/shop/products/">🛒 全部二手良品列表</a></li>
-              <li><a href="/shop/shopping-guide/">📖 7-11 寄送與購物流程</a></li>
+              <li><a href="/shop/shopping-guide/">📖 7-11 寄送與購物須知</a></li>
               <li><a href="/shop/cart/">🛍️ 查看我的購物車</a></li>
               <li><a href="/shop/account/">👤 會員中心與訂單查詢</a></li>
+              <li><a href="/shop/about/">ℹ️ 關於小羊農場</a></li>
             </ul>
           </div>
         </aside>
@@ -165,7 +145,6 @@ import BlogLayout from '../../layouts/BlogLayout.astro';
     font-weight: 500;
   }
 
-  /* 🔷 1. Hero Header 區塊 (完全比照首頁) */
   .content-hero-header {
     display: flex;
     justify-content: space-between;
@@ -249,7 +228,6 @@ import BlogLayout from '../../layouts/BlogLayout.astro';
     object-fit: cover;
   }
 
-  /* 📰 2. 雙欄主內容區 (完全比照首頁) */
   .content-area-top {
     display: flex;
     justify-content: space-between;
@@ -266,7 +244,6 @@ import BlogLayout from '../../layouts/BlogLayout.astro';
     padding-top: 0.5rem;
   }
 
-  /* Tab 導覽列 (完全比照首頁) */
   .tech-main-tab-bar {
     display: flex;
     align-items: center;
@@ -274,8 +251,6 @@ import BlogLayout from '../../layouts/BlogLayout.astro';
     margin-bottom: 2rem;
     border-bottom: 2px solid #111111;
     padding-bottom: 0.8rem;
-    flex-wrap: wrap;
-    gap: 0.8rem;
   }
 
   .tech-main-tabs {
@@ -295,10 +270,6 @@ import BlogLayout from '../../layouts/BlogLayout.astro';
   .tech-main-tab-item:hover,
   .tech-main-tab-item.active {
     color: #111111;
-  }
-
-  .tech-main-tab-item.zero-tab {
-    color: #ea580c;
   }
 
   .cat-read-all {
@@ -332,7 +303,6 @@ import BlogLayout from '../../layouts/BlogLayout.astro';
     color: #888888;
   }
 
-  /* 商品卡片雙欄網格 (完全比照首頁) */
   .post-list.col2 {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -358,6 +328,10 @@ import BlogLayout from '../../layouts/BlogLayout.astro';
     overflow: hidden;
     background: #f8fafc;
     margin-bottom: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #f1f5f9;
   }
 
   .card-thumb-link {
@@ -441,64 +415,6 @@ import BlogLayout from '../../layouts/BlogLayout.astro';
     text-decoration: underline;
   }
 
-  /* 0元活動推廣卡片 */
-  .zero-promo-card {
-    background: #fdfdfd;
-    border: 1px solid #e0e0e0;
-    border-left: 5px solid #ff6b00;
-    padding: 1.8rem 2rem;
-    margin-top: 1.5rem;
-  }
-
-  .zero-promo-content h3 {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: #111111;
-    margin: 0 0 0.6rem;
-  }
-
-  .zero-promo-content p {
-    font-size: 0.92rem;
-    color: #555555;
-    line-height: 1.7;
-    margin: 0 0 1.4rem;
-  }
-
-  .zero-promo-actions {
-    display: flex;
-    gap: 0.8rem;
-    flex-wrap: wrap;
-  }
-
-  .btn {
-    display: inline-block;
-    padding: 0.55rem 1.4rem;
-    background: #111111;
-    color: #ffffff !important;
-    text-decoration: none;
-    font-size: 0.9rem;
-    font-weight: 500;
-    cursor: pointer;
-    border: none;
-    transition: background 0.15s ease;
-  }
-
-  .btn:hover {
-    background: #ff6b00;
-  }
-
-  .btn--ghost {
-    background: #f1f5f9;
-    color: #334155 !important;
-    border: 1px solid #cbd5e1;
-  }
-
-  .btn--ghost:hover {
-    background: #e2e8f0;
-    color: #0f172a !important;
-  }
-
-  /* 側邊欄樣式 (專屬商城服務) */
   .side-author-box {
     background: #ffffff;
     border: 1px solid #e0e0e0;
@@ -609,7 +525,7 @@ import BlogLayout from '../../layouts/BlogLayout.astro';
 
   var __cc = window.__currency;
   function _fmt(ntd) {
-    if (ntd === 0) return '0 元免費';
+    if (ntd === 0) return 'NT$ 0';
     if (__cc && __cc._rates) return __cc.format(ntd);
     return 'NT$ ' + (ntd || 0).toLocaleString();
   }
@@ -653,8 +569,6 @@ import BlogLayout from '../../layouts/BlogLayout.astro';
             '</article>';
         }).join('');
       }
-    } catch (e) {
-      // 保留預設預載商品，不顯示錯誤文字
-    }
+    } catch (e) {}
   });
 </script>
