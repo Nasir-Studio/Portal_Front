@@ -366,14 +366,14 @@
 					p.name,
 					p.kind,
 					p.requirement.total,
-					{ f: `='${sheetName}'!F${summaryStartRow}` },
+					{ f: `'${sheetName}'!F${summaryStartRow}` },
 					p.requirement.required || 0,
-					{ f: `='${sheetName}'!F${summaryStartRow + 1}` },
+					{ f: `'${sheetName}'!F${summaryStartRow + 1}` },
 					p.requirement.elective || 0,
-					{ f: `='${sheetName}'!F${summaryStartRow + 2}` },
+					{ f: `'${sheetName}'!F${summaryStartRow + 2}` },
 					p.requirement.crossDept ? '需跨修至少1門外系' : '無跨系限制',
-					{ f: `='${sheetName}'!F${summaryStartRow + 4}` },
-					{ f: `=IF(AND(E${rowNum}>=D${rowNum}, G${rowNum}>=F${rowNum}, IF(J${rowNum}="需跨修至少1門外系", K${rowNum}>=1, TRUE)), "🟢 ✓ 符合資格 (可申請證書)", "🔴 尚未達標 (學分不足或缺跨系)")` },
+					{ f: `'${sheetName}'!F${summaryStartRow + 4}` },
+					{ f: `IF(AND(E${rowNum}>=D${rowNum}, G${rowNum}>=F${rowNum}, IF(J${rowNum}="需跨修至少1門外系", K${rowNum}>=1, TRUE)), "🟢 ✓ 符合資格 (可申請證書)", "🔴 尚未達標 (學分不足或缺跨系)")` },
 					sheetName
 				]);
 			});
@@ -417,11 +417,11 @@
 
 			allData.push([]);
 			allData.push(['--- 試算表全域加總統計列 ---']);
-			allData.push(['已修總學分合計', '', '', '', '', { f: `=SUMIF(A${allStartRow}:A${allEndRow}, TRUE, F${allStartRow}:F${allEndRow})` }, '', '大學部畢業門檻: 128 學分']);
-			allData.push(['核心必修已修', '', '', '', '', { f: `=SUMIFS(F${allStartRow}:F${allEndRow}, A${allStartRow}:A${allEndRow}, TRUE, E${allStartRow}:E${allEndRow}, "必修")` }]);
-			allData.push(['專業選修已修', '', '', '', '', { f: `=SUMIFS(F${allStartRow}:F${allEndRow}, A${allStartRow}:A${allEndRow}, TRUE, E${allStartRow}:E${allEndRow}, "選修")` }]);
-			allData.push(['本系 (資管) 學分', '', '', '', '', { f: `=SUMIFS(F${allStartRow}:F${allEndRow}, A${allStartRow}:A${allEndRow}, TRUE, H${allStartRow}:H${allEndRow}, "本系 (${$myDept})")` }]);
-			allData.push(['外系 (跨系) 學分', '', '', '', '', { f: `=SUMIFS(F${allStartRow}:F${allEndRow}, A${allStartRow}:A${allEndRow}, TRUE, H${allStartRow}:H${allEndRow}, "外系/跨系")` }]);
+			allData.push(['已修總學分合計', '', '', '', '', { f: `SUMIF(A${allStartRow}:A${allEndRow}, TRUE, F${allStartRow}:F${allEndRow})` }, '', '大學部畢業門檻: 128 學分']);
+			allData.push(['核心必修已修', '', '', '', '', { f: `SUMIFS(F${allStartRow}:F${allEndRow}, A${allStartRow}:A${allEndRow}, TRUE, E${allStartRow}:E${allEndRow}, "必修")` }]);
+			allData.push(['專業選修已修', '', '', '', '', { f: `SUMIFS(F${allStartRow}:F${allEndRow}, A${allStartRow}:A${allEndRow}, TRUE, E${allStartRow}:E${allEndRow}, "選修")` }]);
+			allData.push(['本系 (資管) 學分', '', '', '', '', { f: `SUMIFS(F${allStartRow}:F${allEndRow}, A${allStartRow}:A${allEndRow}, TRUE, H${allStartRow}:H${allEndRow}, "本系 (${$myDept})")` }]);
+			allData.push(['外系 (跨系) 學分', '', '', '', '', { f: `SUMIFS(F${allStartRow}:F${allEndRow}, A${allStartRow}:A${allEndRow}, TRUE, H${allStartRow}:H${allEndRow}, "外系/跨系")` }]);
 
 			const wsAll = XLSX.utils.aoa_to_sheet(allData);
 			wsAll['!cols'] = [{ wch: 18 }, { wch: 14 }, { wch: 32 }, { wch: 18 }, { wch: 10 }, { wch: 10 }, { wch: 14 }, { wch: 16 }, { wch: 35 }];
@@ -459,12 +459,12 @@
 
 				pData.push([]);
 				pData.push(['--- 學程試算統計加總列 ---']);
-				pData.push(['已修畢總學分', '', '', '', '', { f: `=SUMIF(A${pStartRow}:A${pEndRow}, TRUE, F${pStartRow}:F${pEndRow})` }, '', `門檻標準: ${p.requirement.total} 學分`]);
-				pData.push(['核心必修學分', '', '', '', '', { f: `=SUMIFS(F${pStartRow}:F${pEndRow}, A${pStartRow}:A${pEndRow}, TRUE, E${pStartRow}:E${pEndRow}, "必修")` }, '', `必修門檻: ${p.requirement.required || 0} 學分`]);
-				pData.push(['專業選修學分', '', '', '', '', { f: `=SUMIFS(F${pStartRow}:F${pEndRow}, A${pStartRow}:A${pEndRow}, TRUE, E${pStartRow}:E${pEndRow}, "選修")` }, '', `選修門檻: ${p.requirement.elective || 0} 學分`]);
-				pData.push(['本系修課學分', '', '', '', '', { f: `=SUMIFS(F${pStartRow}:F${pEndRow}, A${pStartRow}:A${pEndRow}, TRUE, H${pStartRow}:H${pEndRow}, "本系 (${$myDept})")` }]);
-				pData.push(['跨系修課門數', '', '', '', '', { f: `=COUNTIFS(A${pStartRow}:A${pEndRow}, TRUE, H${pStartRow}:H${pEndRow}, "外系/跨系")` }, '', `跨系限制: ${p.requirement.crossDept ? '至少1門' : '無限制'}`]);
-				pData.push(['證書取得資格', '', '', '', '', { f: `=IF(AND(F${pEndRow + 3}>=${p.requirement.total}, F${pEndRow + 4}>=${p.requirement.required || 0}, IF("${p.requirement.crossDept}"="true", F${pEndRow + 7}>=1, TRUE)), "🟢 ✓ 符合資格 (可申請證書)", "🔴 尚未達標 (學分不足或缺跨系)")` }]);
+				pData.push(['已修畢總學分', '', '', '', '', { f: `SUMIF(A${pStartRow}:A${pEndRow}, TRUE, F${pStartRow}:F${pEndRow})` }, '', `門檻標準: ${p.requirement.total} 學分`]);
+				pData.push(['核心必修學分', '', '', '', '', { f: `SUMIFS(F${pStartRow}:F${pEndRow}, A${pStartRow}:A${pEndRow}, TRUE, E${pStartRow}:E${pEndRow}, "必修")` }, '', `必修門檻: ${p.requirement.required || 0} 學分`]);
+				pData.push(['專業選修學分', '', '', '', '', { f: `SUMIFS(F${pStartRow}:F${pEndRow}, A${pStartRow}:A${pEndRow}, TRUE, E${pStartRow}:E${pEndRow}, "選修")` }, '', `選修門檻: ${p.requirement.elective || 0} 學分`]);
+				pData.push(['本系修課學分', '', '', '', '', { f: `SUMIFS(F${pStartRow}:F${pEndRow}, A${pStartRow}:A${pEndRow}, TRUE, H${pStartRow}:H${pEndRow}, "本系 (${$myDept})")` }]);
+				pData.push(['跨系修課門數', '', '', '', '', { f: `COUNTIFS(A${pStartRow}:A${pEndRow}, TRUE, H${pStartRow}:H${pEndRow}, "外系/跨系")` }, '', `跨系限制: ${p.requirement.crossDept ? '至少1門' : '無限制'}`]);
+				pData.push(['證書取得資格', '', '', '', '', { f: `IF(AND(F${pEndRow + 3}>=${p.requirement.total}, F${pEndRow + 4}>=${p.requirement.required || 0}, IF("${p.requirement.crossDept}"="true", F${pEndRow + 7}>=1, TRUE)), "🟢 ✓ 符合資格 (可申請證書)", "🔴 尚未達標 (學分不足或缺跨系)")` }]);
 
 				const wsProg = XLSX.utils.aoa_to_sheet(pData);
 				wsProg['!cols'] = [{ wch: 18 }, { wch: 14 }, { wch: 32 }, { wch: 18 }, { wch: 10 }, { wch: 10 }, { wch: 14 }, { wch: 16 }, { wch: 25 }];
@@ -528,7 +528,7 @@
 			const customEnd = customStart + customCourses.length - 1;
 			customData.push([]);
 			customData.push(['--- 畢業學分試算統計 ---']);
-			customData.push(['已修總學分小計', '', '', '', '', { f: `=SUMIF(A${customStart}:A${customEnd}, TRUE, F${customStart}:F${customEnd})` }, '', '畢業門檻: 128 學分']);
+			customData.push(['已修總學分小計', '', '', '', '', { f: `SUMIF(A${customStart}:A${customEnd}, TRUE, F${customStart}:F${customEnd})` }, '', '畢業門檻: 128 學分']);
 
 			const wsCustom = XLSX.utils.aoa_to_sheet(customData);
 			wsCustom['!cols'] = [{ wch: 18 }, { wch: 14 }, { wch: 30 }, { wch: 18 }, { wch: 10 }, { wch: 10 }, { wch: 12 }, { wch: 20 }];
