@@ -5,8 +5,19 @@ import BlogLayout from '../../layouts/BlogLayout.astro';
 <BlogLayout title="管理後台 — OviNas" description="VIP 問題專區管理與後台設定。">
   <div class="main-content">
   <div class="container" id="page-shell" hidden>
-    <h1 class="page-title">管理後台</h1>
-    <p class="page-sub">VIP 問題專區管理</p>
+    <!-- 麵包屑導航 (Breadcrumbs) -->
+    <div class="breadcrumbs">
+      <a href="/" class="home">首頁</a>
+      <span class="sep">&gt;</span>
+      <a href="/vip/">VIP 專區</a>
+      <span class="sep">&gt;</span>
+      <span class="current-post-name">管理後台</span>
+    </div>
+
+    <div class="admin-header-box">
+      <h1 class="page-title">管理後台</h1>
+      <p class="page-sub">VIP 專屬問題工單與全站權限管理中心</p>
+    </div>
 
     <div id="admin-app"></div>
   </div>
@@ -14,45 +25,111 @@ import BlogLayout from '../../layouts/BlogLayout.astro';
 </BlogLayout>
 
 <style is:global>
+  :root {
+    --ink: #1e293b;
+    --ink-2: #475569;
+    --ink-3: #64748b;
+    --surface: #ffffff;
+    --surface-soft: #f8fafc;
+    --border: #e2e8f0;
+    --border-strong: #cbd5e1;
+    --accent: #ff6b00;
+    --accent-hover: #ea580c;
+    --shadow-soft: 0 4px 16px rgba(0, 0, 0, 0.04);
+    --shadow-md: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.03);
+    --t: 0.15s ease;
+  }
 
-  /* 📦 經典零圓角質感 Module 樣式 (Zero Border Radius) */
+  .main-content {
+    background-color: #ffffff;
+    padding: 1.5rem 0 5rem;
+    min-height: 75vh;
+  }
+
+  .breadcrumbs {
+    font-size: 14px;
+    color: #999999;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+  }
+
+  .breadcrumbs a {
+    color: #666666;
+    text-decoration: none;
+  }
+
+  .breadcrumbs a:hover {
+    color: #ff6b00;
+  }
+
+  .breadcrumbs .sep {
+    margin: 0 5px;
+    color: #cccccc;
+  }
+
+  .breadcrumbs .current-post-name {
+    color: #333333;
+    font-weight: 500;
+  }
+
+  .admin-header-box {
+    margin-bottom: 2rem;
+    padding-bottom: 1.2rem;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  .page-title {
+    font-size: 1.85rem;
+    font-weight: 500;
+    color: #111111;
+    margin: 0 0 0.4rem;
+    padding: 0;
+  }
+
+  .page-sub {
+    font-size: 0.94rem;
+    color: #64748b;
+    margin: 0;
+    font-weight: 400;
+  }
+
+  /* 📦 現代俐落 Module 樣式 */
   .module {
     background: #ffffff;
-    border: 1.5px solid #0f172a;
-    border-radius: 0px !important;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px !important;
     margin-bottom: 2rem;
-    box-shadow: 0 6px 24px rgba(15, 23, 42, 0.06);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
     overflow: hidden;
   }
 
   .module-title {
-    background: #0f172a;
-    color: #ffffff;
-    padding: 12px 18px;
+    background: #f8fafc;
+    color: #1e293b;
+    padding: 14px 20px;
     font-size: 15px;
-    font-weight: 600;
-    letter-spacing: 0.06em;
+    font-weight: 500;
     margin: 0;
-    border-radius: 0px !important;
+    border-bottom: 1px solid #e2e8f0;
     display: flex;
     align-items: center;
     gap: 8px;
   }
 
   .module-title span {
-    color: #ffffff;
+    color: #ff6b00;
   }
 
   .btn {
     display: inline-block;
-    padding: 0.65rem 1.4rem;
-    background: #0f172a;
+    padding: 0.6rem 1.3rem;
+    background: #111111;
     color: #ffffff !important;
-    border: none;
-    border-radius: 0px !important;
+    border: 1px solid transparent;
+    border-radius: 4px !important;
     font-size: 0.9rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
+    font-weight: 500;
+    letter-spacing: 0.04em;
     text-decoration: none;
     cursor: pointer;
     transition: all 0.15s ease;
@@ -60,6 +137,7 @@ import BlogLayout from '../../layouts/BlogLayout.astro';
 
   .btn:hover {
     background: #ff6b00;
+    border-color: #ff6b00;
     color: #ffffff !important;
   }
 
@@ -437,14 +515,14 @@ import BlogLayout from '../../layouts/BlogLayout.astro';
     padding: 0.6rem 0.75rem;
     background: var(--surface);
     border: 1px solid var(--border-strong);
-    border-radius: 0;
+    border-radius: 4px;
     color: var(--ink);
     resize: vertical;
     min-height: 72px;
   }
 
   .reply-form textarea:focus {
-    outline: 2px solid var(--ink);
+    outline: none; border-color: #ff6b00; box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.12);
     outline-offset: 0;
     border-color: var(--ink);
   }
@@ -535,7 +613,7 @@ import BlogLayout from '../../layouts/BlogLayout.astro';
     padding: 0.55rem 0.75rem;
     background: var(--surface);
     border: 1px solid var(--border-strong);
-    border-radius: 0;
+    border-radius: 4px;
     color: var(--ink);
   }
 
@@ -543,7 +621,7 @@ import BlogLayout from '../../layouts/BlogLayout.astro';
   .admin-create-form input:focus,
   .admin-create-form select:focus,
   .admin-create-form textarea:focus {
-    outline: 2px solid var(--ink);
+    outline: none; border-color: #ff6b00; box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.12);
     outline-offset: 0;
     border-color: var(--ink);
   }
@@ -631,7 +709,7 @@ import BlogLayout from '../../layouts/BlogLayout.astro';
   .card, .detail-card, .module {
     background: #ffffff !important;
     border: 1.5px solid #1e293b !important;
-    border-radius: 0px !important;
+    border-radius: 6px !important;
     margin-bottom: 1.8rem;
     box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08);
     overflow: hidden;
@@ -657,7 +735,7 @@ import BlogLayout from '../../layouts/BlogLayout.astro';
   .ticket-row, .user-row {
     background: #ffffff !important;
     border: 1px solid #cbd5e1 !important;
-    border-radius: 0px !important;
+    border-radius: 6px !important;
     padding: 1rem 1.2rem !important;
     transition: all 0.15s ease;
   }
@@ -714,7 +792,7 @@ import BlogLayout from '../../layouts/BlogLayout.astro';
   input, select, textarea {
     background: #ffffff !important;
     border: 1.5px solid #94a3b8 !important;
-    border-radius: 0px !important;
+    border-radius: 6px !important;
     color: #0f172a !important;
     padding: 8px 12px !important;
     font-size: 14px !important;
@@ -730,7 +808,7 @@ import BlogLayout from '../../layouts/BlogLayout.astro';
     background: #ffffff !important;
     color: #0f172a !important;
     border: 1.5px solid #64748b !important;
-    border-radius: 0px !important;
+    border-radius: 6px !important;
     font-weight: 600 !important;
   }
 
@@ -744,7 +822,7 @@ import BlogLayout from '../../layouts/BlogLayout.astro';
     background: #ffffff !important;
     color: #b91c1c !important;
     border: 1.5px solid #ef4444 !important;
-    border-radius: 0px !important;
+    border-radius: 6px !important;
     font-weight: 600 !important;
   }
 
