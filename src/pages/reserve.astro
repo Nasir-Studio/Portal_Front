@@ -26,10 +26,7 @@ import BlogLayout from '../layouts/BlogLayout.astro';
 
     <section class="module calendar-module" aria-label="行事曆">
       <h2 class="module-title">
-        <span class="cal-head-left">
-          <span class="cal-square" aria-hidden="true"></span>
-          行事曆
-        </span>
+        <span>行事曆</span>
       </h2>
       <div class="cal-frame">
         <iframe
@@ -62,10 +59,10 @@ import BlogLayout from '../layouts/BlogLayout.astro';
   }
 
   .page-title {
-    font-size: 2.2rem;
-    font-weight: 800;
+    font-size: 2rem;
+    font-weight: 500;
     color: #0f172a;
-    letter-spacing: -0.01em;
+    letter-spacing: 0.02em;
     margin: 0 0 0.4rem;
   }
 
@@ -73,60 +70,40 @@ import BlogLayout from '../layouts/BlogLayout.astro';
     margin-bottom: 2rem;
     font-size: 0.95rem;
     color: #64748b;
+    font-weight: 400;
     letter-spacing: 0.02em;
   }
 
-  /* 📦 淺色透明 + 暖橙邊框 Module 容器 (徹底移除深黑/深藍底色) */
+  /* 📦 極簡明亮 Module 容器 (無橘條、無粗體) */
   .module {
-    background: rgba(255, 255, 255, 0.92) !important;
-    backdrop-filter: blur(12px) !important;
-    -webkit-backdrop-filter: blur(12px) !important;
-    border: 1.5px solid #fed7aa !important;
+    background: #ffffff !important;
+    border: 1.5px solid #e2e8f0 !important;
     border-radius: 0px !important;
     margin-bottom: 2.2rem;
-    box-shadow: 0 4px 20px rgba(255, 107, 0, 0.04);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
     overflow: hidden;
-    transition: all 0.2s ease;
   }
 
-  .module:hover {
-    border-color: #fdba74 !important;
-    box-shadow: 0 6px 24px rgba(255, 107, 0, 0.08);
-  }
-
-  /* 🤍 純白底色 + 暖橙左側標條 (消除深黑/深藍底) */
+  /* 🤍 純淨標題列 (徹底移除橘色條與粗體) */
   .module-title {
     background: #ffffff !important;
     color: #0f172a !important;
     padding: 14px 20px !important;
     font-size: 1.05rem !important;
-    font-weight: 700 !important;
-    letter-spacing: 0.04em;
+    font-weight: 500 !important;
+    letter-spacing: 0.02em;
     margin: 0;
     border-radius: 0px !important;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-left: 4px solid #ff6b00 !important;
+    border-left: none !important;
     border-bottom: 1.5px solid #f1f5f9 !important;
   }
 
   .module-title span {
     color: #0f172a !important;
-  }
-
-  .cal-head-left {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-  }
-
-  .cal-square {
-    width: 8px;
-    height: 8px;
-    background: #ff6b00 !important;
-    transform: rotate(45deg);
-    display: inline-block;
+    font-weight: 500 !important;
   }
 
   .cal-frame {
@@ -142,7 +119,7 @@ import BlogLayout from '../layouts/BlogLayout.astro';
     background: #ffffff;
   }
 
-  /* 📅 純淨明亮時段列表 */
+  /* 📅 純淨時段列表 */
   .slot-list,
   .mine-list {
     padding: 1.4rem 1.6rem 1.8rem;
@@ -155,16 +132,14 @@ import BlogLayout from '../layouts/BlogLayout.astro';
   .slot-card {
     background: #ffffff !important;
     border: 1.5px solid #e2e8f0 !important;
-    border-left: 4px solid #ff6b00 !important;
+    border-left: 1.5px solid #e2e8f0 !important;
     border-radius: 0px !important;
-    transition: all 0.15s ease;
+    transition: border-color 0.15s ease;
     overflow: hidden;
   }
 
   .slot-card:hover {
-    border-color: #fed7aa !important;
-    border-left-color: #ea580c !important;
-    box-shadow: 0 4px 16px rgba(255, 107, 0, 0.08);
+    border-color: #cbd5e1 !important;
   }
 
   .slot-head {
@@ -176,27 +151,27 @@ import BlogLayout from '../layouts/BlogLayout.astro';
   }
 
   .slot-title {
-    font-size: 1.15rem !important;
-    font-weight: 700 !important;
+    font-size: 1.1rem !important;
+    font-weight: 500 !important;
     color: #0f172a !important;
     letter-spacing: 0.01em;
   }
 
   .slot-meta {
     font-size: 0.85rem !important;
-    color: #ea580c !important;
-    font-weight: 600;
-    letter-spacing: 0.02em;
+    color: #64748b !important;
+    font-weight: 400 !important;
     white-space: nowrap;
-    background: #fff7ed;
+    background: #f8fafc;
     padding: 3px 8px;
-    border: 1px solid #ffedd5;
+    border: 1px solid #e2e8f0;
   }
 
   .slot-desc {
     padding: 0 1.3rem 0.75rem;
     font-size: 0.94rem !important;
     color: #475569 !important;
+    font-weight: 400;
     line-height: 1.6;
   }
 
@@ -212,9 +187,8 @@ import BlogLayout from '../layouts/BlogLayout.astro';
 
   .slot-remaining {
     font-size: 0.88rem !important;
-    color: #ea580c !important;
-    font-weight: 700 !important;
-    letter-spacing: 0.02em;
+    color: #475569 !important;
+    font-weight: 500 !important;
   }
 
   .slot-remaining.full {
@@ -224,22 +198,23 @@ import BlogLayout from '../layouts/BlogLayout.astro';
   .slot-empty {
     color: #64748b;
     font-size: 0.95rem;
+    font-weight: 400;
     letter-spacing: 0.04em;
     text-align: center;
     padding: 2rem 0;
   }
 
-  /* 🔘 暖橙簡潔按鈕 */
+  /* 🔘 簡潔按鈕 (常規字重) */
   .btn {
     display: inline-block;
-    padding: 0.6rem 1.4rem;
+    padding: 0.55rem 1.3rem;
     background: #ff6b00 !important;
     color: #ffffff !important;
     border: 1px solid #ff6b00 !important;
     border-radius: 0px !important;
     font-size: 0.9rem;
-    font-weight: 700;
-    letter-spacing: 0.04em;
+    font-weight: 500 !important;
+    letter-spacing: 0.02em;
     text-decoration: none;
     cursor: pointer;
     transition: all 0.15s ease;
@@ -249,7 +224,6 @@ import BlogLayout from '../layouts/BlogLayout.astro';
     background: #ea580c !important;
     border-color: #ea580c !important;
     color: #ffffff !important;
-    transform: translateY(-1px);
   }
 
   .btn--block {
@@ -262,6 +236,7 @@ import BlogLayout from '../layouts/BlogLayout.astro';
     background: #ffffff !important;
     color: #475569 !important;
     border: 1.5px solid #cbd5e1 !important;
+    font-weight: 400 !important;
   }
 
   .btn--ghost:hover {
@@ -273,7 +248,7 @@ import BlogLayout from '../layouts/BlogLayout.astro';
   /* 📝 預約輸入表單 */
   .book-form {
     padding: 1.4rem 1.3rem;
-    border-top: 2px solid #ff6b00;
+    border-top: 1.5px solid #e2e8f0;
     background: #ffffff;
     display: flex;
     flex-direction: column;
@@ -287,9 +262,8 @@ import BlogLayout from '../layouts/BlogLayout.astro';
   }
 
   .book-form .field-label {
-    font-size: 0.84rem;
-    font-weight: 700;
-    letter-spacing: 0.04em;
+    font-size: 0.85rem;
+    font-weight: 500 !important;
     color: #334155;
   }
 
@@ -297,6 +271,7 @@ import BlogLayout from '../layouts/BlogLayout.astro';
   .book-form textarea {
     font-family: inherit;
     font-size: 0.95rem;
+    font-weight: 400;
     padding: 0.65rem 0.85rem;
     background: #ffffff;
     border: 1.5px solid #cbd5e1;
@@ -314,7 +289,6 @@ import BlogLayout from '../layouts/BlogLayout.astro';
   .book-form textarea:focus {
     outline: none;
     border-color: #ff6b00;
-    box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.15);
   }
 
   .book-actions {
@@ -326,7 +300,7 @@ import BlogLayout from '../layouts/BlogLayout.astro';
 
   .form-msg {
     font-size: 0.88rem;
-    font-weight: 600;
+    font-weight: 500;
   }
 
   .form-msg.ok {
@@ -349,6 +323,7 @@ import BlogLayout from '../layouts/BlogLayout.astro';
   .vip-desc {
     font-size: 0.94rem;
     color: #475569;
+    font-weight: 400;
     line-height: 1.6;
   }
 
@@ -390,18 +365,19 @@ import BlogLayout from '../layouts/BlogLayout.astro';
   }
 
   .mine-name {
-    font-weight: 700;
+    font-weight: 500 !important;
     color: #0f172a;
   }
 
   .mine-note {
     font-size: 0.82rem;
+    font-weight: 400;
     color: #64748b;
   }
 
   .mine-status {
     font-size: 0.78rem;
-    font-weight: 700;
+    font-weight: 400 !important;
     padding: 0.2rem 0.6rem;
     border: 1px solid #cbd5e1;
     background: #f8fafc;
