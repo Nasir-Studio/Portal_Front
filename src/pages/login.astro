@@ -54,7 +54,7 @@ import BlogLayout from '../layouts/BlogLayout.astro';
             <div class="form-error" id="form-error" role="alert" style="display: none;"></div>
 
             <button class="login-btn" id="submit-btn" type="submit">
-              立即登入 →
+              立即登入
             </button>
           </form>
         </div>
@@ -200,7 +200,7 @@ import BlogLayout from '../layouts/BlogLayout.astro';
   .login-btn {
     width: 100%;
     padding: 0.85rem;
-    background: #111111;
+    background: #ff6b00;
     color: #ffffff;
     border: none;
     font-size: 0.94rem;
@@ -213,7 +213,7 @@ import BlogLayout from '../layouts/BlogLayout.astro';
   }
 
   .login-btn:hover {
-    background: #ff6b00;
+    background: #ea580c;
   }
 
   .login-btn:disabled {
@@ -285,7 +285,7 @@ import BlogLayout from '../layouts/BlogLayout.astro';
           showError('發生未知錯誤，請稍後再試');
         }
         submitBtn.disabled = false;
-        submitBtn.textContent = '立即登入 →';
+        submitBtn.textContent = '立即登入';
       }
     });
   }
