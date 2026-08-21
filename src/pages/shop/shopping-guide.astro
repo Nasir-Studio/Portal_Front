@@ -78,9 +78,9 @@ import BlogLayout from '../../layouts/BlogLayout.astro';
             </div>
             <h2>Ovis Shop</h2>
             <p class="history">這個是 Ovis 的商城</p>
-            <div class="side-btn-wrap" style="display: flex; flex-direction: column; gap: 8px; width: 100%; margin-top: 1.2rem;">
-              <a href="/shop/cart/" class="btn-vip" style="background: #ff6b00; color: #ffffff; border-color: #ff6b00;">🛒 查看購物車</a>
-              <a href="/about/" class="btn-vip">關於OviNas</a>
+            <div class="side-btn-wrap" style="display: flex; flex-direction: column; align-items: center; gap: 10px; width: 100%; margin-top: 1.2rem;">
+              <a href="/shop/cart/" class="btn-side-cart">🛒 查看購物車</a>
+              <a href="/about/" class="side-plain-link">關於OviNas</a>
             </div>
           </div>
         </aside>
@@ -535,5 +535,39 @@ import BlogLayout from '../../layouts/BlogLayout.astro';
 
   .shop-side-menu li a:hover {
     color: #ff6b00;
+  }
+  /* 🛒 側欄純黑查看購物車按鈕與極簡關於連結 */
+  .btn-side-cart {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.65rem 1.2rem;
+    background: #111111;
+    color: #ffffff !important;
+    border: 1px solid #111111;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    text-align: center;
+    transition: background 0.15s ease, border-color 0.15s ease;
+  }
+
+  .btn-side-cart:hover {
+    background: #262626;
+    border-color: #262626;
+    color: #ffffff !important;
+  }
+
+  .side-plain-link {
+    font-size: 13.5px;
+    color: #64748b;
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  .side-plain-link:hover {
+    color: #111111;
+    text-decoration: underline;
   }
 </style>

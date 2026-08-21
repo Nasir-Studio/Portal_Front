@@ -1,55 +1,15 @@
 ---
 import BlogLayout from '../../layouts/BlogLayout.astro';
 
-// 預設精選商品列表 (Static SSR Pre-rendered - 保證即時完整渲染，絕無空白)
+// 預設精選商品列表 (只保留官方真實商品)
 const defaultProducts = [
   {
-    name: 'Samsung DDR3 4GB 筆電/桌機記憶體',
+    name: 'Samsung DDR3 4GB 記憶體',
     slug: 'samsungddr34gbram',
     category: '電腦零組件 · 二手良品',
     price: 150,
     summary: '功能經實機檢測完全正常，原廠顆粒良品，適合老舊電腦升級或實驗專案。',
-    img: 'https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?auto=format&fit=crop&w=600&q=80'
-  },
-  {
-    name: 'TP-Link AC1200 雙頻無線網卡',
-    slug: 'tplink-ac1200-adapter',
-    category: '網路設備 · 近乎全新',
-    price: 250,
-    summary: '支援 2.4G/5G 雙頻高速傳輸，USB 隨插即用，訊號穩定附原廠保護蓋。',
-    img: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=600&q=80'
-  },
-  {
-    name: 'Type-C 4合1 多功能金屬轉接 HUB',
-    slug: 'type-c-hub-4in1',
-    category: '周邊配件 · 全新良品',
-    price: 320,
-    summary: '支援 4K HDMI 輸出、USB 3.0 高速傳輸與 100W PD 快充，鋁合金散熱極佳。',
-    img: 'https://images.unsplash.com/photo-1616440347437-b1c73416efc2?auto=format&fit=crop&w=600&q=80'
-  },
-  {
-    name: 'Logitech 靜音無線光學滑鼠',
-    slug: 'logitech-silent-mouse',
-    category: '周邊配件 · 二手良品',
-    price: 199,
-    summary: '90% 靜音點擊設計，高精準度光學追蹤，電池續航力長達 18 個月。',
-    img: 'https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?auto=format&fit=crop&w=600&q=80'
-  },
-  {
-    name: 'Kingston 128GB 高速 USB 3.2 隨身碟',
-    slug: 'kingston-128gb-flash',
-    category: '儲存裝置 · 全新未拆',
-    price: 280,
-    summary: 'USB 3.2 Gen 1 高速讀寫規格，金屬鑰匙孔保護蓋設計，便於隨身攜帶。',
-    img: 'https://images.unsplash.com/photo-1588508065123-287b28e013da?auto=format&fit=crop&w=600&q=80'
-  },
-  {
-    name: 'CAT6 千兆高速超薄扁平網路線 (5M)',
-    slug: 'cat6-gigabit-cable-5m',
-    category: '線材耗材 · 全新良品',
-    price: 99,
-    summary: '純銅無氧鍍金接頭，超薄扁線易於地毯門縫佈線，支援 1000Mbps 傳輸。',
-    img: 'https://images.unsplash.com/photo-1544716278-e0e64c39c878?auto=format&fit=crop&w=600&q=80'
+    img: 'https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?auto=format&fit=crop&w=600&h=600&q=80'
   }
 ];
 ---
@@ -116,9 +76,9 @@ const defaultProducts = [
             </div>
             <h2>Ovis Shop</h2>
             <p class="history">這個是 Ovis 的商城</p>
-            <div class="side-btn-wrap" style="display: flex; flex-direction: column; gap: 8px; width: 100%; margin-top: 1.2rem;">
-              <a href="/shop/cart/" class="btn-vip" style="background: #ff6b00; color: #ffffff; border-color: #ff6b00;">🛒 查看購物車</a>
-              <a href="/about/" class="btn-vip">關於OviNas</a>
+            <div class="side-btn-wrap" style="display: flex; flex-direction: column; align-items: center; gap: 10px; width: 100%; margin-top: 1.2rem;">
+              <a href="/shop/cart/" class="btn-side-cart">🛒 查看購物車</a>
+              <a href="/about/" class="side-plain-link">關於OviNas</a>
             </div>
           </div>
         </aside>
@@ -664,61 +624,51 @@ const defaultProducts = [
       grid-template-columns: 1fr;
     }
   }
+  /* 🛒 側欄純黑查看購物車按鈕與極簡關於連結 */
+  .btn-side-cart {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.65rem 1.2rem;
+    background: #111111;
+    color: #ffffff !important;
+    border: 1px solid #111111;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    text-align: center;
+    transition: background 0.15s ease, border-color 0.15s ease;
+  }
+
+  .btn-side-cart:hover {
+    background: #262626;
+    border-color: #262626;
+    color: #ffffff !important;
+  }
+
+  .side-plain-link {
+    font-size: 13.5px;
+    color: #64748b;
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  .side-plain-link:hover {
+    color: #111111;
+    text-decoration: underline;
+  }
 </style>
 
 <script is:inline>
-  var API_URL = 'https://api.nsir.uk';
-
-  window.escHtml = function(s) {
-    if (!s) return '';
-    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
-  };
-
-  var __cc = window.__currency;
-  function _fmt(ntd) {
-    if (ntd === 0) return 'NT$ 0';
-    if (__cc && __cc._rates) return __cc.format(ntd);
-    return 'NT$ ' + (ntd || 0).toLocaleString();
-  }
-
-  var conditionLabels = { new: '全新良品', like_new: '近乎全新', used: '二手良品', refurbished: '整新品' };
-
-  document.addEventListener('DOMContentLoaded', async function() {
-    var container = document.getElementById('featured-products');
-    if (!container) return;
-
-    try {
-      var res = await fetch(API_URL + '/api/products?page_size=12&sort=newest');
-      if (res.ok) {
-        var data = await res.json();
-        if (data && data.items && data.items.length > 0) {
-          container.innerHTML = data.items.map(function(p) {
-            var priceText = _fmt(p.price);
-            var imgHtml = p.image_url
-              ? '<img src="' + p.image_url + '" alt="' + escHtml(p.name) + '" class="card-img" loading="lazy" />'
-              : '<div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;background:#f8fafc;color:#64748b;font-weight: 400;font-size:0.95rem;">' + escHtml(p.name) + '</div>';
-
-            var condLabel = conditionLabels[p.condition] || '二手良品';
-
-            return '<article class="post-card">' +
-              '<div class="img-wrap">' +
-              '<a class="card-thumb-link" href="/shop/products/' + p.slug + '/">' +
-              '<div class="card-img-box">' + imgHtml + '</div>' +
-              '</a>' +
-              '</div>' +
-              '<ul class="post-categories">' +
-              '<li><a href="/shop/products/' + p.slug + '/">' + escHtml(p.category_name || '精選物資') + ' · ' + condLabel + '</a></li>' +
-              '</ul>' +
-              '<h3 class="post-title">' +
-              '<a href="/shop/products/' + p.slug + '/">' + escHtml(p.name) + '</a>' +
-              '</h3>' +
-              '<div class="shop-price-tag">' + priceText + '</div>' +
-              '<p class="post-excerpt">' + escHtml(p.summary || p.description || '功能完好，歡迎探索詳細規格與狀況。') + '</p>' +
-              '<a href="/shop/products/' + p.slug + '/" class="read-more">查看商品詳情 →</a>' +
-              '</article>';
-          }).join('');
-        }
-      }
-    } catch (e) {}
+  // Ovis Shop 核心腳本
+  document.addEventListener('DOMContentLoaded', function() {
+    var cartCount = localStorage.getItem('shop_cart_count');
+    if (cartCount) {
+      var cartBtns = document.querySelectorAll('.btn-side-cart');
+      cartBtns.forEach(function(btn) {
+        btn.textContent = '🛒 查看購物車 (' + cartCount + ')';
+      });
+    }
   });
 </script>
