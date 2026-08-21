@@ -2,19 +2,31 @@
 import BlogLayout from '../layouts/BlogLayout.astro';
 ---
 
-<BlogLayout title="VIP 登入 — OviNas" description="使用 VIP 帳號登入 OviNas 系統。">
+<BlogLayout title="VIP 登入 — OviNas" description="使用 VIP 帳號登入 OviNas 專區與技術工單系統。">
   <div class="main-content">
     <div class="container">
-      <div class="login-box-wrapper">
-        <div class="login-header-group">
-          <h1 class="page-title">VIP 登入</h1>
+      <!-- 麵包屑導航 (Breadcrumbs) -->
+      <div class="breadcrumbs">
+        <a href="/" class="home">首頁</a>
+        <span class="sep">&gt;</span>
+        <span class="current-post-name">會員登入</span>
+      </div>
+
+      <div class="login-wrapper">
+        <div class="login-card">
+          <!-- 頂部品牌頭部 -->
+          <div class="login-header">
+            <div class="login-logo-circle">
+              <img src="/sheep-hd.png" alt="OviNas" width="48" height="48" />
+            </div>
+            <h1 class="login-title">VIP 會員登入</h1>
+            <p class="login-subtitle">登入以使用 VIP 專區與專屬問題工單服務</p>
           </div>
 
-        <!-- 俐落方正質感登入卡片 (零圓角、高對比俐落邊框) -->
-        <div class="login-card-module">
-          <form class="login-form-body" id="login-form" novalidate>
-            <div class="field-item">
-              <label for="email" class="field-label">電子郵件 / EMAIL</label>
+          <!-- 登入表單 -->
+          <form class="login-form" id="login-form" novalidate>
+            <div class="form-group">
+              <label for="email" class="form-label">電子郵件 / Email</label>
               <input
                 id="email"
                 type="email"
@@ -22,12 +34,12 @@ import BlogLayout from '../layouts/BlogLayout.astro';
                 autocomplete="email"
                 placeholder="請輸入註冊的 Email"
                 required
-                class="field-input"
+                class="form-input"
               />
             </div>
 
-            <div class="field-item">
-              <label for="password" class="field-label">密碼 / PASSWORD</label>
+            <div class="form-group">
+              <label for="password" class="form-label">登入密碼 / Password</label>
               <input
                 id="password"
                 type="password"
@@ -35,186 +47,185 @@ import BlogLayout from '../layouts/BlogLayout.astro';
                 autocomplete="current-password"
                 placeholder="請輸入會員密碼"
                 required
-                class="field-input"
+                class="form-input"
               />
             </div>
 
             <div class="form-error" id="form-error" role="alert" style="display: none;"></div>
 
-            <button class="login-submit-btn" id="submit-btn" type="submit">
+            <button class="login-btn" id="submit-btn" type="submit">
               立即登入 →
             </button>
           </form>
-        </div>
-
-        <div class="login-footer-notes">
-          <p>
-            訪客如需預約時段 —
-            <a class="reserve-redirect-link" href="/reserve/">前往預約系統</a>
-          </p>
         </div>
       </div>
     </div>
   </div>
 </BlogLayout>
 
-<style is:global>
-  .login-box-wrapper {
-    max-width: 460px;
-    margin: 2.5rem auto 4.5rem;
-    padding: 0 15px;
+<style>
+  .main-content {
+    background-color: #ffffff;
+    padding: 1.5rem 0 5rem;
+    min-height: 75vh;
   }
 
-  .login-header-group {
-    text-align: center;
+  .breadcrumbs {
+    font-size: 14px;
+    color: #999999;
     margin-bottom: 2rem;
-  }
-
-  .page-title {
-    font-family: var(--font-serif, "Noto Serif TC", serif);
-    font-size: 2.2rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    color: #0f172a;
-    margin: 0 0 8px;
-  }
-
-  .page-sub {
-    font-size: 0.92rem;
-    color: #64748b;
-    margin: 0;
-    letter-spacing: 0.02em;
     line-height: 1.5;
   }
 
-  /* 📦 俐落方正卡片：零圓角、黑邊/深藍邊、純白底色、柔和立體陰影 */
-  .login-card-module {
-    background: #ffffff;
-    border: 1.5px solid #0f172a;
-    border-radius: 0px !important;
-    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
-    overflow: hidden;
+  .breadcrumbs a {
+    color: #666666;
+    text-decoration: none;
   }
 
-  .login-card-head {
-    background: #0f172a;
-    color: #ffffff;
-    padding: 14px 20px;
+  .breadcrumbs a:hover {
+    color: #ff6b00;
+  }
+
+  .breadcrumbs .sep {
+    margin: 0 5px;
+    color: #cccccc;
+  }
+
+  .breadcrumbs .current-post-name {
+    color: #333333;
+    font-weight: 500;
+  }
+
+  /* 登入卡片容器 */
+  .login-wrapper {
     display: flex;
+    justify-content: center;
     align-items: center;
-    gap: 10px;
-    border-radius: 0px !important;
+    padding: 1.5rem 0 3rem;
   }
 
-  .square-bullet {
-    width: 8px;
-    height: 8px;
-    background: #ff6b00;
-    display: inline-block;
-  }
-
-  .login-card-head h2 {
-    font-size: 15px;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    margin: 0;
-    color: #ffffff;
-  }
-
-  .login-form-body {
-    padding: 2rem 1.8rem 2.2rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1.3rem;
+  .login-card {
+    width: 100%;
+    max-width: 440px;
     background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-top: 3px solid #ff6b00;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.03);
+    padding: 2.4rem 2.2rem 2.6rem;
   }
 
-  .field-item {
+  .login-header {
+    text-align: center;
+    margin-bottom: 2.2rem;
+  }
+
+  .login-logo-circle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 68px;
+    height: 68px;
+    background: #fafafa;
+    border: 1px solid #e2e8f0;
+    border-radius: 50%;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  }
+
+  .login-logo-circle img {
+    border-radius: 50%;
+  }
+
+  .login-title {
+    font-size: 1.55rem;
+    font-weight: 500;
+    color: #0f172a;
+    margin: 0 0 0.5rem;
+    letter-spacing: 0.02em;
+  }
+
+  .login-subtitle {
+    font-size: 0.88rem;
+    color: #64748b;
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  .login-form {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 1.4rem;
   }
 
-  .field-label {
-    font-size: 0.8rem;
-    font-weight: 700;
-    letter-spacing: 0.06em;
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+
+  .form-label {
+    font-size: 0.84rem;
+    font-weight: 500;
     color: #334155;
+    letter-spacing: 0.02em;
   }
 
-  .field-input {
+  .form-input {
     width: 100%;
     box-sizing: border-box;
     font-family: inherit;
-    font-size: 0.95rem;
-    padding: 0.75rem 0.9rem;
-    background: #ffffff;
-    border: 1.5px solid #cbd5e1;
-    border-radius: 0px !important;
+    font-size: 0.94rem;
+    padding: 0.75rem 0.95rem;
+    background: #fafafa;
+    border: 1px solid #cbd5e1;
     color: #0f172a;
     outline: none;
     transition: all 0.15s ease;
   }
 
-  .field-input:focus {
+  .form-input:focus {
+    background: #ffffff;
     border-color: #ff6b00;
     box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.12);
   }
 
   .form-error {
-    font-size: 0.88rem;
-    color: #b91c1c;
+    font-size: 0.86rem;
+    color: #dc2626;
     background: #fef2f2;
     border-left: 3px solid #ef4444;
     padding: 8px 12px;
-    border-radius: 0px !important;
     letter-spacing: 0.02em;
   }
 
-  .login-submit-btn {
+  .login-btn {
     width: 100%;
     padding: 0.85rem;
-    background: #0f172a;
+    background: #111111;
     color: #ffffff;
     border: none;
-    border-radius: 0px !important;
-    font-size: 0.95rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
+    font-size: 0.94rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: background 0.15s ease, transform 0.1s ease;
     text-align: center;
-    margin-top: 0.5rem;
-    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.2);
+    margin-top: 0.6rem;
   }
 
-  .login-submit-btn:hover {
+  .login-btn:hover {
     background: #ff6b00;
-    box-shadow: 0 6px 18px rgba(255, 107, 0, 0.35);
   }
 
-  .login-submit-btn:disabled {
+  .login-btn:disabled {
     opacity: 0.5;
     cursor: not-allowed;
   }
 
-  .login-footer-notes {
-    margin-top: 1.8rem;
-    text-align: center;
-    font-size: 0.9rem;
-    color: #64748b;
-  }
-
-  .reserve-redirect-link {
-    color: #ff6b00;
-    font-weight: 600;
-    text-decoration: underline;
-    text-underline-offset: 3px;
-    transition: color 0.15s ease;
-  }
-
-  .reserve-redirect-link:hover {
-    color: #ea580c;
+  @media (max-width: 500px) {
+    .login-card {
+      padding: 1.8rem 1.4rem 2rem;
+    }
   }
 </style>
 
